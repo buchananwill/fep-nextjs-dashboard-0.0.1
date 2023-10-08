@@ -11,6 +11,7 @@ export default function Search({ disabled }: { disabled?: boolean }) {
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(window.location.search);
+
     if (term) {
       params.set('q', term);
     } else {

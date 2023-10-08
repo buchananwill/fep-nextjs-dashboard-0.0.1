@@ -8,32 +8,35 @@ import {
   Text
 } from '@tremor/react';
 
-interface User {
+interface Student {
   id: number;
   name: string;
-  username: string;
-  email: string;
+  yearGroup: number;
 }
 
-export default function UsersTable({ users }: { users: User[] }) {
+export default function StudentsTable({
+  students: students
+}: {
+  students: Student[];
+}) {
   return (
     <Table>
       <TableHead>
         <TableRow>
+          <TableHeaderCell>Id</TableHeaderCell>
           <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Username</TableHeaderCell>
-          <TableHeaderCell>Email</TableHeaderCell>
+          <TableHeaderCell>YearGroup</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
+        {students.map((student) => (
+          <TableRow key={student.id}>
             <TableCell>
-              <Text>{user.username}</Text>
+              <Text>{student.id}</Text>
             </TableCell>
+            <TableCell>{student.name}</TableCell>
             <TableCell>
-              <Text>{user.email}</Text>
+              <Text>{student.yearGroup}</Text>
             </TableCell>
           </TableRow>
         ))}
