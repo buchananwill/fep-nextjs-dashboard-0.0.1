@@ -1,29 +1,29 @@
 import React from 'react';
-import TimetablePeriod from '../components/timetable-period';
+
+import fetchSchedule from '../../pages/api/schedules/request-schedule';
 import Timetable from '../tables/timetable';
+import fetchResults from '../../pages/api/students/student-search';
+import { Student } from '../tables/student-table';
+import StudentSelector from '../components/student-selector';
 
-const dummyPeriod = {
-  subject: 'Music',
-  teacher: 'WWB',
-  location: 'Q88'
-};
+export default async function TimetablesPage({
+  searchParams
+}: {
+  searchParams: { q: string };
+}) {
+  const dummyParams = { id: 234, q: '' };
 
-const dummyTimetable = {
-  headerInfo: ['Monday', 'Tuesday'],
-  rowInfo: [
-    [
-      { subject: 'Music', teacher: 'WWB', location: 'Q88' },
-      { subject: 'English', teacher: 'CJT', location: 'L66' }
-    ],
-    []
-  ]
-};
+  const schedule = await fetchSchedule(Number(searchParams.q));
 
-export default function TimetablesPage() {
+  const students: Student[] = await fetchResults(dummyParams);
+
   return (
     <main>
-      <div>
-        <Timetable tableContents={dummyTimetable}></Timetable>
+      <div className="flex p-2 justify-center">
+        <div className="max-w-lg mx-8 space-y-6">
+          <StudentSelector students={students} />
+        </div>
+        <Timetable tableContents={schedule}></Timetable>
       </div>
     </main>
   );

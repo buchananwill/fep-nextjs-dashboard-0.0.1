@@ -8,37 +8,70 @@ import {
   Text
 } from '@tremor/react';
 
-import TimetablePeriod, { PeriodInfo } from '../components/timetable-period';
+import TimetablePeriod, { CellInfo } from '../components/timetable-period';
 
 interface TableContents {
-  headerInfo: string[];
-  rowInfo: PeriodInfo[][];
+  headerLabels: string[];
+  tableRows: CellInfo[][];
 }
 
 export default function Timetable({
-  tableContents: { headerInfo, rowInfo }
+  tableContents
 }: {
   tableContents: TableContents;
 }) {
+  if (tableContents == null)
+    return (
+      <div>
+        <p>No table.</p>
+      </div>
+    );
+
+  const { headerLabels, tableRows } = tableContents;
+
+  const singleWeekLabels = headerLabels.slice(0, 6);
+
+  const weekAHeader = singleWeekLabels.map((label) => ({
+    principalValue: 'A',
+    leftBottom: '',
+    rightBottom: ''
+  }));
+  const weekBHeader = singleWeekLabels.map((label) => ({
+    principalValue: 'B',
+    leftBottom: '',
+    rightBottom: ''
+  }));
+
+  const rowLabels = tableRows.map((row) => row.slice(0, 1));
+  const weekARows = tableRows.map((row, index) => [
+    ...rowLabels[index],
+    ...row.slice(1, 6)
+  ]);
+  const weekBRows = tableRows.map((row, index) => [
+    ...rowLabels[index],
+    ...row.slice(6, 11)
+  ]);
+  const stackedRows = [weekAHeader, ...weekARows, weekBHeader, ...weekBRows];
+
   return (
-    <Table>
-      <TableHead>
+    <Table className="max-w-4xl">
+      <TableHead className="border">
         <TableRow>
-          {headerInfo.map((headerLabel, index) => (
-            <TableHeaderCell key={index}>
-              <p className="text-center">{headerLabel}</p>
+          {singleWeekLabels.map((singleWeekLabels, index) => (
+            <TableHeaderCell key={index} className="w-32 border">
+              <p className="text-center">{singleWeekLabels}</p>
             </TableHeaderCell>
           ))}
         </TableRow>
       </TableHead>
       <TableBody>
-        {rowInfo.map((row, rowIndex) => (
+        {stackedRows.map((row, rowIndex) => (
           <TableRow key={`row-${rowIndex}`}>
-            {row.map((periodInfo, cellIndex) => (
-              <TableCell key={`cell-${rowIndex}-${cellIndex}`}>
+            {row.map((cellInfo, cellIndex) => (
+              <TableCell key={`cell-${rowIndex}-${cellIndex}`} className="p-0">
                 <TimetablePeriod
                   key={`period-${rowIndex}-${cellIndex}`}
-                  periodInfo={periodInfo}
+                  periodInfo={cellInfo}
                 ></TimetablePeriod>
               </TableCell>
             ))}
