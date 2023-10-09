@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 export const metadata = {
   title: 'FEP Academic Scheduling UI',
   description:
-    'An academic scheduling UI configured with Next.js, PlanetScale, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
+    'An academic scheduling UI configured with Next.js, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
 };
 
 export default async function RootLayout({

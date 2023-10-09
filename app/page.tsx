@@ -1,7 +1,7 @@
 import { Card, Title, Text } from '@tremor/react';
 import fetchResults from '../pages/api/students/student-search';
 import Search from './search';
-import StudentsTable from './table';
+import StudentsTable from './tables/student-table';
 
 export const dynamic = 'force-dynamic';
 
