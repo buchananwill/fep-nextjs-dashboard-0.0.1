@@ -4,8 +4,7 @@ import {
   TableRow,
   TableHeaderCell,
   TableBody,
-  TableCell,
-  Text
+  TableCell
 } from '@tremor/react';
 
 import TimetablePeriod, { CellInfo } from '../components/timetable-period';
