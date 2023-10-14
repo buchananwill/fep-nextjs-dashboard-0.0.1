@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import Toast from './toast';
 import { Suspense } from 'react';
+import { SessionProvider } from 'next-auth/react';
 
 export const metadata = {
   title: 'FEP Academic Scheduling UI',

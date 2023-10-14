@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import ElectiveCard, { ElectiveProps } from '../components/elective-card';
 import {
@@ -15,12 +16,14 @@ interface ElectiveTableProps {
 
 export default function ElectiveTable({ electives }: ElectiveTableProps) {
   return (
-    <Table className="max-w-3xl">
+    <Table className=" m-2 p-2">
       <TableHead>
-        <TableHeaderCell className="text-center">Carousel 1</TableHeaderCell>
-        <TableHeaderCell className="text-center">Carousel 2</TableHeaderCell>
-        <TableHeaderCell className="text-center">Carousel 3</TableHeaderCell>
-        <TableHeaderCell className="text-center">Carousel 4</TableHeaderCell>
+        <TableRow>
+          <TableHeaderCell className="text-center">Carousel 1</TableHeaderCell>
+          <TableHeaderCell className="text-center">Carousel 2</TableHeaderCell>
+          <TableHeaderCell className="text-center">Carousel 3</TableHeaderCell>
+          <TableHeaderCell className="text-center">Carousel 4</TableHeaderCell>
+        </TableRow>
       </TableHead>
       <TableBody>
         {electives.map((arrayRow, rowIndex) => (

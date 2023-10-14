@@ -2,6 +2,7 @@ import { Card, Title, Text } from '@tremor/react';
 import fetchResults from '../pages/api/students/student-search';
 import Search from './search';
 import StudentsTable from './tables/student-table';
+import { SessionProvider } from 'next-auth/react';
 
 export const dynamic = 'force-dynamic';
 
