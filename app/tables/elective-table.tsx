@@ -1,6 +1,6 @@
 'use client';
-import React from 'react';
-import ElectiveCard, { ElectiveProps } from '../components/elective-card';
+import React, { MouseEventHandler } from 'react';
+import ElectiveCard, { ElectiveDTO } from '../components/elective-card';
 import {
   Table,
   TableBody,
@@ -10,11 +10,17 @@ import {
   TableRow
 } from '@tremor/react';
 
-interface ElectiveTableProps {
-  electives: ElectiveProps[][];
+interface ElectiveTableData {
+  electives: ElectiveDTO[][];
 }
 
-export default function ElectiveTable({ electives }: ElectiveTableProps) {
+export default function ElectiveTable({
+  electives,
+  handleCardClick
+}: {
+  electives: ElectiveDTO[][];
+  handleCardClick: Function;
+}) {
   return (
     <Table className=" m-2 p-2">
       <TableHead>
@@ -32,8 +38,8 @@ export default function ElectiveTable({ electives }: ElectiveTableProps) {
               <TableCell className="p-0" key={`cell-${rowIndex}-${cellIndex}`}>
                 <ElectiveCard
                   key={`card-${rowIndex}-${cellIndex}`}
-                  courseDescription={cell.courseDescription}
-                  subscribers={cell.subscribers}
+                  electiveDTO={cell}
+                  handleCardClick={handleCardClick}
                 />
               </TableCell>
             ))}

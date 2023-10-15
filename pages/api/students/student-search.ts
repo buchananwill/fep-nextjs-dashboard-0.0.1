@@ -9,7 +9,7 @@ interface SearchParams {
 
 
 
-const fetchResults = async (searchParams : SearchParams) => {
+export const fetchResults = async (searchParams : SearchParams) => {
   try {
     
     const response = await axios.get('http://localhost:8080/api/academic/students', {
@@ -26,5 +26,19 @@ const fetchResults = async (searchParams : SearchParams) => {
     return null;
   }
 };
+
+export const fetchStudentsByPartyIDs = async (studentIDlist : number[]) => {
+    const queryString = `${encodeURIComponent(JSON.stringify(studentIDlist))}`;
+
+  try {
+
+    const response = await axios.post('http://localhost:8080/api/academic/students-by-party-ids', studentIDlist)
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return null;
+  }
+}
 
 export default fetchResults;

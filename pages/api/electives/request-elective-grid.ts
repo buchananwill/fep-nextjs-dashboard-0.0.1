@@ -1,20 +1,23 @@
 import axios from 'axios';
 
 interface SearchParams {
-    yearGroupRank: number
+    yearGroup: number
+    version: string
     // token: string
 }
 
 
 
-const fetchElectiveCarouselTable = async (yearGroup : number) => {
+const fetchElectiveCarouselTable = async ({yearGroup, version } : SearchParams) => {
   try {
+
+    const url = `http://localhost:8080/api/academic/electives-${version}` 
 
     console.log("Current YearGroupRank: " + yearGroup)
 
     if (Number.isNaN(yearGroup)) return null;
     
-    const response = await axios.get('http://localhost:8080/api/academic/electives', {
+    const response = await axios.get(url, {
       params: { yearGroup: yearGroup} ,
         // headers: {
         //     'Authorization': `Bearer ${searchParams.token}`
