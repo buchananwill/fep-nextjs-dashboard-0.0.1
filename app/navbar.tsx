@@ -12,7 +12,8 @@ const navigation = [
   { name: 'Dashboard', href: '/' },
   { name: 'Playground', href: '/playground' },
   { name: 'Timetables', href: '/timetables' },
-  { name: 'Electives', href: '/electives' }
+  { name: 'Electives', href: '/electives' },
+  { name: 'Premises', href: '/premises' }
 ];
 
 function classNames(...classes: string[]) {
