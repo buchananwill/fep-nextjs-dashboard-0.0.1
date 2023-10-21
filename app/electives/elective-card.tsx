@@ -1,26 +1,42 @@
+'use client';
 import { Card } from '@tremor/react';
 import { Badge } from '@tremor/react';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { MouseEventHandler } from 'react';
 
 export interface ElectiveDTO {
   courseDescription: string;
-  subscribers: number;
+  courseId: string;
+  carouselId: number;
   subscriberPartyIDs: number[];
 }
 
+const electiveParentSlug = 'electives/';
+
 export default function ElectiveCard({
-  electiveDTO,
-  handleCardClick
+  electiveDTO // handleCardClick
 }: {
   electiveDTO: ElectiveDTO;
-  handleCardClick: Function;
+  // handleCardClick: Function;
 }) {
-  const { courseDescription, subscribers, subscriberPartyIDs } = electiveDTO;
+  const { courseDescription, carouselId, subscriberPartyIDs } = electiveDTO;
+  const subscribers = subscriberPartyIDs.length;
   const color = getColor(subscribers);
   const isEnabled = subscribers > 0;
+  const { replace } = useRouter();
+  const pathname = usePathname();
 
   const onCardClick = () => {
-    handleCardClick(electiveDTO.courseDescription, subscriberPartyIDs);
+    const params = new URLSearchParams(window.location.search);
+
+    const carouselNumber = carouselId.toString();
+
+    params.set('course', courseDescription);
+    params.set('carousel', carouselNumber);
+
+    console.log(electiveDTO.courseDescription, subscriberPartyIDs);
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
   const opacity = getOpacity(isEnabled);
@@ -33,11 +49,11 @@ export default function ElectiveCard({
 
   return (
     <Card
-      className={`flex p-2 m-0 justify-between items-center opacity-${opacity} border border-transparent hover:border-red-400`}
+      className={`flex p-2 m-0 justify-between items-center opacity-${opacity} border border-transparent hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform`}
       onClick={onCardClick}
     >
       <span className="mx-2">
-        {courseDescription} {'  '}
+        {courseDescription} {'  '} {carouselId}{' '}
       </span>
       <Badge color={color}>{subscribers}</Badge>
     </Card>

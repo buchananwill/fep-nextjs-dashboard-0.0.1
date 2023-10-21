@@ -1,5 +1,5 @@
 import { Card, Title, Text } from '@tremor/react';
-import fetchResults from '../pages/api/students/student-search';
+import fetchResults from './api/student-search';
 import Search from './search';
 import StudentsTable from './tables/student-table';
 

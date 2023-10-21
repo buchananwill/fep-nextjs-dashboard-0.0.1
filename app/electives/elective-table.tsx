@@ -1,6 +1,4 @@
-'use client';
-import React, { MouseEventHandler } from 'react';
-import ElectiveCard, { ElectiveDTO } from '../components/elective-card';
+import ElectiveCard, { ElectiveDTO } from './elective-card';
 import {
   Table,
   TableBody,
@@ -15,14 +13,14 @@ interface ElectiveTableData {
 }
 
 export default function ElectiveTable({
-  electives,
-  handleCardClick
-}: {
+  electives
+} // handleCardClick
+: {
   electives: ElectiveDTO[][];
-  handleCardClick: Function;
+  // handleCardClick: Function;
 }) {
   return (
-    <Table className=" m-2 p-2">
+    <Table className=" m-2 p-2 overflow-visible">
       <TableHead>
         <TableRow>
           <TableHeaderCell className="text-center">Carousel 1</TableHeaderCell>
@@ -39,7 +37,7 @@ export default function ElectiveTable({
                 <ElectiveCard
                   key={`card-${rowIndex}-${cellIndex}`}
                   electiveDTO={cell}
-                  handleCardClick={handleCardClick}
+                  // handleCardClick={handleCardClick}
                 />
               </TableCell>
             ))}

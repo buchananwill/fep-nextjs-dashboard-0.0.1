@@ -1,6 +1,6 @@
 import { Card, Title, Text, Grid } from '@tremor/react';
 import ClassRoomCard, { ClassRoomDTO } from './class-room-card';
-import fetchClassRooms from '../../pages/api/premises/request-class-rooms';
+import fetchClassRooms from '../api/request-class-rooms';
 import { type } from 'os';
 
 export const dynamic = 'force-dynamic';

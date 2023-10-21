@@ -7,7 +7,7 @@ import {
   TableCell
 } from '@tremor/react';
 
-import TimetablePeriod, { CellInfo } from '../components/timetable-period';
+import TimetablePeriod, { CellInfo } from './timetable-period';
 
 interface TableContents {
   headerLabels: string[];

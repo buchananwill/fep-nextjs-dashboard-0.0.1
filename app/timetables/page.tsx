@@ -1,10 +1,10 @@
 import React from 'react';
 
-import fetchSchedule from '../../pages/api/schedules/request-schedule';
-import Timetable from '../tables/timetable';
-import fetchResults from '../../pages/api/students/student-search';
+import fetchSchedule from '../api/request-schedule';
+import Timetable from './timetable';
+import fetchResults from '../api/student-search';
 import { Student } from '../tables/student-table';
-import StudentSelector from '../components/student-selector';
+import StudentSelector from './student-selector';
 
 export default async function TimetablesPage({
   searchParams
