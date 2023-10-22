@@ -2,9 +2,13 @@ import React from 'react';
 import ElectiveTable from '../elective-table';
 import fetchElectiveCarouselTable from '../../api/request-elective-grid';
 import { fetchStudentsByPartyIDs } from '../../api/student-search';
-import { Button, Text, Title, Card } from '@tremor/react';
+import { Text, Title, Card } from '@tremor/react';
 import { Student } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
+import ElectiveSubscriberAccordion, {
+  ElectivePreference
+} from './elective-subscriber-accordion';
+import { fetchElectivePreferencesByPartyIds } from '../../api/request-elective-preferences';
 
 // Slug[0] = Year Group
 // Slug[1] = Carousel number
@@ -12,21 +16,17 @@ import { ElectiveDTO } from '../elective-card';
 
 interface Props {
   params: { slug: string[] };
+  searchParams: { courseId: number; carouselId: number };
 }
 
 const versionInView = 'stored';
 
-export default async function ElectivesPage({ params: { slug } }: Props) {
+export default async function ElectivesPage({
+  params: { slug },
+  searchParams: { courseId: courseId, carouselId: carouselId }
+}: Props) {
   const yearGroupAsNumber: number | null =
     slug != null ? parseInt(slug[0]) : null;
-
-  let carouselNumber: null | number = null;
-  let courseNumber: null | number = null;
-
-  if (slug && slug[1] && slug[2]) {
-    carouselNumber = parseInt(slug[1], 10);
-    courseNumber = parseInt(slug[2], 10);
-  }
 
   const electiveData: ElectiveDTO[][] | null =
     yearGroupAsNumber != null
@@ -38,19 +38,21 @@ export default async function ElectivesPage({ params: { slug } }: Props) {
 
   let lessonCycleFocus: ElectiveDTO | null = null;
 
-  if (
-    carouselNumber !== null &&
-    courseNumber !== null &&
-    electiveData !== null
-  ) {
-    lessonCycleFocus = electiveData[courseNumber][carouselNumber];
+  if (carouselId !== null && courseId !== null && electiveData !== null) {
+    lessonCycleFocus = electiveData[courseId][carouselId];
   }
 
-  const studentList: Student[] = await fetchStudentsByPartyIDs([1]);
+  const studentList: Student[] | null =
+    lessonCycleFocus == null
+      ? null
+      : await fetchStudentsByPartyIDs(lessonCycleFocus.subscriberPartyIDs);
 
-  // if (electiveData == null) {
-  //   return <p>Loading...</p>;
-  // }
+  const studentElectiveList: ElectivePreference[] | null =
+    studentList == null
+      ? null
+      : await fetchElectivePreferencesByPartyIds(
+          studentList.map((student) => student.id)
+        );
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -71,32 +73,21 @@ export default async function ElectivesPage({ params: { slug } }: Props) {
             ></ElectiveTable>
           )}
         </Card>
-        {/* {studentList == null ? ( */}
-        <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
-          {lessonCycleFocus !== null
-            ? lessonCycleFocus.courseDescription
-            : 'No course selected'}
-        </Card>
-        {/* ) : (
+        {lessonCycleFocus !== null &&
+        studentList !== null &&
+        studentElectiveList !== null ? (
           <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
-            <Title>{carouselSubjectFocus}</Title>
-            <div className="pb-4">
-              {studentList.map((student) => (
-                <div
-                  tabIndex={student.id}
-                  className="gap-0 collapse bg-base-200 py-0 px-2 m-0.5"
-                >
-                  <div className="collapse-title font-medium text-sm m-0 gap-0 py-2 min-h-0">
-                    {student.name}
-                  </div>
-                  <div className="collapse-content m-0 text-sm py-0 min-h-0">
-                    Some other subjects
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ElectiveSubscriberAccordion
+              lessonCycleFocus={lessonCycleFocus}
+              studentList={studentList}
+              electivePreferenceList={studentElectiveList}
+            />
           </Card>
-        )} */}
+        ) : (
+          <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
+            No course selected
+          </Card>
+        )}
       </div>
     </main>
   );

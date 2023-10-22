@@ -6,7 +6,7 @@ import React, { MouseEventHandler } from 'react';
 
 export interface ElectiveDTO {
   courseDescription: string;
-  courseId: string;
+  courseId: number;
   carouselId: number;
   subscriberPartyIDs: number[];
 }
@@ -19,7 +19,8 @@ export default function ElectiveCard({
   electiveDTO: ElectiveDTO;
   // handleCardClick: Function;
 }) {
-  const { courseDescription, carouselId, subscriberPartyIDs } = electiveDTO;
+  const { courseDescription, carouselId, subscriberPartyIDs, courseId } =
+    electiveDTO;
   const subscribers = subscriberPartyIDs.length;
   const color = getColor(subscribers);
   const isEnabled = subscribers > 0;
@@ -29,12 +30,8 @@ export default function ElectiveCard({
   const onCardClick = () => {
     const params = new URLSearchParams(window.location.search);
 
-    const carouselNumber = carouselId.toString();
-
-    params.set('course', courseDescription);
-    params.set('carousel', carouselNumber);
-
-    console.log(electiveDTO.courseDescription, subscriberPartyIDs);
+    params.set('courseId', courseId.toString());
+    params.set('carouselId', carouselId.toString());
 
     replace(`${pathname}?${params.toString()}`);
   };
