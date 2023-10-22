@@ -1,7 +1,9 @@
+'use client';
 import React from 'react';
 import { Badge, Title } from '@tremor/react';
-import { ElectiveDTO } from '../elective-card';
-import { Student } from '../../tables/student-table';
+import { ElectiveDTO } from './elective-card';
+import { Student } from '../tables/student-table';
+import { usePathname, useRouter } from 'next/navigation';
 
 export interface ElectivePreference {
   partyId: number;
@@ -12,12 +14,18 @@ export interface ElectivePreference {
 
 interface Props {
   lessonCycleFocus: ElectiveDTO;
+  studentFocus: number;
   studentList: Student[];
   electivePreferenceList: ElectivePreference[];
 }
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 const ElectiveSubscriberAccordion = ({
   lessonCycleFocus,
+  studentFocus,
   studentList,
   electivePreferenceList
 }: Props) => {
@@ -28,6 +36,17 @@ const ElectiveSubscriberAccordion = ({
       )
   );
 
+  const { replace } = useRouter();
+  const pathname = usePathname();
+
+  const onCollapseClick = (clickedId: number) => {
+    const params = new URLSearchParams(window.location.search);
+
+    params.set('partyId', clickedId.toString());
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <>
       <Title>{lessonCycleFocus.courseDescription}</Title>
@@ -36,7 +55,12 @@ const ElectiveSubscriberAccordion = ({
           <div
             key={student.id}
             tabIndex={index}
-            className="gap-0 collapse bg-base-200 py-0 px-2 m-0.5"
+            onClick={() => onCollapseClick(student.id)}
+            // "gap-0 collapse bg-base-200 py-0 px-2 m-0.5"
+            className={classNames(
+              studentFocus == student.id ? 'collapse-open' : 'collapse-close',
+              'gap-0 collapse bg-base-200 py-0 px-2 m-0.5'
+            )}
           >
             <div className="collapse-title font-medium text-sm m-0 gap-0 py-2 min-h-0">
               {student.name}

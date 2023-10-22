@@ -8,12 +8,20 @@ import { signIn, signOut } from 'next-auth/react';
 
 import Image from 'next/image';
 
+const electivesDropdown = [
+  { name: 'Year 9', href: '/9' },
+  { name: 'Year 10', href: '/10' },
+  { name: 'Year 11', href: '/11' },
+  { name: 'Year 12', href: '/12' },
+  { name: 'Year 13', href: '/13' }
+];
+
 const navigation = [
-  { name: 'Dashboard', href: '/' },
-  { name: 'Playground', href: '/playground' },
-  { name: 'Timetables', href: '/timetables' },
-  { name: 'Electives', href: '/electives' },
-  { name: 'Premises', href: '/premises' }
+  { name: 'Dashboard', href: '/', dropdownItems: [] },
+  { name: 'Playground', href: '/playground', dropdownItems: [] },
+  { name: 'Timetables', href: '/timetables', dropdownItems: [] },
+  { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
+  { name: 'Premises', href: '/premises', dropdownItems: [] }
 ];
 
 function classNames(...classes: string[]) {
@@ -53,21 +61,62 @@ export default function Navbar({ user }: { user: any }) {
                     />
                   </svg>
                 </div>
-                <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        pathname === item.href
-                          ? 'border-slate-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-2">
+                  {navigation.map((dropdownLabel, index) => (
+                    <div className="dropdown dropdown-hover">
+                      <label
+                        tabIndex={index}
+                        className="btn my-2 mx-0 normal-case w-24"
+                      >
+                        <a
+                          key={`drop-down-${dropdownLabel.name}`}
+                          href={dropdownLabel.href}
+                          className={classNames(
+                            pathname === dropdownLabel.href
+                              ? 'border-slate-500 text-gray-900'
+                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                          )}
+                          aria-current={
+                            pathname === dropdownLabel.href ? 'page' : undefined
+                          }
+                        >
+                          {dropdownLabel.name}
+                        </a>
+                      </label>
+                      {dropdownLabel.dropdownItems.length == 0 ? (
+                        <div></div>
+                      ) : (
+                        <ul
+                          tabIndex={index}
+                          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-24"
+                        >
+                          {dropdownLabel.dropdownItems.map(
+                            (dropdown, index) => (
+                              <li>
+                                <a
+                                  key={`${dropdownLabel.name}-${dropdown.name}`}
+                                  href={`${dropdownLabel.href}${dropdown.href}`}
+                                  className={classNames(
+                                    pathname === dropdown.href
+                                      ? 'border-slate-500 text-gray-900'
+                                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                                  )}
+                                  aria-current={
+                                    pathname === dropdown.href
+                                      ? 'page'
+                                      : undefined
+                                  }
+                                >
+                                  {dropdown.name}
+                                </a>
+                              </li>
+                            )
+                          )}
+                        </ul>
                       )}
-                      aria-current={pathname === item.href ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </a>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -2,7 +2,8 @@
 import { Card } from '@tremor/react';
 import { Badge } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
+import { classNames } from '../utils/class-names';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -14,10 +15,11 @@ export interface ElectiveDTO {
 const electiveParentSlug = 'electives/';
 
 export default function ElectiveCard({
-  electiveDTO // handleCardClick
+  electiveDTO,
+  partyId
 }: {
   electiveDTO: ElectiveDTO;
-  // handleCardClick: Function;
+  partyId: number;
 }) {
   const { courseDescription, carouselId, subscriberPartyIDs, courseId } =
     electiveDTO;
@@ -44,9 +46,27 @@ export default function ElectiveCard({
   //   );
   // };
 
+  const borderVisible: string = subscriberPartyIDs.includes(partyId)
+    ? ''
+    : 'border-transparent';
+
+  // if (subscriberPartyIDs.length == 71) {
+  //   for (const id of subscriberPartyIDs) {
+  //     console.log(id, typeof id);
+  //     console.log(partyId, typeof partyId);
+  //     console.log(id === partyId);
+  //   }
+  // }
+
   return (
     <Card
-      className={`flex p-2 m-0 justify-between items-center opacity-${opacity} border border-transparent hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform`}
+      className={classNames(
+        `opacity-${opacity}`,
+        borderVisible,
+        'flex p-2 m-0 justify-between items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform'
+      )}
+      decoration="left"
+      decorationColor="emerald"
       onClick={onCardClick}
     >
       <span className="mx-2">

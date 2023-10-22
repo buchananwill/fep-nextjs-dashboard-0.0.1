@@ -13,11 +13,11 @@ interface ElectiveTableData {
 }
 
 export default function ElectiveTable({
-  electives
-} // handleCardClick
-: {
+  electives,
+  partyId
+}: {
   electives: ElectiveDTO[][];
-  // handleCardClick: Function;
+  partyId: number;
 }) {
   return (
     <Table className=" m-2 p-2 overflow-visible">
@@ -37,7 +37,7 @@ export default function ElectiveTable({
                 <ElectiveCard
                   key={`card-${rowIndex}-${cellIndex}`}
                   electiveDTO={cell}
-                  // handleCardClick={handleCardClick}
+                  partyId={partyId}
                 />
               </TableCell>
             ))}

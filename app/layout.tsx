@@ -1,7 +1,7 @@
 import './globals.css';
 
 import { Analytics } from '@vercel/analytics/react';
-import Nav from './nav';
+import Nav from './navbar/nav';
 import Toast from './toast';
 import { Suspense } from 'react';
 import { SessionProvider } from 'next-auth/react';

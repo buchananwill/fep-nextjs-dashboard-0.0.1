@@ -7,26 +7,50 @@ import { Student } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
 import ElectiveSubscriberAccordion, {
   ElectivePreference
-} from './elective-subscriber-accordion';
+} from '../elective-subscriber-accordion';
 import { fetchElectivePreferencesByPartyIds } from '../../api/request-elective-preferences';
+import { getNumberParam } from '../../utils/type-casting';
 
 // Slug[0] = Year Group
-// Slug[1] = Carousel number
-// Slug[2] = course number
 
 interface Props {
   params: { slug: string[] };
-  searchParams: { courseId: number; carouselId: number };
+  searchParams: {
+    courseId: string;
+    carouselId: string;
+    partyId: string;
+  };
 }
 
 const versionInView = 'stored';
 
 export default async function ElectivesPage({
   params: { slug },
-  searchParams: { courseId: courseId, carouselId: carouselId }
+  searchParams: {
+    courseId: courseIdString,
+    carouselId: carouselIdString,
+    partyId: partyIdString
+  }
 }: Props) {
   const yearGroupAsNumber: number | null =
     slug != null ? parseInt(slug[0]) : null;
+
+  // console.log(carouselIdString, courseIdString, partyIdString);
+
+  // const courseIdValue: number | null= getNumberParam(courseIdString);
+
+  // const carouselIdValue: number | null = getNumberParam(carouselIdString);
+
+  // const partyIdValue: number | null = getNumberParam(partyIdString);
+
+  const courseId = parseInt(courseIdString);
+  // courseIdValue !== null ? courseIdValue : -1
+  const carouselId = parseInt(carouselIdString);
+  // carouselIdValue !== null ? carouselIdValue : -1
+  const partyId = parseInt(partyIdString);
+  // partyIdValue !== null ? partyIdValue : -1
+
+  console.log(courseId, carouselId, partyId);
 
   const electiveData: ElectiveDTO[][] | null =
     yearGroupAsNumber != null
@@ -38,9 +62,7 @@ export default async function ElectivesPage({
 
   let lessonCycleFocus: ElectiveDTO | null = null;
 
-  if (carouselId !== null && courseId !== null && electiveData !== null) {
-    lessonCycleFocus = electiveData[courseId][carouselId];
-  }
+  lessonCycleFocus = electiveData?.[courseId]?.[carouselId] || null;
 
   const studentList: Student[] | null =
     lessonCycleFocus == null
@@ -64,11 +86,12 @@ export default async function ElectivesPage({
         <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
           {electiveData == null ? (
             <div className="w-full flex justify-center">
-              <p className="loading loading-spinner loading-md"></p>
+              <p>Please select a year group to view their electives.</p>
             </div>
           ) : (
             <ElectiveTable
               electives={electiveData}
+              partyId={partyId}
               // handleCardClick={handleCardClick}
             ></ElectiveTable>
           )}
@@ -79,6 +102,7 @@ export default async function ElectivesPage({
           <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
             <ElectiveSubscriberAccordion
               lessonCycleFocus={lessonCycleFocus}
+              studentFocus={partyId}
               studentList={studentList}
               electivePreferenceList={studentElectiveList}
             />
