@@ -1,9 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { Badge, Title } from '@tremor/react';
 import { ElectiveDTO } from './elective-card';
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
+import { number } from 'prop-types';
 
 export interface ElectivePreference {
   partyId: number;
@@ -36,25 +37,61 @@ const ElectiveSubscriberAccordion = ({
       )
   );
 
+  console.log('Elective Preferences: ', electivePreferences);
+  console.log('ElectivePreferenceList: ', electivePreferenceList);
+  console.log(studentFocus);
+
   const { replace } = useRouter();
   const pathname = usePathname();
+  const [toggleArray, setToggleArray] = useState<boolean[][]>(() =>
+    electivePreferences.map((student) =>
+      student.map((ePref) => ePref.assignedCarousel >= 0)
+    )
+  );
+  const [isPending, startTransition] = useTransition();
 
   const onCollapseClick = (clickedId: number) => {
     const params = new URLSearchParams(window.location.search);
 
     params.set('partyId', clickedId.toString());
 
-    replace(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`);
+    });
+  };
+
+  const handleToggleClick = (student: number, preferencePosition: number) => {
+    const updatedStudent = toggleArray[student];
+    const updatedValue = updatedStudent[preferencePosition] ? false : true;
+    const updatedToggles = updatedStudent.map((toggle, index) =>
+      index === preferencePosition ? updatedValue : toggle
+    );
+
+    const updatedToggleArray = toggleArray.map((studentToggles, index) =>
+      index == student ? updatedToggles : studentToggles
+    );
+
+    setToggleArray(updatedToggleArray);
   };
 
   return (
     <>
-      <Title>{lessonCycleFocus.courseDescription}</Title>
+      <div className="sticky top-0 z-10 backdrop-blur-xl p-2 m-0">
+        {' '}
+        {isPending && (
+          <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center">
+            <span className="loading loading-ring loading-sm"></span>
+          </div>
+        )}
+        <Title className="text-center">
+          {lessonCycleFocus.courseDescription}
+        </Title>
+      </div>
       <div className="pb-4">
-        {studentList.map((student, index) => (
+        {studentList.map((student, studentIndex) => (
           <div
             key={student.id}
-            tabIndex={index}
+            tabIndex={studentIndex}
             onClick={() => onCollapseClick(student.id)}
             // "gap-0 collapse bg-base-200 py-0 px-2 m-0.5"
             className={classNames(
@@ -67,20 +104,27 @@ const ElectiveSubscriberAccordion = ({
             </div>
             <div className="collapse-content m-0 text-sm py-0 min-h-0">
               <ol className="list-decimal ml-2 w-max">
-                {electivePreferences[index].map(
+                {electivePreferences[studentIndex].map(
                   ({
                     preferencePosition,
                     courseDescription,
                     assignedCarousel
                   }) => (
-                    <li key={preferencePosition} className="">
+                    <li
+                      key={`${student.name}-${preferencePosition}`}
+                      className=""
+                    >
                       {courseDescription}{' '}
-                      <Badge
-                        size="xs"
-                        color={assignedCarousel >= 0 ? 'emerald' : 'red'}
-                      >
-                        {assignedCarousel >= 0 ? `Y: ${assignedCarousel}` : 'N'}
-                      </Badge>
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-success"
+                        defaultChecked={
+                          toggleArray[studentIndex][preferencePosition]
+                        }
+                        onClick={() =>
+                          handleToggleClick(studentIndex, preferencePosition)
+                        }
+                      ></input>
                     </li>
                   )
                 )}

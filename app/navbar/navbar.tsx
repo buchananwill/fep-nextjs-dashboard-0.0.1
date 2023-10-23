@@ -63,7 +63,10 @@ export default function Navbar({ user }: { user: any }) {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-2">
                   {navigation.map((dropdownLabel, index) => (
-                    <div className="dropdown dropdown-hover">
+                    <div
+                      key={`label${dropdownLabel.name}`}
+                      className="dropdown dropdown-hover"
+                    >
                       <label
                         tabIndex={index}
                         className="btn my-2 mx-0 normal-case w-24"
@@ -93,9 +96,8 @@ export default function Navbar({ user }: { user: any }) {
                         >
                           {dropdownLabel.dropdownItems.map(
                             (dropdown, index) => (
-                              <li>
+                              <li key={`${dropdownLabel.name}-${index}`}>
                                 <a
-                                  key={`${dropdownLabel.name}-${dropdown.name}`}
                                   href={`${dropdownLabel.href}${dropdown.href}`}
                                   className={classNames(
                                     pathname === dropdown.href

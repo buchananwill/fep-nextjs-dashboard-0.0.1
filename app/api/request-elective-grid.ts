@@ -13,8 +13,6 @@ const fetchElectiveCarouselTable = async ({yearGroup, version } : SearchParams) 
 
     const url = `http://localhost:8080/api/academic/electives-${version}` 
 
-    console.log("Current YearGroupRank: " + yearGroup)
-
     if (Number.isNaN(yearGroup)) return null;
     
     const response = await axios.get(url, {

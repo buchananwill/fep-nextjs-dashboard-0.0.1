@@ -2,7 +2,7 @@
 import { Card } from '@tremor/react';
 import { Badge } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useTransition } from 'react';
 import { classNames } from '../utils/class-names';
 
 export interface ElectiveDTO {
@@ -28,6 +28,7 @@ export default function ElectiveCard({
   const isEnabled = subscribers > 0;
   const { replace } = useRouter();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
 
   const onCardClick = () => {
     const params = new URLSearchParams(window.location.search);
@@ -35,28 +36,16 @@ export default function ElectiveCard({
     params.set('courseId', courseId.toString());
     params.set('carouselId', carouselId.toString());
 
-    replace(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`);
+    });
   };
 
   const opacity = getOpacity(isEnabled);
 
-  // const handleClick = () => {
-  //   console.log(
-  //     `Card clicked:${courseDescription} with subs: ${subscriberPartyIDs}`
-  //   );
-  // };
-
   const borderVisible: string = subscriberPartyIDs.includes(partyId)
     ? ''
     : 'border-transparent';
-
-  // if (subscriberPartyIDs.length == 71) {
-  //   for (const id of subscriberPartyIDs) {
-  //     console.log(id, typeof id);
-  //     console.log(partyId, typeof partyId);
-  //     console.log(id === partyId);
-  //   }
-  // }
 
   return (
     <Card
@@ -69,6 +58,12 @@ export default function ElectiveCard({
       decorationColor="emerald"
       onClick={onCardClick}
     >
+      {' '}
+      {isPending && (
+        <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
+          <span className="loading loading-ring loading-sm"></span>
+        </div>
+      )}
       <span className="mx-2">
         {courseDescription} {'  '} {carouselId}{' '}
       </span>
