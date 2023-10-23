@@ -4,7 +4,6 @@ import { Badge, Title } from '@tremor/react';
 import { ElectiveDTO } from './elective-card';
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
-import { number } from 'prop-types';
 
 export interface ElectivePreference {
   partyId: number;
@@ -93,7 +92,6 @@ const ElectiveSubscriberAccordion = ({
             key={student.id}
             tabIndex={studentIndex}
             onClick={() => onCollapseClick(student.id)}
-            // "gap-0 collapse bg-base-200 py-0 px-2 m-0.5"
             className={classNames(
               studentFocus == student.id ? 'collapse-open' : 'collapse-close',
               'gap-0 collapse bg-base-200 py-0 px-2 m-0.5'
@@ -103,21 +101,28 @@ const ElectiveSubscriberAccordion = ({
               {student.name}
             </div>
             <div className="collapse-content m-0 text-sm py-0 min-h-0">
-              <ol className="list-decimal ml-2 w-max">
+              <div className="flex flex-col m-0 w-full ">
                 {electivePreferences[studentIndex].map(
                   ({
                     preferencePosition,
                     courseDescription,
                     assignedCarousel
                   }) => (
-                    <li
+                    <div
                       key={`${student.name}-${preferencePosition}`}
-                      className=""
+                      className="flex grow-0 w-full justify-between"
                     >
-                      {courseDescription}{' '}
+                      <span>{courseDescription} </span>
+                      <span className="grow "></span>
+                      <span className="grow-1 px-1 w-6">
+                        {preferencePosition}
+                      </span>
+                      <span className="grow-1 px-1 w-8">
+                        {assignedCarousel}
+                      </span>
                       <input
                         type="checkbox"
-                        className="toggle toggle-success"
+                        className="toggle toggle-success grow-0"
                         defaultChecked={
                           toggleArray[studentIndex][preferencePosition]
                         }
@@ -125,10 +130,10 @@ const ElectiveSubscriberAccordion = ({
                           handleToggleClick(studentIndex, preferencePosition)
                         }
                       ></input>
-                    </li>
+                    </div>
                   )
                 )}
-              </ol>
+              </div>
             </div>
           </div>
         ))}

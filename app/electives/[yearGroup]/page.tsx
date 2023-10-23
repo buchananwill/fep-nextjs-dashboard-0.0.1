@@ -13,6 +13,8 @@ import {
 
 // Slug[0] = Year Group
 
+const dynamic = 'force-dynamic';
+
 interface Props {
   params: { yearGroup: string };
   searchParams: {
@@ -130,7 +132,7 @@ export default async function ElectivesPage({
           {lessonCycleFocus !== null &&
           studentList !== null &&
           studentElectiveList !== null ? (
-            <Card className="max-w-sm ml-2 px-2 py-0 max-h-96 overflow-y-scroll sticky top-4">
+            <Card className="max-w-sm ml-2 px-2 py-0 max-h-screen overflow-y-scroll sticky top-4">
               <ElectiveSubscriberAccordion
                 lessonCycleFocus={lessonCycleFocus}
                 studentFocus={partyId}
