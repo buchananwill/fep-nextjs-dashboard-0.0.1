@@ -36,10 +36,6 @@ const ElectiveSubscriberAccordion = ({
       )
   );
 
-  console.log('Elective Preferences: ', electivePreferences);
-  console.log('ElectivePreferenceList: ', electivePreferenceList);
-  console.log(studentFocus);
-
   const { replace } = useRouter();
   const pathname = usePathname();
   const [toggleArray, setToggleArray] = useState<boolean[][]>(() =>
@@ -124,7 +120,8 @@ const ElectiveSubscriberAccordion = ({
                         type="checkbox"
                         className="toggle toggle-success grow-0"
                         defaultChecked={
-                          toggleArray[studentIndex][preferencePosition]
+                          toggleArray?.[studentIndex]?.[preferencePosition] ??
+                          false
                         }
                         onClick={() =>
                           handleToggleClick(studentIndex, preferencePosition)

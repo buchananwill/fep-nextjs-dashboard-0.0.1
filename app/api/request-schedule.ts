@@ -10,7 +10,7 @@ interface SearchParams {
 const fetchSchedule = async (searchId : number) => {
   try {
 
-    console.log("Current searchId: " + searchId)
+    
 
     if (Number.isNaN(searchId)) return null;
     

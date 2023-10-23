@@ -62,8 +62,6 @@ export default async function ElectivesPage({
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
 
-    console.log('Type of ygElectiveD:', yearGroupElectiveData);
-
     // Initialize with empty arrays or nulls
     let tableCellsData: TableCellData[] = [];
     let electiveTableData: ElectiveDTO[][] = [];
