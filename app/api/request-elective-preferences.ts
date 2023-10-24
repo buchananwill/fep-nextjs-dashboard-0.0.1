@@ -8,7 +8,7 @@ export const getALevelClassLimitInt = (): number => {
   return 25;
 } 
 
-console.log(aLevelClassLimitInt)
+
 
 export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]) => {
 
@@ -35,19 +35,20 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
     }
   };
 
-  export const fetchElectiveYearGroupWithAllStudents = async (yearGroup:number) => {
+  export const fetchElectiveYearGroupWithAllStudents = async (yearGroup:number, cacheSetting: RequestCache) => {
     
 
     const fetchURL = `http://localhost:8080/api/academic/electives-yeargroup-with-all-students?yearGroupIntRank=${yearGroup}`;
-
     
-
+    
+    console.log(cacheSetting)
+  
 
     try {
       const response = await fetch(fetchURL, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
-        cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
+        cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",

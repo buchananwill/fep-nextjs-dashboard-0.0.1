@@ -3,6 +3,7 @@ import { Card } from '@tremor/react';
 import { Student as StudentDTO } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
 import ElectiveSubscriberAccordion, {
+  ElectiveAvailability,
   ElectivePreference as ElectivePreferenceDTO
 } from '../elective-subscriber-accordion';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
@@ -10,6 +11,9 @@ import {
   reconstructTableWithDimensions,
   TableCellData
 } from '../../utils/tables';
+import { compileElectiveAvailability } from '../checkElectiveAssignments';
+import { usePathname, useRouter } from 'next/navigation';
+import { RefreshButton } from '../../components/refresh-button';
 
 interface Props {
   params: { yearGroup: string };
@@ -17,6 +21,7 @@ interface Props {
     courseId: string;
     carouselId: string;
     partyId: string;
+    cacheSetting: string;
   };
 }
 
@@ -36,18 +41,30 @@ export default async function ElectivesPage({
   searchParams: {
     courseId: courseIdString,
     carouselId: carouselIdString,
-    partyId: partyIdString
+    partyId: partyIdString,
+    cacheSetting
   }
 }: Props) {
   // const yearGroupAsNumber: number | null = yearGroup;
   const courseId = parseInt(courseIdString);
   const carouselId = parseInt(carouselIdString);
   const partyId = parseInt(partyIdString);
-
   const yearGroupAsNumber = parseInt(yearGroup);
 
+  let requestCacheValue: RequestCache;
+  if (cacheSetting === 'reload') {
+    requestCacheValue = 'reload';
+  } else if (cacheSetting === 'no-cache') {
+    requestCacheValue = 'no-cache';
+  } else {
+    requestCacheValue = 'force-cache';
+  }
+
   const yearGroupElectiveData: YearGroupElectives =
-    await fetchElectiveYearGroupWithAllStudents(yearGroupAsNumber);
+    await fetchElectiveYearGroupWithAllStudents(
+      yearGroupAsNumber,
+      requestCacheValue
+    );
   if (yearGroupElectiveData !== null) {
     const {
       yearGroupRankInt,
@@ -65,6 +82,7 @@ export default async function ElectivesPage({
     let filteredStudentList: StudentDTO[] = [];
     let filteredIDList: number[] = [];
     let studentElectiveList: ElectivePreferenceDTO[] = [];
+    let electiveAvailability: ElectiveAvailability = {};
 
     try {
       // Safely map electiveData
@@ -74,6 +92,9 @@ export default async function ElectivesPage({
           col: elective.carouselId,
           value: elective
         })) ?? [];
+
+      // Safely map electiveAvailability
+      electiveAvailability = compileElectiveAvailability(electiveData);
 
       // Only call reconstructTableWithDimensions if tableCellsData is not empty
       if (tableCellsData.length > 0) {
@@ -87,6 +108,8 @@ export default async function ElectivesPage({
       // Safely get lessonCycleFocus
       lessonCycleFocus = electiveTableData?.[courseId]?.[carouselId] ?? null;
 
+      console.log('Student list length: ', studentList.length);
+
       // Safely filter studentList
       if (lessonCycleFocus !== null) {
         const localCopy = lessonCycleFocus;
@@ -96,6 +119,8 @@ export default async function ElectivesPage({
           ) ?? [];
       }
 
+      console.log('Filtered list length: ', filteredStudentList.length);
+
       // Safely map filteredStudentList to filteredIDList
       filteredIDList = filteredStudentList?.map((student) => student.id) ?? [];
 
@@ -104,6 +129,11 @@ export default async function ElectivesPage({
         electivePreferences?.filter((preferenceList) =>
           filteredIDList.includes(preferenceList.partyId)
         ) ?? [];
+
+      console.log(
+        'Filtered elective list length: ',
+        studentElectiveList.length
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Caught an Error:', error.message);
@@ -118,6 +148,7 @@ export default async function ElectivesPage({
       <>
         <div className="flex w-full items-top justify-between pt-4">
           <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
+            <RefreshButton currentSetting={cacheSetting} />
             <ElectiveTable
               electives={electiveTableData}
               partyId={partyId}
@@ -131,7 +162,8 @@ export default async function ElectivesPage({
                 lessonCycleFocus={lessonCycleFocus}
                 studentFocus={partyId}
                 studentList={filteredStudentList}
-                electivePreferenceList={studentElectiveList}
+                electivePreferenceList={electivePreferences}
+                electiveAvailability={electiveAvailability}
               />
             </Card>
           ) : (
