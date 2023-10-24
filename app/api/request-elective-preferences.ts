@@ -1,5 +1,15 @@
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
+const aLevelClassLimit = process.env.A_LEVEL_CLASS_LIMIT;
+
+const aLevelClassLimitInt = aLevelClassLimit ? parseInt(aLevelClassLimit) : -1;
+
+export const getALevelClassLimitInt = (): number => {
+  return 25;
+} 
+
+console.log(aLevelClassLimitInt)
+
 export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]) => {
 
     try {
@@ -37,7 +47,7 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
       const response = await fetch(fetchURL, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
-        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",

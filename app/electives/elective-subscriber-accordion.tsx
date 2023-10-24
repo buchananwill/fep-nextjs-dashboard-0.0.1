@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useState, useTransition } from 'react';
-import { Badge, Title } from '@tremor/react';
+import React, { useState, useTransition } from 'react';
+import { Title } from '@tremor/react';
 import { ElectiveDTO } from './elective-card';
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
@@ -86,18 +86,29 @@ const ElectiveSubscriberAccordion = ({
         {studentList.map((student, studentIndex) => (
           <div
             key={student.id}
-            tabIndex={studentIndex}
-            onClick={() => onCollapseClick(student.id)}
+            // tabIndex={studentIndex}
+            // onClick={() => onCollapseClick(student.id)}
             className={classNames(
-              studentFocus == student.id ? 'collapse-open' : 'collapse-close',
-              'gap-0 collapse bg-base-200 py-0 px-2 m-0.5'
+              // studentFocus == student.id ? 'collapse-open' : 'collapse-close',
+              'gap-0 collapse bg-base-200 py-2 px-0 m-0.5'
             )}
           >
-            <div className="collapse-title font-medium text-sm m-0 gap-0 py-2 min-h-0">
-              {student.name}
+            <input type="checkbox" className="min-h-0" />
+            <div className="collapse-title flex items-center font-medium text-sm mx-0 gap-0 px-2 py-0 min-h-0">
+              <input
+                type="radio"
+                name="student-focus"
+                className="radio radio-xs mr-1 ml-0 z-10"
+                checked={student.id == studentFocus}
+                onClick={(e) => {
+                  onCollapseClick(student.id);
+                }}
+              ></input>
+              <span>{student.name}</span>
             </div>
-            <div className="collapse-content m-0 text-sm py-0 min-h-0">
-              <div className="flex flex-col m-0 w-full ">
+
+            <div className="collapse-content m-0 text-sm min-h-0">
+              <div className="flex flex-col mx-0 my-2 w-full ">
                 {electivePreferences[studentIndex].map(
                   ({
                     preferencePosition,
@@ -108,14 +119,16 @@ const ElectiveSubscriberAccordion = ({
                       key={`${student.name}-${preferencePosition}`}
                       className="flex grow-0 w-full justify-between"
                     >
-                      <span>{courseDescription} </span>
-                      <span className="grow "></span>
                       <span className="grow-1 px-1 w-6">
                         {preferencePosition}
                       </span>
-                      <span className="grow-1 px-1 w-8">
-                        {assignedCarousel}
-                      </span>
+                      <span>{courseDescription} </span>
+                      <span className="grow "></span>
+                      <select className="select select-xs select-bordered max-w-xs grow-1">
+                        <option className="p-0 m-0 text-center">
+                          {assignedCarousel}
+                        </option>
+                      </select>
                       <input
                         type="checkbox"
                         className="toggle toggle-success grow-0"

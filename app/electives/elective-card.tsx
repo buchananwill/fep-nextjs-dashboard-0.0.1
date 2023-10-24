@@ -1,9 +1,10 @@
 'use client';
-import { Card } from '@tremor/react';
+import { Card, Color } from '@tremor/react';
 import { Badge } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useTransition } from 'react';
 import { classNames } from '../utils/class-names';
+import { getALevelClassLimitInt } from '../api/request-elective-preferences';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -13,6 +14,8 @@ export interface ElectiveDTO {
 }
 
 const electiveParentSlug = 'electives/';
+
+const aLevelClassLimitInt = getALevelClassLimitInt();
 
 export default function ElectiveCard({
   electiveDTO,
@@ -24,7 +27,7 @@ export default function ElectiveCard({
   const { courseDescription, carouselId, subscriberPartyIDs, courseId } =
     electiveDTO;
   const subscribers = subscriberPartyIDs.length;
-  const color = getColor(subscribers);
+  const subscribersColor = getSubscribersColor(subscribers);
   const isEnabled = subscribers > 0;
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -47,12 +50,16 @@ export default function ElectiveCard({
     ? ''
     : 'border-transparent';
 
+  const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
+
+  const classesColor = getClassesColor(numberOfClasses);
+
   return (
     <Card
       className={classNames(
         `opacity-${opacity}`,
         borderVisible,
-        'flex p-2 m-0 justify-between items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform'
+        'flex p-2 m-0 items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform'
       )}
       decoration="left"
       decorationColor="emerald"
@@ -64,15 +71,15 @@ export default function ElectiveCard({
           <span className="loading loading-ring loading-sm"></span>
         </div>
       )}
-      <span className="mx-2">
-        {courseDescription} {'  '} {carouselId}{' '}
-      </span>
-      <Badge color={color}>{subscribers}</Badge>
+      <span className="mx-2">{courseDescription}</span>
+      <span className="grow"></span>
+      <Badge color={classesColor}>{numberOfClasses} </Badge>
+      <Badge color={subscribersColor}>{subscribers}</Badge>
     </Card>
   );
 }
 
-function getColor(subscribers: number) {
+function getSubscribersColor(subscribers: number) {
   if (subscribers === 0) return 'red';
   if (subscribers < 5) return 'orange';
   if (subscribers < 10) return 'yellow';
@@ -84,4 +91,11 @@ function getColor(subscribers: number) {
 function getOpacity(isEnabled: boolean) {
   if (isEnabled) return 100;
   else return 50;
+}
+
+function getClassesColor(classes: number): Color {
+  if (classes >= 3) return 'red';
+  if (classes == 2) return 'amber';
+  if (classes == 1) return 'green';
+  else return 'gray';
 }

@@ -12,6 +12,8 @@ interface Props {
   };
 }
 
+const dynamic = 'force-dynamic';
+
 export default async function ElectivesPage({
   children
 }: {
