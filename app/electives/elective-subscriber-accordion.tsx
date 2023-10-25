@@ -89,6 +89,18 @@ const ElectiveSubscriberAccordion = ({
     }
 
     setElectivePreferences(updatedState);
+
+    setUnsaved();
+  };
+
+  const setUnsaved = () => {
+    const params = new URLSearchParams(window.location.search);
+
+    params.set('unsaved', 'true');
+
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
+    });
   };
 
   const onRadioClick = (clickedId: number) => {
@@ -120,6 +132,8 @@ const ElectiveSubscriberAccordion = ({
               : preference
         );
       }
+
+      setUnsaved();
     }
 
     setElectivePreferences(updatedState);

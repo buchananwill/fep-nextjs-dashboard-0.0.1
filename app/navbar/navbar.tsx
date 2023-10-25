@@ -1,12 +1,15 @@
 'use client';
 
 import { Fragment } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import ProtectedNavigation from './protected-navigation';
 
 const electivesDropdown = [
   { name: 'Year 9', href: '/9' },
@@ -30,6 +33,12 @@ function classNames(...classes: string[]) {
 
 export default function Navbar({ user }: { user: any }) {
   const pathname = usePathname();
+  const unsaved = useSearchParams()?.get('unsaved') == 'true';
+  const router = useRouter();
+
+  const handleNavigation = (href: string) => {
+    router.push(href);
+  };
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
@@ -71,21 +80,14 @@ export default function Navbar({ user }: { user: any }) {
                         tabIndex={index}
                         className="btn my-2 mx-0 normal-case w-24"
                       >
-                        <a
+                        <ProtectedNavigation
                           key={`drop-down-${dropdownLabel.name}`}
-                          href={dropdownLabel.href}
-                          className={classNames(
-                            pathname === dropdownLabel.href
-                              ? 'border-slate-500 text-gray-900'
-                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                          )}
-                          aria-current={
-                            pathname === dropdownLabel.href ? 'page' : undefined
-                          }
+                          onConfirm={() => handleNavigation(dropdownLabel.href)}
+                          isActive={pathname === dropdownLabel.href}
+                          requestConfirmation={unsaved}
                         >
                           {dropdownLabel.name}
-                        </a>
+                        </ProtectedNavigation>
                       </label>
                       {dropdownLabel.dropdownItems.length == 0 ? (
                         <div></div>
@@ -97,22 +99,20 @@ export default function Navbar({ user }: { user: any }) {
                           {dropdownLabel.dropdownItems.map(
                             (dropdown, index) => (
                               <li key={`${dropdownLabel.name}-${index}`}>
-                                <a
-                                  href={`${dropdownLabel.href}${dropdown.href}`}
-                                  className={classNames(
-                                    pathname === dropdown.href
-                                      ? 'border-slate-500 text-gray-900'
-                                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                                  )}
-                                  aria-current={
-                                    pathname === dropdown.href
-                                      ? 'page'
-                                      : undefined
+                                <ProtectedNavigation
+                                  onConfirm={() =>
+                                    handleNavigation(
+                                      `${dropdownLabel.href}${dropdown.href}`
+                                    )
                                   }
+                                  isActive={
+                                    pathname ===
+                                    `${dropdownLabel.href}${dropdown.href}`
+                                  }
+                                  requestConfirmation={unsaved}
                                 >
                                   {dropdown.name}
-                                </a>
+                                </ProtectedNavigation>
                               </li>
                             )
                           )}

@@ -33,7 +33,7 @@ const ToolTipsToggle = () => {
         name="tool-tips"
         className="toggle toggle-xs ml-1"
         checked={toolTips}
-        onClick={handleToggleClick}
+        onChange={handleToggleClick}
       ></input>
     </label>
   );

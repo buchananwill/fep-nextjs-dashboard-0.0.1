@@ -1,20 +1,7 @@
 import React, { Suspense } from 'react';
-import { Text, Title, Card } from '@tremor/react';
+import { Text, Title } from '@tremor/react';
 import ToolTipsToggle from './tool-tips-toggle';
-import { useRouter } from 'next/navigation';
-
-// Slug[0] = Year Group
-
-interface Props {
-  params: { slug: string[] };
-  searchParams: {
-    courseId: string;
-    carouselId: string;
-    partyId: string;
-    toolTips: string;
-  };
-  children: React.ReactNode;
-}
+import { NavigationEvents } from './navigation-events';
 
 const dynamic = 'force-dynamic';
 
@@ -32,7 +19,10 @@ export default async function ElectivesPage({
         <ToolTipsToggle></ToolTipsToggle>
       </div>
       <div className="flex w-full items-top justify-between pt-4">
-        <Suspense>{children}</Suspense>
+        <Suspense>
+          <NavigationEvents />
+          {children}
+        </Suspense>
       </div>
     </main>
   );

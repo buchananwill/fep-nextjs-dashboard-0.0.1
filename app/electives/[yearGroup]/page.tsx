@@ -2,7 +2,7 @@ import OptionBlockTable from '../elective-table';
 import { Card } from '@tremor/react';
 import { Student as StudentDTO } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
-import ElectiveSubscriberAccordion, {
+import {
   ElectiveAvailability,
   ElectivePreference as ElectivePreferenceDTO
 } from '../elective-subscriber-accordion';
@@ -12,7 +12,7 @@ import {
   TableCellData
 } from '../../utils/tables';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
-import { usePathname, useRouter } from 'next/navigation';
+
 import { RefreshButton } from '../../components/refresh-button';
 import SubjectFocusCard from '../subject-focus-card';
 
