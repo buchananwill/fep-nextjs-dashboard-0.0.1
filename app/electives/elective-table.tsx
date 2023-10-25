@@ -12,7 +12,7 @@ interface ElectiveTableData {
   electives: ElectiveDTO[][];
 }
 
-export default function ElectiveTable({
+export default function OptionBlockTable({
   electives,
   partyId
 }: {

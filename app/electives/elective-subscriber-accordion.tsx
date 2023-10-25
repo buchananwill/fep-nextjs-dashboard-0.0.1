@@ -70,22 +70,11 @@ const ElectiveSubscriberAccordion = ({
     preferencePosition: number,
     carouselNumber: number
   ) => {
-    console.log(
-      'incoming data: ',
-      studentId,
-      preferencePosition,
-      carouselNumber
-    );
-
     const preferenceToUpdate =
       electivePreferences[studentId][preferencePosition];
 
-    console.log('pref to up: ', preferenceToUpdate);
-
     const updatedPreference: ElectivePreference = { ...preferenceToUpdate };
     updatedPreference.assignedCarousel = carouselNumber;
-
-    console.log('New pref: ', updatedPreference);
 
     const updatedState: Record<number, ElectivePreference[]> = {};
 
@@ -103,18 +92,16 @@ const ElectiveSubscriberAccordion = ({
       }
     }
 
-    console.log('Updated state: ', updatedState);
-
     setElectivePreferences(updatedState);
   };
 
-  const onCollapseClick = (clickedId: number) => {
+  const onRadioClick = (clickedId: number) => {
     const params = new URLSearchParams(window.location.search);
 
     params.set('partyId', clickedId.toString());
 
     startTransition(() => {
-      replace(`${pathname}?${params.toString()}`);
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
@@ -144,24 +131,16 @@ const ElectiveSubscriberAccordion = ({
   try {
     return (
       <>
-        <div className="sticky top-0 z-10 backdrop-blur-xl p-2 m-0">
-          {' '}
-          {isPending && (
-            <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center">
-              <span className="loading loading-ring loading-sm"></span>
-            </div>
-          )}
-          <Title className="text-center">
-            {lessonCycleFocus.courseDescription}
-          </Title>
-        </div>
+        {isPending && (
+          <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center">
+            <span className="loading loading-ring loading-sm"></span>
+          </div>
+        )}
         <div className="pb-4">
           {studentList.map((student) => (
             <div
               key={`${student.id}-prefs`}
-              className={classNames(
-                'gap-0 collapse bg-base-200 py-2 px-0 m-0.5'
-              )}
+              className="gap-0 collapse bg-base-200 py-2 px-0 m-0"
             >
               <input type="checkbox" className="min-h-0" />
               <div className="collapse-title flex items-center font-medium text-sm mx-0 gap-0 px-2 py-0 min-h-0">
@@ -171,7 +150,7 @@ const ElectiveSubscriberAccordion = ({
                   className="radio radio-xs mr-1 ml-0 z-10"
                   checked={student.id == studentFocus}
                   onChange={(e) => {
-                    onCollapseClick(student.id);
+                    onRadioClick(student.id);
                   }}
                 ></input>
                 <span>{student.name}</span>

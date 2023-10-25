@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import ElectiveTable from '../elective-table';
+import OptionBlockTable from '../elective-table';
 import { Card } from '@tremor/react';
 import { Student as StudentDTO } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
@@ -140,10 +140,10 @@ export default async function ElectivesPage({
       <>
         <div className="flex w-full items-top justify-between pt-4">
           <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-            <ElectiveTable
+            <OptionBlockTable
               electives={electiveTableData}
               partyId={partyId}
-            ></ElectiveTable>
+            ></OptionBlockTable>
           </Card>
           {lessonCycleFocus !== null &&
           studentList !== null &&

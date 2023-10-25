@@ -1,4 +1,4 @@
-import ElectiveTable from '../elective-table';
+import OptionBlockTable from '../elective-table';
 import { Card } from '@tremor/react';
 import { Student as StudentDTO } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
@@ -14,6 +14,7 @@ import {
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 import { usePathname, useRouter } from 'next/navigation';
 import { RefreshButton } from '../../components/refresh-button';
+import SubjectFocusCard from '../subject-focus-card';
 
 interface Props {
   params: { yearGroup: string };
@@ -81,7 +82,6 @@ export default async function ElectivesPage({
     let lessonCycleFocus: ElectiveDTO | null = null;
     let filteredStudentList: StudentDTO[] = [];
     let filteredIDList: number[] = [];
-    let studentElectiveList: ElectivePreferenceDTO[] = [];
     let electiveAvailability: ElectiveAvailability = {};
 
     try {
@@ -123,17 +123,6 @@ export default async function ElectivesPage({
 
       // Safely map filteredStudentList to filteredIDList
       filteredIDList = filteredStudentList?.map((student) => student.id) ?? [];
-
-      // Safely filter electivePreferences
-      studentElectiveList =
-        electivePreferences?.filter((preferenceList) =>
-          filteredIDList.includes(preferenceList.partyId)
-        ) ?? [];
-
-      console.log(
-        'Filtered elective list length: ',
-        studentElectiveList.length
-      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Caught an Error:', error.message);
@@ -146,31 +135,22 @@ export default async function ElectivesPage({
 
     return (
       <>
-        <div className="flex w-full items-top justify-between pt-4">
+        <div className="flex w-full items-top justify-between pt-4  select-none">
           <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
             <RefreshButton currentSetting={cacheSetting} />
-            <ElectiveTable
+            <OptionBlockTable
               electives={electiveTableData}
               partyId={partyId}
-            ></ElectiveTable>
+            ></OptionBlockTable>
           </Card>
-          {lessonCycleFocus !== null &&
-          studentList !== null &&
-          studentElectiveList !== null ? (
-            <Card className="max-w-sm ml-2 px-2 py-0 max-h-[75vh] overflow-y-scroll sticky top-4">
-              <ElectiveSubscriberAccordion
-                lessonCycleFocus={lessonCycleFocus}
-                studentFocus={partyId}
-                studentList={filteredStudentList}
-                electivePreferenceList={electivePreferences}
-                electiveAvailability={electiveAvailability}
-              />
-            </Card>
-          ) : (
-            <Card className="max-w-sm ml-2 px-2 max-h-96 overflow-y-scroll sticky top-4">
-              No course selected
-            </Card>
-          )}
+
+          <SubjectFocusCard
+            lessonCycleFocus={lessonCycleFocus}
+            studentFocus={partyId}
+            filteredStudentList={filteredStudentList}
+            electivePreferences={electivePreferences}
+            electiveAvailability={electiveAvailability}
+          ></SubjectFocusCard>
         </div>
       </>
     );

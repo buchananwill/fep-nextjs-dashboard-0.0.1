@@ -2,9 +2,10 @@
 import { Card, Color } from '@tremor/react';
 import { Badge } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useTransition } from 'react';
+import React, { useEffect, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
 import { getALevelClassLimitInt } from '../api/request-elective-preferences';
+import { element } from 'prop-types';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -39,8 +40,10 @@ export default function ElectiveCard({
     params.set('courseId', courseId.toString());
     params.set('carouselId', carouselId.toString());
 
+    const savedScrollPosition = window.scrollY;
+
     startTransition(() => {
-      replace(`${pathname}?${params.toString()}`);
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
