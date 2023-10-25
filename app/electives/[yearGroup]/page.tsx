@@ -108,8 +108,6 @@ export default async function ElectivesPage({
       // Safely get lessonCycleFocus
       lessonCycleFocus = electiveTableData?.[courseId]?.[carouselId] ?? null;
 
-      console.log('Student list length: ', studentList.length);
-
       // Safely filter studentList
       if (lessonCycleFocus !== null) {
         const localCopy = lessonCycleFocus;
@@ -118,8 +116,6 @@ export default async function ElectivesPage({
             localCopy.subscriberPartyIDs.includes(student.id)
           ) ?? [];
       }
-
-      console.log('Filtered list length: ', filteredStudentList.length);
 
       // Safely map filteredStudentList to filteredIDList
       filteredIDList = filteredStudentList?.map((student) => student.id) ?? [];

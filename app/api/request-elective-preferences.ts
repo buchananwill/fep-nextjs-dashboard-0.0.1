@@ -41,7 +41,7 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
     const fetchURL = `http://localhost:8080/api/academic/electives-yeargroup-with-all-students?yearGroupIntRank=${yearGroup}`;
     
     
-    console.log(cacheSetting)
+    
   
 
     try {

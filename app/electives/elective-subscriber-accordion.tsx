@@ -44,8 +44,6 @@ const ElectiveSubscriberAccordion = ({
   const [electivePreferences, setElectivePreferences] = useState<
     Record<number, ElectivePreference[]>
   >(() => {
-    console.log(electivePreferenceList);
-
     const groupedByPartyId = electivePreferenceList.reduce<
       Record<number, ElectivePreference[]>
     >((acc, curr) => {
@@ -62,8 +60,6 @@ const ElectiveSubscriberAccordion = ({
 
     return groupedByPartyId;
   });
-
-  console.log('students: ', studentList);
 
   const handleAssignmentChange = (
     studentId: number,
