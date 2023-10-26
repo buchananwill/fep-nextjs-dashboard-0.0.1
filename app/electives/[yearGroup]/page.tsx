@@ -1,5 +1,5 @@
 import OptionBlockTable from '../elective-table';
-import { Card } from '@tremor/react';
+import { Card, Text, Title } from '@tremor/react';
 import { Student as StudentDTO } from '../../tables/student-table';
 import { ElectiveDTO } from '../elective-card';
 import {
@@ -15,6 +15,10 @@ import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshButton } from '../../components/refresh-button';
 import SubjectFocusCard from '../subject-focus-card';
+import ElectivesContextProvider from '../elective-context-provider';
+import CommitChanges from '../commit-changes';
+import ToolTipsToggle from '../tool-tips-toggle';
+import { Suspense } from 'react';
 
 interface Props {
   params: { yearGroup: string };
@@ -66,6 +70,15 @@ export default async function ElectivesPage({
       yearGroupAsNumber,
       requestCacheValue
     );
+
+  // Initialize with empty arrays or nulls
+  let tableCellsData: TableCellData[] = [];
+  let electiveTableData: ElectiveDTO[][] = [];
+  let lessonCycleFocus: ElectiveDTO | null = null;
+  let filteredStudentList: StudentDTO[] = [];
+  let filteredIDList: number[] = [];
+  let electiveAvailability: ElectiveAvailability = {};
+
   if (yearGroupElectiveData !== null) {
     const {
       yearGroupRankInt,
@@ -75,14 +88,6 @@ export default async function ElectivesPage({
       electiveDTOList: electiveData,
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
-
-    // Initialize with empty arrays or nulls
-    let tableCellsData: TableCellData[] = [];
-    let electiveTableData: ElectiveDTO[][] = [];
-    let lessonCycleFocus: ElectiveDTO | null = null;
-    let filteredStudentList: StudentDTO[] = [];
-    let filteredIDList: number[] = [];
-    let electiveAvailability: ElectiveAvailability = {};
 
     try {
       // Safely map electiveData
@@ -130,38 +135,51 @@ export default async function ElectivesPage({
     }
 
     return (
-      <>
-        <div className="flex w-full items-top justify-between pt-4  select-none">
-          <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-            <OptionBlockTable
-              electives={electiveTableData}
-              partyId={partyId}
-            ></OptionBlockTable>
-          </Card>
-
-          <SubjectFocusCard
-            lessonCycleFocus={lessonCycleFocus}
-            studentFocus={partyId}
-            filteredStudentList={filteredStudentList}
-            electivePreferences={electivePreferences}
-            electiveAvailability={electiveAvailability}
-          ></SubjectFocusCard>
+      <ElectivesContextProvider electivePreferenceList={electivePreferences}>
+        <div className="flex w-full items-baseline grow-0">
+          <Title>Option Blocks</Title>
+          <Text className="mx-2">Subscription Analysis</Text>
+          <span className="grow"></span>
+          <CommitChanges>Commit Changes</CommitChanges>
+          <ToolTipsToggle></ToolTipsToggle>
+          <RefreshButton />
         </div>
-      </>
-    );
-  } else
-    return (
-      <>
-        {' '}
         <div className="flex w-full items-top justify-between pt-4">
-          <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-            Unable to find requested table.
-          </Card>
+          <Suspense>
+            {yearGroupElectiveData !== null ? (
+              <div className="flex w-full items-top justify-between pt-4  select-none">
+                <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
+                  <OptionBlockTable
+                    electives={electiveTableData}
+                    partyId={partyId}
+                  ></OptionBlockTable>
+                </Card>
 
-          <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
-            No yeargroup loaded.
-          </Card>
+                <SubjectFocusCard
+                  lessonCycleFocus={lessonCycleFocus}
+                  studentFocus={partyId}
+                  filteredStudentList={filteredStudentList}
+                  electivePreferences={electivePreferences}
+                  electiveAvailability={electiveAvailability}
+                ></SubjectFocusCard>
+              </div>
+            ) : (
+              <>
+                {' '}
+                <div className="flex w-full items-top justify-between pt-4">
+                  <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
+                    Unable to find requested table.
+                  </Card>
+
+                  <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
+                    No yeargroup loaded.
+                  </Card>
+                </div>
+              </>
+            )}
+          </Suspense>
         </div>
-      </>
+      </ElectivesContextProvider>
     );
+  } else return <>Error</>;
 }

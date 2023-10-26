@@ -1,11 +1,23 @@
 'use client';
-import React, { useEffect, useState, useTransition } from 'react';
-import { Title } from '@tremor/react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+  useTransition
+} from 'react';
 import { ElectiveDTO } from './elective-card';
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
 import { checkAssignment } from './checkElectiveAssignments';
-import { number } from 'prop-types';
+import electivePreferencesReducer, {
+  createdElectivePreferenceRecords
+} from './elective-reducers';
+import ElectivesContextProvider from './elective-context-provider';
+import {
+  ElectivesContext,
+  ElectivesDispatchContext
+} from './electives-context';
 
 export interface ElectivePreference {
   partyId: number;
@@ -28,81 +40,56 @@ interface Props {
   electiveAvailability: ElectiveAvailability;
 }
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-const ElectiveSubscriberAccordion = ({
+export default function ElectiveSubscriberAccordion({
   lessonCycleFocus,
   studentFocus,
   studentList,
-  electivePreferenceList,
+  // electivePreferenceList,
   electiveAvailability
-}: Props) => {
+}: Props) {
   const { replace } = useRouter();
   const [radioActive, setRadioActive] = useState(studentFocus);
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const [electivePreferences, setElectivePreferences] = useState<
-    Record<number, ElectivePreference[]>
-  >(() => {
-    const groupedByPartyId = electivePreferenceList.reduce<
-      Record<number, ElectivePreference[]>
-    >((acc, curr) => {
-      if (!acc[curr.partyId]) {
-        acc[curr.partyId] = [];
-      }
-      // This will get removed once the preferences arrive with their active state from the database.
-      if (curr.assignedCarousel < 0) curr.isActive = false;
-      else curr.isActive = true;
 
-      acc[curr.partyId].push(curr);
-      return acc;
-    }, {});
+  // const initialPreferenceState = createdElectivePreferenceRecords(
+  //   electivePreferenceList
+  //   );
+  const electivePreferences = useContext(ElectivesContext);
 
-    return groupedByPartyId;
-  });
+  const dispatch = useContext(ElectivesDispatchContext);
 
-  const handleAssignmentChange = (
+  function handleAssignmentChange(
     studentId: number,
     preferencePosition: number,
     carouselNumber: number
-  ) => {
-    const preferenceToUpdate =
-      electivePreferences[studentId][preferencePosition];
-
-    const updatedPreference: ElectivePreference = { ...preferenceToUpdate };
-    updatedPreference.assignedCarousel = carouselNumber;
-
-    const updatedState: Record<number, ElectivePreference[]> = {};
-
-    for (const [key, preferenceList] of Object.entries(electivePreferences)) {
-      const numericKey = parseInt(key);
-      if (numericKey !== studentId) {
-        updatedState[numericKey] = preferenceList;
-      } else {
-        updatedState[numericKey] = preferenceList.map(
-          (preference, preferenceIndex) =>
-            preferenceIndex === preferencePosition
-              ? updatedPreference
-              : preference
-        );
-      }
-    }
-
-    setElectivePreferences(updatedState);
-
-    setUnsaved();
-  };
-
-  const setUnsaved = () => {
-    const params = new URLSearchParams(window.location.search);
-
-    params.set('unsaved', 'true');
-
-    startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
+  ) {
+    dispatch({
+      type: 'changed',
+      studentId: studentId,
+      preferencePosition: preferencePosition,
+      carouselNumber: carouselNumber
     });
+  }
+
+  function handleToggleClick(studentId: number, preferencePosition: number) {
+    dispatch({
+      type: 'setActive',
+      studentId: studentId,
+      preferencePosition: preferencePosition
+    });
+  }
+
+  const setUnsaved = (state: boolean) => {
+    if (state) {
+      const params = new URLSearchParams(window.location.search);
+
+      params.set('unsaved', 'true');
+
+      startTransition(() => {
+        replace(`${pathname}?${params.toString()}`, { scroll: false });
+      });
+    }
   };
 
   const onRadioClick = (clickedId: number) => {
@@ -117,31 +104,6 @@ const ElectiveSubscriberAccordion = ({
     });
   };
 
-  const handleToggleClick = (studentId: number, preferencePosition: number) => {
-    const updatedStudent = electivePreferences[studentId];
-    const updatedPreference = { ...updatedStudent[preferencePosition] };
-    updatedPreference.isActive = !updatedPreference.isActive;
-
-    const updatedState: Record<number, ElectivePreference[]> = {};
-
-    for (const [key, preferenceList] of Object.entries(electivePreferences)) {
-      const numericKey = parseInt(key);
-      if (numericKey !== studentId) {
-        updatedState[numericKey] = preferenceList;
-      } else {
-        updatedState[numericKey] = preferenceList.map(
-          (preference, preferenceIndex) =>
-            preferenceIndex === preferencePosition
-              ? updatedPreference
-              : preference
-        );
-      }
-
-      setUnsaved();
-    }
-
-    setElectivePreferences(updatedState);
-  };
   try {
     return (
       <>
@@ -197,13 +159,14 @@ const ElectiveSubscriberAccordion = ({
                             <select
                               className="select select-xs select-bordered w-12 grow-1"
                               value={assignedCarousel}
-                              onChange={(e) =>
+                              onChange={(e) => {
                                 handleAssignmentChange(
                                   student.id,
                                   preferencePosition,
                                   parseInt(e.target.value)
-                                )
-                              }
+                                );
+                                setUnsaved(true);
+                              }}
                             >
                               <option
                                 value={assignedCarousel}
@@ -228,9 +191,10 @@ const ElectiveSubscriberAccordion = ({
                                 preferencePosition
                               ].isActive
                             }
-                            onClick={() =>
-                              handleToggleClick(student.id, preferencePosition)
-                            }
+                            onClick={() => {
+                              handleToggleClick(student.id, preferencePosition);
+                              setUnsaved(true);
+                            }}
                           ></input>
                         </div>
                       );
@@ -246,9 +210,7 @@ const ElectiveSubscriberAccordion = ({
   } catch (error) {
     console.log('Error: ', error);
   }
-};
-
-export default ElectiveSubscriberAccordion;
+}
 
 function getAssignmentIndicator(assignmentCheck: boolean) {
   const indicator = 'rose-400';
