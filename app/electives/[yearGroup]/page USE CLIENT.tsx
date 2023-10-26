@@ -92,7 +92,7 @@ export default async function ElectivesPage({
       // Safely map electiveData
       tableCellsData =
         electiveData?.map((elective) => ({
-          row: elective.courseId,
+          row: elective.courseCarouselId,
           col: elective.carouselId,
           value: elective
         })) ?? [];

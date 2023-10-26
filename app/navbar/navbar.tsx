@@ -7,7 +7,6 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ProtectedNavigation from './protected-navigation';
 
@@ -34,10 +33,14 @@ function classNames(...classes: string[]) {
 export default function Navbar({ user }: { user: any }) {
   const pathname = usePathname();
   const unsaved = useSearchParams()?.get('unsaved') == 'true';
+  const useCache = useSearchParams()?.get('cacheSetting');
+  let cacheSetting: string | null;
+  if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
 
   const handleNavigation = (href: string) => {
-    router.push(href);
+    const fullNavigation = useCache ? href + cacheSetting : href;
+    router.push(fullNavigation);
   };
 
   return (

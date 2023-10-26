@@ -15,7 +15,7 @@ export default function ProtectedNavigation({
   isActive,
   requestConfirmation
 }: Props) {
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
@@ -84,6 +84,16 @@ export default function ProtectedNavigation({
                     <span></span>
                     <button
                       type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={() => {
+                        closeModal();
+                      }}
+                    >
+                      Cancel navigation
+                    </button>
+                    <span></span>
+                    <button
+                      type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-orange-200 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
                         onConfirm();
@@ -91,16 +101,6 @@ export default function ProtectedNavigation({
                       }}
                     >
                       Discard
-                    </button>
-                    <span></span>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={() => {
-                        closeModal();
-                      }}
-                    >
-                      Cancel navigation
                     </button>
                     <span></span>
                   </div>

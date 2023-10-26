@@ -19,7 +19,7 @@ import SubjectFocusCard from '../subject-focus-card';
 interface Props {
   params: { yearGroup: string };
   searchParams: {
-    courseId: string;
+    courseCarouselId: string;
     carouselId: string;
     partyId: string;
     cacheSetting: string;
@@ -40,7 +40,7 @@ const versionInView = 'stored';
 export default async function ElectivesPage({
   params: { yearGroup },
   searchParams: {
-    courseId: courseIdString,
+    courseCarouselId: courseIdString,
     carouselId: carouselIdString,
     partyId: partyIdString,
     cacheSetting
@@ -55,10 +55,10 @@ export default async function ElectivesPage({
   let requestCacheValue: RequestCache;
   if (cacheSetting === 'reload') {
     requestCacheValue = 'reload';
-  } else if (cacheSetting === 'no-cache') {
+  } else if (cacheSetting === 'noCache') {
     requestCacheValue = 'no-cache';
   } else {
-    requestCacheValue = 'force-cache';
+    requestCacheValue = 'default';
   }
 
   const yearGroupElectiveData: YearGroupElectives =
@@ -88,7 +88,7 @@ export default async function ElectivesPage({
       // Safely map electiveData
       tableCellsData =
         electiveData?.map((elective) => ({
-          row: elective.courseId,
+          row: elective.courseCarouselId,
           col: elective.carouselId,
           value: elective
         })) ?? [];
@@ -133,7 +133,6 @@ export default async function ElectivesPage({
       <>
         <div className="flex w-full items-top justify-between pt-4  select-none">
           <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-            <RefreshButton currentSetting={cacheSetting} />
             <OptionBlockTable
               electives={electiveTableData}
               partyId={partyId}

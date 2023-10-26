@@ -48,7 +48,7 @@ const SubjectFocusCard = ({
       <div
         className={
           toolTips
-            ? 'tooltip tooltip-left before:max-w-[15vw] min-w-full border-cyan-400 inline before:-translate-x-32 after:-translate-x-32 before:-translate-y-12'
+            ? 'tooltip tooltip-left before:max-w-[15vw] min-w-full inline before:-translate-x-32 after:-translate-x-32 before:-translate-y-12'
             : 'flex justify-center'
         }
         data-tip="Radio buttons select a student to show their options. Click the name to see their full preference list"

@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Text, Title } from '@tremor/react';
 import ToolTipsToggle from './tool-tips-toggle';
 import { NavigationEvents } from './navigation-events';
+import { RefreshButton } from '../components/refresh-button';
 
 const dynamic = 'force-dynamic';
 
@@ -17,10 +18,11 @@ export default async function ElectivesPage({
         <Text className="mx-2">Subscription Analysis</Text>
         <span className="grow"></span>
         <ToolTipsToggle></ToolTipsToggle>
+        <RefreshButton />
       </div>
       <div className="flex w-full items-top justify-between pt-4">
         <Suspense>
-          <NavigationEvents />
+          {/* <NavigationEvents /> */}
           {children}
         </Suspense>
       </div>

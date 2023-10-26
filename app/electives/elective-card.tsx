@@ -9,12 +9,11 @@ import { element } from 'prop-types';
 
 export interface ElectiveDTO {
   courseDescription: string;
-  courseId: number;
+  courseUUID: string;
+  courseCarouselId: number;
   carouselId: number;
   subscriberPartyIDs: number[];
 }
-
-const electiveParentSlug = 'electives/';
 
 const aLevelClassLimitInt = getALevelClassLimitInt();
 
@@ -25,8 +24,12 @@ export default function ElectiveCard({
   electiveDTO: ElectiveDTO;
   partyId: number;
 }) {
-  const { courseDescription, carouselId, subscriberPartyIDs, courseId } =
-    electiveDTO;
+  const {
+    courseDescription,
+    carouselId,
+    subscriberPartyIDs,
+    courseCarouselId
+  } = electiveDTO;
   const subscribers = subscriberPartyIDs.length;
   const subscribersColor = getSubscribersColor(subscribers);
   const isEnabled = subscribers > 0;
@@ -37,7 +40,7 @@ export default function ElectiveCard({
   const onCardClick = () => {
     const params = new URLSearchParams(window.location.search);
 
-    params.set('courseId', courseId.toString());
+    params.set('courseCarouselId', courseCarouselId.toString());
     params.set('carouselId', carouselId.toString());
 
     const savedScrollPosition = window.scrollY;

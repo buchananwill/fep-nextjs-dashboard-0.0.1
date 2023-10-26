@@ -10,6 +10,7 @@ import { number } from 'prop-types';
 export interface ElectivePreference {
   partyId: number;
   courseDescription: string;
+  courseUUID: string;
   preferencePosition: number;
   assignedCarousel: number;
   isActive: boolean;
@@ -39,6 +40,7 @@ const ElectiveSubscriberAccordion = ({
   electiveAvailability
 }: Props) => {
   const { replace } = useRouter();
+  const [radioActive, setRadioActive] = useState(studentFocus);
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const [electivePreferences, setElectivePreferences] = useState<
@@ -106,6 +108,8 @@ const ElectiveSubscriberAccordion = ({
   const onRadioClick = (clickedId: number) => {
     const params = new URLSearchParams(window.location.search);
 
+    setRadioActive(clickedId);
+
     params.set('partyId', clickedId.toString());
 
     startTransition(() => {
@@ -141,11 +145,6 @@ const ElectiveSubscriberAccordion = ({
   try {
     return (
       <>
-        {isPending && (
-          <div className="absolute right-1 top-0 bottom-0 flex items-center justify-center">
-            <span className="loading loading-ring loading-sm"></span>
-          </div>
-        )}
         <div className="pb-4">
           {studentList.map((student) => (
             <div
@@ -154,11 +153,16 @@ const ElectiveSubscriberAccordion = ({
             >
               <input type="checkbox" className="min-h-0" />
               <div className="collapse-title flex items-center font-medium text-sm mx-0 gap-0 px-2 py-0 min-h-0">
+                <div className="absolute left-8 top-4 flex items-center justify-center">
+                  {isPending && radioActive == student.id && (
+                    <span className="z-20 loading loading-dots loading-xs"></span>
+                  )}
+                </div>
                 <input
                   type="radio"
                   name="student-focus"
                   className="radio radio-xs mr-1 ml-0 z-10"
-                  checked={student.id == studentFocus}
+                  checked={student.id == radioActive}
                   onChange={(e) => {
                     onRadioClick(student.id);
                   }}

@@ -1,3 +1,5 @@
+import { revalidateTag } from "next/cache";
+
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 const aLevelClassLimit = process.env.A_LEVEL_CLASS_LIMIT;
@@ -36,17 +38,18 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
   };
 
   export const fetchElectiveYearGroupWithAllStudents = async (yearGroup:number, cacheSetting: RequestCache) => {
-    
+    const tag = "electives";
 
-    const fetchURL = `http://localhost:8080/api/academic/electives-yeargroup-with-all-students?yearGroupIntRank=${yearGroup}`;
-    
-    
-    
-  
+    if (cacheSetting === "reload") revalidateTag(tag);
+
+
+
+    const fetchURL = `http://localhost:8080/api/academic/electives-yeargroup-with-all-students/${yearGroup}`;
 
     try {
       const response = await fetch(fetchURL, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        next: {tags: [tag]}, // Next collection tag for revalidation handling.
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
@@ -73,4 +76,4 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
   }
   
 
-  
+ 
