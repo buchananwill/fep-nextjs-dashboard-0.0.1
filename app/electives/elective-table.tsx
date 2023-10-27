@@ -23,10 +23,11 @@ export default function OptionBlockTable({
     <Table className=" m-2 p-2 overflow-visible">
       <TableHead>
         <TableRow>
-          <TableHeaderCell className="text-center">Carousel 1</TableHeaderCell>
-          <TableHeaderCell className="text-center">Carousel 2</TableHeaderCell>
-          <TableHeaderCell className="text-center">Carousel 3</TableHeaderCell>
-          <TableHeaderCell className="text-center">Carousel 4</TableHeaderCell>
+          {electives[0].map((rowHeader, index) => (
+            <TableHeaderCell key={index} className="text-center">
+              Option Block {rowHeader.carouselId}
+            </TableHeaderCell>
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>

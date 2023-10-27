@@ -1,15 +1,29 @@
 'use client';
 import React, { useContext } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+  redirect,
+  RedirectType
+} from 'next/navigation';
 import { Fragment, useState, useTransition } from 'react';
 import { ElectivesContext } from './electives-context';
 import { updateElectiveAssignments } from '../api/request-elective-preferences';
+import { revalidateTag } from 'next/cache';
+import { CacheSetting } from '../components/refresh-button';
 
 interface Props {
   children: React.ReactNode;
 }
 
 const CommitChanges = ({ children }: Props) => {
+  const [transitionPending, startTransition] = useTransition();
+  const [commitPending, setCommitPending] = useState(false);
+  const [error, setError] = useState(null);
+  const { refresh, replace } = useRouter();
+  const pathname = usePathname();
+
   const disabled = useSearchParams()?.get('unsaved') !== 'true';
 
   const electivePreferences = useContext(ElectivesContext);
@@ -20,8 +34,33 @@ const CommitChanges = ({ children }: Props) => {
     assignmentConflictCount && parseInt(assignmentConflictCount);
 
   async function handleCommitClick() {
-    const updated = await updateElectiveAssignments(electivePreferences);
-    console.log('Now updated:', updated);
+    setCommitPending(true);
+
+    const params = new URLSearchParams(window.location.search);
+
+    console.log('Clearing');
+    params.delete('unsaved');
+    params.set('cacheSetting', 'reload');
+    const redirectUrl = `${pathname}?${params.toString()}`;
+
+    updateElectiveAssignments(electivePreferences)
+      .then(() => {
+        setCommitPending(false);
+      })
+      .then(() => {
+        startTransition(() => {
+          replace(redirectUrl);
+        });
+      })
+      .catch((error) => {
+        setError(error);
+        setCommitPending(false);
+      })
+      .finally(() => {
+        params.delete('cacheSetting');
+        const finalRedirect = `${pathname}?${params.toString()}`;
+        replace(finalRedirect);
+      });
   }
 
   return (

@@ -1,6 +1,9 @@
-import { revalidateTag } from "next/cache";
-import { ElectivePreference } from "../electives/elective-subscriber-accordion";
+'use server'
+import { revalidatePath, revalidateTag } from "next/cache";
+
 import { ElectivesState } from "../electives/elective-reducers";
+import { redirect } from "next/navigation";
+
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
@@ -40,9 +43,9 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
   };
 
   export const fetchElectiveYearGroupWithAllStudents = async (yearGroup:number, cacheSetting: RequestCache) => {
-    const tag = "electives";
+    const tag = "electives"
 
-    if (cacheSetting === "reload") revalidateTag(tag);
+    if (cacheSetting == "reload" )revalidateTag(tag);
 
 
 
@@ -50,10 +53,10 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
 
     try {
       const response = await fetch(fetchURL, {
-        next: {tags: [tag]}, // Next collection tag for revalidation handling.
+        next: {revalidate: 60, tags: [tag]}, // Next collection tag for revalidation handling.
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
-        cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
+        // cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +81,7 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
   }
 
   export const updateElectiveAssignments = async (electivePreferences: ElectivesState) => {
-    const tag = "electives";
+    const tag = "electiveAssignments";
 
     const fetchURL = `http://localhost:8080/api/academic/electives/option-block-assignments`;
 
@@ -104,6 +107,10 @@ export const fetchElectivePreferencesByPartyIds = async (studentIDlist: number[]
       }
   
       const data = await response.json();
+
+      // revalidatePath("/electives/") // Update cached posts
+      // redirect(redirectUrl) // Navigate to new route
+      
       return data;
     } catch (error) {
       console.error('Error fetching data: ', error);

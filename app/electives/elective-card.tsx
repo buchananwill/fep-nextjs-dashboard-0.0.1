@@ -15,7 +15,7 @@ export interface ElectiveDTO {
   subscriberPartyIDs: number[];
 }
 
-const aLevelClassLimitInt = getALevelClassLimitInt();
+const aLevelClassLimitInt = 25;
 
 export default function ElectiveCard({
   electiveDTO,

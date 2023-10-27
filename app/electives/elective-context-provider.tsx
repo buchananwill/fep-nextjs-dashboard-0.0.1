@@ -11,8 +11,6 @@ import electivePreferencesReducer, {
   createdElectivePreferenceRecords
 } from './elective-reducers';
 
-import { createContext } from 'react';
-
 interface Props {
   // lessonCycleFocus: ElectiveDTO;
   // studentFocus: number;
