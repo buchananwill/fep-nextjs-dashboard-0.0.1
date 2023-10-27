@@ -11,7 +11,8 @@ import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
 import { checkAssignment } from './checkElectiveAssignments';
 import electivePreferencesReducer, {
-  createdElectivePreferenceRecords
+  createdElectivePreferenceRecords,
+  ElectivesState
 } from './elective-reducers';
 import ElectivesContextProvider from './elective-context-provider';
 import {
@@ -33,31 +34,52 @@ export interface ElectiveAvailability {
 }
 
 interface Props {
-  lessonCycleFocus: ElectiveDTO;
-  studentFocus: number;
   studentList: Student[];
-  electivePreferenceList: ElectivePreference[];
   electiveAvailability: ElectiveAvailability;
 }
 
+function filterStudentList(
+  electiveState: ElectivesState,
+  studentList: Student[]
+): Student[] {
+  const { electivePreferences, courseId, carouselId } = electiveState;
+  const filteredList: Student[] = [];
+
+  for (let electivePreferencesKey in electivePreferences) {
+    const numericKey = parseInt(electivePreferencesKey);
+    const foundStudent = electivePreferences[numericKey].some(
+      (electivePreference) =>
+        electivePreference.assignedCarouselId == carouselId &&
+        electivePreference.courseUUID == courseId
+    );
+    if (foundStudent) {
+      const student = studentList.find((student) => student.id == numericKey);
+      student && filteredList.push(student);
+    }
+  }
+  return filteredList;
+}
+
 export default function ElectiveSubscriberAccordion({
-  lessonCycleFocus,
-  studentFocus,
   studentList,
-  // electivePreferenceList,
   electiveAvailability
 }: Props) {
   const { replace } = useRouter();
-  const [radioActive, setRadioActive] = useState(studentFocus);
+  // const [radioActive, setRadioActive] = useState(studentFocus);
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const [filteredList, setFilteredList] = useState<Student[]>(studentList);
 
-  // const initialPreferenceState = createdElectivePreferenceRecords(
-  //   electivePreferenceList
-  //   );
-  const electivePreferences = useContext(ElectivesContext);
+  const electiveState = useContext(ElectivesContext);
+  const { electivePreferences, partyId } = electiveState;
 
   const dispatch = useContext(ElectivesDispatchContext);
+
+  useEffect(() => {
+    const filteredStudentList = filterStudentList(electiveState, studentList);
+    console.log('hello');
+    setFilteredList(filteredStudentList);
+  }, [studentList, electiveState]);
 
   function handleAssignmentChange(
     studentId: number,
@@ -92,23 +114,18 @@ export default function ElectiveSubscriberAccordion({
     }
   };
 
-  const onRadioClick = (clickedId: number) => {
-    const params = new URLSearchParams(window.location.search);
-
-    setRadioActive(clickedId);
-
-    params.set('partyId', clickedId.toString());
-
-    startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
+  function handleRadioClick(clickedId: number) {
+    dispatch({
+      type: 'focusStudent',
+      studentId: clickedId
     });
-  };
+  }
 
   try {
     return (
       <>
         <div className="pb-4">
-          {studentList.map((student) => (
+          {filteredList.map((student) => (
             <div
               key={`${student.id}-prefs`}
               className="gap-0 collapse bg-base-200 py-2 px-0 m-0"
@@ -116,7 +133,7 @@ export default function ElectiveSubscriberAccordion({
               <input type="checkbox" className="min-h-0" />
               <div className="collapse-title flex items-center font-medium text-sm mx-0 gap-0 px-2 py-0 min-h-0">
                 <div className="absolute left-8 top-4 flex items-center justify-center">
-                  {isPending && radioActive == student.id && (
+                  {isPending && partyId == student.id && (
                     <span className="z-20 loading loading-dots loading-xs"></span>
                   )}
                 </div>
@@ -124,9 +141,9 @@ export default function ElectiveSubscriberAccordion({
                   type="radio"
                   name="student-focus"
                   className="radio radio-xs mr-1 ml-0 z-10"
-                  checked={student.id == radioActive}
+                  checked={student.id == partyId}
                   onChange={(e) => {
-                    onRadioClick(student.id);
+                    handleRadioClick(student.id);
                   }}
                 ></input>
                 <span>{student.name}</span>

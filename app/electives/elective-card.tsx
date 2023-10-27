@@ -1,11 +1,13 @@
 'use client';
-import { Card, Color } from '@tremor/react';
-import { Badge } from '@tremor/react';
+import { Badge, Card, Color } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useTransition } from 'react';
+import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
-import { getALevelClassLimitInt } from '../api/request-elective-preferences';
-import { element } from 'prop-types';
+import {
+  ElectivesContext,
+  ElectivesDispatchContext
+} from './electives-context';
+import { ElectivesState } from './elective-reducers';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -17,44 +19,91 @@ export interface ElectiveDTO {
 
 const aLevelClassLimitInt = 25;
 
+const calculateSubscribers = (
+  electiveDTO: ElectiveDTO,
+  electivesState: ElectivesState
+) => {
+  const { carouselId, courseUUID } = electiveDTO;
+  let count = 0;
+  for (const [partyId, preferenceList] of Object.entries(
+    electivesState.electivePreferences
+  )) {
+    for (let electivePreference of preferenceList) {
+      if (
+        electivePreference.isActive &&
+        electivePreference.courseUUID == courseUUID &&
+        electivePreference.assignedCarouselId == carouselId
+      )
+        count++;
+    }
+  }
+  return count;
+};
+
+const getBorderVisible = (
+  electiveState: ElectivesState,
+  carouselId: number,
+  courseUUID: string
+) => {
+  const { partyId } = electiveState;
+  return electiveState?.electivePreferences[partyId]?.some(
+    (electivePreference) =>
+      electivePreference.isActive &&
+      electivePreference.assignedCarouselId == carouselId &&
+      electivePreference.courseUUID == courseUUID
+  )
+    ? ''
+    : 'border-transparent';
+};
+
 export default function ElectiveCard({
-  electiveDTO,
-  partyId
+  electiveDTO
 }: {
   electiveDTO: ElectiveDTO;
-  partyId: number;
 }) {
-  const {
-    courseDescription,
-    carouselId,
-    subscriberPartyIDs,
-    courseCarouselId
-  } = electiveDTO;
-  const subscribers = subscriberPartyIDs.length;
+  const { courseDescription, carouselId, courseCarouselId, courseUUID } =
+    electiveDTO;
+  const [subscribers, setSubscribers] = useState(0);
+  const [borderVisible, setBorderVisible] = useState('border-transparent');
   const subscribersColor = getSubscribersColor(subscribers);
   const isEnabled = subscribers > 0;
   const { replace } = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const electivesState = useContext(ElectivesContext);
+  const dispatch = useContext(ElectivesDispatchContext);
 
-  const onCardClick = () => {
-    const params = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    const updatedSubscribers = calculateSubscribers(
+      electiveDTO,
+      electivesState
+    );
+    setSubscribers(updatedSubscribers);
+  }, [electiveDTO, electivesState]);
 
-    params.set('courseCarouselId', courseCarouselId.toString());
-    params.set('carouselId', carouselId.toString());
-
-    const savedScrollPosition = window.scrollY;
-
-    startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
+  function handleCardClick(
+    carouselId: number,
+    courseCarouselId: number,
+    courseUUID: string
+  ) {
+    dispatch({
+      type: 'focusCourse',
+      carouselId: carouselId,
+      courseCarouselId: courseCarouselId,
+      courseId: courseUUID
     });
-  };
+  }
+
+  useEffect(() => {
+    const borderNowVisible = getBorderVisible(
+      electivesState,
+      carouselId,
+      courseUUID
+    );
+    setBorderVisible(borderNowVisible);
+  }, [electivesState, carouselId, courseUUID]);
 
   const opacity = getOpacity(isEnabled);
-
-  const borderVisible: string = subscriberPartyIDs.includes(partyId)
-    ? ''
-    : 'border-transparent';
 
   const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
 
@@ -69,7 +118,10 @@ export default function ElectiveCard({
       )}
       decoration="left"
       decorationColor="emerald"
-      onClick={onCardClick}
+      onClick={() => {
+        console.log(carouselId, courseCarouselId, courseUUID);
+        handleCardClick(carouselId, courseCarouselId, courseUUID);
+      }}
     >
       {' '}
       {isPending && (

@@ -38,7 +38,6 @@ const CommitChanges = ({ children }: Props) => {
 
     const params = new URLSearchParams(window.location.search);
 
-    console.log('Clearing');
     params.delete('unsaved');
     params.set('cacheSetting', 'reload');
     const redirectUrl = `${pathname}?${params.toString()}`;
@@ -63,10 +62,16 @@ const CommitChanges = ({ children }: Props) => {
       });
   }
 
+  const spinner = transitionPending ? (
+    <span className="absolute loading loading-spinner loading-lg"></span>
+  ) : (
+    <></>
+  );
+
   return (
     <div className="indicator mx-2">
       <button
-        className="btn normal-case"
+        className={`btn normal-case`}
         disabled={disabled}
         onClick={() => handleCommitClick()}
       >
@@ -76,6 +81,7 @@ const CommitChanges = ({ children }: Props) => {
           </span>
         )}
         {children}
+        {spinner}
       </button>
     </div>
   );

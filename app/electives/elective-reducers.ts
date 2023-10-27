@@ -1,4 +1,5 @@
 import { ElectivePreference } from './elective-subscriber-accordion';
+import { produce } from 'immer';
 
 interface ChangedCarousel {
   type: 'changed';
@@ -13,64 +14,70 @@ interface SetActive {
   preferencePosition: number;
 }
 
-type Actions = ChangedCarousel | SetActive;
+interface FocusCourse {
+  type: 'focusCourse';
+  carouselId: number;
+  courseCarouselId: number;
+  courseId: string;
+}
 
-export type ElectivesState = Record<number, ElectivePreference[]>;
+interface FocusStudent {
+  type: 'focusStudent';
+  studentId: number;
+}
+
+type Actions = ChangedCarousel | SetActive | FocusCourse | FocusStudent;
+
+export type ElectivesState = {
+  carouselId: number;
+  courseId: string;
+  courseCarouselId: number;
+  electivePreferences: Record<number, ElectivePreference[]>;
+  partyId: number;
+};
 
 export default function electivePreferencesReducer(
-  electivePreferences: ElectivesState,
+  electivesState: ElectivesState,
   action: Actions
 ) {
   switch (action.type) {
     case 'changed': {
       const { studentId, preferencePosition, assignedCarouselId } = action;
-      const preferenceToUpdate =
-        electivePreferences[studentId][preferencePosition];
 
-      console.log(assignedCarouselId);
-
-      const updatedPreference: ElectivePreference = { ...preferenceToUpdate };
-      updatedPreference.assignedCarouselId = assignedCarouselId;
-
-      const updatedState: Record<number, ElectivePreference[]> = {};
-
-      for (const [key, preferenceList] of Object.entries(electivePreferences)) {
-        const numericKey = parseInt(key);
-        if (numericKey !== studentId) {
-          updatedState[numericKey] = preferenceList;
-        } else {
-          updatedState[numericKey] = preferenceList.map(
-            (preference, preferenceIndex) =>
-              preferenceIndex === preferencePosition
-                ? updatedPreference
-                : preference
-          );
-        }
-      }
-      return updatedState;
+      return produce(electivesState, (draftUpdate) => {
+        draftUpdate.electivePreferences[studentId][
+          preferencePosition
+        ].assignedCarouselId = assignedCarouselId;
+      });
     }
     case 'setActive': {
       const { studentId, preferencePosition } = action;
-      const updatedStudent = electivePreferences[studentId];
-      const updatedPreference = { ...updatedStudent[preferencePosition] };
-      updatedPreference.isActive = !updatedPreference.isActive;
 
-      const updatedState: Record<number, ElectivePreference[]> = {};
+      return produce(electivesState, (draftElectiveState) => {
+        draftElectiveState.electivePreferences[studentId][
+          preferencePosition
+        ].isActive =
+          !draftElectiveState.electivePreferences[studentId][preferencePosition]
+            .isActive;
+      });
+    }
 
-      for (const [key, preferenceList] of Object.entries(electivePreferences)) {
-        const numericKey = parseInt(key);
-        if (numericKey !== studentId) {
-          updatedState[numericKey] = preferenceList;
-        } else {
-          updatedState[numericKey] = preferenceList.map(
-            (preference, preferenceIndex) =>
-              preferenceIndex === preferencePosition
-                ? updatedPreference
-                : preference
-          );
-        }
-      }
-      return updatedState;
+    case 'focusCourse': {
+      const { carouselId, courseCarouselId, courseId } = action;
+
+      return produce(electivesState, (draftState) => {
+        draftState.carouselId = carouselId;
+        draftState.courseCarouselId = courseCarouselId;
+        draftState.courseId = courseId;
+      });
+    }
+
+    case 'focusStudent': {
+      const { studentId } = action;
+
+      return produce(electivesState, (draftState) => {
+        draftState.partyId = studentId;
+      });
     }
 
     default: {

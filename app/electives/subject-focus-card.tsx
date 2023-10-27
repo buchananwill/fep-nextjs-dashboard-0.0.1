@@ -1,31 +1,46 @@
 'use client';
 import { Card } from '@tremor/react';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ElectiveSubscriberAccordion, {
-  ElectiveAvailability,
-  ElectivePreference
+  ElectiveAvailability
 } from './elective-subscriber-accordion';
 import { ElectiveDTO } from './elective-card';
-import { Student } from '../tables/student-table';
 import { useSearchParams } from 'next/navigation';
-import { classNames } from '../utils/class-names';
+import { ElectivesContext } from './electives-context';
+import { ElectivesState } from './elective-reducers';
+import { Student } from '../tables/student-table';
 
 interface Props {
-  lessonCycleFocus: ElectiveDTO;
-  studentFocus: number;
-  filteredStudentList: Student[];
-  electivePreferences: ElectivePreference[];
+  electiveDTOList: ElectiveDTO[];
+  studentDTOList: Student[];
   electiveAvailability: ElectiveAvailability;
 }
 
+function getElectiveDTO(
+  electiveDTOList: ElectiveDTO[],
+  carouselId: number,
+  courseUUID: string
+) {
+  return electiveDTOList.find(
+    (electiveDTO) =>
+      electiveDTO.carouselId == carouselId &&
+      electiveDTO.courseUUID == courseUUID
+  );
+}
+
 const SubjectFocusCard = ({
-  lessonCycleFocus,
-  studentFocus,
-  filteredStudentList,
-  electivePreferences,
-  electiveAvailability
+  electiveDTOList,
+  electiveAvailability,
+  studentDTOList
 }: Props) => {
   const toolTips = useSearchParams()?.get('toolTips') == 'show';
+  const [courseFocus, setCourseFocus] = useState<ElectiveDTO | null>();
+  const { carouselId, courseId } = useContext(ElectivesContext);
+
+  useEffect(() => {
+    const electiveDTO = getElectiveDTO(electiveDTOList, carouselId, courseId);
+    setCourseFocus(electiveDTO);
+  }, [carouselId, courseId, electiveDTOList]);
 
   return (
     <Card className="max-w-sm ml-2 p-0 sticky top-4 h-min text-center">
@@ -39,7 +54,7 @@ const SubjectFocusCard = ({
           data-tip="Click on a course to the left to see its current subscribers."
         >
           <div className="w-64 rounded-2xl shadow p-2 m-0 text-xl font-semibold border-2">
-            {lessonCycleFocus?.courseDescription || (
+            {courseFocus?.courseDescription || (
               <span className="italic">No course selected</span>
             )}
           </div>
@@ -55,14 +70,9 @@ const SubjectFocusCard = ({
       >
         <div className="relative overflow-y-scroll max-h-[65vh] border-t-2 min-w-full py-2">
           <div className="text-center py-2 select-none px-2">
-            {lessonCycleFocus !== null &&
-            filteredStudentList !== null &&
-            electivePreferences !== null ? (
+            {electiveDTOList !== null && courseFocus !== null ? (
               <ElectiveSubscriberAccordion
-                lessonCycleFocus={lessonCycleFocus}
-                studentFocus={studentFocus}
-                studentList={filteredStudentList}
-                electivePreferenceList={electivePreferences}
+                studentList={studentDTOList}
                 electiveAvailability={electiveAvailability}
               />
             ) : (

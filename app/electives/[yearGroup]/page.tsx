@@ -30,7 +30,7 @@ interface Props {
   };
 }
 
-interface YearGroupElectives {
+export interface YearGroupElectives {
   yearGroupRankInt: number;
   carouselRows: number;
   carouselColumns: number;
@@ -136,7 +136,10 @@ export default async function ElectivesPage({
     }
 
     return (
-      <ElectivesContextProvider electivePreferenceList={electivePreferences}>
+      <ElectivesContextProvider
+        electivePreferenceList={electivePreferences}
+        yearGroupElectiveData={yearGroupElectiveData}
+      >
         <div className="flex w-full items-baseline grow-0">
           <Title>Option Blocks</Title>
           <Text className="mx-2">Subscription Analysis</Text>
@@ -157,10 +160,8 @@ export default async function ElectivesPage({
                 </Card>
 
                 <SubjectFocusCard
-                  lessonCycleFocus={lessonCycleFocus}
-                  studentFocus={partyId}
-                  filteredStudentList={filteredStudentList}
-                  electivePreferences={electivePreferences}
+                  electiveDTOList={electiveData}
+                  studentDTOList={studentList}
                   electiveAvailability={electiveAvailability}
                 ></SubjectFocusCard>
               </div>

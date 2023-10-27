@@ -7,7 +7,6 @@ export interface TableCellData {
   export const reconstructTableWithDimensions = (flatList: TableCellData[], numRows: number, numCols: number): any[][] => {
     // Initialize the 2D array
     const table: any[][] = Array.from({ length: numRows }, () => Array(numCols).fill(null));
-
   
     // Populate the table based on the row and col indices from the flatList
     for (const cell of flatList) {
