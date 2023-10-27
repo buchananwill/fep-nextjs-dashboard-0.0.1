@@ -11,14 +11,17 @@ export interface TableCellData {
   
     // Populate the table based on the row and col indices from the flatList
     for (const cell of flatList) {
-      if (cell.row < numRows && cell.col < numCols) {
-        table[cell.row][cell.col] = cell.value;
+      const cellCol = cell.col ? cell.col % numCols : null
+      if (cell.row < numRows && cellCol !== null) {
+        table[cell.row][cellCol] = cell.value;
       } else {
         
-        console.error('Invalid cell index', cell);
+        console.error('Invalid cell index. Col:', cellCol, "exceeds: ", numCols, " and Row: ", cell.row, " exceeds ", numRows);
       }
     }
   
+    
+
     return table;
   };
   

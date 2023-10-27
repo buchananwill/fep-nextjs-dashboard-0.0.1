@@ -24,7 +24,7 @@ export interface ElectivePreference {
   courseDescription: string;
   courseUUID: string;
   preferencePosition: number;
-  assignedCarousel: number;
+  assignedCarouselId: number;
   isActive: boolean;
 }
 
@@ -62,13 +62,13 @@ export default function ElectiveSubscriberAccordion({
   function handleAssignmentChange(
     studentId: number,
     preferencePosition: number,
-    carouselNumber: number
+    assignedCarouselId: number
   ) {
     dispatch({
       type: 'changed',
       studentId: studentId,
       preferencePosition: preferencePosition,
-      carouselNumber: carouselNumber
+      assignedCarouselId: assignedCarouselId
     });
   }
 
@@ -134,19 +134,20 @@ export default function ElectiveSubscriberAccordion({
 
               <div className="collapse-content m-0 text-sm min-h-0">
                 <div className="flex flex-col mx-0 my-2 w-full ">
-                  <div>Rank Subject </div>
+                  <div></div>
                   {electivePreferences[student.id].map(
                     ({
                       preferencePosition,
                       courseDescription,
-                      assignedCarousel
+                      assignedCarouselId,
+                      isActive
                     }) => {
                       return (
                         <div
                           key={`${student.id}-${preferencePosition}`}
                           className="flex grow-0 w-full justify-between"
                         >
-                          <span className="px-1 w-6">{preferencePosition}</span>
+                          {/* <span className="px-1 w-6">{preferencePosition}</span> */}
                           <span>{courseDescription} </span>
                           <span className="grow"></span>
                           <div className="indicator">
@@ -157,8 +158,8 @@ export default function ElectiveSubscriberAccordion({
                               )
                             )}
                             <select
-                              className="select select-xs select-bordered w-12 grow-1"
-                              value={assignedCarousel}
+                              className="select select-xs select-bordered w-16 grow-1"
+                              value={assignedCarouselId}
                               onChange={(e) => {
                                 handleAssignmentChange(
                                   student.id,
@@ -168,16 +169,10 @@ export default function ElectiveSubscriberAccordion({
                                 setUnsaved(true);
                               }}
                             >
-                              <option
-                                value={assignedCarousel}
-                                className="p-0 m-0 text-left"
-                              >
-                                {assignedCarousel >= 0 ? assignedCarousel : '-'}
-                              </option>
-                              {mapOtherOptions(
+                              {mapOptions(
                                 electiveAvailability,
                                 courseDescription,
-                                assignedCarousel,
+                                assignedCarouselId,
                                 student.id,
                                 preferencePosition
                               )}
@@ -222,7 +217,7 @@ function getAssignmentIndicator(assignmentCheck: boolean) {
   );
 }
 
-function mapOtherOptions(
+function mapOptions(
   electiveAvailability: ElectiveAvailability,
   courseDescription: string,
   assignedCarousel: number,
@@ -232,19 +227,18 @@ function mapOtherOptions(
   try {
     return electiveAvailability[courseDescription].map(
       (carouselNumber, index) => {
-        if (carouselNumber !== assignedCarousel) {
-          return (
-            <option
-              key={`${studentId}-${preferencePosition}-${index}`}
-              className="p-0 m-0 text-left"
-              value={carouselNumber}
-            >
-              {' '}
-              {carouselNumber}
-            </option>
-          );
-        }
+        // if (carouselNumber !== assignedCarousel) {
+        return (
+          <option
+            key={`${studentId}-${preferencePosition}-${index}`}
+            className="p-0 m-0 text-left"
+            value={carouselNumber}
+          >
+            {carouselNumber}
+          </option>
+        );
       }
+      // }
     );
   } catch (error) {}
 }

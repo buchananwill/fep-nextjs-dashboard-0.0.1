@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useState, useTransition } from 'react';
 import { ElectivesContext } from './electives-context';
+import { updateElectiveAssignments } from '../api/request-elective-preferences';
 
 interface Props {
   children: React.ReactNode;
@@ -18,8 +19,9 @@ const CommitChanges = ({ children }: Props) => {
   const conflictCountInt =
     assignmentConflictCount && parseInt(assignmentConflictCount);
 
-  function handleCommitClick() {
-    console.log(electivePreferences);
+  async function handleCommitClick() {
+    const updated = await updateElectiveAssignments(electivePreferences);
+    console.log('Now updated:', updated);
   }
 
   return (

@@ -111,7 +111,8 @@ export default async function ElectivesPage({
       }
 
       // Safely get lessonCycleFocus
-      lessonCycleFocus = electiveTableData?.[courseId]?.[carouselId] ?? null;
+      const carouselCol = carouselId % carouselCols;
+      lessonCycleFocus = electiveTableData?.[courseId]?.[carouselCol] ?? null;
 
       // Safely filter studentList
       if (lessonCycleFocus !== null) {

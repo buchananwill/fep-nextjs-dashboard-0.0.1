@@ -4,7 +4,7 @@ interface ChangedCarousel {
   type: 'changed';
   studentId: number;
   preferencePosition: number;
-  carouselNumber: number;
+  assignedCarouselId: number;
 }
 
 interface SetActive {
@@ -23,12 +23,14 @@ export default function electivePreferencesReducer(
 ) {
   switch (action.type) {
     case 'changed': {
-      const { studentId, preferencePosition, carouselNumber } = action;
+      const { studentId, preferencePosition, assignedCarouselId } = action;
       const preferenceToUpdate =
         electivePreferences[studentId][preferencePosition];
 
+      console.log(assignedCarouselId);
+
       const updatedPreference: ElectivePreference = { ...preferenceToUpdate };
-      updatedPreference.assignedCarousel = carouselNumber;
+      updatedPreference.assignedCarouselId = assignedCarouselId;
 
       const updatedState: Record<number, ElectivePreference[]> = {};
 
@@ -86,9 +88,6 @@ export function createdElectivePreferenceRecords(
     if (!acc[curr.partyId]) {
       acc[curr.partyId] = [];
     }
-    // This will get removed once the preferences arrive with their active state from the database.
-    if (curr.assignedCarousel < 0) curr.isActive = false;
-    else curr.isActive = true;
 
     acc[curr.partyId].push(curr);
     return acc;

@@ -10,7 +10,7 @@ export function compileElectiveAvailability(electives: ElectiveDTO[]): ElectiveA
             const updatedAvailability = [...responseElectiveAvailability[nextCourse], electiveDTO.carouselId]
             responseElectiveAvailability[nextCourse] = updatedAvailability
         } else {
-            if (electiveDTO.subscriberPartyIDs.length > 0) responseElectiveAvailability[nextCourse] = [electiveDTO.carouselId]
+            if (electiveDTO.subscriberPartyIDs.length > 0) responseElectiveAvailability[nextCourse] = [-1, electiveDTO.carouselId]
         }
     })
     return responseElectiveAvailability;
@@ -19,12 +19,12 @@ export function compileElectiveAvailability(electives: ElectiveDTO[]): ElectiveA
 export function checkAssignment(electivePreferences: ElectivePreference[], preferencePosition: number): boolean {
 
     if (!electivePreferences[preferencePosition].isActive) return true;
-    const referenceAssignment = electivePreferences[preferencePosition].assignedCarousel;
+    const referenceAssignment = electivePreferences[preferencePosition].assignedCarouselId;
   
     return !electivePreferences.some(otherPreference => 
       otherPreference.isActive &&
       otherPreference.preferencePosition !== preferencePosition &&
-      otherPreference.assignedCarousel === referenceAssignment
+      otherPreference.assignedCarouselId === referenceAssignment
     );
   }
   
