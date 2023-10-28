@@ -24,7 +24,7 @@ export const colorSettings: Record<CacheSetting, string> = {
   [CacheSetting.NoCache]: 'red'
 };
 
-export const RefreshButton = () => {
+export const RefreshDropdown = () => {
   const [cacheSetting, setCacheSetting] = useState<CacheSetting>(
     CacheSetting.Default
   );

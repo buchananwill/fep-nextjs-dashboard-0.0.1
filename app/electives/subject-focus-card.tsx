@@ -7,7 +7,7 @@ import ElectiveSubscriberAccordion, {
 import { ElectiveDTO } from './elective-card';
 import { useSearchParams } from 'next/navigation';
 import { ElectivesContext } from './electives-context';
-import { ElectivesState } from './elective-reducers';
+import { ElectiveState } from './elective-reducers';
 import { Student } from '../tables/student-table';
 
 interface Props {

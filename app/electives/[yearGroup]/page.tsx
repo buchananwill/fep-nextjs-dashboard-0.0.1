@@ -13,12 +13,14 @@ import {
 } from '../../utils/tables';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
-import { RefreshButton } from '../../components/refresh-button';
+import { RefreshDropdown } from '../../components/refresh-dropdown';
 import SubjectFocusCard from '../subject-focus-card';
 import ElectivesContextProvider from '../elective-context-provider';
 import CommitChanges from '../commit-changes';
 import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
+import { FilterDropdown } from '../../components/filter-dropdown';
+import { ElectiveFilters } from '../elective-filters';
 
 interface Props {
   params: { yearGroup: string };
@@ -143,10 +145,11 @@ export default async function ElectivesPage({
         <div className="flex w-full items-baseline grow-0">
           <Title>Option Blocks</Title>
           <Text className="mx-2">Subscription Analysis</Text>
+          <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
           <span className="grow"></span>
           <CommitChanges>Commit Changes</CommitChanges>
           <ToolTipsToggle></ToolTipsToggle>
-          <RefreshButton />
+          <RefreshDropdown />
         </div>
         <div className="flex w-full items-top justify-between pt-4">
           <Suspense>

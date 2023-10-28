@@ -11,7 +11,7 @@ import { Fragment, useState, useTransition } from 'react';
 import { ElectivesContext } from './electives-context';
 import { updateElectiveAssignments } from '../api/request-elective-preferences';
 import { revalidateTag } from 'next/cache';
-import { CacheSetting } from '../components/refresh-button';
+import { CacheSetting } from '../components/refresh-dropdown';
 
 interface Props {
   children: React.ReactNode;

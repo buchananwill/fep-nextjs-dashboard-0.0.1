@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 import { Card, Text, Title } from '@tremor/react';
 import CommitChanges from './commit-changes';
 import ToolTipsToggle from './tool-tips-toggle';
-import { RefreshButton } from '../components/refresh-button';
+import { RefreshDropdown } from '../components/refresh-dropdown';
 
 // Slug[0] = Year Group
 
@@ -19,7 +19,7 @@ export default async function ElectivesRootPage({}: Props) {
         <span className="grow"></span>
         <CommitChanges>Commit Changes</CommitChanges>
         <ToolTipsToggle></ToolTipsToggle>
-        <RefreshButton />
+        <RefreshDropdown />
       </div>
       <div className="flex w-full items-top justify-between pt-4">
         <Suspense>

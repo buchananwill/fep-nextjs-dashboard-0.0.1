@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Text, Title } from '@tremor/react';
 import ToolTipsToggle from './tool-tips-toggle';
 
-import { RefreshButton } from '../components/refresh-button';
+import { RefreshDropdown } from '../components/refresh-dropdown';
 import CommitChanges from './commit-changes';
 import ElectivesContextProvider from './elective-context-provider';
 

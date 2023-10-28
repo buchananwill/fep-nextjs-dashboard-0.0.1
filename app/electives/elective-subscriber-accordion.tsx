@@ -6,15 +6,12 @@ import React, {
   useState,
   useTransition
 } from 'react';
-import { ElectiveDTO } from './elective-card';
+
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
 import { checkAssignment } from './checkElectiveAssignments';
-import electivePreferencesReducer, {
-  createdElectivePreferenceRecords,
-  ElectivesState
-} from './elective-reducers';
-import ElectivesContextProvider from './elective-context-provider';
+import { ElectiveState } from './elective-reducers';
+
 import {
   ElectivesContext,
   ElectivesDispatchContext
@@ -39,7 +36,7 @@ interface Props {
 }
 
 function filterStudentList(
-  electiveState: ElectivesState,
+  electiveState: ElectiveState,
   studentList: Student[]
 ): Student[] {
   const { electivePreferences, courseId, carouselId } = electiveState;
@@ -87,7 +84,7 @@ export default function ElectiveSubscriberAccordion({
     assignedCarouselId: number
   ) {
     dispatch({
-      type: 'changed',
+      type: 'setCarousel',
       studentId: studentId,
       preferencePosition: preferencePosition,
       assignedCarouselId: assignedCarouselId

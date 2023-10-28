@@ -9,7 +9,7 @@ import { ElectivePreference } from './elective-subscriber-accordion';
 
 import electiveStateReducer, {
   createdElectivePreferenceRecords,
-  ElectivesState
+  ElectiveState
 } from './elective-reducers';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import { YearGroupElectives } from './[yearGroup]/page';
@@ -29,7 +29,10 @@ export default function ElectivesContextProvider({
   electivePreferenceList,
   children
 }: Props) {
-  const initialElectiveState: ElectivesState = {
+  const initialElectiveState: ElectiveState = {
+    courseFilters: [],
+    courseCarouselFilters: [],
+    pinnedStudents: [],
     carouselId: 0,
     courseId: '',
     courseCarouselId: 0,

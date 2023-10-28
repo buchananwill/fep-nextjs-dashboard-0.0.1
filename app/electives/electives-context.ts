@@ -1,7 +1,10 @@
 import { createContext } from 'react';
-import { ElectivesState } from './elective-reducers';
+import { ElectiveState } from './elective-reducers';
 
-export const ElectivesContext = createContext<ElectivesState>({
+export const ElectivesContext = createContext<ElectiveState>({
+  courseFilters: [],
+  courseCarouselFilters: [],
+  pinnedStudents: [],
   carouselId: 0,
   courseCarouselId: 0,
   courseId: '',

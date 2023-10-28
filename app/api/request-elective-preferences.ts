@@ -1,7 +1,7 @@
 'use server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-import { ElectivesState } from '../electives/elective-reducers';
+import { ElectiveState } from '../electives/elective-reducers';
 import { redirect } from 'next/navigation';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
@@ -82,7 +82,7 @@ export const fetchElectiveYearGroupWithAllStudents = async (
 };
 
 export const updateElectiveAssignments = async (
-  electivesState: ElectivesState
+  electivesState: ElectiveState
 ) => {
   const tag = 'electiveAssignments';
 

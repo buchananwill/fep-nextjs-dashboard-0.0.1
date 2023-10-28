@@ -1,8 +1,9 @@
 import { ElectivePreference } from './elective-subscriber-accordion';
 import { produce } from 'immer';
+import { FilterOption } from '../components/filter-dropdown';
 
-interface ChangedCarousel {
-  type: 'changed';
+interface SetCarousel {
+  type: 'setCarousel';
   studentId: number;
   preferencePosition: number;
   assignedCarouselId: number;
@@ -21,14 +22,27 @@ interface FocusCourse {
   courseId: string;
 }
 
+export interface SetCourseFilters {
+  type: 'setCourseFilters';
+  entryList: FilterOption[];
+}
+
 interface FocusStudent {
   type: 'focusStudent';
   studentId: number;
 }
 
-type Actions = ChangedCarousel | SetActive | FocusCourse | FocusStudent;
+export type ElectiveStateActions =
+  | SetCarousel
+  | SetActive
+  | FocusCourse
+  | FocusStudent
+  | SetCourseFilters;
 
-export type ElectivesState = {
+export type ElectiveState = {
+  courseFilters: FilterOption[];
+  courseCarouselFilters: { courseUUID: string; carouselId: string }[];
+  pinnedStudents: number[];
   carouselId: number;
   courseId: string;
   courseCarouselId: number;
@@ -37,11 +51,11 @@ export type ElectivesState = {
 };
 
 export default function electivePreferencesReducer(
-  electivesState: ElectivesState,
-  action: Actions
+  electivesState: ElectiveState,
+  action: ElectiveStateActions
 ) {
   switch (action.type) {
-    case 'changed': {
+    case 'setCarousel': {
       const { studentId, preferencePosition, assignedCarouselId } = action;
 
       return produce(electivesState, (draftUpdate) => {
@@ -77,6 +91,15 @@ export default function electivePreferencesReducer(
 
       return produce(electivesState, (draftState) => {
         draftState.partyId = studentId;
+      });
+    }
+    case 'setCourseFilters': {
+      const { entryList } = action;
+
+      console.log('Setting filters again: ', entryList);
+
+      return produce(electivesState, (draftState) => {
+        draftState.courseFilters = entryList;
       });
     }
 

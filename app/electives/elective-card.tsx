@@ -7,7 +7,7 @@ import {
   ElectivesContext,
   ElectivesDispatchContext
 } from './electives-context';
-import { ElectivesState } from './elective-reducers';
+import { ElectiveState } from './elective-reducers';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -21,7 +21,7 @@ const aLevelClassLimitInt = 25;
 
 const calculateSubscribers = (
   electiveDTO: ElectiveDTO,
-  electivesState: ElectivesState
+  electivesState: ElectiveState
 ) => {
   const { carouselId, courseUUID } = electiveDTO;
   let count = 0;
@@ -41,7 +41,7 @@ const calculateSubscribers = (
 };
 
 const getBorderVisible = (
-  electiveState: ElectivesState,
+  electiveState: ElectiveState,
   carouselId: number,
   courseUUID: string
 ) => {
