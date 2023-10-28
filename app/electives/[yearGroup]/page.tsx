@@ -22,6 +22,7 @@ import { Suspense } from 'react';
 import { FilterDropdown } from '../../components/filter-dropdown';
 import { ElectiveFilters } from '../elective-filters';
 import ElectivesFilterContextProvider from '../electives-filter-context-provider';
+import Union from '../../components/union';
 
 interface Props {
   params: { yearGroup: string };

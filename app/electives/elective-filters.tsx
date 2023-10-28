@@ -1,19 +1,23 @@
 'use client';
 import { Card, Text } from '@tremor/react';
-import { FilterDropdown, FilterOption } from '../components/filter-dropdown';
+import {
+  FilterDropdown,
+  FilterOption,
+  FilterType
+} from '../components/filter-dropdown';
 import { useContext } from 'react';
 import {
   ElectivesContext,
   ElectivesDispatchContext
 } from './electives-context';
 import { ElectiveDTO } from './elective-card';
-import { type } from 'os';
+import { FilterPopover } from '../components/filter-popover';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
 }
 
-function aggregateDistinctCourses(
+function createDistinctFilterOptions(
   electiveDTOList: ElectiveDTO[]
 ): FilterOption[] {
   if (!electiveDTOList) return [];
@@ -32,7 +36,8 @@ function aggregateDistinctCourses(
     })
     .map(({ courseDescription, courseUUID }) => ({
       URI: courseUUID,
-      label: courseDescription
+      label: courseDescription,
+      operator: FilterType.all
     }));
 }
 
@@ -40,20 +45,16 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   const electiveContext = useContext(ElectivesContext);
   const dispatch = useContext(ElectivesDispatchContext);
 
-  const distinctCourses = aggregateDistinctCourses(electiveDTOList);
-
-  const handleSelectionClick = (selections: string[]) => {
-    console.log(selections);
-  };
+  const distinctCourses = createDistinctFilterOptions(electiveDTOList);
 
   return (
     <Card className="max-w-fit m-0 p-4">
       <Text className={'absolute top-1 left-2'}>Filters</Text>
-      <FilterDropdown
+      <FilterPopover
         filterOptions={distinctCourses}
         filterReducerType={'setCourseFilters'}
         filterContextProperty={'courseFilters'}
-      ></FilterDropdown>
+      ></FilterPopover>
     </Card>
   );
 }

@@ -1,6 +1,11 @@
 import { produce } from 'immer';
-import { FilterOption } from '../components/filter-dropdown';
-import { Student } from '../tables/student-table';
+import {
+  Filter,
+  FilterOption,
+  FilterType
+} from '../components/filter-dropdown';
+import { ElectiveDTO } from './elective-card';
+import { ElectivePreference } from './elective-subscriber-accordion';
 
 export interface SetCourseFilters {
   type: 'setCourseFilters';
@@ -34,8 +39,6 @@ export default function electiveFilterReducer(
     case 'setCourseFilters': {
       const { entryList } = action;
 
-      console.log('Setting filters again: ', entryList);
-
       return produce(electiveFilterState, (draftState) => {
         draftState.courseFilters = entryList;
       });
@@ -45,4 +48,37 @@ export default function electiveFilterReducer(
       throw Error('Unkown action: ' + action);
     }
   }
+}
+
+interface CourseFilter extends Filter<Record<string, ElectivePreference[]>> {
+  URI: string;
+  label: string;
+  filterType: FilterType;
+}
+
+function createCourseFilter(filterOption: FilterOption): CourseFilter {
+  return {
+    URI: filterOption.URI,
+    label: filterOption.label,
+    filterType: filterOption.operator,
+    apply: function (
+      record: Record<string, ElectivePreference[]>
+    ): Record<string, ElectivePreference[]> {
+      const filteredSet: Record<string, ElectivePreference[]> = {};
+      for (let electivePreferencesKey in record) {
+        const numericKey = parseInt(electivePreferencesKey);
+        const nextStudentPrefs = record[numericKey];
+
+        const foundStudent = nextStudentPrefs.some((electivePreference) => {
+          let { courseUUID, isActive } = electivePreference;
+          return isActive && this.URI == courseUUID;
+        });
+
+        if (foundStudent) {
+          filteredSet[electivePreferencesKey] = nextStudentPrefs;
+        }
+      }
+      return filteredSet;
+    }
+  };
 }

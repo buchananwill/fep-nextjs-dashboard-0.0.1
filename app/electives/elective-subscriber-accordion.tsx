@@ -11,7 +11,6 @@ import {
   ElectivesDispatchContext
 } from './electives-context';
 import { ElectivesFilterContext } from './electives-filter-context';
-import { ElectiveFilterState } from './elective-filter-reducers';
 import { FilterOption } from '../components/filter-dropdown';
 
 export interface ElectivePreference {

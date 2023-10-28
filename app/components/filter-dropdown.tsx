@@ -26,6 +26,9 @@ import {
   ElectivesFilterDispatchContext
 } from '../electives/electives-filter-context';
 import { ElectiveFilterState } from '../electives/elective-filter-reducers';
+import Union from './union';
+import Intersection from './intersection';
+import { Button } from '@tremor/react';
 
 // For example, using TypeScript enum
 export enum CacheSetting {
@@ -51,7 +54,6 @@ function summariseFilterSelections(
     | Record<number, ElectivePreference[]>
 ) {
   if (Array.isArray(selectedFilters) && selectedFilters.length > 0) {
-    console.log('Selected filters: ', selectedFilters);
     const joinedSelections = selectedFilters
       .map((selection) =>
         typeof selection !== 'number' && 'label' in selection
@@ -69,6 +71,10 @@ export interface FilterOption {
   URI: string;
   label: string;
   operator: FilterType;
+}
+
+export interface Filter<T> {
+  apply(setOfElements: T): T;
 }
 
 export enum FilterType {
@@ -97,10 +103,6 @@ export const FilterDropdown = ({
 
   const accessedFilterProperty = electiveFilterState[filterContextProperty];
 
-  console.log('Accessed Filter property: ', accessedFilterProperty);
-
-  // console.log('Accessed Property: ', accessedProperty);
-
   function handleOnChange(selectionList: FilterOption[]) {
     filterDispatch({
       type: filterReducerType,
@@ -109,7 +111,7 @@ export const FilterDropdown = ({
   }
 
   return (
-    <div className="w-36">
+    <div className="w-48">
       <Listbox
         value={accessedFilterProperty}
         by="URI"
@@ -151,7 +153,27 @@ export const FilterDropdown = ({
                       `
                     }
                   >
-                    {entry.label}
+                    <div className={'flex grow-1'}>
+                      {entry.label}
+                      <span className="grow"></span>
+                      <Button
+                        size={'xs'}
+                        className={'m-0'}
+                        onClick={() => null}
+                      ></Button>
+                      {/*<label className="swap duration-0 delay-0">*/}
+                      {/*  <input type="checkbox" />*/}
+                      {/*  <div className="swap-on duration-0 ease-linear delay-0">*/}
+                      {/*    <Union size={20} className={'inline'}></Union>*/}
+                      {/*  </div>*/}
+                      {/*  <div className="swap-off duration-0 ease-linear delay-0">*/}
+                      {/*    <Intersection*/}
+                      {/*      size={20}*/}
+                      {/*      className={'inline'}*/}
+                      {/*    ></Intersection>*/}
+                      {/*  </div>*/}
+                      {/*</label>*/}
+                    </div>
                   </Listbox.Option>
                 );
               })}
