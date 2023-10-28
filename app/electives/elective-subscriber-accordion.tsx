@@ -1,11 +1,5 @@
 'use client';
-import React, {
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-  useTransition
-} from 'react';
+import React, { useContext, useTransition } from 'react';
 
 import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
@@ -16,6 +10,9 @@ import {
   ElectivesContext,
   ElectivesDispatchContext
 } from './electives-context';
+import { ElectivesFilterContext } from './electives-filter-context';
+import { ElectiveFilterState } from './elective-filter-reducers';
+import { FilterOption } from '../components/filter-dropdown';
 
 export interface ElectivePreference {
   partyId: number;
@@ -31,52 +28,61 @@ export interface ElectiveAvailability {
 }
 
 interface Props {
-  studentList: Student[];
   electiveAvailability: ElectiveAvailability;
 }
 
 function filterStudentList(
-  electiveState: ElectiveState,
-  studentList: Student[]
+  courseFilters: FilterOption[],
+  electiveState: ElectiveState
 ): Student[] {
-  const { electivePreferences, courseId, carouselId } = electiveState;
+  const { electivePreferences, courseId, carouselId, studentList } =
+    electiveState;
   const filteredList: Student[] = [];
 
   for (let electivePreferencesKey in electivePreferences) {
     const numericKey = parseInt(electivePreferencesKey);
-    const foundStudent = electivePreferences[numericKey].some(
-      (electivePreference) =>
-        electivePreference.assignedCarouselId == carouselId &&
-        electivePreference.courseUUID == courseId
-    );
+    const nextStudentPrefs = electivePreferences[numericKey];
+
+    const foundStudent = nextStudentPrefs.some((electivePreference) => {
+      let { courseUUID, isActive } = electivePreference;
+      return courseFilters.some(
+        (filterOption) => isActive && filterOption.URI == courseUUID
+      );
+    });
     if (foundStudent) {
       const student = studentList.find((student) => student.id == numericKey);
       student && filteredList.push(student);
     }
   }
+
   return filteredList;
 }
 
 export default function ElectiveSubscriberAccordion({
-  studentList,
+  // studentList,
   electiveAvailability
 }: Props) {
   const { replace } = useRouter();
   // const [radioActive, setRadioActive] = useState(studentFocus);
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const [filteredList, setFilteredList] = useState<Student[]>(studentList);
+  // const [filteredList, setFilteredList] = useState<Student[]>(studentList);
 
   const electiveState = useContext(ElectivesContext);
-  const { electivePreferences, partyId } = electiveState;
+  const { electivePreferences, partyId, studentList } = electiveState;
+  const electiveFilterState = useContext(ElectivesFilterContext);
+
+  const { courseFilters } = electiveFilterState;
+
+  const filteredStudents = filterStudentList(courseFilters, electiveState);
 
   const dispatch = useContext(ElectivesDispatchContext);
 
-  useEffect(() => {
-    const filteredStudentList = filterStudentList(electiveState, studentList);
-    console.log('hello');
-    setFilteredList(filteredStudentList);
-  }, [studentList, electiveState]);
+  // useEffect(() => {
+  //   const filteredStudentList = filterStudentList(electiveState, studentList);
+  //
+  //   setFilteredList(filteredStudentList);
+  // }, [studentList, electiveState]);
 
   function handleAssignmentChange(
     studentId: number,
@@ -122,7 +128,7 @@ export default function ElectiveSubscriberAccordion({
     return (
       <>
         <div className="pb-4">
-          {filteredList.map((student) => (
+          {filteredStudents.map((student) => (
             <div
               key={`${student.id}-prefs`}
               className="gap-0 collapse bg-base-200 py-2 px-0 m-0"
@@ -153,8 +159,7 @@ export default function ElectiveSubscriberAccordion({
                     ({
                       preferencePosition,
                       courseDescription,
-                      assignedCarouselId,
-                      isActive
+                      assignedCarouselId
                     }) => {
                       return (
                         <div

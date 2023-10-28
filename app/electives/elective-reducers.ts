@@ -1,6 +1,7 @@
 import { ElectivePreference } from './elective-subscriber-accordion';
 import { produce } from 'immer';
 import { FilterOption } from '../components/filter-dropdown';
+import { Student } from '../tables/student-table';
 
 interface SetCarousel {
   type: 'setCarousel';
@@ -22,11 +23,6 @@ interface FocusCourse {
   courseId: string;
 }
 
-export interface SetCourseFilters {
-  type: 'setCourseFilters';
-  entryList: FilterOption[];
-}
-
 interface FocusStudent {
   type: 'focusStudent';
   studentId: number;
@@ -36,13 +32,10 @@ export type ElectiveStateActions =
   | SetCarousel
   | SetActive
   | FocusCourse
-  | FocusStudent
-  | SetCourseFilters;
+  | FocusStudent;
 
 export type ElectiveState = {
-  courseFilters: FilterOption[];
-  courseCarouselFilters: { courseUUID: string; carouselId: string }[];
-  pinnedStudents: number[];
+  studentList: Student[];
   carouselId: number;
   courseId: string;
   courseCarouselId: number;
@@ -91,15 +84,6 @@ export default function electivePreferencesReducer(
 
       return produce(electivesState, (draftState) => {
         draftState.partyId = studentId;
-      });
-    }
-    case 'setCourseFilters': {
-      const { entryList } = action;
-
-      console.log('Setting filters again: ', entryList);
-
-      return produce(electivesState, (draftState) => {
-        draftState.courseFilters = entryList;
       });
     }
 

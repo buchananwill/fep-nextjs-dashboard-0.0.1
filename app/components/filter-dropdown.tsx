@@ -21,6 +21,11 @@ import {
   ElectiveStateActions
 } from '../electives/elective-reducers';
 import { ElectivePreference } from '../electives/elective-subscriber-accordion';
+import {
+  ElectivesFilterContext,
+  ElectivesFilterDispatchContext
+} from '../electives/electives-filter-context';
+import { ElectiveFilterState } from '../electives/elective-filter-reducers';
 
 // For example, using TypeScript enum
 export enum CacheSetting {
@@ -63,43 +68,41 @@ function summariseFilterSelections(
 export interface FilterOption {
   URI: string;
   label: string;
+  operator: FilterType;
+}
+
+export enum FilterType {
+  all = 'all',
+  any = 'any'
 }
 
 interface Props {
   filterOptions: FilterOption[];
   filterReducerType: string;
-  contextProperty: keyof ElectiveState;
+  filterContextProperty: keyof ElectiveFilterState;
 }
 
 export const FilterDropdown = ({
   filterOptions,
   filterReducerType,
-  contextProperty
+  filterContextProperty
 }: Props) => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
-  const electiveState = useContext(ElectivesContext);
-  const accessedProperty = electiveState[contextProperty];
+  // const electiveState = useContext(ElectivesContext);
+  // const accessedProperty = electiveState[contextProperty];
   const dispatch = useContext(ElectivesDispatchContext);
 
-  console.log('Accessed Property: ', accessedProperty);
+  const electiveFilterState = useContext(ElectivesFilterContext);
+  const filterDispatch = useContext(ElectivesFilterDispatchContext);
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: filterReducerType,
-  //     entryList: selectedFilters
-  //   });
-  // }, [selectedFilters, dispatch, filterReducerType]);
+  const accessedFilterProperty = electiveFilterState[filterContextProperty];
 
-  function handleOnChange(
-    selectionList:
-      | string
-      | number
-      | FilterOption[]
-      | { courseUUID: string; carouselId: string }[]
-      | number[]
-      | Record<number, ElectivePreference[]>
-  ) {
-    dispatch({
+  console.log('Accessed Filter property: ', accessedFilterProperty);
+
+  // console.log('Accessed Property: ', accessedProperty);
+
+  function handleOnChange(selectionList: FilterOption[]) {
+    filterDispatch({
       type: filterReducerType,
       entryList: selectionList
     });
@@ -108,7 +111,7 @@ export const FilterDropdown = ({
   return (
     <div className="w-36">
       <Listbox
-        value={accessedProperty}
+        value={accessedFilterProperty}
         by="URI"
         onChange={handleOnChange}
         multiple
@@ -119,7 +122,7 @@ export const FilterDropdown = ({
             className={`bg-${gray}-300 w-full relative cursor-default rounded-lg py-4 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm`}
           >
             <span className="block">
-              {summariseFilterSelections(accessedProperty)}
+              {summariseFilterSelections(accessedFilterProperty)}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon

@@ -52,7 +52,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
       <FilterDropdown
         filterOptions={distinctCourses}
         filterReducerType={'setCourseFilters'}
-        contextProperty={'courseFilters'}
+        filterContextProperty={'courseFilters'}
       ></FilterDropdown>
     </Card>
   );

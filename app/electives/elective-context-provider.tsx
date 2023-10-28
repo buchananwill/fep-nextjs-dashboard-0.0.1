@@ -13,26 +13,25 @@ import electiveStateReducer, {
 } from './elective-reducers';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import { YearGroupElectives } from './[yearGroup]/page';
+import { Student } from '../tables/student-table';
 
 interface Props {
   // lessonCycleFocus: ElectiveDTO;
   // studentFocus: number;
-  // studentList: Student[];
+  studentList: Student[];
   electivePreferenceList: ElectivePreference[];
   // electiveAvailability: ElectiveAvailability;
   children: ReactNode;
-  yearGroupElectiveData: YearGroupElectives;
+  // yearGroupElectiveData: YearGroupElectives;
 }
 
 export default function ElectivesContextProvider({
-  yearGroupElectiveData,
+  studentList,
   electivePreferenceList,
   children
 }: Props) {
   const initialElectiveState: ElectiveState = {
-    courseFilters: [],
-    courseCarouselFilters: [],
-    pinnedStudents: [],
+    studentList,
     carouselId: 0,
     courseId: '',
     courseCarouselId: 0,

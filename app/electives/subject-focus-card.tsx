@@ -12,7 +12,7 @@ import { Student } from '../tables/student-table';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
-  studentDTOList: Student[];
+
   electiveAvailability: ElectiveAvailability;
 }
 
@@ -28,11 +28,7 @@ function getElectiveDTO(
   );
 }
 
-const SubjectFocusCard = ({
-  electiveDTOList,
-  electiveAvailability,
-  studentDTOList
-}: Props) => {
+const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
   const toolTips = useSearchParams()?.get('toolTips') == 'show';
   const [courseFocus, setCourseFocus] = useState<ElectiveDTO | null>();
   const { carouselId, courseId } = useContext(ElectivesContext);
@@ -54,9 +50,7 @@ const SubjectFocusCard = ({
           data-tip="Click on a course to the left to see its current subscribers."
         >
           <div className="w-64 rounded-2xl shadow p-2 m-0 text-xl font-semibold border-2">
-            {courseFocus?.courseDescription || (
-              <span className="italic">No course selected</span>
-            )}
+            Filtered Students
           </div>
         </div>
       </div>
@@ -70,9 +64,8 @@ const SubjectFocusCard = ({
       >
         <div className="relative overflow-y-scroll max-h-[65vh] border-t-2 min-w-full py-2">
           <div className="text-center py-2 select-none px-2">
-            {electiveDTOList !== null && courseFocus !== null ? (
+            {electiveDTOList !== null ? (
               <ElectiveSubscriberAccordion
-                studentList={studentDTOList}
                 electiveAvailability={electiveAvailability}
               />
             ) : (

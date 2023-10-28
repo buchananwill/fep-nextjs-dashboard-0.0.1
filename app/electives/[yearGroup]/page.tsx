@@ -21,6 +21,7 @@ import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
 import { FilterDropdown } from '../../components/filter-dropdown';
 import { ElectiveFilters } from '../elective-filters';
+import ElectivesFilterContextProvider from '../electives-filter-context-provider';
 
 interface Props {
   params: { yearGroup: string };
@@ -86,7 +87,7 @@ export default async function ElectivesPage({
       yearGroupRankInt,
       carouselRows,
       carouselColumns: carouselCols,
-      studentDTOList: studentList,
+      studentDTOList,
       electiveDTOList: electiveData,
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
@@ -120,7 +121,7 @@ export default async function ElectivesPage({
       if (lessonCycleFocus !== null) {
         const localCopy = lessonCycleFocus;
         filteredStudentList =
-          studentList?.filter((student) =>
+          studentDTOList?.filter((student) =>
             localCopy.subscriberPartyIDs.includes(student.id)
           ) ?? [];
       }
@@ -140,50 +141,51 @@ export default async function ElectivesPage({
     return (
       <ElectivesContextProvider
         electivePreferenceList={electivePreferences}
-        yearGroupElectiveData={yearGroupElectiveData}
+        studentList={studentDTOList}
       >
-        <div className="flex w-full items-baseline grow-0">
-          <Title>Option Blocks</Title>
-          <Text className="mx-2">Subscription Analysis</Text>
-          <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
-          <span className="grow"></span>
-          <CommitChanges>Commit Changes</CommitChanges>
-          <ToolTipsToggle></ToolTipsToggle>
-          <RefreshDropdown />
-        </div>
-        <div className="flex w-full items-top justify-between pt-4">
-          <Suspense>
-            {yearGroupElectiveData !== null ? (
-              <div className="flex w-full items-top justify-between pt-4  select-none">
-                <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-                  <OptionBlockTable
-                    electives={electiveTableData}
-                    partyId={partyId}
-                  ></OptionBlockTable>
-                </Card>
-
-                <SubjectFocusCard
-                  electiveDTOList={electiveData}
-                  studentDTOList={studentList}
-                  electiveAvailability={electiveAvailability}
-                ></SubjectFocusCard>
-              </div>
-            ) : (
-              <>
-                {' '}
-                <div className="flex w-full items-top justify-between pt-4">
+        <ElectivesFilterContextProvider>
+          <div className="flex w-full items-baseline grow-0">
+            <Title>Option Blocks</Title>
+            <Text className="mx-2">Subscription Analysis</Text>
+            <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
+            <span className="grow"></span>
+            <CommitChanges>Commit Changes</CommitChanges>
+            <ToolTipsToggle></ToolTipsToggle>
+            <RefreshDropdown />
+          </div>
+          <div className="flex w-full items-top justify-between pt-4">
+            <Suspense>
+              {yearGroupElectiveData !== null ? (
+                <div className="flex w-full items-top justify-between pt-4  select-none">
                   <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-                    Unable to find requested table.
+                    <OptionBlockTable
+                      electives={electiveTableData}
+                      partyId={partyId}
+                    ></OptionBlockTable>
                   </Card>
 
-                  <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
-                    No yeargroup loaded.
-                  </Card>
+                  <SubjectFocusCard
+                    electiveDTOList={electiveData}
+                    electiveAvailability={electiveAvailability}
+                  ></SubjectFocusCard>
                 </div>
-              </>
-            )}
-          </Suspense>
-        </div>
+              ) : (
+                <>
+                  {' '}
+                  <div className="flex w-full items-top justify-between pt-4">
+                    <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
+                      Unable to find requested table.
+                    </Card>
+
+                    <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
+                      No yeargroup loaded.
+                    </Card>
+                  </div>
+                </>
+              )}
+            </Suspense>
+          </div>
+        </ElectivesFilterContextProvider>
       </ElectivesContextProvider>
     );
   } else return <>Error</>;
