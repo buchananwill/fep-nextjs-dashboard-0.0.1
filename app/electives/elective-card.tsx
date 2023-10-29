@@ -3,11 +3,13 @@ import { Badge, Card, Color } from '@tremor/react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
-import {
-  ElectivesContext,
-  ElectivesDispatchContext
-} from './electives-context';
+import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
+import { PinButton, PinIcons } from '../components/pin-button';
+import { hi } from 'date-fns/locale';
+import { ElectiveFilterContext } from './elective-filter-context';
+import { FilterOption } from './elective-filter-reducers';
+import { some } from 'd3-array';
 
 export interface ElectiveDTO {
   courseDescription: string;
@@ -56,6 +58,17 @@ const getBorderVisible = (
     : 'border-transparent';
 };
 
+function getHighlighted(highlightedCourses: string[], courseUUID: string) {
+  const isHighlighted =
+    highlightedCourses &&
+    highlightedCourses.some((course) => course == courseUUID);
+  return isHighlighted ? 'text-red-500' : '';
+}
+
+function getFiltered(courseFilters: FilterOption[], courseUUID: string) {
+  return courseFilters.some((courseFilter) => courseFilter.URI == courseUUID);
+}
+
 export default function ElectiveCard({
   electiveDTO
 }: {
@@ -67,11 +80,16 @@ export default function ElectiveCard({
   const [borderVisible, setBorderVisible] = useState('border-transparent');
   const subscribersColor = getSubscribersColor(subscribers);
   const isEnabled = subscribers > 0;
-  const { replace } = useRouter();
-  const pathname = usePathname();
+
   const [isPending, startTransition] = useTransition();
-  const electivesState = useContext(ElectivesContext);
-  const dispatch = useContext(ElectivesDispatchContext);
+  const electivesState = useContext(ElectiveContext);
+  const { courseFilters } = useContext(ElectiveFilterContext);
+  const dispatch = useContext(ElectiveDispatchContext);
+  const {
+    courseCarouselId: focusCCID,
+    carouselId: focusCId,
+    highlightedCourses
+  } = electivesState;
 
   useEffect(() => {
     const updatedSubscribers = calculateSubscribers(
@@ -86,12 +104,26 @@ export default function ElectiveCard({
     courseCarouselId: number,
     courseUUID: string
   ) {
-    dispatch({
-      type: 'focusCourse',
-      carouselId: carouselId,
-      courseCarouselId: courseCarouselId,
-      courseId: courseUUID
+    startTransition(() => {
+      dispatch({
+        type: 'focusCourse',
+        carouselId: carouselId,
+        courseCarouselId: courseCarouselId,
+        courseId: courseUUID
+      });
+      dispatch({
+        type: 'setFilterPending',
+        pending: true
+      });
     });
+  }
+
+  function handleMortarBoardClick(id: string) {
+    dispatch({
+      type: 'setHighlightedCourses',
+      id: id
+    });
+    console.log('Now highlighted: ', highlightedCourses);
   }
 
   useEffect(() => {
@@ -105,6 +137,8 @@ export default function ElectiveCard({
 
   const opacity = getOpacity(isEnabled);
 
+  const highlightText = getHighlighted(highlightedCourses, courseUUID);
+
   const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
 
   const classesColor = getClassesColor(numberOfClasses);
@@ -114,23 +148,39 @@ export default function ElectiveCard({
       className={classNames(
         `opacity-${opacity}`,
         borderVisible,
-        'flex p-2 m-0 items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform'
+        'flex py-2 px-1 m-0 items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform',
+        courseCarouselId == focusCCID && carouselId == focusCId
+          ? 'bg-emerald-100'
+          : ''
       )}
       decoration="left"
       decorationColor="emerald"
-      onClick={() => {
-        console.log(carouselId, courseCarouselId, courseUUID);
-        handleCardClick(carouselId, courseCarouselId, courseUUID);
-      }}
     >
-      {' '}
       {isPending && (
         <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
           <span className="loading loading-ring loading-sm"></span>
         </div>
       )}
-      <span className="mx-2">{courseDescription}</span>
-      <span className="grow"></span>
+      <div className="indicator grow">
+        {getFiltered(courseFilters, courseUUID) && (
+          <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
+        )}
+        <div
+          className="px-1 cursor-pointer grow inline"
+          onClick={() => {
+            handleCardClick(carouselId, courseCarouselId, courseUUID);
+          }}
+        >
+          {courseDescription}
+        </div>
+      </div>
+
+      <PinButton
+        pinIcon={PinIcons.mortarBoard}
+        classNames={`${highlightText} mr-1`}
+        isPinned={highlightText != ''}
+        setPinned={() => handleMortarBoardClick(courseUUID)}
+      ></PinButton>
       <Badge color={classesColor}>{numberOfClasses} </Badge>
       <Badge color={subscribersColor}>{subscribers}</Badge>
     </Card>

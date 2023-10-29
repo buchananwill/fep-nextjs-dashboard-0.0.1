@@ -1,11 +1,20 @@
 import { produce } from 'immer';
-import {
-  Filter,
-  FilterOption,
-  FilterType
-} from '../components/filter-dropdown';
-import { ElectiveDTO } from './elective-card';
 import { ElectivePreference } from './elective-subscriber-accordion';
+
+export interface FilterOption {
+  URI: string;
+  label: string;
+  operator: FilterType;
+}
+
+export interface Filter<T> {
+  apply(setOfElements: T): T;
+}
+
+export enum FilterType {
+  all = 'all',
+  any = 'any'
+}
 
 export interface SetCourseFilters {
   type: 'setCourseFilters';
@@ -45,7 +54,7 @@ export default function electiveFilterReducer(
     }
 
     default: {
-      throw Error('Unkown action: ' + action);
+      throw Error('Unknown action: ' + action);
     }
   }
 }

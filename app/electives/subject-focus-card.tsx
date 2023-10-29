@@ -1,12 +1,12 @@
 'use client';
 import { Card } from '@tremor/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Suspense, useContext, useEffect, useState } from 'react';
 import ElectiveSubscriberAccordion, {
   ElectiveAvailability
 } from './elective-subscriber-accordion';
 import { ElectiveDTO } from './elective-card';
 import { useSearchParams } from 'next/navigation';
-import { ElectivesContext } from './electives-context';
+import { ElectiveContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { Student } from '../tables/student-table';
 
@@ -30,13 +30,8 @@ function getElectiveDTO(
 
 const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
   const toolTips = useSearchParams()?.get('toolTips') == 'show';
-  const [courseFocus, setCourseFocus] = useState<ElectiveDTO | null>();
-  const { carouselId, courseId } = useContext(ElectivesContext);
 
-  useEffect(() => {
-    const electiveDTO = getElectiveDTO(electiveDTOList, carouselId, courseId);
-    setCourseFocus(electiveDTO);
-  }, [carouselId, courseId, electiveDTOList]);
+  const { filterPending } = useContext(ElectiveContext);
 
   return (
     <Card className="max-w-sm ml-2 p-0 sticky top-4 h-min text-center">
@@ -50,7 +45,10 @@ const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
           data-tip="Click on a course to the left to see its current subscribers."
         >
           <div className="w-64 rounded-2xl shadow p-2 m-0 text-xl font-semibold border-2">
-            Filtered Students
+            Filtered Students{' '}
+            {filterPending && (
+              <span className="absolute right-8 top-4 loading loading-spinner loading-xs"></span>
+            )}
           </div>
         </div>
       </div>
@@ -64,13 +62,11 @@ const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
       >
         <div className="relative overflow-y-scroll max-h-[65vh] border-t-2 min-w-full py-2">
           <div className="text-center py-2 select-none px-2">
-            {electiveDTOList !== null ? (
+            <Suspense fallback={getAccordionFallBack()}>
               <ElectiveSubscriberAccordion
                 electiveAvailability={electiveAvailability}
               />
-            ) : (
-              <div className="italic min-w-full">Please select a course.</div>
-            )}
+            </Suspense>
           </div>
         </div>
       </div>
@@ -79,3 +75,7 @@ const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
 };
 
 export default SubjectFocusCard;
+
+function getAccordionFallBack() {
+  return <div>Loading...</div>;
+}

@@ -1,7 +1,8 @@
 import { ElectivePreference } from './elective-subscriber-accordion';
 import { produce } from 'immer';
-import { FilterOption } from '../components/filter-dropdown';
 import { Student } from '../tables/student-table';
+import { FilterType } from './elective-filter-reducers';
+import { ca, gl } from 'date-fns/locale';
 
 interface SetCarousel {
   type: 'setCarousel';
@@ -28,13 +29,41 @@ interface FocusStudent {
   studentId: number;
 }
 
+interface SetFilterType {
+  type: 'setFilterType';
+  filterType: FilterType;
+}
+
+interface SetFilterPending {
+  type: 'setFilterPending';
+  pending: boolean;
+}
+
+interface SetPinnedStudent {
+  type: 'setPinnedStudent';
+  id: number;
+}
+
+interface SetHighlightedCourses {
+  type: 'setHighlightedCourses';
+  id: string;
+}
+
 export type ElectiveStateActions =
   | SetCarousel
   | SetActive
   | FocusCourse
-  | FocusStudent;
+  | FocusStudent
+  | SetFilterType
+  | SetFilterPending
+  | SetPinnedStudent
+  | SetHighlightedCourses;
 
 export type ElectiveState = {
+  highlightedCourses: string[];
+  pinnedStudents: Student[];
+  filterPending: boolean;
+  filterType: FilterType;
   studentList: Student[];
   carouselId: number;
   courseId: string;
@@ -71,11 +100,23 @@ export default function electivePreferencesReducer(
 
     case 'focusCourse': {
       const { carouselId, courseCarouselId, courseId } = action;
+      const {
+        carouselId: oldCarouselId,
+        courseCarouselId: oldCourseCarouselId,
+        courseId: oldCourseId
+      } = electivesState;
+
+      const carouselMatch = carouselId == oldCarouselId;
+      const courseCarouselMatch = courseCarouselId == oldCourseCarouselId;
+      const UUIDMatch = courseId == oldCourseId;
+
+      const globalMatch = carouselMatch && courseCarouselMatch && UUIDMatch;
 
       return produce(electivesState, (draftState) => {
-        draftState.carouselId = carouselId;
-        draftState.courseCarouselId = courseCarouselId;
-        draftState.courseId = courseId;
+        draftState.carouselId = globalMatch ? -1 : carouselId;
+        draftState.courseCarouselId = globalMatch ? -1 : courseCarouselId;
+        draftState.courseId = globalMatch ? '' : courseId;
+        draftState.filterPending = true;
       });
     }
 
@@ -84,6 +125,60 @@ export default function electivePreferencesReducer(
 
       return produce(electivesState, (draftState) => {
         draftState.partyId = studentId;
+      });
+    }
+
+    case 'setFilterType': {
+      const { filterType } = action;
+
+      const updatedType =
+        filterType == FilterType.all ? FilterType.any : FilterType.all;
+      return produce(electivesState, (draftState) => {
+        draftState.filterType = updatedType;
+        draftState.filterPending = true;
+      });
+    }
+    case 'setFilterPending': {
+      const { pending } = action;
+      return produce(electivesState, (updatedState) => {
+        updatedState.filterPending = pending;
+      });
+    }
+
+    case 'setPinnedStudent': {
+      const { id } = action;
+      const { pinnedStudents, studentList } = electivesState;
+
+      const currentlyPinned =
+        pinnedStudents && pinnedStudents.some((student) => student.id == id);
+
+      return produce(electivesState, (updatedState) => {
+        if (currentlyPinned) {
+          updatedState.pinnedStudents = pinnedStudents.filter(
+            (student) => student.id !== id
+          );
+        } else {
+          const optionalStudent = studentList.find(
+            (student) => student.id == id
+          );
+          optionalStudent && updatedState.pinnedStudents.push(optionalStudent);
+        }
+      });
+    }
+    case 'setHighlightedCourses': {
+      const { id } = action;
+      const { highlightedCourses } = electivesState;
+      const currentlyHighlighted =
+        highlightedCourses && highlightedCourses.some((course) => course == id);
+
+      return produce(electivesState, (updatedState) => {
+        if (currentlyHighlighted) {
+          updatedState.highlightedCourses = highlightedCourses.filter(
+            (course) => course != id
+          );
+        } else {
+          updatedState.highlightedCourses.push(id);
+        }
       });
     }
 

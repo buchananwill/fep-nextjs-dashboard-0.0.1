@@ -1,17 +1,12 @@
 'use client';
 import { Card, Text } from '@tremor/react';
-import {
-  FilterDropdown,
-  FilterOption,
-  FilterType
-} from '../components/filter-dropdown';
+import { FilterDropdown } from '../components/filter-dropdown';
 import { useContext } from 'react';
-import {
-  ElectivesContext,
-  ElectivesDispatchContext
-} from './electives-context';
+import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveDTO } from './elective-card';
-import { FilterPopover } from '../components/filter-popover';
+import Union from '../components/union';
+import Intersection from '../components/intersection';
+import { FilterOption, FilterType } from './elective-filter-reducers';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -42,19 +37,44 @@ function createDistinctFilterOptions(
 }
 
 export function ElectiveFilters({ electiveDTOList }: Props) {
-  const electiveContext = useContext(ElectivesContext);
-  const dispatch = useContext(ElectivesDispatchContext);
+  const { filterType } = useContext(ElectiveContext);
+  const dispatch = useContext(ElectiveDispatchContext);
 
   const distinctCourses = createDistinctFilterOptions(electiveDTOList);
 
+  function handleUnionIntersection(value: string) {
+    dispatch({
+      type: 'setFilterType',
+      filterType: value
+    });
+  }
+
   return (
-    <Card className="max-w-fit m-0 p-4">
+    <Card className="max-w-fit my-0 p-4 flex flex-row">
       <Text className={'absolute top-1 left-2'}>Filters</Text>
-      <FilterPopover
+      <FilterDropdown
         filterOptions={distinctCourses}
         filterReducerType={'setCourseFilters'}
         filterContextProperty={'courseFilters'}
-      ></FilterPopover>
+      ></FilterDropdown>
+      <label className="swap ml-2 w-16 justify-end">
+        <input
+          type={'checkbox'}
+          className="inline "
+          value={filterType}
+          onChange={(e) => handleUnionIntersection(e.target.value)}
+        />
+        <div className="swap-off">
+          <Union size={30} className={''}>
+            {filterType}
+          </Union>
+        </div>
+        <div className="swap-on">
+          <Intersection size={30} className={''}>
+            {filterType}
+          </Intersection>
+        </div>
+      </label>
     </Card>
   );
 }

@@ -15,13 +15,13 @@ import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshDropdown } from '../../components/refresh-dropdown';
 import SubjectFocusCard from '../subject-focus-card';
-import ElectivesContextProvider from '../elective-context-provider';
+import ElectiveContextProvider from '../elective-context-provider';
 import CommitChanges from '../commit-changes';
 import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
 import { FilterDropdown } from '../../components/filter-dropdown';
 import { ElectiveFilters } from '../elective-filters';
-import ElectivesFilterContextProvider from '../electives-filter-context-provider';
+import ElectiveFilterContextProvider from '../elective-filter-context-provider';
 import Union from '../../components/union';
 
 interface Props {
@@ -140,11 +140,11 @@ export default async function ElectivesPage({
     }
 
     return (
-      <ElectivesContextProvider
+      <ElectiveContextProvider
         electivePreferenceList={electivePreferences}
         studentList={studentDTOList}
       >
-        <ElectivesFilterContextProvider>
+        <ElectiveFilterContextProvider>
           <div className="flex w-full items-baseline grow-0">
             <Title>Option Blocks</Title>
             <Text className="mx-2">Subscription Analysis</Text>
@@ -186,8 +186,8 @@ export default async function ElectivesPage({
               )}
             </Suspense>
           </div>
-        </ElectivesFilterContextProvider>
-      </ElectivesContextProvider>
+        </ElectiveFilterContextProvider>
+      </ElectiveContextProvider>
     );
   } else return <>Error</>;
 }

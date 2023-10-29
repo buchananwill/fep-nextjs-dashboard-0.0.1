@@ -1,19 +1,16 @@
 'use client';
 
 import { ReactNode, useReducer } from 'react';
-import {
-  ElectivesContext,
-  ElectivesDispatchContext
-} from './electives-context';
+import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectivePreference } from './elective-subscriber-accordion';
 
 import electiveStateReducer, {
   createdElectivePreferenceRecords,
   ElectiveState
 } from './elective-reducers';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
-import { YearGroupElectives } from './[yearGroup]/page';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Student } from '../tables/student-table';
+import { FilterType } from './elective-filter-reducers';
 
 interface Props {
   // lessonCycleFocus: ElectiveDTO;
@@ -25,12 +22,16 @@ interface Props {
   // yearGroupElectiveData: YearGroupElectives;
 }
 
-export default function ElectivesContextProvider({
+export default function ElectiveContextProvider({
   studentList,
   electivePreferenceList,
   children
 }: Props) {
   const initialElectiveState: ElectiveState = {
+    highlightedCourses: [],
+    pinnedStudents: [],
+    filterPending: false,
+    filterType: FilterType.any,
     studentList,
     carouselId: 0,
     courseId: '',
@@ -54,10 +55,10 @@ export default function ElectivesContextProvider({
   );
 
   return (
-    <ElectivesContext.Provider value={electiveState}>
-      <ElectivesDispatchContext.Provider value={dispatch}>
+    <ElectiveContext.Provider value={electiveState}>
+      <ElectiveDispatchContext.Provider value={dispatch}>
         {children}
-      </ElectivesDispatchContext.Provider>
-    </ElectivesContext.Provider>
+      </ElectiveDispatchContext.Provider>
+    </ElectiveContext.Provider>
   );
 }

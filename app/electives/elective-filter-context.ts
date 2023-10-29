@@ -2,10 +2,10 @@ import { createContext } from 'react';
 
 import { ElectiveFilterState } from './elective-filter-reducers';
 
-export const ElectivesFilterContext = createContext<ElectiveFilterState>({
+export const ElectiveFilterContext = createContext<ElectiveFilterState>({
   courseFilters: [],
   courseCarouselFilters: [],
   studentFilters: []
 });
 
-export const ElectivesFilterDispatchContext = createContext<Function>(() => {});
+export const ElectiveFilterDispatchContext = createContext<Function>(() => {});

@@ -2,9 +2,9 @@
 
 import { ReactNode, useReducer } from 'react';
 import {
-  ElectivesFilterContext,
-  ElectivesFilterDispatchContext
-} from './electives-filter-context';
+  ElectiveFilterContext,
+  ElectiveFilterDispatchContext
+} from './elective-filter-context';
 
 import electiveFilterReducer, {
   ElectiveFilterState
@@ -15,7 +15,7 @@ interface Props {
   children: ReactNode;
 }
 
-export default function ElectivesFilterContextProvider({ children }: Props) {
+export default function ElectiveFilterContextProvider({ children }: Props) {
   const initialElectiveFilterState: ElectiveFilterState = {
     courseFilters: [],
     courseCarouselFilters: [],
@@ -28,10 +28,10 @@ export default function ElectivesFilterContextProvider({ children }: Props) {
   );
 
   return (
-    <ElectivesFilterContext.Provider value={electiveFilterState}>
-      <ElectivesFilterDispatchContext.Provider value={dispatch}>
+    <ElectiveFilterContext.Provider value={electiveFilterState}>
+      <ElectiveFilterDispatchContext.Provider value={dispatch}>
         {children}
-      </ElectivesFilterDispatchContext.Provider>
-    </ElectivesFilterContext.Provider>
+      </ElectiveFilterDispatchContext.Provider>
+    </ElectiveFilterContext.Provider>
   );
 }

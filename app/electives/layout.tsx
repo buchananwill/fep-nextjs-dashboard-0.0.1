@@ -4,7 +4,7 @@ import ToolTipsToggle from './tool-tips-toggle';
 
 import { RefreshDropdown } from '../components/refresh-dropdown';
 import CommitChanges from './commit-changes';
-import ElectivesContextProvider from './elective-context-provider';
+import ElectiveContextProvider from './elective-context-provider';
 
 const dynamic = 'force-dynamic';
 

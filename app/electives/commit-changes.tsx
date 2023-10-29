@@ -8,7 +8,7 @@ import {
   RedirectType
 } from 'next/navigation';
 import { Fragment, useState, useTransition } from 'react';
-import { ElectivesContext } from './electives-context';
+import { ElectiveContext } from './elective-context';
 import { updateElectiveAssignments } from '../api/request-elective-preferences';
 import { revalidateTag } from 'next/cache';
 import { CacheSetting } from '../components/refresh-dropdown';
@@ -26,7 +26,7 @@ const CommitChanges = ({ children }: Props) => {
 
   const disabled = useSearchParams()?.get('unsaved') !== 'true';
 
-  const electivePreferences = useContext(ElectivesContext);
+  const electivePreferences = useContext(ElectiveContext);
 
   const assignmentConflictCount = useSearchParams()?.get('assignmentConflict');
 

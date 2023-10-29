@@ -1,34 +1,21 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import {
-  Fragment,
-  useContext,
-  useEffect,
-  useState,
-  useTransition
-} from 'react';
-import React from 'react';
+import React, { Fragment, useContext, useState, useTransition } from 'react';
 import { gray } from 'd3-color';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
-  ElectivesContext,
-  ElectivesDispatchContext
-} from '../electives/electives-context';
-import {
-  ElectiveState,
-  ElectiveStateActions
-} from '../electives/elective-reducers';
+  ElectiveContext,
+  ElectiveDispatchContext
+} from '../electives/elective-context';
 import { ElectivePreference } from '../electives/elective-subscriber-accordion';
 import {
-  ElectivesFilterContext,
-  ElectivesFilterDispatchContext
-} from '../electives/electives-filter-context';
-import { ElectiveFilterState } from '../electives/elective-filter-reducers';
-import Union from './union';
-import Intersection from './intersection';
-import { Button } from '@tremor/react';
+  ElectiveFilterContext,
+  ElectiveFilterDispatchContext
+} from '../electives/elective-filter-context';
+import {
+  ElectiveFilterState,
+  FilterOption
+} from '../electives/elective-filter-reducers';
 
 // For example, using TypeScript enum
 export enum CacheSetting {
@@ -67,21 +54,6 @@ function summariseFilterSelections(
   } else return 'None';
 }
 
-export interface FilterOption {
-  URI: string;
-  label: string;
-  operator: FilterType;
-}
-
-export interface Filter<T> {
-  apply(setOfElements: T): T;
-}
-
-export enum FilterType {
-  all = 'all',
-  any = 'any'
-}
-
 interface Props {
   filterOptions: FilterOption[];
   filterReducerType: string;
@@ -93,17 +65,20 @@ export const FilterDropdown = ({
   filterReducerType,
   filterContextProperty
 }: Props) => {
-  const [selectedFilters, setSelectedFilters] = useState<FilterOption[]>([]);
-  // const electiveState = useContext(ElectivesContext);
-  // const accessedProperty = electiveState[contextProperty];
-  const dispatch = useContext(ElectivesDispatchContext);
+  const dispatch = useContext(ElectiveDispatchContext);
 
-  const electiveFilterState = useContext(ElectivesFilterContext);
-  const filterDispatch = useContext(ElectivesFilterDispatchContext);
+  const electiveFilterState = useContext(ElectiveFilterContext);
+  const filterDispatch = useContext(ElectiveFilterDispatchContext);
+  const { filterPending } = useContext(ElectiveContext);
 
   const accessedFilterProperty = electiveFilterState[filterContextProperty];
 
   function handleOnChange(selectionList: FilterOption[]) {
+    dispatch({
+      type: 'setFilterPending',
+      pending: true
+    });
+
     filterDispatch({
       type: filterReducerType,
       entryList: selectionList
@@ -126,6 +101,9 @@ export const FilterDropdown = ({
             <span className="block">
               {summariseFilterSelections(accessedFilterProperty)}
             </span>
+            {filterPending && (
+              <span className="absolute right-8 top-4 loading loading-spinner loading-sm"></span>
+            )}
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
                 className="h-5 w-5 text-gray-400"
@@ -139,7 +117,7 @@ export const FilterDropdown = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="p-1 z-10 w-full absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="p-1 z-40 w-full absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filterOptions.map((entry, index) => {
                 return (
                   <Listbox.Option
@@ -153,27 +131,7 @@ export const FilterDropdown = ({
                       `
                     }
                   >
-                    <div className={'flex grow-1'}>
-                      {entry.label}
-                      <span className="grow"></span>
-                      <Button
-                        size={'xs'}
-                        className={'m-0'}
-                        onClick={() => null}
-                      ></Button>
-                      {/*<label className="swap duration-0 delay-0">*/}
-                      {/*  <input type="checkbox" />*/}
-                      {/*  <div className="swap-on duration-0 ease-linear delay-0">*/}
-                      {/*    <Union size={20} className={'inline'}></Union>*/}
-                      {/*  </div>*/}
-                      {/*  <div className="swap-off duration-0 ease-linear delay-0">*/}
-                      {/*    <Intersection*/}
-                      {/*      size={20}*/}
-                      {/*      className={'inline'}*/}
-                      {/*    ></Intersection>*/}
-                      {/*  </div>*/}
-                      {/*</label>*/}
-                    </div>
+                    <div className={'flex grow-1'}>{entry.label}</div>
                   </Listbox.Option>
                 );
               })}
