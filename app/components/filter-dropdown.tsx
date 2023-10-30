@@ -1,7 +1,6 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
 import React, { Fragment, useContext, useState, useTransition } from 'react';
-import { gray } from 'd3-color';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
   ElectiveContext,
@@ -96,7 +95,7 @@ export const FilterDropdown = ({
       >
         <div className=" relative mt-1">
           <Listbox.Button
-            className={`bg-${gray}-300 w-full relative cursor-default rounded-lg py-4 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm`}
+            className={`w-full relative cursor-default rounded-lg py-4 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm`}
           >
             <span className="block">
               {summariseFilterSelections(accessedFilterProperty)}

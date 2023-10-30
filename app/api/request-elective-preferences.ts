@@ -20,7 +20,7 @@ export const fetchElectivePreferencesByPartyIds = async (
   try {
     const queryString = studentIDlist.map((id) => `partyIds=${id}`).join('&');
     const response = await fetch(
-      `${apiBaseUrl}elective-preferences-by-party-ids?${queryString}`,
+      `${apiBaseUrl}/elective-preferences-by-party-ids?${queryString}`,
       {
         method: 'POST',
         headers: {
@@ -50,7 +50,7 @@ export const fetchElectiveYearGroupWithAllStudents = async (
 
   if (cacheSetting == 'reload') revalidateTag(tag);
 
-  const fetchURL = `http://localhost:8080/api/academic/electives-yeargroup-with-all-students/${yearGroup}`;
+  const fetchURL = `${apiBaseUrl}/electives-yeargroup-with-all-students/${yearGroup}`;
 
   try {
     const response = await fetch(fetchURL, {
