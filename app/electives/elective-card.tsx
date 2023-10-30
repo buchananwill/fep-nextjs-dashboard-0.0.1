@@ -1,15 +1,12 @@
 'use client';
 import { Badge, Card, Color } from '@tremor/react';
-import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
-import { hi } from 'date-fns/locale';
 import { ElectiveFilterContext } from './elective-filter-context';
 import { FilterOption } from './elective-filter-reducers';
-import { some } from 'd3-array';
 
 export interface ElectiveDTO {
   courseDescription: string;
