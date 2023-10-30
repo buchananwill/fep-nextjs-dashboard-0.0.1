@@ -2,9 +2,10 @@ import './globals.css';
 
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
-import Toast from './toast';
+
 import { Suspense } from 'react';
-import { SessionProvider } from 'next-auth/react';
+
+import Loading from './loading';
 
 export const metadata = {
   title: 'FEP Academic Scheduling UI',
@@ -23,9 +24,9 @@ export default async function RootLayout({
         <Suspense>
           <Nav />
         </Suspense>
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
         <Analytics />
-        <Toast />
+        {/*<Toast />*/}
       </body>
     </html>
   );

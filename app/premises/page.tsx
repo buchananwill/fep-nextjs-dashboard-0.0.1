@@ -1,26 +1,16 @@
-import { Card, Title, Text, Grid } from '@tremor/react';
+import { Title, Text, Grid } from '@tremor/react';
 import ClassRoomCard, { ClassRoomDTO } from './class-room-card';
 import fetchClassRooms from '../api/request-class-rooms';
-import { type } from 'os';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
 export const dynamic = 'force-dynamic';
 
-const sampleCard = {
-  assetUUID: 'gibberish',
-  name: 'W13',
-  floor: 'Entrance Level',
-  building: 'Lawtons House'
-};
-
 type ClassRoomsData = ClassRoomDTO[];
 
-export default async function PremisesPage({
-  searchParams
-}: {
+export default async function PremisesPage({}: {
   searchParams: { q: string };
 }) {
-  const search = searchParams.q ?? '';
-
   const classRoomsData: ClassRoomsData = await fetchClassRooms();
 
   return (
@@ -30,11 +20,13 @@ export default async function PremisesPage({
         A list of all the rooms in the school. Total class rooms:{' '}
         <b>{classRoomsData.length}</b>
       </Text>
-      <Grid numItems={4} className="gap-2 pt-2">
-        {classRoomsData.map((value, index) => (
-          <ClassRoomCard key={index} classRoomDTO={value} />
-        ))}
-      </Grid>
+      <Suspense fallback={<Loading />}>
+        <Grid numItems={4} className="gap-2 pt-2">
+          {classRoomsData.map((value, index) => (
+            <ClassRoomCard key={index} classRoomDTO={value} />
+          ))}
+        </Grid>
+      </Suspense>
     </main>
   );
 }
