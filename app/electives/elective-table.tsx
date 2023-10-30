@@ -38,7 +38,6 @@ export default function OptionBlockTable({
                 <ElectiveCard
                   key={`card-${rowIndex}-${cellIndex}`}
                   electiveDTO={cell}
-                  partyId={partyId}
                 />
               </TableCell>
             ))}
