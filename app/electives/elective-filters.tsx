@@ -61,7 +61,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   }
 
   return (
-    <Card className="max-w-4xl my-0 p-4 flex flex-row justify-between sticky top-4 z-50">
+    <Card className="max-w-4xl my-0 p-4 flex flex-row justify-between sticky top-4 z-30">
       <Text className={'absolute top-1 left-2'}>Filters</Text>
       <FilterDropdown
         filterOptions={distinctCourses}

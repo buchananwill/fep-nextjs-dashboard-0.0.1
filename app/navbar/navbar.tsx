@@ -19,10 +19,10 @@ const electivesDropdown = [
 ];
 
 const navigation = [
-  { name: 'Dashboard', href: '/', dropdownItems: [] },
-  { name: 'Playground', href: '/playground', dropdownItems: [] },
+  { name: 'Students', href: '/', dropdownItems: [] },
   { name: 'Timetables', href: '/timetables', dropdownItems: [] },
   { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
+  { name: 'Subjects', href: '/subjects', dropdownItems: [] },
   { name: 'Premises', href: '/premises', dropdownItems: [] }
 ];
 
@@ -97,7 +97,7 @@ export default function Navbar({ user }: { user: any }) {
                       ) : (
                         <ul
                           tabIndex={index}
-                          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-24"
+                          className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-24"
                         >
                           {dropdownLabel.dropdownItems.map(
                             (dropdown, index) => (
