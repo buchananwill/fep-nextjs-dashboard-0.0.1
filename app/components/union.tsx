@@ -16,17 +16,18 @@ function Union({
   ];
 
   return (
-    <div className="flex flex-row items-center align-middle ">
-      <Text className="inline p-0 mr-1">
+    <div className="w-full flex flex-row items-center justify-between align-middle grow">
+      <Text className="inline p-0 mr-1 grow-0">
         {children}
         {': '}
       </Text>
+      <span className={'grow'}></span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={size}
         height={size}
         viewBox="0 0 184.574 184.574"
-        className="stroke-current hover:stroke-emerald-500"
+        className="stroke-current hover:stroke-emerald-500 grow-0"
       >
         <g transform="translate(-10.507 -32.222)">
           <circle

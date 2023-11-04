@@ -7,6 +7,8 @@ import { ElectiveDTO } from './elective-card';
 import Union from '../components/union';
 import Intersection from '../components/intersection';
 import { FilterOption, FilterType } from './elective-filter-reducers';
+import CommitChanges from './commit-changes';
+import { PinButton, PinIcons } from '../components/pin-button';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -37,7 +39,7 @@ function createDistinctFilterOptions(
 }
 
 export function ElectiveFilters({ electiveDTOList }: Props) {
-  const { filterType } = useContext(ElectiveContext);
+  const { filterType, highlightedCourses } = useContext(ElectiveContext);
   const dispatch = useContext(ElectiveDispatchContext);
 
   const distinctCourses = createDistinctFilterOptions(electiveDTOList);
@@ -49,32 +51,51 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
     });
   }
 
+  function handleResetMortarBoards() {
+    highlightedCourses.forEach((courseUUID) =>
+      dispatch({
+        type: 'setHighlightedCourses',
+        id: courseUUID
+      })
+    );
+  }
+
   return (
-    <Card className="max-w-fit my-0 p-4 flex flex-row">
+    <Card className="max-w-4xl my-0 p-4 flex flex-row justify-between sticky top-4 z-50">
       <Text className={'absolute top-1 left-2'}>Filters</Text>
       <FilterDropdown
         filterOptions={distinctCourses}
         filterReducerType={'setCourseFilters'}
         filterContextProperty={'courseFilters'}
       ></FilterDropdown>
-      <label className="swap ml-2 w-16 justify-end">
+      <label className="swap ml-2 w-32">
         <input
           type={'checkbox'}
-          className="inline "
+          className="inline w-32"
           value={filterType}
           onChange={(e) => handleUnionIntersection(e.target.value)}
         />
-        <div className="swap-off">
-          <Union size={30} className={''}>
-            {filterType}
+        <div className="swap-off ">
+          <Union size={48} className={''}>
+            <span>Match {filterType}</span>
           </Union>
         </div>
         <div className="swap-on">
-          <Intersection size={30} className={''}>
-            {filterType}
+          <Intersection size={48} className={''}>
+            <span>Match {filterType}</span>
           </Intersection>
         </div>
       </label>
+      <div className="flex flew-row items-center">
+        <Text className="mr-2">Reset: </Text>
+        <PinButton
+          pinIcon={PinIcons.mortarBoard}
+          classNames={''}
+          isPinned={false}
+          setPinned={handleResetMortarBoards}
+        ></PinButton>
+      </div>
+      <CommitChanges>Commit Changes</CommitChanges>
     </Card>
   );
 }

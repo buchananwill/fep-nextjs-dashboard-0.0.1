@@ -11,6 +11,8 @@ import { ElectiveFilterContext } from './elective-filter-context';
 
 import { FilterOption, FilterType } from './elective-filter-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
+import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { Disclosure } from '@headlessui/react';
 
 export interface ElectivePreference {
   partyId: number;
@@ -119,7 +121,7 @@ function filterStudentList(
   return filteredList;
 }
 
-export default function ElectiveSubscriberAccordion({
+export default function ElectiveSubscriberDisclosureGroup({
   // studentList,
   electiveAvailability
 }: Props) {
@@ -136,7 +138,8 @@ export default function ElectiveSubscriberAccordion({
     partyId,
     studentList,
     filterPending,
-    pinnedStudents
+    pinnedStudents,
+    highlightedCourses
   } = electiveState;
   const electiveFilterState = useContext(ElectiveFilterContext);
 
@@ -153,12 +156,6 @@ export default function ElectiveSubscriberAccordion({
       });
     });
   }, [courseFilters, dispatch, electiveState]);
-
-  // useEffect(() => {
-  //   const filteredStudentList = filterStudentList(electiveState, studentList);
-  //
-  //   setFilteredList(filteredStudentList);
-  // }, [studentList, electiveState]);
 
   function handleAssignmentChange(
     studentId: number,
@@ -207,6 +204,26 @@ export default function ElectiveSubscriberAccordion({
     });
   }
 
+  function handleMortarBoardClick(id: number) {
+    highlightedCourses.forEach((course) =>
+      dispatch({
+        type: 'setHighlightedCourses',
+        id: course
+      })
+    );
+
+    const activePreferencesThisStudent = electivePreferences[id].filter(
+      (preference) => preference.isActive
+    );
+
+    activePreferencesThisStudent.forEach((preference) =>
+      dispatch({
+        type: 'setHighlightedCourses',
+        id: preference.courseUUID
+      })
+    );
+  }
+
   const isPinned = (id: number) => {
     return pinnedStudents && pinnedStudents.some((student) => student.id == id);
   };
@@ -216,100 +233,119 @@ export default function ElectiveSubscriberAccordion({
         <div className="pb-4">
           {filteredStudents &&
             filteredStudents.map((student) => (
-              <div
-                key={`${student.id}-prefs`}
-                className="gap-0 collapse bg-base-200 py-2 px-0 m-0"
-              >
-                <input type="checkbox" className="min-h-0" />
-                <div className="collapse-title grow-1 flex items-center font-medium text-sm mx-0 gap-0 px-2 py-0 min-h-0">
-                  <div className="absolute left-8 top-4 flex items-center justify-center">
-                    {isPending && partyId == student.id && (
-                      <span className="z-20 loading loading-dots loading-xs"></span>
-                    )}
-                  </div>
-                  <input
-                    type="radio"
-                    name="student-focus"
-                    className="radio radio-xs mx-2 z-10 hover:border-accent"
-                    checked={student.id == partyId}
-                    onChange={(e) => {
-                      handleRadioClick(student.id);
-                    }}
-                  ></input>
-                  <span className="grow">{student.name}</span>
-                  <PinButton
-                    pinIcon={PinIcons.mapPin}
-                    classNames="z-20"
-                    isPinned={isPinned(student.id)}
-                    setPinned={() => handlePinnedStudent(student.id)}
-                  ></PinButton>
-                </div>
-
-                <div className="collapse-content m-0 text-sm min-h-0">
-                  <div className="flex flex-col mx-0 my-2 w-full ">
-                    <div></div>
-                    {electivePreferences[student.id].map(
-                      ({
-                        preferencePosition,
-                        courseDescription,
-                        assignedCarouselId
-                      }) => {
-                        return (
-                          <div
-                            key={`${student.id}-${preferencePosition}`}
-                            className="flex grow-0 w-full justify-between"
-                          >
-                            {/* <span className="px-1 w-6">{preferencePosition}</span> */}
-                            <span>{courseDescription} </span>
-                            <span className="grow"></span>
-                            <div className="indicator">
-                              {getAssignmentIndicator(
-                                checkAssignment(
-                                  electivePreferences[student.id],
-                                  preferencePosition
-                                )
+              <div key={`${student.id}-prefs`}>
+                <div className="w-full px-0 py-0 m-0">
+                  <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-0">
+                    <Disclosure>
+                      {({ open }) => (
+                        <>
+                          {' '}
+                          <div className="flex w-full items-center grow-0 justify-between rounded-lg bg-gray-100">
+                            <div className="absolute left-8 top-4 flex items-center justify-center">
+                              {isPending && partyId == student.id && (
+                                <span className="z-20 loading loading-dots loading-xs"></span>
                               )}
-                              <select
-                                className="select select-xs select-bordered w-16 grow-1"
-                                value={assignedCarouselId}
-                                onChange={(e) => {
-                                  handleAssignmentChange(
-                                    student.id,
-                                    preferencePosition,
-                                    parseInt(e.target.value)
-                                  );
-                                  setUnsaved(true);
-                                }}
-                              >
-                                {mapOptions(
-                                  electiveAvailability,
-                                  courseDescription,
-                                  assignedCarouselId,
-                                  student.id,
-                                  preferencePosition
-                                )}
-                              </select>
                             </div>
-                            <input
-                              type="checkbox"
-                              className="toggle toggle-success ml-2"
-                              defaultChecked={
-                                electivePreferences?.[student.id]?.[
-                                  preferencePosition
-                                ].isActive
+                            <PinButton
+                              pinIcon={PinIcons.arrowLeftCircle}
+                              classNames="z-20"
+                              isPinned={student.id == partyId}
+                              setPinned={() => handleRadioClick(student.id)}
+                            ></PinButton>
+
+                            <Disclosure.Button className="border-x-2 border-dotted grow py-2 text-center text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
+                              <span className="grow">{student.name}</span>
+                            </Disclosure.Button>
+                            <PinButton
+                              pinIcon={PinIcons.mapPin}
+                              classNames="z-20"
+                              isPinned={isPinned(student.id)}
+                              setPinned={() => handlePinnedStudent(student.id)}
+                            ></PinButton>
+                            <PinButton
+                              pinIcon={PinIcons.mortarBoard}
+                              classNames={`mr-1`}
+                              isPinned={false}
+                              setPinned={() =>
+                                handleMortarBoardClick(student.id)
                               }
-                              onClick={() => {
-                                handleToggleClick(
-                                  student.id,
-                                  preferencePosition
-                                );
-                                setUnsaved(true);
-                              }}
-                            ></input>
+                            ></PinButton>
+                            <ChevronUpIcon
+                              className={`${
+                                open ? 'rotate-180 transform' : ''
+                              } h-5 w-5 mr-1`}
+                            />
                           </div>
-                        );
-                      }
-                    )}
+                          <Disclosure.Panel className="border-dotted rounded border-2 px-4 pt-4 pb-2 text-sm text-gray-500">
+                            <div className="flex flex-col mx-0 my-2 w-full ">
+                              <div></div>
+                              {electivePreferences[student.id].map(
+                                ({
+                                  preferencePosition,
+                                  courseDescription,
+                                  assignedCarouselId
+                                }) => {
+                                  return (
+                                    <div
+                                      key={`${student.id}-${preferencePosition}`}
+                                      className="flex grow-0 w-full justify-between"
+                                    >
+                                      {/* <span className="px-1 w-6">{preferencePosition}</span> */}
+                                      <span>{courseDescription} </span>
+                                      <span className="grow"></span>
+                                      <div className="indicator">
+                                        {getAssignmentIndicator(
+                                          checkAssignment(
+                                            electivePreferences[student.id],
+                                            preferencePosition
+                                          )
+                                        )}
+                                        <select
+                                          className="select select-xs select-bordered w-16 grow-1"
+                                          value={assignedCarouselId}
+                                          onChange={(e) => {
+                                            handleAssignmentChange(
+                                              student.id,
+                                              preferencePosition,
+                                              parseInt(e.target.value)
+                                            );
+                                            setUnsaved(true);
+                                          }}
+                                        >
+                                          {mapOptions(
+                                            electiveAvailability,
+                                            courseDescription,
+                                            assignedCarouselId,
+                                            student.id,
+                                            preferencePosition
+                                          )}
+                                        </select>
+                                      </div>
+                                      <input
+                                        type="checkbox"
+                                        className="toggle toggle-success ml-2"
+                                        defaultChecked={
+                                          electivePreferences?.[student.id]?.[
+                                            preferencePosition
+                                          ].isActive
+                                        }
+                                        onClick={() => {
+                                          handleToggleClick(
+                                            student.id,
+                                            preferencePosition
+                                          );
+                                          setUnsaved(true);
+                                        }}
+                                      ></input>
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
                   </div>
                 </div>
               </div>

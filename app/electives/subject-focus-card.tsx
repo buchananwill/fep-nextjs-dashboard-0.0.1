@@ -3,12 +3,13 @@ import { Card } from '@tremor/react';
 import React, { Suspense, useContext, useEffect, useState } from 'react';
 import ElectiveSubscriberAccordion, {
   ElectiveAvailability
-} from './elective-subscriber-accordion';
+} from './elective-subscriber-disclosure-group';
 import { ElectiveDTO } from './elective-card';
 import { useSearchParams } from 'next/navigation';
 import { ElectiveContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { Student } from '../tables/student-table';
+import ElectiveSubscriberDisclosureGroup from './elective-subscriber-disclosure-group';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -63,7 +64,7 @@ const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {
         <div className="relative overflow-y-scroll max-h-[65vh] border-t-2 min-w-full py-2">
           <div className="text-center py-2 select-none px-2">
             <Suspense fallback={getAccordionFallBack()}>
-              <ElectiveSubscriberAccordion
+              <ElectiveSubscriberDisclosureGroup
                 electiveAvailability={electiveAvailability}
               />
             </Suspense>

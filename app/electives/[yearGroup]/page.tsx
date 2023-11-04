@@ -5,7 +5,7 @@ import { ElectiveDTO } from '../elective-card';
 import {
   ElectiveAvailability,
   ElectivePreference as ElectivePreferenceDTO
-} from '../elective-subscriber-accordion';
+} from '../elective-subscriber-disclosure-group';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
 import {
   reconstructTableWithDimensions,
@@ -19,10 +19,9 @@ import ElectiveContextProvider from '../elective-context-provider';
 import CommitChanges from '../commit-changes';
 import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
-import { FilterDropdown } from '../../components/filter-dropdown';
+
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
-import Union from '../../components/union';
 
 interface Props {
   params: { yearGroup: string };
@@ -47,16 +46,8 @@ const versionInView = 'stored';
 
 export default async function ElectivesPage({
   params: { yearGroup },
-  searchParams: {
-    courseCarouselId: courseIdString,
-    carouselId: carouselIdString,
-    partyId: partyIdString,
-    cacheSetting
-  }
+  searchParams: { partyId: partyIdString, cacheSetting }
 }: Props) {
-  // const yearGroupAsNumber: number | null = yearGroup;
-  const courseId = parseInt(courseIdString);
-  const carouselId = parseInt(carouselIdString);
   const partyId = parseInt(partyIdString);
   const yearGroupAsNumber = parseInt(yearGroup);
 
@@ -78,9 +69,6 @@ export default async function ElectivesPage({
   // Initialize with empty arrays or nulls
   let tableCellsData: TableCellData[] = [];
   let electiveTableData: ElectiveDTO[][] = [];
-  let lessonCycleFocus: ElectiveDTO | null = null;
-  let filteredStudentList: StudentDTO[] = [];
-  let filteredIDList: number[] = [];
   let electiveAvailability: ElectiveAvailability = {};
 
   if (yearGroupElectiveData !== null) {
@@ -113,22 +101,6 @@ export default async function ElectivesPage({
           carouselCols
         );
       }
-
-      // Safely get lessonCycleFocus
-      const carouselCol = carouselId % carouselCols;
-      lessonCycleFocus = electiveTableData?.[courseId]?.[carouselCol] ?? null;
-
-      // Safely filter studentList
-      if (lessonCycleFocus !== null) {
-        const localCopy = lessonCycleFocus;
-        filteredStudentList =
-          studentDTOList?.filter((student) =>
-            localCopy.subscriberPartyIDs.includes(student.id)
-          ) ?? [];
-      }
-
-      // Safely map filteredStudentList to filteredIDList
-      filteredIDList = filteredStudentList?.map((student) => student.id) ?? [];
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Caught an Error:', error.message);
@@ -145,15 +117,15 @@ export default async function ElectivesPage({
         studentList={studentDTOList}
       >
         <ElectiveFilterContextProvider>
-          <div className="flex w-full items-baseline grow-0">
+          <div className="flex w-full items-baseline grow-0 mb-2">
             <Title>Option Blocks</Title>
             <Text className="mx-2">Subscription Analysis</Text>
-            <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
             <span className="grow"></span>
-            <CommitChanges>Commit Changes</CommitChanges>
+
             <ToolTipsToggle></ToolTipsToggle>
             <RefreshDropdown />
           </div>
+          <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">
             <Suspense>
               {yearGroupElectiveData !== null ? (

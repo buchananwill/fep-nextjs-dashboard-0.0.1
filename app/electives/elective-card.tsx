@@ -120,7 +120,6 @@ export default function ElectiveCard({
       type: 'setHighlightedCourses',
       id: id
     });
-    console.log('Now highlighted: ', highlightedCourses);
   }
 
   useEffect(() => {

@@ -8,16 +8,17 @@ function Intersection({
 }: {
   size: number;
   className: string;
-  children: string;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-row items-center align-middle">
-      <Text className="inline p-0 mr-1">
+    <div className="flex flex-row items-center align-middle justify-between w-full grow">
+      <Text className="inline p-0 mr-1 grow-0">
         {children}
         {': '}
       </Text>
+      <span className={'grow'}></span>
       <svg
-        className={className}
+        className={'grow-0'}
         xmlns="http://www.w3.org/2000/svg"
         width={size}
         height={size}

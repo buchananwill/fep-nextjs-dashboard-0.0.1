@@ -1,4 +1,4 @@
-import { ElectivePreference } from './elective-subscriber-accordion';
+import { ElectivePreference } from './elective-subscriber-disclosure-group';
 import { produce } from 'immer';
 import { Student } from '../tables/student-table';
 import { FilterType } from './elective-filter-reducers';
