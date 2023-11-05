@@ -1,11 +1,6 @@
 import OptionBlockTable from '../elective-table';
 import { Card, Text, Title } from '@tremor/react';
-import { Student as StudentDTO } from '../../tables/student-table';
-import { ElectiveDTO } from '../elective-card';
-import {
-  ElectiveAvailability,
-  ElectivePreference as ElectivePreferenceDTO
-} from '../elective-subscriber-disclosure-group';
+import { ElectiveAvailability } from '../elective-subscriber-disclosure-group';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
 import {
   reconstructTableWithDimensions,
@@ -16,39 +11,24 @@ import { compileElectiveAvailability } from '../checkElectiveAssignments';
 import { RefreshDropdown } from '../../components/refresh-dropdown';
 import SubjectFocusCard from '../subject-focus-card';
 import ElectiveContextProvider from '../elective-context-provider';
-import CommitChanges from '../commit-changes';
 import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
 
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
+import { ElectiveDTO, YearGroupElectives } from '../../api/dto-interfaces';
 
 interface Props {
   params: { yearGroup: string };
   searchParams: {
-    courseCarouselId: string;
-    carouselId: string;
-    partyId: string;
     cacheSetting: string;
   };
 }
 
-export interface YearGroupElectives {
-  yearGroupRankInt: number;
-  carouselRows: number;
-  carouselColumns: number;
-  studentDTOList: StudentDTO[];
-  electiveDTOList: ElectiveDTO[];
-  electivePreferenceDTOList: ElectivePreferenceDTO[];
-}
-
-const versionInView = 'stored';
-
 export default async function ElectivesPage({
   params: { yearGroup },
-  searchParams: { partyId: partyIdString, cacheSetting }
+  searchParams: { cacheSetting }
 }: Props) {
-  const partyId = parseInt(partyIdString);
   const yearGroupAsNumber = parseInt(yearGroup);
 
   let requestCacheValue: RequestCache;
@@ -77,21 +57,25 @@ export default async function ElectivesPage({
       carouselRows,
       carouselColumns: carouselCols,
       studentDTOList,
-      electiveDTOList: electiveData,
+      electiveDTOList,
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
 
     try {
+      console.log(electiveDTOList);
+
       // Safely map electiveData
       tableCellsData =
-        electiveData?.map((elective) => ({
+        electiveDTOList?.map((elective) => ({
           row: elective.courseCarouselId,
           col: elective.carouselId,
           value: elective
         })) ?? [];
 
+      console.log(tableCellsData);
+
       // Safely map electiveAvailability
-      electiveAvailability = compileElectiveAvailability(electiveData);
+      electiveAvailability = compileElectiveAvailability(electiveDTOList);
 
       // Only call reconstructTableWithDimensions if tableCellsData is not empty
       if (tableCellsData.length > 0) {
@@ -125,7 +109,7 @@ export default async function ElectivesPage({
             <ToolTipsToggle></ToolTipsToggle>
             <RefreshDropdown />
           </div>
-          <ElectiveFilters electiveDTOList={electiveData}></ElectiveFilters>
+          <ElectiveFilters electiveDTOList={electiveDTOList}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">
             <Suspense>
               {yearGroupElectiveData !== null ? (
@@ -133,12 +117,11 @@ export default async function ElectivesPage({
                   <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
                     <OptionBlockTable
                       electives={electiveTableData}
-                      partyId={partyId}
                     ></OptionBlockTable>
                   </Card>
 
                   <SubjectFocusCard
-                    electiveDTOList={electiveData}
+                    electiveDTOList={electiveDTOList}
                     electiveAvailability={electiveAvailability}
                   ></SubjectFocusCard>
                 </div>

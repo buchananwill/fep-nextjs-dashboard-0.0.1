@@ -1,4 +1,4 @@
-import ElectiveCard, { ElectiveDTO } from './elective-card';
+import ElectiveCard from './elective-card';
 import {
   Table,
   TableBody,
@@ -7,17 +7,16 @@ import {
   TableHeaderCell,
   TableRow
 } from '@tremor/react';
+import { ElectiveDTO } from '../api/dto-interfaces';
 
 interface ElectiveTableData {
   electives: ElectiveDTO[][];
 }
 
 export default function OptionBlockTable({
-  electives,
-  partyId
+  electives
 }: {
   electives: ElectiveDTO[][];
-  partyId: number;
 }) {
   return (
     <Table className=" m-2 p-2 overflow-visible">

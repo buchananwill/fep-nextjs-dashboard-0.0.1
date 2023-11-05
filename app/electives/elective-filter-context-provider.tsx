@@ -9,7 +9,8 @@ import {
 import electiveFilterReducer, {
   ElectiveFilterState
 } from './elective-filter-reducers';
-import { Student } from '../tables/student-table';
+
+import { StudentDTO } from '../api/dto-interfaces';
 
 interface Props {
   children: ReactNode;

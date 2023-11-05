@@ -11,7 +11,7 @@ export const ElectiveContext = createContext<ElectiveState>({
   studentList: [],
   carouselId: 0,
   courseCarouselId: 0,
-  courseId: '',
+  uuid: '',
   electivePreferences: {},
   partyId: 0
 });

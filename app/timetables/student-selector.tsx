@@ -5,9 +5,14 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTransition, useState } from 'react';
 import { Select, SelectItem } from '@tremor/react';
-import { Student } from '../tables/student-table';
 
-export default function StudentSelector({ students }: { students: Student[] }) {
+import { StudentDTO } from '../api/dto-interfaces';
+
+export default function StudentSelector({
+  students
+}: {
+  students: StudentDTO[];
+}) {
   const { replace } = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();

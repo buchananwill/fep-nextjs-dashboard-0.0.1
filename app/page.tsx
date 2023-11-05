@@ -2,6 +2,7 @@ import { Card, Title, Text } from '@tremor/react';
 import fetchResults from './api/student-search';
 import Search from './search';
 import StudentsTable from './tables/student-table';
+import { ArrayDTO, StudentDTO } from './api/dto-interfaces';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,10 @@ export default async function IndexPage({
 }) {
   const search = searchParams.q ?? '';
 
-  const students = await fetchResults(searchParams);
+  const studentDTO = await fetchResults(searchParams);
+  const students: ArrayDTO<StudentDTO> = {
+    allItems: studentDTO
+  };
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">

@@ -1,23 +1,18 @@
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeaderCell,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
   Text
 } from '@tremor/react';
-
-export interface Student {
-  id: number;
-  name: string;
-  yearGroup: number;
-}
+import { ArrayDTO, StudentDTO } from '../api/dto-interfaces';
 
 export default function StudentsTable({
-  students: students
+  students: { allItems: students }
 }: {
-  students: Student[];
+  students: ArrayDTO<StudentDTO>;
 }) {
   return (
     <Table>

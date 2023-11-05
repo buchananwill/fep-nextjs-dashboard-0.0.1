@@ -18,11 +18,20 @@ const electivesDropdown = [
   { name: 'Year 13', href: '/13' }
 ];
 
+const contactTimeDropdown = [
+  { name: 'Per Subject', href: '/per-subject' },
+  { name: 'Per Year Group', href: 'per-year-group' }
+];
+
 const navigation = [
   { name: 'Students', href: '/', dropdownItems: [] },
   { name: 'Timetables', href: '/timetables', dropdownItems: [] },
   { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
-  { name: 'Subjects', href: '/subjects', dropdownItems: [] },
+  {
+    name: 'Contact Time',
+    href: '/contact-time',
+    dropdownItems: contactTimeDropdown
+  },
   { name: 'Premises', href: '/premises', dropdownItems: [] }
 ];
 
@@ -81,7 +90,7 @@ export default function Navbar({ user }: { user: any }) {
                     >
                       <label
                         tabIndex={index}
-                        className="btn my-2 mx-0 normal-case w-24"
+                        className="btn my-2 mx-0 normal-case w-32"
                       >
                         <ProtectedNavigation
                           key={`drop-down-${dropdownLabel.name}`}
@@ -97,7 +106,7 @@ export default function Navbar({ user }: { user: any }) {
                       ) : (
                         <ul
                           tabIndex={index}
-                          className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-24"
+                          className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-32"
                         >
                           {dropdownLabel.dropdownItems.map(
                             (dropdown, index) => (

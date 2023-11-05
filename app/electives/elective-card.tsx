@@ -7,14 +7,7 @@ import { ElectiveState } from './elective-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ElectiveFilterContext } from './elective-filter-context';
 import { FilterOption } from './elective-filter-reducers';
-
-export interface ElectiveDTO {
-  courseDescription: string;
-  courseUUID: string;
-  courseCarouselId: number;
-  carouselId: number;
-  subscriberPartyIDs: number[];
-}
+import { ElectiveDTO } from '../api/dto-interfaces';
 
 const aLevelClassLimitInt = 25;
 
@@ -22,7 +15,7 @@ const calculateSubscribers = (
   electiveDTO: ElectiveDTO,
   electivesState: ElectiveState
 ) => {
-  const { carouselId, courseUUID } = electiveDTO;
+  const { carouselId, uuid } = electiveDTO;
   let count = 0;
   for (const [partyId, preferenceList] of Object.entries(
     electivesState.electivePreferences
@@ -30,7 +23,7 @@ const calculateSubscribers = (
     for (let electivePreference of preferenceList) {
       if (
         electivePreference.isActive &&
-        electivePreference.courseUUID == courseUUID &&
+        electivePreference.uuid == uuid &&
         electivePreference.assignedCarouselId == carouselId
       )
         count++;
@@ -42,28 +35,27 @@ const calculateSubscribers = (
 const getBorderVisible = (
   electiveState: ElectiveState,
   carouselId: number,
-  courseUUID: string
+  uuid: string
 ) => {
   const { partyId } = electiveState;
   return electiveState?.electivePreferences[partyId]?.some(
     (electivePreference) =>
       electivePreference.isActive &&
       electivePreference.assignedCarouselId == carouselId &&
-      electivePreference.courseUUID == courseUUID
+      electivePreference.uuid == uuid
   )
     ? ''
     : 'border-transparent';
 };
 
-function getHighlighted(highlightedCourses: string[], courseUUID: string) {
+function getHighlighted(highlightedCourses: string[], uuid: string) {
   const isHighlighted =
-    highlightedCourses &&
-    highlightedCourses.some((course) => course == courseUUID);
+    highlightedCourses && highlightedCourses.some((course) => course == uuid);
   return isHighlighted ? 'text-red-500' : '';
 }
 
-function getFiltered(courseFilters: FilterOption[], courseUUID: string) {
-  return courseFilters.some((courseFilter) => courseFilter.URI == courseUUID);
+function getFiltered(courseFilters: FilterOption[], uuid: string) {
+  return courseFilters.some((courseFilter) => courseFilter.URI == uuid);
 }
 
 export default function ElectiveCard({
@@ -71,8 +63,8 @@ export default function ElectiveCard({
 }: {
   electiveDTO: ElectiveDTO;
 }) {
-  const { courseDescription, carouselId, courseCarouselId, courseUUID } =
-    electiveDTO;
+  const { name, carouselId, courseCarouselId, uuid } = electiveDTO;
+  console.log(electiveDTO);
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
   const subscribersColor = getSubscribersColor(subscribers);
@@ -99,14 +91,14 @@ export default function ElectiveCard({
   function handleCardClick(
     carouselId: number,
     courseCarouselId: number,
-    courseUUID: string
+    uuid: string
   ) {
     startTransition(() => {
       dispatch({
         type: 'focusCourse',
         carouselId: carouselId,
         courseCarouselId: courseCarouselId,
-        courseId: courseUUID
+        uuid: uuid
       });
       dispatch({
         type: 'setFilterPending',
@@ -123,21 +115,19 @@ export default function ElectiveCard({
   }
 
   useEffect(() => {
-    const borderNowVisible = getBorderVisible(
-      electivesState,
-      carouselId,
-      courseUUID
-    );
+    const borderNowVisible = getBorderVisible(electivesState, carouselId, uuid);
     setBorderVisible(borderNowVisible);
-  }, [electivesState, carouselId, courseUUID]);
+  }, [electivesState, carouselId, uuid]);
 
   const opacity = getOpacity(isEnabled);
 
-  const highlightText = getHighlighted(highlightedCourses, courseUUID);
+  const highlightText = getHighlighted(highlightedCourses, uuid);
 
   const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
 
   const classesColor = getClassesColor(numberOfClasses);
+
+  console.log(electiveDTO);
 
   return (
     <Card
@@ -158,16 +148,16 @@ export default function ElectiveCard({
         </div>
       )}
       <div className="indicator grow">
-        {getFiltered(courseFilters, courseUUID) && (
+        {getFiltered(courseFilters, uuid) && (
           <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
         )}
         <div
           className="px-1 cursor-pointer grow inline"
           onClick={() => {
-            handleCardClick(carouselId, courseCarouselId, courseUUID);
+            handleCardClick(carouselId, courseCarouselId, uuid);
           }}
         >
-          {courseDescription}
+          {name} {}
         </div>
       </div>
 
@@ -175,7 +165,7 @@ export default function ElectiveCard({
         pinIcon={PinIcons.mortarBoard}
         classNames={`${highlightText} mr-1`}
         isPinned={highlightText != ''}
-        setPinned={() => handleMortarBoardClick(courseUUID)}
+        setPinned={() => handleMortarBoardClick(uuid)}
       ></PinButton>
       <Badge color={classesColor}>{numberOfClasses} </Badge>
       <Badge color={subscribersColor}>{subscribers}</Badge>

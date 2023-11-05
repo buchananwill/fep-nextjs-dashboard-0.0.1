@@ -1,8 +1,7 @@
-import { ElectivePreference } from './elective-subscriber-disclosure-group';
 import { produce } from 'immer';
-import { Student } from '../tables/student-table';
 import { FilterType } from './elective-filter-reducers';
 import { ca, gl } from 'date-fns/locale';
+import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
 
 interface SetCarousel {
   type: 'setCarousel';
@@ -61,14 +60,14 @@ export type ElectiveStateActions =
 
 export type ElectiveState = {
   highlightedCourses: string[];
-  pinnedStudents: Student[];
+  pinnedStudents: StudentDTO[];
   filterPending: boolean;
   filterType: FilterType;
-  studentList: Student[];
+  studentList: StudentDTO[];
   carouselId: number;
-  courseId: string;
+  uuid: string;
   courseCarouselId: number;
-  electivePreferences: Record<number, ElectivePreference[]>;
+  electivePreferences: Record<number, ElectivePreferenceDTO[]>;
   partyId: number;
 };
 
@@ -103,19 +102,19 @@ export default function electivePreferencesReducer(
       const {
         carouselId: oldCarouselId,
         courseCarouselId: oldCourseCarouselId,
-        courseId: oldCourseId
+        uuid: oldCourseId
       } = electivesState;
 
       const carouselMatch = carouselId == oldCarouselId;
       const courseCarouselMatch = courseCarouselId == oldCourseCarouselId;
-      const UUIDMatch = courseId == oldCourseId;
+      const uuidMatch = courseId == oldCourseId;
 
-      const globalMatch = carouselMatch && courseCarouselMatch && UUIDMatch;
+      const globalMatch = carouselMatch && courseCarouselMatch && uuidMatch;
 
       return produce(electivesState, (draftState) => {
         draftState.carouselId = globalMatch ? -1 : carouselId;
         draftState.courseCarouselId = globalMatch ? -1 : courseCarouselId;
-        draftState.courseId = globalMatch ? '' : courseId;
+        draftState.uuid = globalMatch ? '' : courseId;
         draftState.filterPending = true;
       });
     }
@@ -189,10 +188,10 @@ export default function electivePreferencesReducer(
 }
 
 export function createdElectivePreferenceRecords(
-  electivePreferenceList: ElectivePreference[]
+  electivePreferenceList: ElectivePreferenceDTO[]
 ) {
   const groupedByPartyId = electivePreferenceList.reduce<
-    Record<number, ElectivePreference[]>
+    Record<number, ElectivePreferenceDTO[]>
   >((acc, curr) => {
     if (!acc[curr.partyId]) {
       acc[curr.partyId] = [];

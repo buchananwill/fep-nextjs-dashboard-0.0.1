@@ -1,7 +1,6 @@
 'use client';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 
-import { Student } from '../tables/student-table';
 import { usePathname, useRouter } from 'next/navigation';
 import { checkAssignment } from './checkElectiveAssignments';
 import { ElectiveState } from './elective-reducers';
@@ -13,15 +12,7 @@ import { FilterOption, FilterType } from './elective-filter-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { Disclosure } from '@headlessui/react';
-
-export interface ElectivePreference {
-  partyId: number;
-  courseDescription: string;
-  courseUUID: string;
-  preferencePosition: number;
-  assignedCarouselId: number;
-  isActive: boolean;
-}
+import { StudentDTO } from '../api/dto-interfaces';
 
 export interface ElectiveAvailability {
   [key: string]: number[];
@@ -34,21 +25,21 @@ interface Props {
 function filterStudentList(
   courseFilters: FilterOption[],
   electiveState: ElectiveState
-): Student[] {
+): StudentDTO[] {
   const {
     electivePreferences,
-    courseId,
+    uuid,
     carouselId,
     studentList,
     filterType,
     pinnedStudents
   } = electiveState;
-  const filteredList: Student[] = [];
+  const filteredList: StudentDTO[] = [];
 
   if (
     (!courseFilters || courseFilters.length == 0) &&
     (!pinnedStudents || pinnedStudents.length == 0) &&
-    (!courseId || !carouselId)
+    (!uuid || !carouselId)
   ) {
     return filteredList;
   }
@@ -67,45 +58,34 @@ function filterStudentList(
           couldMatch =
             couldMatch &&
             nextStudentPrefs.some((electivePreference) => {
-              let { courseUUID, isActive, assignedCarouselId } =
-                electivePreference;
-              return isActive && courseFilter.URI == courseUUID;
+              let { uuid, isActive, assignedCarouselId } = electivePreference;
+              return isActive && courseFilter.URI == uuid;
             });
           if (!couldMatch) break;
         }
-        if (courseId && carouselId) {
+        if (uuid && carouselId) {
           couldMatch =
             couldMatch &&
             nextStudentPrefs.some((electivePreference) => {
-              const { courseUUID, isActive, assignedCarouselId } =
-                electivePreference;
-              if (
-                isActive &&
-                courseUUID == courseId &&
-                assignedCarouselId == carouselId
-              )
+              const { uuid, isActive, assignedCarouselId } = electivePreference;
+              if (isActive && uuid == uuid && assignedCarouselId == carouselId)
                 return true;
             });
         }
         if (couldMatch) filteredList.push(student);
       } else if (filterType == FilterType.any) {
         let anyMatch = nextStudentPrefs.some((electivePreference) => {
-          let { courseUUID, isActive } = electivePreference;
+          let { uuid, isActive } = electivePreference;
           return courseFilters.some(
-            (filterOption) => isActive && filterOption.URI == courseUUID
+            (filterOption) => isActive && filterOption.URI == uuid
           );
         });
-        if (courseId && carouselId) {
+        if (uuid && carouselId) {
           anyMatch =
             anyMatch ||
             nextStudentPrefs.some((electivePreference) => {
-              const { courseUUID, isActive, assignedCarouselId } =
-                electivePreference;
-              if (
-                isActive &&
-                courseUUID == courseId &&
-                assignedCarouselId == carouselId
-              )
+              const { uuid, isActive, assignedCarouselId } = electivePreference;
+              if (isActive && uuid == uuid && assignedCarouselId == carouselId)
                 return true;
             });
         }
@@ -130,7 +110,7 @@ export default function ElectiveSubscriberDisclosureGroup({
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   // const [filteredList, setFilteredList] = useState<Student[]>(studentList);
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<StudentDTO[]>([]);
 
   const electiveState = useContext(ElectiveContext);
   const {
@@ -219,7 +199,7 @@ export default function ElectiveSubscriberDisclosureGroup({
     activePreferencesThisStudent.forEach((preference) =>
       dispatch({
         type: 'setHighlightedCourses',
-        id: preference.courseUUID
+        id: preference.uuid
       })
     );
   }
@@ -282,7 +262,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                               {electivePreferences[student.id].map(
                                 ({
                                   preferencePosition,
-                                  courseDescription,
+                                  name,
                                   assignedCarouselId
                                 }) => {
                                   return (
@@ -291,7 +271,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                       className="flex grow-0 w-full justify-between"
                                     >
                                       {/* <span className="px-1 w-6">{preferencePosition}</span> */}
-                                      <span>{courseDescription} </span>
+                                      <span>{name} </span>
                                       <span className="grow"></span>
                                       <div className="indicator">
                                         {getAssignmentIndicator(
@@ -314,7 +294,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                         >
                                           {mapOptions(
                                             electiveAvailability,
-                                            courseDescription,
+                                            name,
                                             assignedCarouselId,
                                             student.id,
                                             preferencePosition

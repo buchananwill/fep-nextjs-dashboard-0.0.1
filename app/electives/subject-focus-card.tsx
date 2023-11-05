@@ -4,29 +4,16 @@ import React, { Suspense, useContext, useEffect, useState } from 'react';
 import ElectiveSubscriberAccordion, {
   ElectiveAvailability
 } from './elective-subscriber-disclosure-group';
-import { ElectiveDTO } from './elective-card';
 import { useSearchParams } from 'next/navigation';
 import { ElectiveContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
-import { Student } from '../tables/student-table';
 import ElectiveSubscriberDisclosureGroup from './elective-subscriber-disclosure-group';
+import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
 
   electiveAvailability: ElectiveAvailability;
-}
-
-function getElectiveDTO(
-  electiveDTOList: ElectiveDTO[],
-  carouselId: number,
-  courseUUID: string
-) {
-  return electiveDTOList.find(
-    (electiveDTO) =>
-      electiveDTO.carouselId == carouselId &&
-      electiveDTO.courseUUID == courseUUID
-  );
 }
 
 const SubjectFocusCard = ({ electiveDTOList, electiveAvailability }: Props) => {

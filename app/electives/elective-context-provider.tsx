@@ -2,21 +2,20 @@
 
 import { ReactNode, useReducer } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import { ElectivePreference } from './elective-subscriber-accordion';
 
 import electiveStateReducer, {
   createdElectivePreferenceRecords,
   ElectiveState
 } from './elective-reducers';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Student } from '../tables/student-table';
 import { FilterType } from './elective-filter-reducers';
+import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
 
 interface Props {
   // lessonCycleFocus: ElectiveDTO;
   // studentFocus: number;
-  studentList: Student[];
-  electivePreferenceList: ElectivePreference[];
+  studentList: StudentDTO[];
+  electivePreferenceList: ElectivePreferenceDTO[];
   // electiveAvailability: ElectiveAvailability;
   children: ReactNode;
   // yearGroupElectiveData: YearGroupElectives;
@@ -34,7 +33,7 @@ export default function ElectiveContextProvider({
     filterType: FilterType.any,
     studentList,
     carouselId: 0,
-    courseId: '',
+    uuid: '',
     courseCarouselId: 0,
     electivePreferences: createdElectivePreferenceRecords(
       electivePreferenceList
@@ -42,12 +41,6 @@ export default function ElectiveContextProvider({
     partyId: 0
   };
   const pathname = usePathname();
-
-  const searchParams = useSearchParams();
-
-  const courseCarouselIdStr = searchParams?.get('courseCarouselId');
-  const courseIdStr = searchParams?.get('courseId');
-  const partyIdStr = searchParams?.get('partyId');
 
   const [electiveState, dispatch] = useReducer(
     electiveStateReducer,

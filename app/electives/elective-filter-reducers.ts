@@ -1,5 +1,6 @@
 import { produce } from 'immer';
-import { ElectivePreference } from './elective-subscriber-accordion';
+
+import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 
 export interface FilterOption {
   URI: string;
@@ -59,7 +60,7 @@ export default function electiveFilterReducer(
   }
 }
 
-interface CourseFilter extends Filter<Record<string, ElectivePreference[]>> {
+interface CourseFilter extends Filter<Record<string, ElectivePreferenceDTO[]>> {
   URI: string;
   label: string;
   filterType: FilterType;
@@ -71,16 +72,16 @@ function createCourseFilter(filterOption: FilterOption): CourseFilter {
     label: filterOption.label,
     filterType: filterOption.operator,
     apply: function (
-      record: Record<string, ElectivePreference[]>
-    ): Record<string, ElectivePreference[]> {
-      const filteredSet: Record<string, ElectivePreference[]> = {};
+      record: Record<string, ElectivePreferenceDTO[]>
+    ): Record<string, ElectivePreferenceDTO[]> {
+      const filteredSet: Record<string, ElectivePreferenceDTO[]> = {};
       for (let electivePreferencesKey in record) {
         const numericKey = parseInt(electivePreferencesKey);
         const nextStudentPrefs = record[numericKey];
 
         const foundStudent = nextStudentPrefs.some((electivePreference) => {
-          let { courseUUID, isActive } = electivePreference;
-          return isActive && this.URI == courseUUID;
+          let { uuid, isActive } = electivePreference;
+          return isActive && this.URI == uuid;
         });
 
         if (foundStudent) {

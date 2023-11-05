@@ -3,12 +3,12 @@ import { Card, Text } from '@tremor/react';
 import { FilterDropdown } from '../components/filter-dropdown';
 import { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import { ElectiveDTO } from './elective-card';
 import Union from '../components/union';
 import Intersection from '../components/intersection';
 import { FilterOption, FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
 import { PinButton, PinIcons } from '../components/pin-button';
+import { ElectiveDTO } from '../api/dto-interfaces';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -19,21 +19,21 @@ function createDistinctFilterOptions(
 ): FilterOption[] {
   if (!electiveDTOList) return [];
 
-  const seenCourseUUIDs = new Set<string>();
+  const seenUuids = new Set<string>();
 
   return electiveDTOList
     .filter((electiveDTO) => {
-      const { courseUUID } = electiveDTO;
+      const { uuid } = electiveDTO;
 
-      if (!seenCourseUUIDs.has(courseUUID)) {
-        seenCourseUUIDs.add(courseUUID);
+      if (!seenUuids.has(uuid)) {
+        seenUuids.add(uuid);
         return true;
       }
       return false;
     })
-    .map(({ courseDescription, courseUUID }) => ({
-      URI: courseUUID,
-      label: courseDescription,
+    .map(({ name, uuid }) => ({
+      URI: uuid,
+      label: name,
       operator: FilterType.all
     }));
 }
@@ -52,10 +52,10 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   }
 
   function handleResetMortarBoards() {
-    highlightedCourses.forEach((courseUUID) =>
+    highlightedCourses.forEach((uuid) =>
       dispatch({
         type: 'setHighlightedCourses',
-        id: courseUUID
+        id: uuid
       })
     );
   }

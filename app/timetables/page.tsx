@@ -3,8 +3,8 @@ import React from 'react';
 import fetchSchedule from '../api/request-schedule';
 import Timetable from './timetable';
 import fetchResults from '../api/student-search';
-import { Student } from '../tables/student-table';
 import StudentSelector from './student-selector';
+import { StudentDTO } from '../api/dto-interfaces';
 
 export default async function TimetablesPage({
   searchParams
@@ -15,7 +15,7 @@ export default async function TimetablesPage({
 
   const schedule = await fetchSchedule(Number(searchParams.q));
 
-  const students: Student[] = await fetchResults(dummyParams);
+  const students: StudentDTO[] = await fetchResults(dummyParams);
 
   return (
     <main>

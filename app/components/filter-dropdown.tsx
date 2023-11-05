@@ -6,7 +6,7 @@ import {
   ElectiveContext,
   ElectiveDispatchContext
 } from '../electives/elective-context';
-import { ElectivePreference } from '../electives/elective-subscriber-accordion';
+import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
@@ -35,9 +35,9 @@ function summariseFilterSelections(
     | string
     | number
     | FilterOption[]
-    | { courseUUID: string; carouselId: string }[]
+    | { uuid: string; carouselId: string }[]
     | number[]
-    | Record<number, ElectivePreference[]>
+    | Record<number, ElectivePreferenceDTO[]>
 ) {
   if (Array.isArray(selectedFilters) && selectedFilters.length > 0) {
     const joinedSelections = selectedFilters
