@@ -64,7 +64,7 @@ export default function ElectiveCard({
   electiveDTO: ElectiveDTO;
 }) {
   const { name, carouselId, courseCarouselId, uuid } = electiveDTO;
-  console.log(electiveDTO);
+
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
   const subscribersColor = getSubscribersColor(subscribers);
@@ -126,8 +126,6 @@ export default function ElectiveCard({
   const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
 
   const classesColor = getClassesColor(numberOfClasses);
-
-  console.log(electiveDTO);
 
   return (
     <Card

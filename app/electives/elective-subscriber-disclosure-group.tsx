@@ -36,11 +36,14 @@ function filterStudentList(
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
+  console.log('Beginning Filter: ', electiveState);
+
   if (
     (!courseFilters || courseFilters.length == 0) &&
     (!pinnedStudents || pinnedStudents.length == 0) &&
     (!uuid || !carouselId)
   ) {
+    console.log('No filters selected.');
     return filteredList;
   }
 
@@ -58,8 +61,12 @@ function filterStudentList(
           couldMatch =
             couldMatch &&
             nextStudentPrefs.some((electivePreference) => {
-              let { uuid, isActive, assignedCarouselId } = electivePreference;
-              return isActive && courseFilter.URI == uuid;
+              let {
+                uuid: nextUuid,
+                isActive,
+                assignedCarouselId
+              } = electivePreference;
+              return isActive && courseFilter.URI == nextUuid;
             });
           if (!couldMatch) break;
         }
@@ -67,25 +74,41 @@ function filterStudentList(
           couldMatch =
             couldMatch &&
             nextStudentPrefs.some((electivePreference) => {
-              const { uuid, isActive, assignedCarouselId } = electivePreference;
-              if (isActive && uuid == uuid && assignedCarouselId == carouselId)
+              const {
+                uuid: nextUuid,
+                isActive,
+                assignedCarouselId
+              } = electivePreference;
+              if (
+                isActive &&
+                uuid == nextUuid &&
+                assignedCarouselId == carouselId
+              )
                 return true;
             });
         }
         if (couldMatch) filteredList.push(student);
       } else if (filterType == FilterType.any) {
         let anyMatch = nextStudentPrefs.some((electivePreference) => {
-          let { uuid, isActive } = electivePreference;
+          let { uuid: nextUuid, isActive } = electivePreference;
           return courseFilters.some(
-            (filterOption) => isActive && filterOption.URI == uuid
+            (filterOption) => isActive && filterOption.URI == nextUuid
           );
         });
         if (uuid && carouselId) {
           anyMatch =
             anyMatch ||
             nextStudentPrefs.some((electivePreference) => {
-              const { uuid, isActive, assignedCarouselId } = electivePreference;
-              if (isActive && uuid == uuid && assignedCarouselId == carouselId)
+              const {
+                uuid: nextUuid,
+                isActive,
+                assignedCarouselId
+              } = electivePreference;
+              if (
+                isActive &&
+                uuid == nextUuid &&
+                assignedCarouselId == carouselId
+              )
                 return true;
             });
         }
@@ -97,6 +120,8 @@ function filterStudentList(
       filteredList.push(student);
     }
   }
+
+  console.log('Filtered list:', filteredList);
 
   return filteredList;
 }

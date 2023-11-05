@@ -62,8 +62,6 @@ export default async function ElectivesPage({
     } = yearGroupElectiveData;
 
     try {
-      console.log(electiveDTOList);
-
       // Safely map electiveData
       tableCellsData =
         electiveDTOList?.map((elective) => ({
@@ -71,8 +69,6 @@ export default async function ElectivesPage({
           col: elective.carouselId,
           value: elective
         })) ?? [];
-
-      console.log(tableCellsData);
 
       // Safely map electiveAvailability
       electiveAvailability = compileElectiveAvailability(electiveDTOList);

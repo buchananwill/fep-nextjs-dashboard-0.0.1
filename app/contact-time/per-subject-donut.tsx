@@ -1,5 +1,5 @@
 'use client';
-import { Card, DonutChart, Title } from '@tremor/react';
+import { Card, DonutChart, Grid, Title } from '@tremor/react';
 import React from 'react';
 
 interface PerSubjectDonutData {
@@ -21,36 +21,41 @@ const valueFormatter = (number: number) =>
   `$ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
 export const PerSubjectDonut = ({
-  data: { name, objectArray }
+  data
 }: {
   data: {
     name: string;
     objectArray: { keyName: string; valueName: number }[];
-  };
+  }[];
 }) => {
   const [value, setValue] = React.useState(null);
-  console.log();
+
   return (
     <>
-      <Card className="mx-auto">
-        <Title>{name}</Title>
-        <DonutChart
-          className="mt-6"
-          data={objectArray}
-          category="valueName"
-          index="keyName"
-          colors={[
-            'rose',
-            'orange',
-            'yellow',
-            'emerald',
-            'blue',
-            'indigo',
-            'violet'
-          ]}
-          onValueChange={(v) => setValue(v)}
-        />
-      </Card>
+      <Grid numItems={1} numItemsLg={3} className="gap-2">
+        {data &&
+          data.map(({ name, objectArray }, index) => (
+            <Card key={`donut-card-${index}`} className="mx-auto max-w-xl">
+              <Title>{name}</Title>
+              <DonutChart
+                className="mt-6"
+                data={objectArray}
+                category="valueName"
+                index="keyName"
+                colors={[
+                  'rose',
+                  'orange',
+                  'yellow',
+                  'emerald',
+                  'blue',
+                  'indigo',
+                  'violet'
+                ]}
+                onValueChange={(v) => setValue(v)}
+              />
+            </Card>
+          ))}
+      </Grid>
       <pre>{JSON.stringify(value)}</pre>
     </>
   );

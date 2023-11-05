@@ -20,7 +20,7 @@ interface FocusCourse {
   type: 'focusCourse';
   carouselId: number;
   courseCarouselId: number;
-  courseId: string;
+  uuid: string;
 }
 
 interface FocusStudent {
@@ -98,23 +98,25 @@ export default function electivePreferencesReducer(
     }
 
     case 'focusCourse': {
-      const { carouselId, courseCarouselId, courseId } = action;
+      const { carouselId, courseCarouselId, uuid } = action;
       const {
         carouselId: oldCarouselId,
         courseCarouselId: oldCourseCarouselId,
-        uuid: oldCourseId
+        uuid: oldUuid
       } = electivesState;
+
+      console.log('UUID arrived via dispatch:', uuid);
 
       const carouselMatch = carouselId == oldCarouselId;
       const courseCarouselMatch = courseCarouselId == oldCourseCarouselId;
-      const uuidMatch = courseId == oldCourseId;
+      const uuidMatch = uuid == oldUuid;
 
       const globalMatch = carouselMatch && courseCarouselMatch && uuidMatch;
 
       return produce(electivesState, (draftState) => {
         draftState.carouselId = globalMatch ? -1 : carouselId;
         draftState.courseCarouselId = globalMatch ? -1 : courseCarouselId;
-        draftState.uuid = globalMatch ? '' : courseId;
+        draftState.uuid = globalMatch ? '' : uuid;
         draftState.filterPending = true;
       });
     }
@@ -182,7 +184,7 @@ export default function electivePreferencesReducer(
     }
 
     default: {
-      throw Error('Unkown action: ' + action);
+      throw Error('Unknown action: ' + action);
     }
   }
 }
