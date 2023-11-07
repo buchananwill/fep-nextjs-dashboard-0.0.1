@@ -8,5 +8,5 @@ export default async function ElectivesPage({
 }: {
   children: React.ReactNode;
 }) {
-  return <></>;
+  return <>{children}</>;
 }

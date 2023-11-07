@@ -1,13 +1,8 @@
 import React from 'react';
-
-export interface CellInfo {
-  principalValue: string;
-  leftBottom: string;
-  rightBottom: string;
-}
+import { ScheduleCellInfo } from '../api/dto-interfaces';
 
 interface TimetablePeriodProps {
-  periodInfo: CellInfo;
+  periodInfo: ScheduleCellInfo;
 }
 
 function TimetablePeriod({ periodInfo }: TimetablePeriodProps) {
@@ -17,8 +12,8 @@ function TimetablePeriod({ periodInfo }: TimetablePeriodProps) {
     rightBottom: location
   } = periodInfo;
   return (
-    <div className="p-0 flex justify-center">
-      <div className="p-1 justify-between text-center w-full border rounded m-0">
+    <div className="p-0 flex justify-center w-full">
+      <div className="p-1 justify-between text-center w-full m-0">
         <p className="font-bold ">{subject}</p>
         <div className="flex justify-between">
           <p>{teacher}</p>

@@ -11,7 +11,7 @@ export interface NamedNumberRecord extends Nameable {
   stringIntegerMap: Record<string, number>;
 }
 
-export interface ElectiveDTO extends Nameable, Uuidable {
+export interface ElectiveDTO extends Nameable, HasUuid {
   // uuid = course.
   courseCarouselId: number;
   carouselId: number;
@@ -22,7 +22,7 @@ export interface Nameable {
   name: string;
 }
 
-export interface Uuidable {
+export interface HasUuid {
   uuid: string;
 }
 
@@ -57,4 +57,38 @@ export interface YearGroupElectives {
   studentDTOList: StudentDTO[];
   electiveDTOList: ElectiveDTO[];
   electivePreferenceDTOList: ElectivePreferenceDTO[];
+}
+
+export interface ScheduleCellInfo {
+  principalValue: string;
+  leftBottom: string;
+  rightBottom: string;
+}
+
+export interface TableContents {
+  headerLabels: string[];
+  tableRows: ScheduleCellInfo[][];
+}
+
+export interface CellDataAndMetaData<D> {
+  cellData: D;
+  cellRow: number;
+  cellColumn: number;
+}
+
+export interface TabularDTO<H, D> {
+  numberOfRows: number;
+  numberOfColumns: number;
+  headerData: H[];
+  cellDataAndMetaData: CellDataAndMetaData<D>[];
+}
+
+export interface Period {
+  periodId: number | null; // TypeScript doesn't have a 'Long' type, so 'number' is typically used
+  startTime: string | null; // LocalTime can be represented as a string in ISO format
+  endTime: string | null;
+  dayOfWeek: string | null;
+  dayOfCycle: number | null;
+  cycleLengthInDays: number | null;
+  cycleId: string | null;
 }

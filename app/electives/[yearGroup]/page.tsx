@@ -2,10 +2,7 @@ import OptionBlockTable from '../elective-table';
 import { Card, Text, Title } from '@tremor/react';
 import { ElectiveAvailability } from '../elective-subscriber-disclosure-group';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
-import {
-  reconstructTableWithDimensions,
-  TableCellData
-} from '../../utils/tables';
+import { reconstructTableWithDimensions } from '../../utils/tables';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshDropdown } from '../../components/refresh-dropdown';
@@ -16,7 +13,12 @@ import { Suspense } from 'react';
 
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
-import { ElectiveDTO, YearGroupElectives } from '../../api/dto-interfaces';
+import {
+  CellDataAndMetaData,
+  ElectiveDTO,
+  YearGroupElectives
+} from '../../api/dto-interfaces';
+import BigTableCard from '../../components/big-table-card';
 
 interface Props {
   params: { yearGroup: string };
@@ -47,7 +49,7 @@ export default async function ElectivesPage({
     );
 
   // Initialize with empty arrays or nulls
-  let tableCellsData: TableCellData[] = [];
+  let tableCellsData: CellDataAndMetaData<ElectiveDTO>[] = [];
   let electiveTableData: ElectiveDTO[][] = [];
   let electiveAvailability: ElectiveAvailability = {};
 
@@ -62,12 +64,18 @@ export default async function ElectivesPage({
     } = yearGroupElectiveData;
 
     try {
+      const firstColumn = electiveDTOList.reduce(
+        (min, cellData) =>
+          cellData.carouselId < min ? cellData.carouselId : min,
+        electiveDTOList[0].carouselId
+      );
+
       // Safely map electiveData
       tableCellsData =
         electiveDTOList?.map((elective) => ({
-          row: elective.courseCarouselId,
-          col: elective.carouselId,
-          value: elective
+          cellRow: elective.courseCarouselId,
+          cellColumn: elective.carouselId - firstColumn,
+          cellData: elective
         })) ?? [];
 
       // Safely map electiveAvailability
@@ -77,8 +85,8 @@ export default async function ElectivesPage({
       if (tableCellsData.length > 0) {
         electiveTableData = reconstructTableWithDimensions(
           tableCellsData,
-          carouselRows,
-          carouselCols
+          carouselCols,
+          carouselRows
         );
       }
     } catch (error: unknown) {
@@ -110,13 +118,11 @@ export default async function ElectivesPage({
             <Suspense>
               {yearGroupElectiveData ? (
                 <div className="flex w-full items-top justify-between pt-4  select-none">
-                  <Card className="flex-shrink-0 flex-grow max-w-5xl max-h-min h-min overflow-x-auto p-2">
-                    <div className="m-2 p-2 min-w-max max-h-min">
-                      <OptionBlockTable
-                        electives={electiveTableData}
-                      ></OptionBlockTable>
-                    </div>
-                  </Card>
+                  <BigTableCard>
+                    <OptionBlockTable
+                      electives={electiveTableData}
+                    ></OptionBlockTable>
+                  </BigTableCard>
 
                   <FilteredStudentsCard
                     electiveAvailability={electiveAvailability}

@@ -1,37 +1,28 @@
-export interface TableCellData {
-  row: number;
-  col: number;
-  value: any;
-}
+import { CellDataAndMetaData } from '../api/dto-interfaces';
 
-export const reconstructTableWithDimensions = (
-  flatList: TableCellData[],
-  numRows: number,
-  numCols: number
-): any[][] => {
-  const firstColumn = flatList.reduce(
-    (min, cellData) => (cellData.col < min ? cellData.col : min),
-    flatList[0].col
-  );
-
+export function reconstructTableWithDimensions<D>(
+  flatList: CellDataAndMetaData<D>[],
+  numCols: number,
+  numRows: number
+): D[][] {
   // Initialize the 2D array
-  const table: any[][] = Array.from({ length: numRows }, () =>
+  const table: D[][] = Array.from({ length: numRows }, () =>
     Array(numCols).fill(null)
   );
 
   // Populate the table based on the row and col indices from the flatList
   for (const cell of flatList) {
-    const cellCol = cell.col - firstColumn;
-    if (cell.row < numRows && cellCol !== null) {
-      table[cell.row][cellCol] = cell.value;
+    // const cellCol = cell.cellColumn - firstColumn;
+    if (cell.cellRow < numRows && cell.cellColumn < numCols) {
+      table[cell.cellRow][cell.cellColumn] = cell.cellData;
     } else {
       console.error(
         'Invalid cell index. Col:',
-        cellCol,
+        cell.cellColumn,
         'exceeds: ',
         numCols,
-        ' and Row: ',
-        cell.row,
+        ' or Row: ',
+        cell.cellRow,
         ' exceeds ',
         numRows
       );
@@ -39,4 +30,4 @@ export const reconstructTableWithDimensions = (
   }
 
   return table;
-};
+}

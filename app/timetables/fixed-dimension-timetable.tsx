@@ -7,14 +7,15 @@ import {
   TableCell
 } from '@tremor/react';
 
-import TimetablePeriod, { CellInfo } from './timetable-period';
+import TimetablePeriod from './timetable-period';
+import { ScheduleCellInfo } from '../api/dto-interfaces';
 
 interface TableContents {
   headerLabels: string[];
-  tableRows: CellInfo[][];
+  tableRows: ScheduleCellInfo[][];
 }
 
-export default function Timetable({
+export default function FixedDimensionTimetable({
   tableContents
 }: {
   tableContents: TableContents;
