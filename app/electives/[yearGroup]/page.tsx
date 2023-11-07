@@ -9,7 +9,7 @@ import {
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshDropdown } from '../../components/refresh-dropdown';
-import SubjectFocusCard from '../subject-focus-card';
+import FilteredStudentsCard from '../filtered-students-card';
 import ElectiveContextProvider from '../elective-context-provider';
 import ToolTipsToggle from '../tool-tips-toggle';
 import { Suspense } from 'react';
@@ -108,24 +108,25 @@ export default async function ElectivesPage({
           <ElectiveFilters electiveDTOList={electiveDTOList}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">
             <Suspense>
-              {yearGroupElectiveData !== null ? (
+              {yearGroupElectiveData ? (
                 <div className="flex w-full items-top justify-between pt-4  select-none">
-                  <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
-                    <OptionBlockTable
-                      electives={electiveTableData}
-                    ></OptionBlockTable>
+                  <Card className="flex-shrink-0 flex-grow max-w-5xl max-h-min h-min overflow-x-auto p-2">
+                    <div className="m-2 p-2 min-w-max max-h-min">
+                      <OptionBlockTable
+                        electives={electiveTableData}
+                      ></OptionBlockTable>
+                    </div>
                   </Card>
 
-                  <SubjectFocusCard
-                    electiveDTOList={electiveDTOList}
+                  <FilteredStudentsCard
                     electiveAvailability={electiveAvailability}
-                  ></SubjectFocusCard>
+                  ></FilteredStudentsCard>
                 </div>
               ) : (
                 <>
                   {' '}
                   <div className="flex w-full items-top justify-between pt-4">
-                    <Card className="flex-shrink-0 flex-grow max-w-4xl min-h-72">
+                    <Card className="flex-shrink-0 flex-grow max-w-4xl max-h-[70vh]">
                       Unable to find requested table.
                     </Card>
 

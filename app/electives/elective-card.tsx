@@ -1,5 +1,5 @@
 'use client';
-import { Badge, Card, Color } from '@tremor/react';
+import { Badge, Card, Color, Text } from '@tremor/react';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
@@ -8,6 +8,7 @@ import { PinButton, PinIcons } from '../components/pin-button';
 import { ElectiveFilterContext } from './elective-filter-context';
 import { FilterOption } from './elective-filter-reducers';
 import { ElectiveDTO } from '../api/dto-interfaces';
+import InteractiveTableCard from '../components/interactive-table-card';
 
 const aLevelClassLimitInt = 25;
 
@@ -127,25 +128,21 @@ export default function ElectiveCard({
 
   const classesColor = getClassesColor(numberOfClasses);
 
+  const additionalClassNames = [
+    `opacity-${opacity}`,
+    borderVisible,
+    courseCarouselId == focusCCID && carouselId == focusCId
+      ? 'bg-emerald-100'
+      : ''
+  ];
   return (
-    <Card
-      className={classNames(
-        `opacity-${opacity}`,
-        borderVisible,
-        'flex py-2 px-1 m-0 items-center hover:scale-110 hover:z-10 hover:transition-transform hover:duration-300 duration-300 transition-transform',
-        courseCarouselId == focusCCID && carouselId == focusCId
-          ? 'bg-emerald-100'
-          : ''
-      )}
-      decoration="left"
-      decorationColor="emerald"
-    >
+    <InteractiveTableCard additionalClassNames={additionalClassNames}>
       {isPending && (
         <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
           <span className="loading loading-ring loading-sm"></span>
         </div>
       )}
-      <div className="indicator grow">
+      <div className="indicator grow ">
         {getFiltered(courseFilters, uuid) && (
           <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
         )}
@@ -155,7 +152,7 @@ export default function ElectiveCard({
             handleCardClick(carouselId, courseCarouselId, uuid);
           }}
         >
-          {name} {}
+          <Text className="text-xs">{name}</Text>
         </div>
       </div>
 
@@ -167,7 +164,7 @@ export default function ElectiveCard({
       ></PinButton>
       <Badge color={classesColor}>{numberOfClasses} </Badge>
       <Badge color={subscribersColor}>{subscribers}</Badge>
-    </Card>
+    </InteractiveTableCard>
   );
 }
 

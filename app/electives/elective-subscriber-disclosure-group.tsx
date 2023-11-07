@@ -235,7 +235,7 @@ export default function ElectiveSubscriberDisclosureGroup({
   try {
     return (
       <>
-        <div className="pb-4">
+        <div className="pb-4 justify-left">
           {filteredStudents &&
             filteredStudents.map((student) => (
               <div key={`${student.id}-prefs`}>
@@ -258,8 +258,8 @@ export default function ElectiveSubscriberDisclosureGroup({
                               setPinned={() => handleRadioClick(student.id)}
                             ></PinButton>
 
-                            <Disclosure.Button className="border-x-2 border-dotted grow py-2 text-center text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
-                              <span className="grow">{student.name}</span>
+                            <Disclosure.Button className="border-x-2 border-dotted grow py-2 text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
+                              <span className="grow ml-2">{student.name}</span>
                             </Disclosure.Button>
                             <PinButton
                               pinIcon={PinIcons.mapPin}

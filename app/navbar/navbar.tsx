@@ -1,14 +1,16 @@
 'use client';
 
-import { Fragment } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { Fragment, useTransition } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import ProtectedNavigation from './protected-navigation';
+import { Text } from '@tremor/react';
+import { SvgLogo } from './svg-logo';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 const electivesDropdown = [
   { name: 'Year 9', href: '/9' },
@@ -19,20 +21,31 @@ const electivesDropdown = [
 ];
 
 const contactTimeDropdown = [
+  { name: 'Scatter summary', href: '' },
   { name: 'Per Subject', href: '/per-subject' },
-  { name: 'Per Year Group', href: 'per-year-group' }
+  { name: 'Per Year Group', href: '/per-year-group' }
 ];
 
+const studentsDropdown = [{ name: 'Students', href: '' }];
+
+const timetablesDropdown = [{ name: 'Timetables', href: '' }];
+
+const premisesDropdown = [{ name: 'Premises', href: '' }];
+
 const navigation = [
-  { name: 'Students', href: '/', dropdownItems: [] },
-  { name: 'Timetables', href: '/timetables', dropdownItems: [] },
+  { name: 'Students', href: '/', dropdownItems: studentsDropdown },
+  {
+    name: 'Timetables',
+    href: '/timetables',
+    dropdownItems: timetablesDropdown
+  },
   { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
   {
     name: 'Contact Time',
     href: '/contact-time',
     dropdownItems: contactTimeDropdown
   },
-  { name: 'Premises', href: '/premises', dropdownItems: [] }
+  { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
 ];
 
 function classNames(...classes: string[]) {
@@ -40,6 +53,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar({ user }: { user: any }) {
+  const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const unsaved = useSearchParams()?.get('unsaved') == 'true';
   const useCache = useSearchParams()?.get('cacheSetting');
@@ -49,7 +63,9 @@ export default function Navbar({ user }: { user: any }) {
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;
-    router.push(fullNavigation);
+    startTransition(() => {
+      router.push(fullNavigation);
+    });
   };
 
   return (
@@ -59,77 +75,68 @@ export default function Navbar({ user }: { user: any }) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between">
               <div className="flex">
-                <div className="flex flex-shrink-0 items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    className="text-gray-100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      width="100%"
-                      height="100%"
-                      rx="16"
-                      fill="currentColor"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                      fill="black"
-                    />
-                  </svg>
-                </div>
+                <SvgLogo isPending={isPending} />
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-2">
                   {navigation.map((dropdownLabel, index) => (
                     <div
-                      key={`label${dropdownLabel.name}`}
-                      className="dropdown dropdown-hover"
+                      key={`label-${dropdownLabel.name}`}
+                      className="w-32 normal-case my-2 mx-0"
                     >
-                      <label
-                        tabIndex={index}
-                        className="btn my-2 mx-0 normal-case w-32"
-                      >
-                        <ProtectedNavigation
-                          key={`drop-down-${dropdownLabel.name}`}
-                          onConfirm={() => handleNavigation(dropdownLabel.href)}
-                          isActive={pathname === dropdownLabel.href}
-                          requestConfirmation={unsaved}
-                        >
-                          {dropdownLabel.name}
-                        </ProtectedNavigation>
-                      </label>
-                      {dropdownLabel.dropdownItems.length == 0 ? (
-                        <div></div>
-                      ) : (
-                        <ul
-                          tabIndex={index}
-                          className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-32"
-                        >
-                          {dropdownLabel.dropdownItems.map(
-                            (dropdown, index) => (
-                              <li key={`${dropdownLabel.name}-${index}`}>
-                                <ProtectedNavigation
-                                  onConfirm={() =>
-                                    handleNavigation(
-                                      `${dropdownLabel.href}${dropdown.href}`
-                                    )
-                                  }
-                                  isActive={
-                                    pathname ===
-                                    `${dropdownLabel.href}${dropdown.href}`
-                                  }
-                                  requestConfirmation={unsaved}
-                                >
-                                  {dropdown.name}
-                                </ProtectedNavigation>
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      )}
+                      <Menu as="div" className="relative text-left">
+                        <div>
+                          <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-100 py-2 text-sm font-medium hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+                            <Text>{dropdownLabel.name}</Text>
+                            <ChevronDownIcon
+                              className="h-5 w-5 text-gray-600"
+                              aria-hidden="true"
+                            />
+                          </Menu.Button>
+                        </div>
+                        {dropdownLabel.dropdownItems.length == 0 ? (
+                          <div></div>
+                        ) : (
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="z-40 absolute left-0 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                              <div className="px-1 py-1">
+                                {dropdownLabel.dropdownItems.map(
+                                  (dropdown, index) => (
+                                    <Menu.Item
+                                      key={`${dropdownLabel.name}-${index}`}
+                                    >
+                                      {({ close }) => (
+                                        <ProtectedNavigation
+                                          onConfirm={() => {
+                                            close();
+                                            handleNavigation(
+                                              `${dropdownLabel.href}${dropdown.href}`
+                                            );
+                                          }}
+                                          isActive={
+                                            pathname ===
+                                            `${dropdownLabel.href}${dropdown.href}`
+                                          }
+                                          requestConfirmation={unsaved}
+                                          classNames="group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                                        >
+                                          {dropdown.name}
+                                        </ProtectedNavigation>
+                                      )}
+                                    </Menu.Item>
+                                  )
+                                )}
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        )}
+                      </Menu>
                     </div>
                   ))}
                 </div>

@@ -5,26 +5,21 @@ import Timetable from './timetable';
 import fetchResults from '../api/student-search';
 import StudentSelector from './student-selector';
 import { StudentDTO } from '../api/dto-interfaces';
+import RightHandToolCard from '../components/right-hand-tool-card';
 
 export default async function TimetablesPage({
   searchParams
 }: {
   searchParams: { q: string };
 }) {
-  const dummyParams = { id: 234, q: '' };
-
-  const schedule = await fetchSchedule(Number(searchParams.q));
-
-  const students: StudentDTO[] = await fetchResults(dummyParams);
-
   return (
-    <main>
-      <div className="flex p-2 justify-center">
-        <div className="max-w-lg mx-8 space-y-6">
-          <StudentSelector students={students} />
-        </div>
-        <Timetable tableContents={schedule}></Timetable>
-      </div>
-    </main>
+    <div>
+      <RightHandToolCard>
+        <RightHandToolCard.UpperSixth>Stuff</RightHandToolCard.UpperSixth>
+        <RightHandToolCard.LowerFiveSixths>
+          More stuff
+        </RightHandToolCard.LowerFiveSixths>
+      </RightHandToolCard>
+    </div>
   );
 }

@@ -19,11 +19,11 @@ export default function OptionBlockTable({
   electives: ElectiveDTO[][];
 }) {
   return (
-    <Table className=" m-2 p-2 overflow-visible">
+    <Table className="flex-shrink-0 flex-grow-0 m-2 p-0 overflow-visible max-h-min">
       <TableHead>
         <TableRow>
           {electives[0].map((rowHeader, index) => (
-            <TableHeaderCell key={index} className="text-center">
+            <TableHeaderCell key={index} className="text-center w-48">
               Option Block {rowHeader.carouselId}
             </TableHeaderCell>
           ))}

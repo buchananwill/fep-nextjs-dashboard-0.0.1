@@ -7,13 +7,15 @@ interface Props {
   children: string;
   isActive: boolean;
   requestConfirmation: boolean;
+  classNames: string;
 }
 
 export default function ProtectedNavigation({
   onConfirm,
   children: buttonText,
   isActive,
-  requestConfirmation
+  requestConfirmation,
+  classNames: moreClassNames
 }: Props) {
   let [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +36,8 @@ export default function ProtectedNavigation({
           isActive
             ? 'border-slate-500 text-gray-900'
             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+          moreClassNames
         )}
         aria-current={isActive ? 'page' : undefined}
       >
@@ -42,7 +45,7 @@ export default function ProtectedNavigation({
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-50" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

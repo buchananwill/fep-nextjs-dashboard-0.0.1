@@ -3,7 +3,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
 
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 
 import Loading from './loading';
 
@@ -24,7 +24,9 @@ export default async function RootLayout({
         <Suspense>
           <Nav />
         </Suspense>
-        <Suspense fallback={<Loading />}>{children}</Suspense>
+        <main className="p-4 md:p-10 mx-auto max-w-full">
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+        </main>
         <Analytics />
         {/*<Toast />*/}
       </body>
