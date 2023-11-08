@@ -8,16 +8,19 @@ import {
 } from '@tremor/react';
 
 import { TabularDTO } from '../api/dto-interfaces';
-import InteractiveTableCard from '../components/interactive-table-card';
 import { reconstructTableWithDimensions } from '../utils/tables';
 import React from 'react';
 
-interface HeaderTransformer<H> {
-  (arg: H): React.ReactNode;
+export type HeaderTransformer<H> = React.FC<HeaderTransformerProps<H>>;
+
+export type CellDataTransformer<D> = React.FC<CellDataTransformerProps<D>>;
+
+interface CellDataTransformerProps<D> {
+  data: D;
 }
 
-interface CellDataTransformer<D> {
-  (arg: D): React.ReactNode;
+interface HeaderTransformerProps<H> {
+  data: H;
 }
 
 interface Props<H, D> {
@@ -33,37 +36,26 @@ export default function DynamicDimensionTimetable<H, D>({
     numberOfColumns,
     numberOfRows
   },
-  headerTransformer,
-  cellDataTransformer
+  headerTransformer: HeaderTransformerComponent,
+  cellDataTransformer: CellTransformerComponent
 }: Props<H, D>) {
-  console.log(cellDataAndMetaData, headerData, numberOfColumns, numberOfRows);
-
-  // if (!(cellDataAndMetaData && headerData && numberOfRows && numberOfColumns))
-  //   return (
-  //     <div>
-  //       <p>No table.</p>
-  //     </div>
-  //   );
-
   const mainTable = reconstructTableWithDimensions<D>(
     cellDataAndMetaData,
     numberOfColumns,
     numberOfRows
   );
 
-  console.log(mainTable);
-
   return (
-    <Table className="overflow-visible max-w-fit">
+    <Table className="flex-shrink-0 flex-grow-0 m-2 p-0 overflow-visible max-h-min">
       <TableHead className="">
         <TableRow>
-          {headerData.map((singleWeekLabels, index) => (
+          {headerData.map((headerData, index) => (
             <TableHeaderCell
               id={`header-${index}`}
               key={`header-${index}`}
-              className=""
+              className="text-center"
             >
-              {headerTransformer(singleWeekLabels)}
+              <HeaderTransformerComponent data={headerData} />
             </TableHeaderCell>
           ))}
         </TableRow>
@@ -71,17 +63,13 @@ export default function DynamicDimensionTimetable<H, D>({
       <TableBody>
         {mainTable.map((row, rowIndex) => (
           <TableRow key={`row-${rowIndex}`}>
-            {row.map((cellInfo, cellIndex) => (
+            {row.map((data, cellIndex) => (
               <TableCell
                 key={`cell-${rowIndex}-${cellIndex}`}
                 className="p-0 max-w-fit"
                 aria-labelledby={`header-${cellIndex}`}
               >
-                <InteractiveTableCard
-                  additionalClassNames={['border-transparent']}
-                >
-                  {cellDataTransformer(cellInfo)}
-                </InteractiveTableCard>
+                <CellTransformerComponent data={data} />
               </TableCell>
             ))}
           </TableRow>

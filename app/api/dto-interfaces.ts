@@ -2,8 +2,7 @@ export interface ArrayDTO<T> {
   allItems: T[];
 }
 
-export interface StudentDTO extends Nameable {
-  id: number;
+export interface StudentDTO extends Nameable, HasNumberId {
   yearGroup: number;
 }
 
@@ -16,6 +15,17 @@ export interface ElectiveDTO extends Nameable, HasUuid {
   courseCarouselId: number;
   carouselId: number;
   subscriberPartyIDs: number[];
+}
+
+export interface HasNumberId {
+  id: number;
+}
+
+export interface LessonCycleDTO extends Nameable, HasNumberId {
+  periodVenueAssignments: Record<number, string>;
+  enrolledStudentIds: number[];
+  assignedTeacherIds: number[];
+  requiredNumberOfPeriods: number;
 }
 
 export interface Nameable {

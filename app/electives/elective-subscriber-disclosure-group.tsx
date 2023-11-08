@@ -36,8 +36,6 @@ function filterStudentList(
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
-  console.log('Beginning Filter: ', electiveState);
-
   if (
     (!courseFilters || courseFilters.length == 0) &&
     (!pinnedStudents || pinnedStudents.length == 0) &&
@@ -120,8 +118,6 @@ function filterStudentList(
       filteredList.push(student);
     }
   }
-
-  console.log('Filtered list:', filteredList);
 
   return filteredList;
 }

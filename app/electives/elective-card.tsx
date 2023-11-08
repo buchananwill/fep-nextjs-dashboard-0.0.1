@@ -9,6 +9,8 @@ import { ElectiveFilterContext } from './elective-filter-context';
 import { FilterOption } from './elective-filter-reducers';
 import { ElectiveDTO } from '../api/dto-interfaces';
 import InteractiveTableCard from '../components/interactive-table-card';
+import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
+import { da } from 'date-fns/locale';
 
 const aLevelClassLimitInt = 25;
 
@@ -59,12 +61,8 @@ function getFiltered(courseFilters: FilterOption[], uuid: string) {
   return courseFilters.some((courseFilter) => courseFilter.URI == uuid);
 }
 
-export default function ElectiveCard({
-  electiveDTO
-}: {
-  electiveDTO: ElectiveDTO;
-}) {
-  const { name, carouselId, courseCarouselId, uuid } = electiveDTO;
+const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
+  const { name, carouselId, courseCarouselId, uuid } = data;
 
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
@@ -82,12 +80,9 @@ export default function ElectiveCard({
   } = electivesState;
 
   useEffect(() => {
-    const updatedSubscribers = calculateSubscribers(
-      electiveDTO,
-      electivesState
-    );
+    const updatedSubscribers = calculateSubscribers(data, electivesState);
     setSubscribers(updatedSubscribers);
-  }, [electiveDTO, electivesState]);
+  }, [data, electivesState]);
 
   function handleCardClick(
     carouselId: number,
@@ -166,7 +161,7 @@ export default function ElectiveCard({
       <Badge color={subscribersColor}>{subscribers}</Badge>
     </InteractiveTableCard>
   );
-}
+};
 
 function getSubscribersColor(subscribers: number) {
   if (subscribers === 0) return 'red';
@@ -188,3 +183,5 @@ function getClassesColor(classes: number): Color {
   if (classes == 1) return 'green';
   else return 'gray';
 }
+
+export default ElectiveCard;

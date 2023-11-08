@@ -1,4 +1,3 @@
-import OptionBlockTable from '../elective-table';
 import { Card, Text, Title } from '@tremor/react';
 import { ElectiveAvailability } from '../elective-subscriber-disclosure-group';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
@@ -16,9 +15,14 @@ import ElectiveFilterContextProvider from '../elective-filter-context-provider';
 import {
   CellDataAndMetaData,
   ElectiveDTO,
+  TabularDTO,
   YearGroupElectives
 } from '../../api/dto-interfaces';
 import BigTableCard from '../../components/big-table-card';
+import DynamicDimensionTimetable, {
+  HeaderTransformer
+} from '../../components/dynamic-dimension-timetable';
+import ElectiveCard from '../elective-card';
 
 interface Props {
   params: { yearGroup: string };
@@ -52,6 +56,7 @@ export default async function ElectivesPage({
   let tableCellsData: CellDataAndMetaData<ElectiveDTO>[] = [];
   let electiveTableData: ElectiveDTO[][] = [];
   let electiveAvailability: ElectiveAvailability = {};
+  let optionBlocksTabularDTO: TabularDTO<ElectiveDTO, ElectiveDTO>;
 
   if (yearGroupElectiveData !== null) {
     const {
@@ -78,8 +83,30 @@ export default async function ElectivesPage({
           cellData: elective
         })) ?? [];
 
+      const headerCells: ElectiveDTO[] = [];
+
+      const distinctCarousels: number[] = [];
+
+      for (let electiveDTO of electiveDTOList) {
+        if (!distinctCarousels.includes(electiveDTO.carouselId)) {
+          headerCells.push(electiveDTO);
+          distinctCarousels.push(electiveDTO.carouselId);
+        }
+      }
+
+      const sortedDistinctCarousels = headerCells.sort(
+        (a, b) => a.carouselId - b.carouselId
+      );
+
       // Safely map electiveAvailability
       electiveAvailability = compileElectiveAvailability(electiveDTOList);
+
+      optionBlocksTabularDTO = {
+        numberOfRows: carouselRows,
+        numberOfColumns: carouselCols,
+        headerData: sortedDistinctCarousels,
+        cellDataAndMetaData: tableCellsData
+      };
 
       // Only call reconstructTableWithDimensions if tableCellsData is not empty
       if (tableCellsData.length > 0) {
@@ -119,9 +146,11 @@ export default async function ElectivesPage({
               {yearGroupElectiveData ? (
                 <div className="flex w-full items-top justify-between pt-4  select-none">
                   <BigTableCard>
-                    <OptionBlockTable
-                      electives={electiveTableData}
-                    ></OptionBlockTable>
+                    <DynamicDimensionTimetable
+                      tableContents={optionBlocksTabularDTO}
+                      headerTransformer={OptionBlockHeader}
+                      cellDataTransformer={ElectiveCard}
+                    />
                   </BigTableCard>
 
                   <FilteredStudentsCard
@@ -149,3 +178,7 @@ export default async function ElectivesPage({
     );
   } else return <>Error</>;
 }
+
+const OptionBlockHeader: HeaderTransformer<ElectiveDTO> = ({ data }) => {
+  return <>Option Block {data.carouselId} </>;
+};

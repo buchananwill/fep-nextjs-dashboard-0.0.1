@@ -105,8 +105,6 @@ export default function electivePreferencesReducer(
         uuid: oldUuid
       } = electivesState;
 
-      console.log('UUID arrived via dispatch:', uuid);
-
       const carouselMatch = carouselId == oldCarouselId;
       const courseCarouselMatch = courseCarouselId == oldCourseCarouselId;
       const uuidMatch = uuid == oldUuid;

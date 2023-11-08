@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Period, TabularDTO } from './dto-interfaces';
+import { LessonCycleDTO, Period, TabularDTO } from './dto-interfaces';
 
 interface SearchParams {
   id: number;
@@ -46,7 +46,6 @@ export const fetchAllPeriodsInCycle = async (): Promise<
       referrerPolicy: 'no-referrer' // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       // body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
-    console.log(response);
 
     return response.json();
   } catch (error) {
@@ -57,5 +56,31 @@ export const fetchAllPeriodsInCycle = async (): Promise<
       cellDataAndMetaData: [],
       headerData: []
     };
+  }
+};
+
+export const fetchAllLessonCycles = async (): Promise<LessonCycleDTO[]> => {
+  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles`;
+
+  try {
+    const response = await fetch(fetchURL, {
+      // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer' // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      // body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return [];
   }
 };
