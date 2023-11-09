@@ -8,15 +8,12 @@ import { ElectiveState } from './elective-reducers';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
 
-import { FilterOption, FilterType } from './elective-filter-reducers';
+import { FilterType } from './elective-filter-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { Disclosure } from '@headlessui/react';
 import { StudentDTO } from '../api/dto-interfaces';
-
-export interface ElectiveAvailability {
-  [key: string]: number[];
-}
+import { ElectiveAvailability, FilterOption } from '../api/state-types';
 
 interface Props {
   electiveAvailability: ElectiveAvailability;
@@ -249,7 +246,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                             </div>
                             <PinButton
                               pinIcon={PinIcons.arrowLeftCircle}
-                              classNames="z-20"
+                              className="z-20"
                               isPinned={student.id == partyId}
                               setPinned={() => handleRadioClick(student.id)}
                             ></PinButton>
@@ -259,13 +256,13 @@ export default function ElectiveSubscriberDisclosureGroup({
                             </Disclosure.Button>
                             <PinButton
                               pinIcon={PinIcons.mapPin}
-                              classNames="z-20"
+                              className="z-20"
                               isPinned={isPinned(student.id)}
                               setPinned={() => handlePinnedStudent(student.id)}
                             ></PinButton>
                             <PinButton
                               pinIcon={PinIcons.mortarBoard}
-                              classNames={`mr-1`}
+                              className={`mr-1`}
                               isPinned={false}
                               setPinned={() =>
                                 handleMortarBoardClick(student.id)

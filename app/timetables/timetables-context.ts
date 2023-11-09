@@ -17,7 +17,7 @@ export function createInitialTimetablesContext(): TimetablesState {
     filterType: FilterType.any,
     lessonCycleMap: new Map<number, LessonCycle>(),
     cycleDayFocusId: -1,
-    periodFocusId: -1,
+    focusPeriodId: -1,
     periodIdToLessonCycleMap: new Map<number, Set<LessonCycle>>(),
     partyId: 0
   };

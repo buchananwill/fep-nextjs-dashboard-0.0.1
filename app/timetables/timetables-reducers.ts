@@ -15,13 +15,13 @@ interface SetActive {
   preferencePosition: number;
 }
 
-interface FocusPeriod {
-  type: 'focusPeriod';
-  id: number;
+interface SetFocusPeriod {
+  type: 'setFocusPeriod';
+  periodId: number;
 }
 
 interface FocusLessonCycle {
-  type: 'focusLessonCycle';
+  type: 'setFocusLessonCycle';
   studentId: number;
 }
 
@@ -48,7 +48,7 @@ interface SetHighlightedCourses {
 export type TimetablesStateActions =
   | SetPeriod
   | SetActive
-  | FocusPeriod
+  | SetFocusPeriod
   | FocusLessonCycle
   | SetFilterType
   | SetFilterPending
@@ -63,7 +63,7 @@ export type TimetablesState = {
   lessonCycleMap: Map<number, LessonCycle>;
   periodIdToLessonCycleMap: Map<number, Set<LessonCycle>>;
   cycleDayFocusId: number;
-  periodFocusId: number;
+  focusPeriodId: number;
   partyId: number;
 };
 
@@ -87,19 +87,19 @@ export default function timetablesReducer(
       });
     }
 
-    case 'focusPeriod': {
-      const { id } = action;
-      const { periodFocusId: oldId } = timetablesState;
+    case 'setFocusPeriod': {
+      const { periodId } = action;
+      const { focusPeriodId: oldId } = timetablesState;
 
-      const globalMatch = id == oldId;
+      const matchOldId = periodId == oldId;
 
       return produce(timetablesState, (draftState) => {
-        draftState.periodFocusId = globalMatch ? -1 : id;
+        draftState.focusPeriodId = matchOldId ? -1 : periodId;
         draftState.filterPending = true;
       });
     }
 
-    case 'focusLessonCycle': {
+    case 'setFocusLessonCycle': {
       const { studentId } = action;
 
       return produce(timetablesState, (draftState) => {

@@ -5,10 +5,11 @@ import { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import Union from '../components/union';
 import Intersection from '../components/intersection';
-import { FilterOption, FilterType } from './elective-filter-reducers';
+import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ElectiveDTO } from '../api/dto-interfaces';
+import { FilterOption } from '../api/state-types';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -90,7 +91,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
         <Text className="mr-2">Reset: </Text>
         <PinButton
           pinIcon={PinIcons.mortarBoard}
-          classNames={''}
+          className={''}
           isPinned={false}
           setPinned={handleResetMortarBoards}
         ></PinButton>

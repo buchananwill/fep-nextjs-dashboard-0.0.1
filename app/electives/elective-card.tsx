@@ -6,11 +6,11 @@ import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ElectiveFilterContext } from './elective-filter-context';
-import { FilterOption } from './elective-filter-reducers';
 import { ElectiveDTO } from '../api/dto-interfaces';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import { da } from 'date-fns/locale';
+import { FilterOption } from '../api/state-types';
 
 const aLevelClassLimitInt = 25;
 
@@ -153,7 +153,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
 
       <PinButton
         pinIcon={PinIcons.mortarBoard}
-        classNames={`${highlightText} mr-1`}
+        className={`${highlightText} mr-1`}
         isPinned={highlightText != ''}
         setPinned={() => handleMortarBoardClick(uuid)}
       ></PinButton>

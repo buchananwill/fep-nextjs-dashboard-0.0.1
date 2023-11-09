@@ -1,13 +1,13 @@
 'use client';
 
 import React, { Suspense, useContext } from 'react';
-import { ElectiveAvailability } from './elective-subscriber-disclosure-group';
 import { useSearchParams } from 'next/navigation';
 import { ElectiveContext } from './elective-context';
 
 import ElectiveSubscriberDisclosureGroup from './elective-subscriber-disclosure-group';
 
 import RightHandToolCard from '../components/right-hand-tool-card';
+import { ElectiveAvailability } from '../api/state-types';
 
 interface Props {
   electiveAvailability: ElectiveAvailability;
@@ -31,11 +31,9 @@ const FilteredStudentsCard = ({ electiveAvailability }: Props) => {
 
       <RightHandToolCard.LowerFiveSixths>
         <div className="text-center py-2 select-none px-2">
-          <Suspense fallback={getAccordionFallBack()}>
-            <ElectiveSubscriberDisclosureGroup
-              electiveAvailability={electiveAvailability}
-            />
-          </Suspense>
+          <ElectiveSubscriberDisclosureGroup
+            electiveAvailability={electiveAvailability}
+          />
         </div>
       </RightHandToolCard.LowerFiveSixths>
     </RightHandToolCard>
@@ -43,7 +41,3 @@ const FilteredStudentsCard = ({ electiveAvailability }: Props) => {
 };
 
 export default FilteredStudentsCard;
-
-function getAccordionFallBack() {
-  return <div>Loading...</div>;
-}

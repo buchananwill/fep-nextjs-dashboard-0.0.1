@@ -1,5 +1,4 @@
 import { Card, Text, Title } from '@tremor/react';
-import { ElectiveAvailability } from '../elective-subscriber-disclosure-group';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
 import { reconstructTableWithDimensions } from '../../utils/tables';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
@@ -23,6 +22,7 @@ import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../components/dynamic-dimension-timetable';
 import ElectiveCard from '../elective-card';
+import { ElectiveAvailability } from '../../api/state-types';
 
 interface Props {
   params: { yearGroup: string };

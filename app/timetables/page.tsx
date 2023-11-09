@@ -12,10 +12,14 @@ import {
 } from '../api/request-schedule';
 import { PeriodCardTransformer } from './period-card';
 import { LessonCycle } from '../api/state-types';
-import { index } from 'd3-array';
+
 import TimetablesContextProvider from './timetables-context-provider';
 import { TimetablesState } from './timetables-reducers';
 import { FilterType } from '../electives/elective-filter-reducers';
+import FilterDisclosurePanel from '../components/filtered-disclosure-panel';
+import { ButtonTransformerLessonCycle } from './button-transformer-lesson-cycle';
+import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';
+import ButtonSurroundLessonCycle from './button-surround-lesson-cycle';
 
 function convertDtoToState({
   id,
@@ -55,13 +59,23 @@ export default async function TimetablesPage({
 }) {
   const allPeriodsInCycle = await fetchAllPeriodsInCycle();
 
+  allPeriodsInCycle.headerData = allPeriodsInCycle.headerData.map(
+    (label) =>
+      label.substring(0, 3) +
+      ' ' +
+      label.substring(label.length - 3, label.length)
+  );
+
   const allLessonCycles = await fetchAllLessonCycles();
 
   const lessonCycleMap = new Map<number, LessonCycle>();
 
+  const lessonCycleArray: LessonCycle[] = [];
+
   allLessonCycles.forEach((lessonCycleDTO) => {
     const stateObject = convertDtoToState(lessonCycleDTO);
     lessonCycleMap.set(stateObject.id, stateObject);
+    lessonCycleArray.push(stateObject);
   });
 
   const periodToLessonCycleMap = new Map<number, Set<LessonCycle>>();
@@ -102,9 +116,12 @@ export default async function TimetablesPage({
             Lesson Cycles
           </RightHandToolCard.UpperSixth>
           <RightHandToolCard.LowerFiveSixths>
-            {allLessonCycles.map((lessonCycle, index) => (
-              <p key={index}>{lessonCycle.name.substring(9)}</p>
-            ))}
+            <FilterDisclosurePanel
+              data={lessonCycleArray}
+              buttonTransformer={ButtonTransformerLessonCycle}
+              buttonSurround={ButtonSurroundLessonCycle}
+              panelTransformer={PanelTransformerConcrete}
+            />
           </RightHandToolCard.LowerFiveSixths>
         </RightHandToolCard>
       </div>
@@ -113,7 +130,7 @@ export default async function TimetablesPage({
 }
 
 const HeaderTransformerConcrete: HeaderTransformer<string> = ({ data }) => {
-  return <p className="w-24">{data}</p>;
+  return <p className="w-18">{data}</p>;
 };
 
 export function buildTimetablesState(
@@ -127,7 +144,7 @@ export function buildTimetablesState(
     filterType: FilterType.any,
     lessonCycleMap: lessonCycleMap,
     cycleDayFocusId: -1,
-    periodFocusId: -1,
+    focusPeriodId: -1,
     periodIdToLessonCycleMap: periodToLessonCycleMap,
     partyId: -1
   };

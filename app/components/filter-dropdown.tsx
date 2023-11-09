@@ -11,10 +11,8 @@ import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
 } from '../electives/elective-filter-context';
-import {
-  ElectiveFilterState,
-  FilterOption
-} from '../electives/elective-filter-reducers';
+import { ElectiveFilterState } from '../electives/elective-filter-reducers';
+import { FilterOption } from '../api/state-types';
 
 // For example, using TypeScript enum
 export enum CacheSetting {

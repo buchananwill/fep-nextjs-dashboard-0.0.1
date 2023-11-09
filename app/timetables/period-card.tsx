@@ -9,15 +9,18 @@ import {
 } from './timetables-context';
 
 export const PeriodCardTransformer: CellDataTransformer<Period> = ({
-  data
+  data: { periodId, startTime }
 }) => {
   const timetablesState = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
-  const handleCardClick = () => {
+  const handleCardClick = (periodId: number | null) => {
+    console.log(periodId, typeof periodId);
     dispatch({
-      type: 'setPeriod',
-      periodId: data.periodId
+      type: 'setFocusPeriod',
+      periodId: periodId
     });
+    console.log(timetablesState.focusPeriodId);
+    console.log(timetablesState);
   };
 
   return (
@@ -27,10 +30,10 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
     >
       <div
         className="flex w-full h-full justify-between pr-2"
-        onClick={() => handleCardClick()}
+        onClick={() => handleCardClick(periodId)}
       >
-        <p>{data.startTime?.substring(0, 5)}</p>
-        <p> {(data.periodId || 0) % 6 || 6}</p>
+        <p>{startTime?.substring(0, 5)}</p>
+        <p> {(periodId || 0) % 6 || 6}</p>
       </div>
     </InteractiveTableCard>
   );

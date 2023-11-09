@@ -23,17 +23,17 @@ export const PinButton = ({
   pinIcon,
   isPinned,
   setPinned,
-  classNames
+  className
 }: {
   pinIcon: PinIcons;
-  classNames: string;
+  className: string;
   isPinned: boolean;
   setPinned: Function;
 }) => {
   return (
     <>
       <label
-        className={`${classNames} swap stroke-current hover:stroke-accent hover:fill-accent fill-current`}
+        className={`${className} swap stroke-current hover:stroke-accent hover:fill-accent fill-current`}
       >
         <input
           type="checkbox"

@@ -1,5 +1,5 @@
-import { ElectiveAvailability } from './elective-subscriber-disclosure-group';
 import { ElectiveDTO, ElectivePreferenceDTO } from '../api/dto-interfaces';
+import { ElectiveAvailability } from '../api/state-types';
 
 export function compileElectiveAvailability(
   electives: ElectiveDTO[]
