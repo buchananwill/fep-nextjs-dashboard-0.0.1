@@ -4,9 +4,7 @@ import {
   fetchSingleSubjectByYearGroupContactTime
 } from '../../api/request-subject-contact-time-metrics';
 import { transformRecordToObjectArray } from '../../utils/data-transformations';
-import { da, el } from 'date-fns/locale';
 import { NamedNumberRecord } from '../../api/dto-interfaces';
-import { number } from 'prop-types';
 
 interface Props {
   params: { breakdown: string };
