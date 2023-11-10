@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { LessonCycleDTO, Period } from '../api/dto-interfaces';
-import RightHandToolCard from '../components/right-hand-tool-card';
 import BigTableCard from '../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
@@ -16,10 +15,7 @@ import { LessonCycle } from '../api/state-types';
 import TimetablesContextProvider from './timetables-context-provider';
 import { TimetablesState } from './timetables-reducers';
 import { FilterType } from '../electives/elective-filter-reducers';
-import FilterDisclosurePanel from '../components/filtered-disclosure-panel';
-import { ButtonTransformerLessonCycle } from './button-transformer-lesson-cycle';
-import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';
-import ButtonSurroundLessonCycle from './button-surround-lesson-cycle';
+import { FilteredLessonCycles } from './filtered-lesson-cycles';
 
 function convertDtoToState({
   id,
@@ -27,7 +23,8 @@ function convertDtoToState({
   assignedTeacherIds,
   periodVenueAssignments,
   requiredNumberOfPeriods,
-  name
+  name,
+  subject
 }: LessonCycleDTO): LessonCycle {
   const enrolledStudentIdSet = new Set<number>();
   enrolledStudentIds.forEach((id) => enrolledStudentIdSet.add(id));
@@ -48,7 +45,8 @@ function convertDtoToState({
     name: name,
     requiredNumberOfPeriods: requiredNumberOfPeriods,
     periodVenueAssignments: periodVenueAssignmentMap,
-    assignedTeacherIds: assignedTeacherIdSet
+    assignedTeacherIds: assignedTeacherIdSet,
+    subject: subject
   };
 }
 
@@ -111,19 +109,7 @@ export default async function TimetablesPage({
             headerTransformer={HeaderTransformerConcrete}
           ></DynamicDimensionTimetable>
         </BigTableCard>
-        <RightHandToolCard>
-          <RightHandToolCard.UpperSixth>
-            Lesson Cycles
-          </RightHandToolCard.UpperSixth>
-          <RightHandToolCard.LowerFiveSixths>
-            <FilterDisclosurePanel
-              data={lessonCycleArray}
-              buttonTransformer={ButtonTransformerLessonCycle}
-              buttonSurround={ButtonSurroundLessonCycle}
-              panelTransformer={PanelTransformerConcrete}
-            />
-          </RightHandToolCard.LowerFiveSixths>
-        </RightHandToolCard>
+        <FilteredLessonCycles data={lessonCycleArray} />
       </div>
     </TimetablesContextProvider>
   );
@@ -138,7 +124,7 @@ export function buildTimetablesState(
   periodToLessonCycleMap: Map<number, Set<LessonCycle>>
 ): TimetablesState {
   return {
-    highlightedCourses: new Set<string>(),
+    highlightedSubjects: new Set<string>(),
     pinnedLessonCycles: new Set<number>(),
     filterPending: false,
     filterType: FilterType.any,
@@ -146,6 +132,6 @@ export function buildTimetablesState(
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: periodToLessonCycleMap,
-    partyId: -1
+    lessonCycleId: -1
   };
 }

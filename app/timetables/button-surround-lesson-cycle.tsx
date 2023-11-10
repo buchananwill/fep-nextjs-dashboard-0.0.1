@@ -1,23 +1,40 @@
 'use client';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { ButtonSurroundTransformer } from '../components/filtered-disclosure-panel';
 import { LessonCycle } from '../api/state-types';
 import { PinButton, PinIcons } from '../components/pin-button';
+import {
+  TimetablesContext,
+  TimetablesDispatchContext
+} from './timetables-context';
 
 const ButtonSurroundLessonCycle: ButtonSurroundTransformer<LessonCycle> = ({
   children,
-  data,
+  data: { id, subject },
   className
 }) => {
+  const dispatch = useContext(TimetablesDispatchContext);
+  const { pinnedLessonCycles, lessonCycleId, highlightedSubjects } =
+    useContext(TimetablesContext);
+
   const handleRadioClick = (id: number) => {
-    null;
+    dispatch({
+      type: 'setFocusLessonCycle',
+      lessonCycleId: id
+    });
   };
-  const handlePinnedStudent = (id: number) => {
-    null;
+  const handlePinnedLessonCycle = (id: number) => {
+    dispatch({
+      type: 'setPinnedLessonCycle',
+      lessonCycleId: id
+    });
   };
-  const handleMortarBoardClick = (id: number) => {
-    null;
+  const handleMortarBoardClick = (subject: string) => {
+    dispatch({
+      type: 'setHighlightedSubjects',
+      subject: subject
+    });
   };
   return (
     <div className={className}>
@@ -25,22 +42,22 @@ const ButtonSurroundLessonCycle: ButtonSurroundTransformer<LessonCycle> = ({
         <PinButton
           pinIcon={PinIcons.arrowLeftCircle}
           className="z-20"
-          isPinned={false}
-          setPinned={() => handleRadioClick(data.id)}
+          isPinned={lessonCycleId == id}
+          setPinned={() => handleRadioClick(id)}
         ></PinButton>
 
         {children}
         <PinButton
           pinIcon={PinIcons.mapPin}
           className="z-20"
-          isPinned={false}
-          setPinned={() => handlePinnedStudent(data.id)}
+          isPinned={pinnedLessonCycles.has(id)}
+          setPinned={() => handlePinnedLessonCycle(id)}
         ></PinButton>
         <PinButton
           pinIcon={PinIcons.mortarBoard}
           className={`mr-1`}
-          isPinned={false}
-          setPinned={() => handleMortarBoardClick(data.id)}
+          isPinned={highlightedSubjects.has(subject)}
+          setPinned={() => handleMortarBoardClick(subject)}
         ></PinButton>
       </div>
     </div>

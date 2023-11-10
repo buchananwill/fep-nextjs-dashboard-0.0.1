@@ -22,7 +22,7 @@ interface SetFocusPeriod {
 
 interface FocusLessonCycle {
   type: 'setFocusLessonCycle';
-  studentId: number;
+  lessonCycleId: number;
 }
 
 interface SetFilterType {
@@ -37,12 +37,12 @@ interface SetFilterPending {
 
 interface SetPinnedLessonCycle {
   type: 'setPinnedLessonCycle';
-  id: number;
+  lessonCycleId: number;
 }
 
-interface SetHighlightedCourses {
-  type: 'setHighlightedCourses';
-  id: string;
+interface SetHighlightedSubjects {
+  type: 'setHighlightedSubjects';
+  subject: string;
 }
 
 export type TimetablesStateActions =
@@ -53,10 +53,10 @@ export type TimetablesStateActions =
   | SetFilterType
   | SetFilterPending
   | SetPinnedLessonCycle
-  | SetHighlightedCourses;
+  | SetHighlightedSubjects;
 
 export type TimetablesState = {
-  highlightedCourses: Set<string>;
+  highlightedSubjects: Set<string>;
   pinnedLessonCycles: Set<number>;
   filterPending: boolean;
   filterType: FilterType;
@@ -64,7 +64,7 @@ export type TimetablesState = {
   periodIdToLessonCycleMap: Map<number, Set<LessonCycle>>;
   cycleDayFocusId: number;
   focusPeriodId: number;
-  partyId: number;
+  lessonCycleId: number;
 };
 
 export default function timetablesReducer(
@@ -100,10 +100,12 @@ export default function timetablesReducer(
     }
 
     case 'setFocusLessonCycle': {
-      const { studentId } = action;
+      const { lessonCycleId } = action;
+
+      const isFocus = lessonCycleId == timetablesState.lessonCycleId;
 
       return produce(timetablesState, (draftState) => {
-        draftState.partyId = studentId;
+        draftState.lessonCycleId = isFocus ? -1 : lessonCycleId;
       });
     }
 
@@ -125,30 +127,31 @@ export default function timetablesReducer(
     }
 
     case 'setPinnedLessonCycle': {
-      const { id } = action;
+      const { lessonCycleId } = action;
       const { pinnedLessonCycles, lessonCycleMap } = timetablesState;
 
-      const currentlyPinned = pinnedLessonCycles && pinnedLessonCycles.has(id);
+      const currentlyPinned =
+        pinnedLessonCycles && pinnedLessonCycles.has(lessonCycleId);
 
       return produce(timetablesState, (updatedState) => {
         if (currentlyPinned) {
-          updatedState.pinnedLessonCycles.delete(id);
+          updatedState.pinnedLessonCycles.delete(lessonCycleId);
         } else {
-          updatedState.pinnedLessonCycles.add(id);
+          updatedState.pinnedLessonCycles.add(lessonCycleId);
         }
       });
     }
-    case 'setHighlightedCourses': {
-      const { id } = action;
-      const { highlightedCourses } = timetablesState;
+    case 'setHighlightedSubjects': {
+      const { subject } = action;
+      const { highlightedSubjects } = timetablesState;
       const currentlyHighlighted =
-        highlightedCourses && highlightedCourses.has(id);
+        highlightedSubjects && highlightedSubjects.has(subject);
 
       return produce(timetablesState, (updatedState) => {
         if (currentlyHighlighted) {
-          updatedState.highlightedCourses.delete(id);
+          updatedState.highlightedSubjects.delete(subject);
         } else {
-          updatedState.highlightedCourses.add(id);
+          updatedState.highlightedSubjects.add(subject);
         }
       });
     }

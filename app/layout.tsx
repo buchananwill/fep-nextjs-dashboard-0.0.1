@@ -1,4 +1,5 @@
 import './globals.css';
+import { enableMapSet } from 'immer';
 
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
@@ -6,6 +7,8 @@ import Nav from './navbar/nav';
 import React, { Suspense } from 'react';
 
 import Loading from './loading';
+
+enableMapSet();
 
 export const metadata = {
   title: 'FEP Academic Scheduling UI',

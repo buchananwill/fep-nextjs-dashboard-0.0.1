@@ -11,7 +11,7 @@ export const TimetablesDispatchContext = createContext<Function>(() => {});
 
 export function createInitialTimetablesContext(): TimetablesState {
   return {
-    highlightedCourses: new Set<string>(),
+    highlightedSubjects: new Set<string>(),
     pinnedLessonCycles: new Set<number>(),
     filterPending: false,
     filterType: FilterType.any,
@@ -19,6 +19,6 @@ export function createInitialTimetablesContext(): TimetablesState {
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: new Map<number, Set<LessonCycle>>(),
-    partyId: 0
+    lessonCycleId: 0
   };
 }

@@ -26,6 +26,7 @@ export interface LessonCycleDTO extends Nameable, HasNumberId {
   enrolledStudentIds: number[];
   assignedTeacherIds: number[];
   requiredNumberOfPeriods: number;
+  subject: string;
 }
 
 export interface Nameable {

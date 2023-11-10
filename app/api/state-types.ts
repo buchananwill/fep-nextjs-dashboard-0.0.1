@@ -6,6 +6,7 @@ export interface LessonCycle extends Nameable, HasNumberId {
   enrolledStudentIds: Set<number>;
   assignedTeacherIds: Set<number>;
   requiredNumberOfPeriods: number;
+  subject: string;
 }
 
 export interface ElectiveAvailability {

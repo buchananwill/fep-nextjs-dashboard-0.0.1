@@ -5,6 +5,7 @@ import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
+import { enableMapSet } from 'immer';
 
 import timetablesReducer, { TimetablesState } from './timetables-reducers';
 
@@ -21,6 +22,8 @@ export default function TimetablesContextProvider({
     timetablesReducer,
     initialState
   );
+
+  enableMapSet();
 
   return (
     <TimetablesContext.Provider value={timetablesState}>
