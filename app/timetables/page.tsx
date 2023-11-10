@@ -13,9 +13,9 @@ import { PeriodCardTransformer } from './period-card';
 import { LessonCycle } from '../api/state-types';
 
 import TimetablesContextProvider from './timetables-context-provider';
-import { TimetablesState } from './timetables-reducers';
-import { FilterType } from '../electives/elective-filter-reducers';
 import { FilteredLessonCycles } from './filtered-lesson-cycles';
+
+import { buildTimetablesState } from './build-timetables-state';
 
 function convertDtoToState({
   id,
@@ -118,20 +118,3 @@ export default async function TimetablesPage({
 const HeaderTransformerConcrete: HeaderTransformer<string> = ({ data }) => {
   return <p className="w-18">{data}</p>;
 };
-
-export function buildTimetablesState(
-  lessonCycleMap: Map<number, LessonCycle>,
-  periodToLessonCycleMap: Map<number, Set<LessonCycle>>
-): TimetablesState {
-  return {
-    highlightedSubjects: new Set<string>(),
-    pinnedLessonCycles: new Set<number>(),
-    filterPending: false,
-    filterType: FilterType.any,
-    lessonCycleMap: lessonCycleMap,
-    cycleDayFocusId: -1,
-    focusPeriodId: -1,
-    periodIdToLessonCycleMap: periodToLessonCycleMap,
-    lessonCycleId: -1
-  };
-}

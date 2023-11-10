@@ -1,6 +1,6 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
-import React, { Fragment, useContext, useState, useTransition } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
   ElectiveContext,
