@@ -9,5 +9,6 @@ module.exports = {
   ...nextConfig,
   experimental: {
     serverActions: true
-  }
+  },
+  staticPageGenerationTimeout: 600
 };
