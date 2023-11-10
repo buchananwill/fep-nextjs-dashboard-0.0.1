@@ -4,5 +4,7 @@ import { fetchAllSubjectsContactTime } from '../api/request-subject-contact-time
 export default async function SubjectsContactTime() {
   const data = await fetchAllSubjectsContactTime();
 
-  return <SubjectContactTime data={data} />;
+  if (data) {
+    return <SubjectContactTime data={data} />;
+  } else return <p>No data.</p>;
 }
