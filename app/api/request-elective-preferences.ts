@@ -54,7 +54,7 @@ export const fetchElectiveYearGroupWithAllStudents = async (
 
   try {
     const response = await fetch(fetchURL, {
-      next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
+      next: { revalidate: 300, tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       // cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
