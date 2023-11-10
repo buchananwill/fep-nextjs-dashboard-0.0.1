@@ -16,18 +16,22 @@ export default function SubjectContactTime({
   data: AllSubjectsContactTimeDTO;
 }) {
   if (allItems) {
-    const filteredSubjects = allItems.filter((subject) =>
-      isFinite(subject.perTeacher)
+    const filteredSubjects = allItems.filter(
+      (subject) => subject.perTeacher && isFinite(subject.perTeacher)
     );
     const maxSize = allItems.reduce(
       (max, subjectDTO) =>
-        subjectDTO.perTeacher > max ? subjectDTO.perTeacher : max,
-      allItems[0].perTeacher
+        subjectDTO.perTeacher && subjectDTO.perTeacher > max
+          ? subjectDTO.perTeacher
+          : max,
+      0
     );
     const minSize = allItems.reduce(
       (min, subjectDTO) =>
-        subjectDTO.perTeacher < min ? subjectDTO.perTeacher : min,
-      allItems[0].perTeacher
+        subjectDTO.perTeacher && subjectDTO.perTeacher < min
+          ? subjectDTO.perTeacher
+          : min,
+      1000
     );
     const sizeRange = [minSize, maxSize];
 
