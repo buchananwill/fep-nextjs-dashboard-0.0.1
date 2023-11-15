@@ -28,12 +28,7 @@ function dataComparator(a: NamedNumberRecord, b: NamedNumberRecord): number {
 export default async function ContactTimeBreakdownPage({
   params: { breakdown }
 }: Props) {
-  const data = await fetchSingleSubjectByYearGroupContactTime('Maths');
   const allData = await fetchAllSubjectsByYearGroupContactTime();
-
-  const recordToObjectArray = transformRecordToObjectArray(
-    data.stringIntegerMap
-  );
 
   const bigRestructuredData = allData
     .sort((a, b) => dataComparator(a, b))
@@ -41,11 +36,6 @@ export default async function ContactTimeBreakdownPage({
       name: dataUnit.name,
       objectArray: transformRecordToObjectArray(dataUnit.stringIntegerMap)
     }));
-
-  const restructuredData = {
-    name: data.name,
-    objectArray: recordToObjectArray
-  };
 
   return <PerSubjectDonut data={bigRestructuredData}></PerSubjectDonut>;
 }
