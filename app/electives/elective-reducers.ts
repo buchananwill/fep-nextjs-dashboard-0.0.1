@@ -82,7 +82,7 @@ export default function electivePreferencesReducer(
       return produce(electivesState, (draftUpdate) => {
         draftUpdate.electivePreferences[studentId][
           preferencePosition
-        ].assignedCarouselId = assignedCarouselId;
+        ].assignedCarouselOptionId = assignedCarouselId;
       });
     }
     case 'setActive': {

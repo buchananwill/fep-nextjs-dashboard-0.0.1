@@ -57,7 +57,7 @@ export interface ElectivePreferenceDTO extends Nameable {
   partyId: number;
   uuid: string;
   preferencePosition: number;
-  assignedCarouselId: number;
+  assignedCarouselOptionId: number;
   isActive: boolean;
 }
 

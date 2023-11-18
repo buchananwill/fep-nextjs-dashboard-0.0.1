@@ -30,12 +30,12 @@ export function checkAssignment(
 ): boolean {
   if (!electivePreferences[preferencePosition].isActive) return true;
   const referenceAssignment =
-    electivePreferences[preferencePosition].assignedCarouselId;
+    electivePreferences[preferencePosition].assignedCarouselOptionId;
 
   return !electivePreferences.some(
     (otherPreference) =>
       otherPreference.isActive &&
       otherPreference.preferencePosition !== preferencePosition &&
-      otherPreference.assignedCarouselId === referenceAssignment
+      otherPreference.assignedCarouselOptionId === referenceAssignment
   );
 }

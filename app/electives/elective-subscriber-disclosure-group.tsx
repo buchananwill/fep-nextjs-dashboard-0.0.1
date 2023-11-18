@@ -59,7 +59,7 @@ function filterStudentList(
               let {
                 uuid: nextUuid,
                 isActive,
-                assignedCarouselId
+                assignedCarouselOptionId
               } = electivePreference;
               return isActive && courseFilter.URI == nextUuid;
             });
@@ -72,12 +72,12 @@ function filterStudentList(
               const {
                 uuid: nextUuid,
                 isActive,
-                assignedCarouselId
+                assignedCarouselOptionId
               } = electivePreference;
               if (
                 isActive &&
                 uuid == nextUuid &&
-                assignedCarouselId == carouselId
+                assignedCarouselOptionId == carouselId
               )
                 return true;
             });
@@ -97,12 +97,12 @@ function filterStudentList(
               const {
                 uuid: nextUuid,
                 isActive,
-                assignedCarouselId
+                assignedCarouselOptionId
               } = electivePreference;
               if (
                 isActive &&
                 uuid == nextUuid &&
-                assignedCarouselId == carouselId
+                assignedCarouselOptionId == carouselId
               )
                 return true;
             });
@@ -281,7 +281,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                 ({
                                   preferencePosition,
                                   name,
-                                  assignedCarouselId
+                                  assignedCarouselOptionId
                                 }) => {
                                   return (
                                     <div
@@ -300,7 +300,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                         )}
                                         <select
                                           className="select select-xs select-bordered w-16 grow-1"
-                                          value={assignedCarouselId}
+                                          value={assignedCarouselOptionId}
                                           onChange={(e) => {
                                             handleAssignmentChange(
                                               student.id,
@@ -313,7 +313,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                           {mapOptions(
                                             electiveAvailability,
                                             name,
-                                            assignedCarouselId,
+                                            assignedCarouselOptionId,
                                             student.id,
                                             preferencePosition
                                           )}

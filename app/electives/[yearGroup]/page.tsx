@@ -68,6 +68,8 @@ export default async function ElectivesPage({
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
 
+    console.log(yearGroupElectiveData);
+
     try {
       const firstColumn = electiveDTOList.reduce(
         (min, cellData) =>

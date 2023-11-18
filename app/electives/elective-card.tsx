@@ -27,7 +27,7 @@ const calculateSubscribers = (
       if (
         electivePreference.isActive &&
         electivePreference.uuid == uuid &&
-        electivePreference.assignedCarouselId == carouselId
+        electivePreference.assignedCarouselOptionId == carouselId
       )
         count++;
     }
@@ -44,7 +44,7 @@ const getBorderVisible = (
   return electiveState?.electivePreferences[partyId]?.some(
     (electivePreference) =>
       electivePreference.isActive &&
-      electivePreference.assignedCarouselId == carouselId &&
+      electivePreference.assignedCarouselOptionId == carouselId &&
       electivePreference.uuid == uuid
   )
     ? ''

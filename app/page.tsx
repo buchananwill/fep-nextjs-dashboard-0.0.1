@@ -4,7 +4,7 @@ import Search from './search';
 import StudentsTable from './tables/student-table';
 import { ArrayDTO, StudentDTO } from './api/dto-interfaces';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 export default async function IndexPage({
   searchParams
