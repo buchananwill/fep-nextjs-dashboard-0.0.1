@@ -54,7 +54,6 @@ export default async function ElectivesPage({
 
   // Initialize with empty arrays or nulls
   let tableCellsData: CellDataAndMetaData<ElectiveDTO>[] = [];
-  let electiveTableData: ElectiveDTO[][] = [];
   let electiveAvailability: ElectiveAvailability = {};
   let optionBlocksTabularDTO: TabularDTO<ElectiveDTO, ElectiveDTO>;
 
@@ -68,20 +67,12 @@ export default async function ElectivesPage({
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
 
-    console.log(yearGroupElectiveData);
-
     try {
-      const firstColumn = electiveDTOList.reduce(
-        (min, cellData) =>
-          cellData.carouselId < min ? cellData.carouselId : min,
-        electiveDTOList[0].carouselId
-      );
-
       // Safely map electiveData
       tableCellsData =
         electiveDTOList?.map((elective) => ({
-          cellRow: elective.courseCarouselId,
-          cellColumn: elective.carouselId - firstColumn,
+          cellRow: elective.electiveOrdinal,
+          cellColumn: elective.carouselOrdinal,
           cellData: elective
         })) ?? [];
 
@@ -90,14 +81,14 @@ export default async function ElectivesPage({
       const distinctCarousels: number[] = [];
 
       for (let electiveDTO of electiveDTOList) {
-        if (!distinctCarousels.includes(electiveDTO.carouselId)) {
+        if (!distinctCarousels.includes(electiveDTO.carouselOrdinal)) {
           headerCells.push(electiveDTO);
-          distinctCarousels.push(electiveDTO.carouselId);
+          distinctCarousels.push(electiveDTO.carouselOrdinal);
         }
       }
 
       const sortedDistinctCarousels = headerCells.sort(
-        (a, b) => a.carouselId - b.carouselId
+        (a, b) => a.carouselOrdinal - b.carouselOrdinal
       );
 
       // Safely map electiveAvailability
@@ -109,15 +100,6 @@ export default async function ElectivesPage({
         headerData: sortedDistinctCarousels,
         cellDataAndMetaData: tableCellsData
       };
-
-      // Only call reconstructTableWithDimensions if tableCellsData is not empty
-      if (tableCellsData.length > 0) {
-        electiveTableData = reconstructTableWithDimensions(
-          tableCellsData,
-          carouselCols,
-          carouselRows
-        );
-      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Caught an Error:', error.message);
@@ -132,6 +114,7 @@ export default async function ElectivesPage({
       <ElectiveContextProvider
         electivePreferenceList={electivePreferences}
         studentList={studentDTOList}
+        electiveDtoList={electiveDTOList}
       >
         <ElectiveFilterContextProvider>
           <div className="flex w-full items-baseline grow-0 mb-2">
@@ -182,5 +165,5 @@ export default async function ElectivesPage({
 }
 
 const OptionBlockHeader: HeaderTransformer<ElectiveDTO> = ({ data }) => {
-  return <>Option Block {data.carouselId} </>;
+  return <>Option Block {data.carouselOrdinal} </>;
 };

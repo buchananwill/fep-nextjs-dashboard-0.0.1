@@ -36,7 +36,8 @@ function createDistinctFilterOptions(
       URI: uuid,
       label: name,
       operator: FilterType.all
-    }));
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 }
 
 export function ElectiveFilters({ electiveDTOList }: Props) {

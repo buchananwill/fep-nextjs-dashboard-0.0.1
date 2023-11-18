@@ -10,11 +10,10 @@ export interface NamedNumberRecord extends Nameable {
   stringIntegerMap: Record<string, number>;
 }
 
-export interface ElectiveDTO extends Nameable, HasUuid {
-  // uuid = course.
-  courseCarouselId: number;
-  carouselId: number;
-  subscriberPartyIDs: number[];
+export interface ElectiveDTO extends Nameable, HasUuid, HasNumberId {
+  electiveOrdinal: number;
+  carouselOrdinal: number;
+  subscriberUserRoleIds: number[];
 }
 
 export interface HasNumberId {
@@ -54,7 +53,7 @@ export interface ClassRoomDTO extends Nameable {
 }
 
 export interface ElectivePreferenceDTO extends Nameable {
-  partyId: number;
+  userRoleId: number;
   uuid: string;
   preferencePosition: number;
   assignedCarouselOptionId: number;

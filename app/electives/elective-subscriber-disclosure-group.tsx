@@ -2,7 +2,10 @@
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { checkAssignment } from './checkElectiveAssignments';
+import {
+  checkAssignment,
+  matchCarouselOrdinal
+} from './checkElectiveAssignments';
 import { ElectiveState } from './elective-reducers';
 
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
@@ -12,8 +15,9 @@ import { FilterType } from './elective-filter-reducers';
 import { PinButton, PinIcons } from '../components/pin-button';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { Disclosure } from '@headlessui/react';
-import { StudentDTO } from '../api/dto-interfaces';
+import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
 import { ElectiveAvailability, FilterOption } from '../api/state-types';
+import { ca } from 'date-fns/locale';
 
 interface Props {
   electiveAvailability: ElectiveAvailability;
@@ -25,98 +29,83 @@ function filterStudentList(
 ): StudentDTO[] {
   const {
     electivePreferences,
-    uuid,
-    carouselId,
-    studentList,
+    studentMap,
     filterType,
-    pinnedStudents
+    pinnedStudents,
+    carouselOptionId,
+    electiveDtoMap
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
-  if (
-    (!courseFilters || courseFilters.length == 0) &&
-    (!pinnedStudents || pinnedStudents.length == 0) &&
-    (!uuid || !carouselId)
-  ) {
-    console.log('No filters selected.');
-    return filteredList;
-  }
+  console.log('student map: ', studentMap);
 
-  for (const student of studentList) {
-    const nextStudentId = student.id;
-    const nextStudentPrefs = electivePreferences[nextStudentId];
-    const isPinned = pinnedStudents.some(
-      (student) => student.id == nextStudentId
-    );
+  if ((courseFilters && courseFilters.length > 0) || carouselOptionId) {
+    studentMap.forEach((nextStudent, nextStudentId, map) => {
+      const isPinned = pinnedStudents.has(nextStudentId);
+      const nextStudentPrefs = electivePreferences[nextStudentId];
 
-    if (!isPinned) {
-      if (filterType == FilterType.all) {
-        let couldMatch = true;
-        for (const courseFilter of courseFilters) {
-          couldMatch =
-            couldMatch &&
-            nextStudentPrefs.some((electivePreference) => {
-              let {
-                uuid: nextUuid,
-                isActive,
-                assignedCarouselOptionId
-              } = electivePreference;
-              return isActive && courseFilter.URI == nextUuid;
-            });
-          if (!couldMatch) break;
-        }
-        if (uuid && carouselId) {
-          couldMatch =
-            couldMatch &&
-            nextStudentPrefs.some((electivePreference) => {
-              const {
-                uuid: nextUuid,
-                isActive,
-                assignedCarouselOptionId
-              } = electivePreference;
-              if (
-                isActive &&
-                uuid == nextUuid &&
-                assignedCarouselOptionId == carouselId
-              )
-                return true;
-            });
-        }
-        if (couldMatch) filteredList.push(student);
-      } else if (filterType == FilterType.any) {
-        let anyMatch = nextStudentPrefs.some((electivePreference) => {
-          let { uuid: nextUuid, isActive } = electivePreference;
-          return courseFilters.some(
-            (filterOption) => isActive && filterOption.URI == nextUuid
-          );
-        });
-        if (uuid && carouselId) {
-          anyMatch =
-            anyMatch ||
-            nextStudentPrefs.some((electivePreference) => {
-              const {
-                uuid: nextUuid,
-                isActive,
-                assignedCarouselOptionId
-              } = electivePreference;
-              if (
-                isActive &&
-                uuid == nextUuid &&
-                assignedCarouselOptionId == carouselId
-              )
-                return true;
-            });
-        }
-        if (anyMatch) {
-          filteredList.push(student);
+      if (!isPinned) {
+        if (filterType == FilterType.all) {
+          let couldMatch = true;
+          for (const courseFilter of courseFilters) {
+            couldMatch =
+              couldMatch &&
+              nextStudentPrefs.some((electivePreference) => {
+                let { uuid: nextUuid, isActive } = electivePreference;
+                return isActive && courseFilter.URI == nextUuid;
+              });
+            if (!couldMatch) break;
+          }
+          if (carouselOptionId) {
+            couldMatch =
+              couldMatch &&
+              nextStudentPrefs.some((electivePreference) => {
+                const { isActive, assignedCarouselOptionId } =
+                  electivePreference;
+                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                  return true;
+              });
+          }
+          if (couldMatch) {
+            const studentDto = studentMap.get(nextStudentId);
+            studentDto && filteredList.push(studentDto);
+          }
+        } else if (filterType == FilterType.any) {
+          let anyMatch = nextStudentPrefs.some((electivePreference) => {
+            let { uuid: nextUuid, isActive } = electivePreference;
+            return courseFilters.some(
+              (filterOption) => isActive && filterOption.URI == nextUuid
+            );
+          });
+          if (carouselOptionId) {
+            anyMatch =
+              anyMatch ||
+              nextStudentPrefs.some((electivePreference) => {
+                const { isActive, assignedCarouselOptionId } =
+                  electivePreference;
+                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                  return true;
+              });
+          }
+          if (anyMatch) {
+            filteredList.push(nextStudent);
+          }
         }
       }
-    } else {
-      filteredList.push(student);
-    }
+    });
   }
 
-  return filteredList;
+  const pinnedStudentDtos: StudentDTO[] = [];
+  if (pinnedStudents && pinnedStudents.size > 0) {
+    pinnedStudents.forEach((studentId) => {
+      const student = studentMap.get(studentId);
+      student && pinnedStudentDtos.push(student);
+    });
+  }
+  pinnedStudentDtos.sort((a, b) => a.name.localeCompare(b.name));
+  filteredList.sort((a, b) => a.name.localeCompare(b.name));
+
+  return [...pinnedStudentDtos, ...filteredList];
 }
 
 export default function ElectiveSubscriberDisclosureGroup({
@@ -133,11 +122,10 @@ export default function ElectiveSubscriberDisclosureGroup({
   const electiveState = useContext(ElectiveContext);
   const {
     electivePreferences,
-    partyId,
-    studentList,
-    filterPending,
+    userRoleId,
     pinnedStudents,
-    highlightedCourses
+    highlightedCourses,
+    electiveDtoMap
   } = electiveState;
   const electiveFilterState = useContext(ElectiveFilterContext);
 
@@ -158,13 +146,13 @@ export default function ElectiveSubscriberDisclosureGroup({
   function handleAssignmentChange(
     studentId: number,
     preferencePosition: number,
-    assignedCarouselId: number
+    assignedCarouselOrdinal: number
   ) {
     dispatch({
       type: 'setCarousel',
       studentId: studentId,
       preferencePosition: preferencePosition,
-      assignedCarouselId: assignedCarouselId
+      assignedCarouselOrdinal: assignedCarouselOrdinal
     });
   }
 
@@ -223,7 +211,7 @@ export default function ElectiveSubscriberDisclosureGroup({
   }
 
   const isPinned = (id: number) => {
-    return pinnedStudents && pinnedStudents.some((student) => student.id == id);
+    return pinnedStudents && pinnedStudents.has(id);
   };
   try {
     return (
@@ -240,14 +228,14 @@ export default function ElectiveSubscriberDisclosureGroup({
                           {' '}
                           <div className="flex w-full items-center grow-0 justify-between rounded-lg bg-gray-100">
                             <div className="absolute left-8 top-4 flex items-center justify-center">
-                              {isPending && partyId == student.id && (
+                              {isPending && userRoleId == student.id && (
                                 <span className="z-20 loading loading-dots loading-xs"></span>
                               )}
                             </div>
                             <PinButton
                               pinIcon={PinIcons.arrowLeftCircle}
                               className="z-20"
-                              isPinned={student.id == partyId}
+                              isPinned={student.id == userRoleId}
                               setPinned={() => handleRadioClick(student.id)}
                             ></PinButton>
 
@@ -281,7 +269,8 @@ export default function ElectiveSubscriberDisclosureGroup({
                                 ({
                                   preferencePosition,
                                   name,
-                                  assignedCarouselOptionId
+                                  assignedCarouselOptionId,
+                                  uuid
                                 }) => {
                                   return (
                                     <div
@@ -294,13 +283,18 @@ export default function ElectiveSubscriberDisclosureGroup({
                                       <div className="indicator">
                                         {getAssignmentIndicator(
                                           checkAssignment(
+                                            electiveDtoMap,
                                             electivePreferences[student.id],
                                             preferencePosition
                                           )
                                         )}
                                         <select
                                           className="select select-xs select-bordered w-16 grow-1"
-                                          value={assignedCarouselOptionId}
+                                          value={matchCarouselOrdinal(
+                                            uuid,
+                                            assignedCarouselOptionId,
+                                            electiveDtoMap
+                                          )}
                                           onChange={(e) => {
                                             handleAssignmentChange(
                                               student.id,
@@ -312,8 +306,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                         >
                                           {mapOptions(
                                             electiveAvailability,
-                                            name,
-                                            assignedCarouselOptionId,
+                                            uuid,
                                             student.id,
                                             preferencePosition
                                           )}
@@ -368,22 +361,20 @@ function getAssignmentIndicator(assignmentCheck: boolean) {
 
 function mapOptions(
   electiveAvailability: ElectiveAvailability,
-  courseDescription: string,
-  assignedCarousel: number,
+  uuid: string,
   studentId: number,
   preferencePosition: number
 ) {
   try {
-    return electiveAvailability[courseDescription].map(
-      (carouselNumber, index) => {
-        // if (carouselNumber !== assignedCarousel) {
+    return electiveAvailability[uuid].map(
+      (carouselOrdinal, index) => {
         return (
           <option
             key={`${studentId}-${preferencePosition}-${index}`}
             className="p-0 m-0 text-left"
-            value={carouselNumber}
+            value={carouselOrdinal}
           >
-            {carouselNumber}
+            {carouselOrdinal}
           </option>
         );
       }

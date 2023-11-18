@@ -2,45 +2,57 @@
 
 import { ReactNode, useReducer } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
+import { enableMapSet } from 'immer';
 
 import electiveStateReducer, {
-  createdElectivePreferenceRecords,
+  createElectiveDtoMap,
+  createElectivePreferenceRecords,
   ElectiveState
 } from './elective-reducers';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FilterType } from './elective-filter-reducers';
-import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
+import {
+  ElectiveDTO,
+  ElectivePreferenceDTO,
+  StudentDTO
+} from '../api/dto-interfaces';
 
 interface Props {
-  // lessonCycleFocus: ElectiveDTO;
-  // studentFocus: number;
+  electiveDtoList: ElectiveDTO[];
   studentList: StudentDTO[];
   electivePreferenceList: ElectivePreferenceDTO[];
-  // electiveAvailability: ElectiveAvailability;
   children: ReactNode;
-  // yearGroupElectiveData: YearGroupElectives;
+}
+
+function createStudentDtoMap(studentList: StudentDTO[]) {
+  const studentDtoMap = new Map<number, StudentDTO>();
+  studentList.forEach((student) => studentDtoMap.set(student.id, student));
+
+  return studentDtoMap;
 }
 
 export default function ElectiveContextProvider({
   studentList,
   electivePreferenceList,
-  children
+  children,
+  electiveDtoList
 }: Props) {
   const initialElectiveState: ElectiveState = {
     highlightedCourses: [],
-    pinnedStudents: [],
+    pinnedStudents: new Set<number>(),
     filterPending: false,
     filterType: FilterType.any,
-    studentList,
-    carouselId: 0,
-    uuid: '',
-    courseCarouselId: 0,
-    electivePreferences: createdElectivePreferenceRecords(
+    studentMap: createStudentDtoMap(studentList),
+    carouselOptionId: NaN,
+    electiveDtoMap: createElectiveDtoMap(electiveDtoList),
+    electivePreferences: createElectivePreferenceRecords(
       electivePreferenceList
     ),
-    partyId: 0
+    userRoleId: 0
   };
   const pathname = usePathname();
+
+  enableMapSet();
 
   const [electiveState, dispatch] = useReducer(
     electiveStateReducer,

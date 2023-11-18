@@ -1,13 +1,17 @@
 import { produce } from 'immer';
 import { FilterType } from './elective-filter-reducers';
 import { ca, gl } from 'date-fns/locale';
-import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
+import {
+  ElectiveDTO,
+  ElectivePreferenceDTO,
+  StudentDTO
+} from '../api/dto-interfaces';
 
 interface SetCarousel {
   type: 'setCarousel';
   studentId: number;
   preferencePosition: number;
-  assignedCarouselId: number;
+  assignedCarouselOrdinal: number;
 }
 
 interface SetActive {
@@ -16,11 +20,9 @@ interface SetActive {
   preferencePosition: number;
 }
 
-interface FocusCourse {
-  type: 'focusCourse';
-  carouselId: number;
-  courseCarouselId: number;
-  uuid: string;
+interface FocusCarouselOption {
+  type: 'focusCarouselOption';
+  carouselOptionId: number;
 }
 
 interface FocusStudent {
@@ -51,7 +53,7 @@ interface SetHighlightedCourses {
 export type ElectiveStateActions =
   | SetCarousel
   | SetActive
-  | FocusCourse
+  | FocusCarouselOption
   | FocusStudent
   | SetFilterType
   | SetFilterPending
@@ -60,15 +62,14 @@ export type ElectiveStateActions =
 
 export type ElectiveState = {
   highlightedCourses: string[];
-  pinnedStudents: StudentDTO[];
+  pinnedStudents: Set<number>;
   filterPending: boolean;
   filterType: FilterType;
-  studentList: StudentDTO[];
-  carouselId: number;
-  uuid: string;
-  courseCarouselId: number;
+  studentMap: Map<number, StudentDTO>;
+  carouselOptionId: number;
+  electiveDtoMap: Map<string, ElectiveDTO>[];
   electivePreferences: Record<number, ElectivePreferenceDTO[]>;
-  partyId: number;
+  userRoleId: number;
 };
 
 export default function electivePreferencesReducer(
@@ -77,12 +78,17 @@ export default function electivePreferencesReducer(
 ) {
   switch (action.type) {
     case 'setCarousel': {
-      const { studentId, preferencePosition, assignedCarouselId } = action;
+      const { studentId, preferencePosition, assignedCarouselOrdinal } = action;
+
+      const { electiveDtoMap, electivePreferences } = electivesState;
+      const uuid = electivePreferences[studentId][preferencePosition].uuid;
+      const carousel = electiveDtoMap[assignedCarouselOrdinal];
+      const electiveDto = carousel && carousel.get(uuid);
 
       return produce(electivesState, (draftUpdate) => {
         draftUpdate.electivePreferences[studentId][
           preferencePosition
-        ].assignedCarouselOptionId = assignedCarouselId;
+        ].assignedCarouselOptionId = electiveDto ? electiveDto.id : -1;
       });
     }
     case 'setActive': {
@@ -97,24 +103,16 @@ export default function electivePreferencesReducer(
       });
     }
 
-    case 'focusCourse': {
-      const { carouselId, courseCarouselId, uuid } = action;
-      const {
-        carouselId: oldCarouselId,
-        courseCarouselId: oldCourseCarouselId,
-        uuid: oldUuid
-      } = electivesState;
+    case 'focusCarouselOption': {
+      const { carouselOptionId } = action;
+      const { carouselOptionId: oldCarouselOptionId } = electivesState;
 
-      const carouselMatch = carouselId == oldCarouselId;
-      const courseCarouselMatch = courseCarouselId == oldCourseCarouselId;
-      const uuidMatch = uuid == oldUuid;
-
-      const globalMatch = carouselMatch && courseCarouselMatch && uuidMatch;
+      const carouselOptionIdMatch = carouselOptionId == oldCarouselOptionId;
 
       return produce(electivesState, (draftState) => {
-        draftState.carouselId = globalMatch ? -1 : carouselId;
-        draftState.courseCarouselId = globalMatch ? -1 : courseCarouselId;
-        draftState.uuid = globalMatch ? '' : uuid;
+        draftState.carouselOptionId = carouselOptionIdMatch
+          ? NaN
+          : carouselOptionId;
         draftState.filterPending = true;
       });
     }
@@ -123,7 +121,7 @@ export default function electivePreferencesReducer(
       const { studentId } = action;
 
       return produce(electivesState, (draftState) => {
-        draftState.partyId = studentId;
+        draftState.userRoleId = studentId;
       });
     }
 
@@ -146,21 +144,17 @@ export default function electivePreferencesReducer(
 
     case 'setPinnedStudent': {
       const { id } = action;
-      const { pinnedStudents, studentList } = electivesState;
+      const { pinnedStudents, studentMap } = electivesState;
 
-      const currentlyPinned =
-        pinnedStudents && pinnedStudents.some((student) => student.id == id);
+      const currentlyPinned = pinnedStudents && pinnedStudents.has(id);
 
       return produce(electivesState, (updatedState) => {
         if (currentlyPinned) {
-          updatedState.pinnedStudents = pinnedStudents.filter(
-            (student) => student.id !== id
-          );
+          updatedState.pinnedStudents.delete(id);
         } else {
-          const optionalStudent = studentList.find(
-            (student) => student.id == id
-          );
-          optionalStudent && updatedState.pinnedStudents.push(optionalStudent);
+          const optionalStudent = studentMap.get(id);
+          optionalStudent &&
+            updatedState.pinnedStudents.add(optionalStudent.id);
         }
       });
     }
@@ -187,19 +181,40 @@ export default function electivePreferencesReducer(
   }
 }
 
-export function createdElectivePreferenceRecords(
+export function createElectivePreferenceRecords(
   electivePreferenceList: ElectivePreferenceDTO[]
 ) {
   const groupedByPartyId = electivePreferenceList.reduce<
     Record<number, ElectivePreferenceDTO[]>
   >((acc, curr) => {
-    if (!acc[curr.partyId]) {
-      acc[curr.partyId] = [];
+    if (!acc[curr.userRoleId]) {
+      acc[curr.userRoleId] = [];
     }
 
-    acc[curr.partyId].push(curr);
+    acc[curr.userRoleId].push(curr);
     return acc;
   }, {});
 
   return groupedByPartyId;
+}
+
+export function createElectiveDtoMap(
+  electiveDtoList: ElectiveDTO[]
+): Map<string, ElectiveDTO>[] {
+  let max = 0;
+  for (let electiveDTO of electiveDtoList) {
+    max = Math.max(electiveDTO.carouselOrdinal, max);
+  }
+  max++;
+  const electiveDtoListMap: Map<string, ElectiveDTO>[] = [];
+  for (let i = 0; i < max; i++) {
+    electiveDtoListMap.push(new Map<string, ElectiveDTO>());
+  }
+  electiveDtoList.forEach((electiveDto) =>
+    electiveDtoListMap[electiveDto.carouselOrdinal].set(
+      electiveDto.uuid,
+      electiveDto
+    )
+  );
+  return electiveDtoListMap;
 }

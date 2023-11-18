@@ -5,37 +5,67 @@ export function compileElectiveAvailability(
   electives: ElectiveDTO[]
 ): ElectiveAvailability {
   const responseElectiveAvailability: ElectiveAvailability = {};
+
   electives.forEach((electiveDTO) => {
-    const nextCourse = electiveDTO.name;
+    const nextCourse = electiveDTO.uuid;
     if (
       responseElectiveAvailability[nextCourse] &&
-      electiveDTO.subscriberPartyIDs.length > 0
+      electiveDTO.subscriberUserRoleIds.length > 0
     ) {
-      const updatedAvailability = [
+      responseElectiveAvailability[nextCourse] = [
         ...responseElectiveAvailability[nextCourse],
-        electiveDTO.carouselId
+        electiveDTO.carouselOrdinal
       ];
-      responseElectiveAvailability[nextCourse] = updatedAvailability;
     } else {
-      if (electiveDTO.subscriberPartyIDs.length > 0)
-        responseElectiveAvailability[nextCourse] = [-1, electiveDTO.carouselId];
+      if (electiveDTO.subscriberUserRoleIds.length > 0)
+        responseElectiveAvailability[nextCourse] = [
+          -1,
+          electiveDTO.carouselOrdinal
+        ];
     }
   });
+
   return responseElectiveAvailability;
 }
 
 export function checkAssignment(
+  electiveDtoMapList: Map<string, ElectiveDTO>[],
   electivePreferences: ElectivePreferenceDTO[],
   preferencePosition: number
 ): boolean {
   if (!electivePreferences[preferencePosition].isActive) return true;
-  const referenceAssignment =
-    electivePreferences[preferencePosition].assignedCarouselOptionId;
+  const { assignedCarouselOptionId: referenceAssignment, uuid } =
+    electivePreferences[preferencePosition];
+
+  const carouselOrdinal = matchCarouselOrdinal(
+    uuid,
+    referenceAssignment,
+    electiveDtoMapList
+  );
 
   return !electivePreferences.some(
     (otherPreference) =>
       otherPreference.isActive &&
       otherPreference.preferencePosition !== preferencePosition &&
-      otherPreference.assignedCarouselOptionId === referenceAssignment
+      matchCarouselOrdinal(
+        otherPreference.uuid,
+        otherPreference.assignedCarouselOptionId,
+        electiveDtoMapList
+      ) === carouselOrdinal
   );
+}
+
+export function matchCarouselOrdinal(
+  uuid: string,
+  carouselOptionId: number,
+  electiveDtoMap: Map<string, ElectiveDTO>[]
+): number {
+  for (let i = 0; i < electiveDtoMap.length; i++) {
+    const electiveDto = electiveDtoMap[i]?.get(uuid);
+
+    if (electiveDto && electiveDto.id == carouselOptionId) {
+      return i;
+    }
+  }
+  return -1;
 }

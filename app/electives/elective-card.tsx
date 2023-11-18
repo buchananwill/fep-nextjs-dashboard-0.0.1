@@ -18,16 +18,15 @@ const calculateSubscribers = (
   electiveDTO: ElectiveDTO,
   electivesState: ElectiveState
 ) => {
-  const { carouselId, uuid } = electiveDTO;
+  const { id } = electiveDTO;
   let count = 0;
-  for (const [partyId, preferenceList] of Object.entries(
+  for (const [userRoleId, preferenceList] of Object.entries(
     electivesState.electivePreferences
   )) {
     for (let electivePreference of preferenceList) {
       if (
         electivePreference.isActive &&
-        electivePreference.uuid == uuid &&
-        electivePreference.assignedCarouselOptionId == carouselId
+        electivePreference.assignedCarouselOptionId == id
       )
         count++;
     }
@@ -37,15 +36,13 @@ const calculateSubscribers = (
 
 const getBorderVisible = (
   electiveState: ElectiveState,
-  carouselId: number,
-  uuid: string
+  carouselOptionId: number
 ) => {
-  const { partyId } = electiveState;
-  return electiveState?.electivePreferences[partyId]?.some(
+  const { userRoleId } = electiveState;
+  return electiveState?.electivePreferences[userRoleId]?.some(
     (electivePreference) =>
       electivePreference.isActive &&
-      electivePreference.assignedCarouselOptionId == carouselId &&
-      electivePreference.uuid == uuid
+      electivePreference.assignedCarouselOptionId == carouselOptionId
   )
     ? ''
     : 'border-transparent';
@@ -62,7 +59,7 @@ function getFiltered(courseFilters: FilterOption[], uuid: string) {
 }
 
 const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
-  const { name, carouselId, courseCarouselId, uuid } = data;
+  const { name, carouselOrdinal, electiveOrdinal, uuid, id } = data;
 
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
@@ -73,32 +70,20 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const electivesState = useContext(ElectiveContext);
   const { courseFilters } = useContext(ElectiveFilterContext);
   const dispatch = useContext(ElectiveDispatchContext);
-  const {
-    courseCarouselId: focusCCID,
-    carouselId: focusCId,
-    highlightedCourses
-  } = electivesState;
+  const { carouselOptionId: focusCarouselOptionId, highlightedCourses } =
+    electivesState;
 
   useEffect(() => {
     const updatedSubscribers = calculateSubscribers(data, electivesState);
     setSubscribers(updatedSubscribers);
   }, [data, electivesState]);
 
-  function handleCardClick(
-    carouselId: number,
-    courseCarouselId: number,
-    uuid: string
-  ) {
+  function handleCardClick(carouselOptionId: number) {
     startTransition(() => {
       dispatch({
-        type: 'focusCourse',
-        carouselId: carouselId,
-        courseCarouselId: courseCarouselId,
-        uuid: uuid
-      });
-      dispatch({
-        type: 'setFilterPending',
-        pending: true
+        type: 'focusCarouselOption',
+
+        carouselOptionId: carouselOptionId
       });
     });
   }
@@ -111,9 +96,9 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   }
 
   useEffect(() => {
-    const borderNowVisible = getBorderVisible(electivesState, carouselId, uuid);
+    const borderNowVisible = getBorderVisible(electivesState, id);
     setBorderVisible(borderNowVisible);
-  }, [electivesState, carouselId, uuid]);
+  }, [electivesState, carouselOrdinal, uuid]);
 
   const opacity = getOpacity(isEnabled);
 
@@ -126,9 +111,8 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const additionalClassNames = [
     `opacity-${opacity}`,
     borderVisible,
-    courseCarouselId == focusCCID && carouselId == focusCId
-      ? 'bg-emerald-100'
-      : ''
+    id == focusCarouselOptionId ? 'bg-emerald-100' : '',
+    'py-0'
   ];
   return (
     <InteractiveTableCard additionalClassNames={additionalClassNames}>
@@ -142,9 +126,9 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
           <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
         )}
         <div
-          className="px-1 cursor-pointer grow inline"
+          className="px-1 py-3 cursor-pointer grow inline"
           onClick={() => {
-            handleCardClick(carouselId, courseCarouselId, uuid);
+            handleCardClick(id);
           }}
         >
           <Text className="text-xs">{name}</Text>
