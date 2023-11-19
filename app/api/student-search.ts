@@ -11,7 +11,9 @@ const apiBaseUrl = process.env.API_ACADEMIC_URL;
 export const fetchAllStudents = async (
   searchParams: SearchParams
 ): Promise<StudentDTO[]> => {
-  const fetchUrl = `${apiBaseUrl}/students`;
+  const fetchUrl = `${apiBaseUrl}/students${
+    searchParams.q ? '?q=' + searchParams.q : ''
+  }`;
 
   try {
     const response = await fetch(fetchUrl, {

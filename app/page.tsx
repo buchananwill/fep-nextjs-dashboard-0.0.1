@@ -16,7 +16,8 @@ export default async function IndexPage({
 
   const studentDTO = await fetchAllStudents(searchParams);
   const students = {
-    allItems: studentDTO.filter((student) => student.name.match(regex))
+    // allItems: studentDTO.filter((student) => student.name.match(regex))
+    allItems: studentDTO
   };
 
   return (
