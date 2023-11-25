@@ -7,9 +7,9 @@ export const PanelTransformerConcrete: PanelTransformer<LessonCycle> = ({
   data
 }) => {
   return (
-    <p>
-      Lesson Cycle Id:
-      {data.id}
-    </p>
+    <>
+      <p>Lesson Cycle ID: {data.id}</p>
+      <p>Teachers Role ID: {data.assignedTeacherIds}</p>
+    </>
   );
 };

@@ -94,6 +94,7 @@ export interface TabularDTO<H, D> {
 }
 
 export interface Period {
+  description: string;
   periodId: number | null; // TypeScript doesn't have a 'Long' type, so 'number' is typically used
   startTime: string | null; // LocalTime can be represented as a string in ISO format
   endTime: string | null;

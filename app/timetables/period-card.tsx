@@ -45,7 +45,7 @@ function getBadgeColor(concurrency: number) {
 }
 
 export const PeriodCardTransformer: CellDataTransformer<Period> = ({
-  data: { periodId, startTime }
+  data: { periodId, startTime, description }
 }) => {
   const {
     focusPeriodId,
@@ -100,9 +100,9 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
         className="flex w-full h-full justify-between pr-2"
         onClick={() => handleCardClick(periodId)}
       >
-        <p>{startTime?.substring(0, 5)}</p>
+        {/*<p>{startTime?.substring(0, 5)}</p>*/}
         <Badge className={`bg-${badgeColor}-300`}>{concurrency}</Badge>
-        <p> {(periodId || 0) % 6 || 6}</p>
+        <p> {description}</p>
       </div>
     </InteractiveTableCard>
   );

@@ -60,7 +60,7 @@ export const fetchAllPeriodsInCycle = async (): Promise<
 };
 
 export const fetchAllLessonCycles = async (): Promise<LessonCycleDTO[]> => {
-  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles`;
+  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?id=152`;
 
   try {
     const response = await fetch(fetchURL, {
