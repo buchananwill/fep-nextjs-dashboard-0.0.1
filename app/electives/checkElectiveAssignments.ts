@@ -8,20 +8,16 @@ export function compileElectiveAvailability(
 
   electives.forEach((electiveDTO) => {
     const nextCourse = electiveDTO.uuid;
-    if (
-      responseElectiveAvailability[nextCourse] &&
-      electiveDTO.subscriberUserRoleIds.length > 0
-    ) {
+    if (responseElectiveAvailability[nextCourse]) {
       responseElectiveAvailability[nextCourse] = [
         ...responseElectiveAvailability[nextCourse],
         electiveDTO.carouselOrdinal
-      ];
+      ].sort((a, b) => a - b);
     } else {
-      if (electiveDTO.subscriberUserRoleIds.length > 0)
-        responseElectiveAvailability[nextCourse] = [
-          -1,
-          electiveDTO.carouselOrdinal
-        ];
+      responseElectiveAvailability[nextCourse] = [
+        -1,
+        electiveDTO.carouselOrdinal
+      ];
     }
   });
 
