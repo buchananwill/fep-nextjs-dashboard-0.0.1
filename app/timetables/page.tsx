@@ -14,8 +14,6 @@ import { FilteredLessonCycles } from './filtered-lesson-cycles';
 
 import { buildTimetablesState } from './build-timetables-state';
 
-const dynamic = 'force-dynamic';
-
 export default async function TimetablesPage({
   searchParams
 }: {

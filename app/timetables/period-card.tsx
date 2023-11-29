@@ -112,7 +112,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   async function handleSwapClick() {
     setPinned(true);
     swapTwoPeriods(periodId, periodId)
-      .then(() => push('/timetables'))
+      .then(() => refresh())
       .finally(() => {
         setPinned(false);
       });
