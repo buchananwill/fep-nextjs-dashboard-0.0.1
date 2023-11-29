@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 
 import { ButtonSurroundTransformer } from '../components/filtered-disclosure-panel';
 import { LessonCycle } from '../api/state-types';
-import { PinButton, PinIcons } from '../components/pin-button';
+import { FillableButton, PinIcons } from '../components/fillable-button';
 import {
   TimetablesContext,
   TimetablesDispatchContext
@@ -39,26 +39,26 @@ const ButtonSurroundLessonCycle: ButtonSurroundTransformer<LessonCycle> = ({
   return (
     <div className={className}>
       <div className="flex w-full items-center grow-0 justify-between rounded-lg bg-gray-100">
-        <PinButton
+        <FillableButton
           pinIcon={PinIcons.arrowLeftCircle}
           className="z-20"
           isPinned={lessonCycleId == id}
           setPinned={() => handleRadioClick(id)}
-        ></PinButton>
+        ></FillableButton>
 
         {children}
-        <PinButton
+        <FillableButton
           pinIcon={PinIcons.mapPin}
           className="z-20"
           isPinned={pinnedLessonCycles.has(id)}
           setPinned={() => handlePinnedLessonCycle(id)}
-        ></PinButton>
-        <PinButton
+        ></FillableButton>
+        <FillableButton
           pinIcon={PinIcons.mortarBoard}
           className={`mr-1`}
           isPinned={highlightedSubjects.has(subject)}
           setPinned={() => handleMortarBoardClick(subject)}
-        ></PinButton>
+        ></FillableButton>
       </div>
     </div>
   );

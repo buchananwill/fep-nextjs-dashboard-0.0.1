@@ -45,6 +45,11 @@ interface SetHighlightedSubjects {
   subject: string;
 }
 
+interface SetLessonCycles {
+  type: 'setLessonCycles';
+  lessonCycles: LessonCycle[];
+}
+
 export type TimetablesStateActions =
   | SetPeriod
   | SetActive
@@ -53,7 +58,8 @@ export type TimetablesStateActions =
   | SetFilterType
   | SetFilterPending
   | SetPinnedLessonCycle
-  | SetHighlightedSubjects;
+  | SetHighlightedSubjects
+  | SetLessonCycles;
 
 export type TimetablesState = {
   highlightedSubjects: Set<string>;
@@ -94,7 +100,7 @@ export default function timetablesReducer(
       const matchOldId = periodId == oldId;
 
       return produce(timetablesState, (draftState) => {
-        draftState.focusPeriodId = matchOldId ? -1 : periodId;
+        draftState.focusPeriodId = matchOldId ? NaN : periodId;
         draftState.filterPending = true;
       });
     }

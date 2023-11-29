@@ -9,6 +9,10 @@ import {
 } from './timetables-context';
 import { Badge } from '@tremor/react';
 import { LessonCycle } from '../api/state-types';
+import { FillableButton, PinIcons } from '../components/fillable-button';
+import { swapTwoPeriods } from './api/route';
+import { usePathname, useRouter } from 'next/navigation';
+import * as repl from 'repl';
 
 function countConcurrency(
   highlightedSubjects: Set<string>,
@@ -55,8 +59,13 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
   const [isPending, startTransition] = useTransition();
+  const [isPinned, setPinned] = useState(false);
+  const { refresh, replace, push } = useRouter();
+  const pathname = usePathname();
 
   const handleCardClick = (periodId: number | null) => {
+    console.log('Period Id: ', periodId);
+
     startTransition(() => {
       dispatch({
         type: 'setFocusPeriod',
@@ -91,6 +100,25 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
 
   const badgeColor = getBadgeColor(concurrency);
 
+  const rotation: { [key: string]: string } = {
+    P1: 'rotate-180',
+    P2: '',
+    P3: 'rotate-180',
+    P4: '',
+    P5: 'rotate-180',
+    P6: ''
+  };
+
+  async function handleSwapClick() {
+    setPinned(true);
+    swapTwoPeriods(periodId, periodId)
+      .then(() => push('/timetables'))
+      .finally(() => {
+        setPinned(false);
+      });
+  }
+
+  const rotationClass = rotation[description] || '';
   return (
     <InteractiveTableCard
       decorationColor="blue"
@@ -100,10 +128,15 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
         className="flex w-full h-full justify-between pr-2"
         onClick={() => handleCardClick(periodId)}
       >
-        {/*<p>{startTime?.substring(0, 5)}</p>*/}
-        <Badge className={`bg-${badgeColor}-300`}>{concurrency}</Badge>
         <p> {description}</p>
+        <Badge className={`bg-${badgeColor}-300`}>{concurrency}</Badge>
       </div>
+      <FillableButton
+        pinIcon={PinIcons.arrowUpOnSquare}
+        className={`z-20 ${rotationClass}`}
+        isPinned={isPinned}
+        setPinned={handleSwapClick}
+      ></FillableButton>
     </InteractiveTableCard>
   );
 };

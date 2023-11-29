@@ -12,7 +12,7 @@ import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
 
 import { FilterType } from './elective-filter-reducers';
-import { PinButton, PinIcons } from '../components/pin-button';
+import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { Disclosure } from '@headlessui/react';
 import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
@@ -232,30 +232,30 @@ export default function ElectiveSubscriberDisclosureGroup({
                                 <span className="z-20 loading loading-dots loading-xs"></span>
                               )}
                             </div>
-                            <PinButton
+                            <FillableButton
                               pinIcon={PinIcons.arrowLeftCircle}
                               className="z-20"
                               isPinned={student.id == userRoleId}
                               setPinned={() => handleRadioClick(student.id)}
-                            ></PinButton>
+                            ></FillableButton>
 
                             <Disclosure.Button className="border-x-2 border-dotted grow py-2 text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
                               <span className="grow ml-2">{student.name}</span>
                             </Disclosure.Button>
-                            <PinButton
+                            <FillableButton
                               pinIcon={PinIcons.mapPin}
                               className="z-20"
                               isPinned={isPinned(student.id)}
                               setPinned={() => handlePinnedStudent(student.id)}
-                            ></PinButton>
-                            <PinButton
+                            ></FillableButton>
+                            <FillableButton
                               pinIcon={PinIcons.mortarBoard}
                               className={`mr-1`}
                               isPinned={false}
                               setPinned={() =>
                                 handleMortarBoardClick(student.id)
                               }
-                            ></PinButton>
+                            ></FillableButton>
                             <ChevronUpIcon
                               className={`${
                                 open ? 'rotate-180 transform' : ''

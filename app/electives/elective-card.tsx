@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { classNames } from '../utils/class-names';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
-import { PinButton, PinIcons } from '../components/pin-button';
+import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ElectiveFilterContext } from './elective-filter-context';
 import { ElectiveDTO } from '../api/dto-interfaces';
 import InteractiveTableCard from '../components/interactive-table-card';
@@ -135,12 +135,12 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
         </div>
       </div>
 
-      <PinButton
+      <FillableButton
         pinIcon={PinIcons.mortarBoard}
         className={`${highlightText} mr-1`}
         isPinned={highlightText != ''}
         setPinned={() => handleMortarBoardClick(uuid)}
-      ></PinButton>
+      ></FillableButton>
       <Badge color={classesColor}>{numberOfClasses} </Badge>
       <Badge color={subscribersColor}>{subscribers}</Badge>
     </InteractiveTableCard>

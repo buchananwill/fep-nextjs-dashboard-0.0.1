@@ -5,10 +5,7 @@ import BigTableCard from '../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../components/dynamic-dimension-timetable';
-import {
-  fetchAllLessonCycles,
-  fetchAllPeriodsInCycle
-} from '../api/request-schedule';
+import { fetchAllLessonCycles, fetchAllPeriodsInCycle } from './api/route';
 import { PeriodCardTransformer } from './period-card';
 import { LessonCycle } from '../api/state-types';
 
@@ -17,38 +14,7 @@ import { FilteredLessonCycles } from './filtered-lesson-cycles';
 
 import { buildTimetablesState } from './build-timetables-state';
 
-function convertDtoToState({
-  id,
-  enrolledStudentIds,
-  assignedTeacherIds,
-  periodVenueAssignments,
-  requiredNumberOfPeriods,
-  name,
-  subject
-}: LessonCycleDTO): LessonCycle {
-  const enrolledStudentIdSet = new Set<number>();
-  enrolledStudentIds.forEach((id) => enrolledStudentIdSet.add(id));
-  const assignedTeacherIdSet = new Set<number>();
-  assignedTeacherIds.forEach((id) => assignedTeacherIdSet.add(id));
-  const periodVenueAssignmentMap = new Map<number, string>();
-  for (let periodVenueAssignmentsKey in periodVenueAssignments) {
-    const keyAsNumber = parseInt(periodVenueAssignmentsKey);
-    periodVenueAssignmentMap.set(
-      keyAsNumber,
-      periodVenueAssignments[periodVenueAssignmentsKey]
-    );
-  }
-
-  return {
-    enrolledStudentIds: enrolledStudentIdSet,
-    id: id,
-    name: name,
-    requiredNumberOfPeriods: requiredNumberOfPeriods,
-    periodVenueAssignments: periodVenueAssignmentMap,
-    assignedTeacherIds: assignedTeacherIdSet,
-    subject: subject
-  };
-}
+const dynamic = 'force-dynamic';
 
 export default async function TimetablesPage({
   searchParams
@@ -66,37 +32,9 @@ export default async function TimetablesPage({
 
   const allLessonCycles = await fetchAllLessonCycles();
 
-  const lessonCycleMap = new Map<number, LessonCycle>();
-
-  const lessonCycleArray: LessonCycle[] = [];
-
-  allLessonCycles.forEach((lessonCycleDTO) => {
-    const stateObject = convertDtoToState(lessonCycleDTO);
-    lessonCycleMap.set(stateObject.id, stateObject);
-    lessonCycleArray.push(stateObject);
-  });
-
-  const periodToLessonCycleMap = new Map<number, Set<LessonCycle>>();
-
-  allPeriodsInCycle.cellDataAndMetaData.forEach(
-    ({ cellData: { periodId } }) => {
-      if (periodId) {
-        const stringOfId = periodId.toString();
-        const setOfLessonCycles = new Set<LessonCycle>();
-        allLessonCycles.forEach((dto) => {
-          if (stringOfId in dto.periodVenueAssignments) {
-            const retrievedCycle = lessonCycleMap.get(dto.id);
-            if (retrievedCycle) setOfLessonCycles.add(retrievedCycle);
-          }
-        });
-        periodToLessonCycleMap.set(periodId, setOfLessonCycles);
-      }
-    }
-  );
-
-  const initialState = buildTimetablesState(
-    lessonCycleMap,
-    periodToLessonCycleMap
+  const { initialState, lessonCycleArray } = buildTimetablesState(
+    allPeriodsInCycle,
+    allLessonCycles
   );
 
   return (

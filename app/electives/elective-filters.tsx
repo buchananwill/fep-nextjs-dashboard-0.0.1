@@ -7,7 +7,7 @@ import Union from '../components/union';
 import Intersection from '../components/intersection';
 import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
-import { PinButton, PinIcons } from '../components/pin-button';
+import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ElectiveDTO } from '../api/dto-interfaces';
 import { FilterOption } from '../api/state-types';
 
@@ -90,12 +90,12 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
       </label>
       <div className="flex flew-row items-center">
         <Text className="mr-2">Reset: </Text>
-        <PinButton
+        <FillableButton
           pinIcon={PinIcons.mortarBoard}
           className={''}
           isPinned={false}
           setPinned={handleResetMortarBoards}
-        ></PinButton>
+        ></FillableButton>
       </div>
       <CommitChanges>Commit Changes</CommitChanges>
     </Card>

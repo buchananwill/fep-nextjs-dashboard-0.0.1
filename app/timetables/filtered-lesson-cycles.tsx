@@ -18,8 +18,14 @@ function filterLessonCycles(
 ) {
   const setFromMap = periodIdToLessonCycleMap.get(focusPeriodId);
 
-  if (pinnedLessonCycles.size == 0 && focusPeriodId < 0 && cycleDayFocusId << 0)
-    return data;
+  console.log('focusPeriodId: ', focusPeriodId);
+
+  if (
+    pinnedLessonCycles.size == 0 &&
+    isNaN(focusPeriodId) &&
+    cycleDayFocusId < 0
+  )
+    return [];
 
   const filteredLessonCycles: LessonCycle[] = [];
 
