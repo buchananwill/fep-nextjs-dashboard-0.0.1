@@ -29,8 +29,8 @@ const contactTimeDropdown = [
 const studentsDropdown = [{ name: 'Students', href: '' }];
 
 const timetablesDropdown = [
-  { name: 'Timetables', href: '/1452' },
-  { name: 'Build Metrics', href: '/1452/build-metrics' }
+  { name: 'Timetables', href: '/1702' },
+  { name: 'Build Metrics', href: '/1702/build-metrics' }
 ];
 
 const premisesDropdown = [{ name: 'Premises', href: '' }];

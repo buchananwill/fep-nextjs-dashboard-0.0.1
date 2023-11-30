@@ -112,9 +112,7 @@ export interface QueueTreeNodeDTO extends HasUuid {
   totalAllocationArea?: number;
   degreeOfNesting?: number;
   yearGroup?: number;
-  subjectBandwidths?: {
-    [subjectName: string]: number;
-  };
+  subjectBandwidths?: { name: string; value: number }[];
 }
 
 export interface BuildMetricDTO extends HasUuid {
@@ -123,3 +121,5 @@ export interface BuildMetricDTO extends HasUuid {
   finalState?: string;
   totalAllocationLoops?: number;
 }
+
+export const notAnId = 'notAnId';
