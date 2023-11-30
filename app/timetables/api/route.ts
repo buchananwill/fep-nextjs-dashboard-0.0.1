@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { LessonCycleDTO, Period, TabularDTO } from '../../api/dto-interfaces';
+import {
+  BuildMetricDTO,
+  LessonCycleDTO,
+  Period,
+  TabularDTO
+} from '../../api/dto-interfaces';
 import { ElectiveState } from '../../electives/elective-reducers';
 
 interface SearchParams {
@@ -61,15 +66,17 @@ export const fetchAllPeriodsInCycle = async (): Promise<
 };
 
 const hotSchedule = 1152;
-export const fetchAllLessonCycles = async (): Promise<LessonCycleDTO[]> => {
-  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?id=${hotSchedule}`;
+export const fetchAllLessonCycles = async (
+  scheduleId: number
+): Promise<LessonCycleDTO[]> => {
+  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?id=${scheduleId}`;
 
   try {
     const response = await fetch(fetchURL, {
       // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      cache: 'no-store', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
@@ -103,7 +110,7 @@ export const swapTwoPeriods = async (periodId1: number, periodId2: number) => {
       // next: { tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', //cacheSetting *default, no-cache, reload, force-cache, only-if-cached
+      cache: 'no-store', //cacheSetting *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
@@ -121,9 +128,39 @@ export const swapTwoPeriods = async (periodId1: number, periodId2: number) => {
 
     const data = await response.json();
 
+    console.log('response.data: ', data);
+
     return data;
   } catch (error) {
     console.error('Error fetching data: ', error);
     return null;
+  }
+};
+
+export const fetchBuildMetricDto = async (
+  scheduleId: number
+): Promise<BuildMetricDTO> => {
+  const fetchURL = `${apiBaseUrl}/get-build-metric-dto?scheduleId=${scheduleId}`;
+
+  try {
+    const response = await fetch(fetchURL, {
+      // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-store', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer' // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      // body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return { uuid: 'failed' };
   }
 };

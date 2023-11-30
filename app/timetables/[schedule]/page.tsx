@@ -1,22 +1,26 @@
 import React from 'react';
 
-import { LessonCycleDTO, Period } from '../api/dto-interfaces';
-import BigTableCard from '../components/big-table-card';
+import { LessonCycleDTO, Period } from '../../api/dto-interfaces';
+import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
-} from '../components/dynamic-dimension-timetable';
-import { fetchAllLessonCycles, fetchAllPeriodsInCycle } from './api/route';
-import { PeriodCardTransformer } from './period-card';
-import { LessonCycle } from '../api/state-types';
+} from '../../components/dynamic-dimension-timetable';
+import { fetchAllLessonCycles, fetchAllPeriodsInCycle } from '../api/route';
+import { PeriodCardTransformer } from '../period-card';
+import { LessonCycle } from '../../api/state-types';
 
-import TimetablesContextProvider from './timetables-context-provider';
-import { FilteredLessonCycles } from './filtered-lesson-cycles';
+import TimetablesContextProvider from '../timetables-context-provider';
+import { FilteredLessonCycles } from '../filtered-lesson-cycles';
 
-import { buildTimetablesState } from './build-timetables-state';
+import { buildTimetablesState } from '../build-timetables-state';
+
+export const dynamic = 'force-dynamic';
 
 export default async function TimetablesPage({
+  params: { schedule },
   searchParams
 }: {
+  params: { schedule: string };
   searchParams: { q: string };
 }) {
   const allPeriodsInCycle = await fetchAllPeriodsInCycle();
@@ -28,7 +32,9 @@ export default async function TimetablesPage({
       label.substring(label.length - 3, label.length)
   );
 
-  const allLessonCycles = await fetchAllLessonCycles();
+  const scheduleId = parseInt(schedule[0]);
+
+  const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
     allPeriodsInCycle,

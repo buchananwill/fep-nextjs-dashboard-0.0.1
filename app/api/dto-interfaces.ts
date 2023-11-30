@@ -103,3 +103,23 @@ export interface Period {
   cycleLengthInDays: number;
   cycleId: string;
 }
+
+export interface QueueTreeNodeDTO extends HasUuid {
+  nodeNumber: number;
+  netFailureCount?: number;
+  taskSize?: number;
+  batchSize?: number;
+  totalAllocationArea?: number;
+  degreeOfNesting?: number;
+  yearGroup?: number;
+  subjectBandwidths?: {
+    [subjectName: string]: number;
+  };
+}
+
+export interface BuildMetricDTO extends HasUuid {
+  scheduleId?: number;
+  queueTreeNodes?: QueueTreeNodeDTO[];
+  finalState?: string;
+  totalAllocationLoops?: number;
+}

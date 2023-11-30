@@ -14,6 +14,8 @@ import { swapTwoPeriods } from './api/route';
 import { usePathname, useRouter } from 'next/navigation';
 import * as repl from 'repl';
 
+export const dynamic = 'force-dynamic';
+
 function countConcurrency(
   highlightedSubjects: Set<string>,
   periodId: number | null,
@@ -111,11 +113,10 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
 
   async function handleSwapClick() {
     setPinned(true);
+    console.log('periodId: ', periodId);
     swapTwoPeriods(periodId, periodId)
-      .then(() => refresh())
-      .finally(() => {
-        setPinned(false);
-      });
+      .then(() => setPinned(false))
+      .finally(() => console.log('You may now refresh.'));
   }
 
   const rotationClass = rotation[description] || '';
