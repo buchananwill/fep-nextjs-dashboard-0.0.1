@@ -18,8 +18,6 @@ export function BuildMetricsChart({
 }: {
   buildMetricData: BuildMetricDTO;
 }) {
-  console.log('Build metric data: ', buildMetricData);
-
   const qtnArray = buildMetricData.queueTreeNodes;
 
   return qtnArray ? (

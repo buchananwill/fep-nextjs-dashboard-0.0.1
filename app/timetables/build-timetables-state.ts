@@ -5,7 +5,8 @@ import { LessonCycleDTO, Period, TabularDTO } from '../api/dto-interfaces';
 
 export function buildTimetablesState(
   allPeriodsInCycle: TabularDTO<string, Period>,
-  allLessonCycles: LessonCycleDTO[]
+  allLessonCycles: LessonCycleDTO[],
+  scheduleId: number
 ): { initialState: TimetablesState; lessonCycleArray: LessonCycle[] } {
   const lessonCycleMap = new Map<number, LessonCycle>();
 
@@ -44,7 +45,8 @@ export function buildTimetablesState(
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: periodToLessonCycleMap,
-    lessonCycleId: -1
+    lessonCycleId: -1,
+    scheduleId: scheduleId
   };
 
   return { initialState, lessonCycleArray };

@@ -65,7 +65,6 @@ export const fetchAllPeriodsInCycle = async (): Promise<
   }
 };
 
-const hotSchedule = 1152;
 export const fetchAllLessonCycles = async (
   scheduleId: number
 ): Promise<LessonCycleDTO[]> => {
@@ -94,16 +93,16 @@ export const fetchAllLessonCycles = async (
   }
 };
 
-export const swapTwoPeriods = async (periodId1: number, periodId2: number) => {
+export const swapTwoPeriods = async (
+  periodId1: number,
+  periodId2: number,
+  scheduleId: number
+) => {
   const tag = 'electiveAssignments';
 
-  const swapObject = [periodId1, periodId2, hotSchedule];
+  const swapObject = [periodId1, periodId2, scheduleId];
 
   const fetchURL = `http://localhost:8080/api/academic/swap-periods-in-schedule`;
-
-  console.log('fetchURL ', fetchURL);
-
-  console.log(swapObject);
 
   try {
     const response = await fetch(fetchURL, {
@@ -127,8 +126,6 @@ export const swapTwoPeriods = async (periodId1: number, periodId2: number) => {
     }
 
     const data = await response.json();
-
-    console.log('response.data: ', data);
 
     return data;
   } catch (error) {

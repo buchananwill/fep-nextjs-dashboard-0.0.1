@@ -32,13 +32,17 @@ export default async function TimetablesPage({
       label.substring(label.length - 3, label.length)
   );
 
-  const scheduleId = parseInt(schedule[0]);
+  const scheduleId = parseInt(schedule);
+
+  console.log('Schedule string: ', schedule);
+  console.log('Schedule Id:', scheduleId);
 
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
     allPeriodsInCycle,
-    allLessonCycles
+    allLessonCycles,
+    scheduleId
   );
 
   return (

@@ -12,11 +12,7 @@ export const CustomToolTip: ComponentType<CustomTooltipType> = ({
 
   if (!active || !payload || !queueTreeNodes) return null;
 
-  console.log('payload: ', payload);
-
   const qTreeNode = queueTreeNodes[payload[0].payload.nodeNumber];
-
-  console.log('qTreeNode: ', qTreeNode);
 
   return (
     <div className="w-56 rounded-tremor-default text-tremor-default bg-tremor-background p-2 shadow-tremor-dropdown border border-tremor-border">

@@ -19,6 +19,7 @@ export function createInitialTimetablesContext(): TimetablesState {
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: new Map<number, Set<LessonCycle>>(),
-    lessonCycleId: 0
+    lessonCycleId: 0,
+    scheduleId: NaN
   };
 }

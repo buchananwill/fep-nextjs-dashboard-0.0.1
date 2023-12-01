@@ -57,7 +57,8 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
     focusPeriodId,
     lessonCycleId,
     periodIdToLessonCycleMap,
-    highlightedSubjects
+    highlightedSubjects,
+    scheduleId
   } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
   const [isPending, startTransition] = useTransition();
@@ -114,7 +115,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   async function handleSwapClick() {
     setPinned(true);
     console.log('periodId: ', periodId);
-    swapTwoPeriods(periodId, periodId)
+    swapTwoPeriods(periodId, periodId, scheduleId)
       .then(() => setPinned(false))
       .finally(() => console.log('You may now refresh.'));
   }

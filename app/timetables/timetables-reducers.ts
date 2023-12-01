@@ -71,6 +71,7 @@ export type TimetablesState = {
   cycleDayFocusId: number;
   focusPeriodId: number;
   lessonCycleId: number;
+  scheduleId: number;
 };
 
 export default function timetablesReducer(
