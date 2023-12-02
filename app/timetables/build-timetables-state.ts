@@ -8,7 +8,7 @@ export function buildTimetablesState(
   allLessonCycles: LessonCycleDTO[],
   scheduleId: number
 ): { initialState: TimetablesState; lessonCycleArray: LessonCycle[] } {
-  const lessonCycleMap = new Map<number, LessonCycle>();
+  const lessonCycleMap = new Map<string, LessonCycle>();
 
   const lessonCycleArray: LessonCycle[] = [];
 
@@ -18,17 +18,18 @@ export function buildTimetablesState(
     lessonCycleArray.push(stateObject);
   });
 
-  const periodToLessonCycleMap = new Map<number, Set<LessonCycle>>();
+  const periodToLessonCycleMap = new Map<number, Set<string>>();
 
+  // Work through the periods and add cycles with matching lessons.
   allPeriodsInCycle.cellDataAndMetaData.forEach(
     ({ cellData: { periodId } }) => {
       if (periodId) {
-        const stringOfId = periodId.toString();
-        const setOfLessonCycles = new Set<LessonCycle>();
-        allLessonCycles.forEach((dto) => {
-          if (stringOfId in dto.periodVenueAssignments) {
-            const retrievedCycle = lessonCycleMap.get(dto.id);
-            if (retrievedCycle) setOfLessonCycles.add(retrievedCycle);
+        // const stringOfId = periodId.toString();
+        const setOfLessonCycles = new Set<string>();
+        lessonCycleArray.forEach((lessonCycle) => {
+          if (lessonCycle.periodVenueAssignments.has(periodId)) {
+            const retrievedCycle = lessonCycleMap.get(lessonCycle.id);
+            if (retrievedCycle) setOfLessonCycles.add(retrievedCycle.id);
           }
         });
         periodToLessonCycleMap.set(periodId, setOfLessonCycles);
@@ -38,20 +39,21 @@ export function buildTimetablesState(
 
   const initialState = {
     highlightedSubjects: new Set<string>(),
-    pinnedLessonCycles: new Set<number>(),
+    pinnedLessonCycles: new Set<string>(),
     filterPending: false,
     filterType: FilterType.any,
     lessonCycleMap: lessonCycleMap,
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: periodToLessonCycleMap,
-    lessonCycleId: -1,
-    scheduleId: scheduleId
+    lessonCycleId: '',
+    scheduleId: scheduleId,
+    updatePending: false
   };
 
   return { initialState, lessonCycleArray };
 }
-function convertDtoToState({
+export function convertDtoToState({
   id,
   enrolledStudentIds,
   assignedTeacherIds,

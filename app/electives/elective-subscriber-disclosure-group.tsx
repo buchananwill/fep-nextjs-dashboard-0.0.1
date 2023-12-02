@@ -32,12 +32,9 @@ function filterStudentList(
     studentMap,
     filterType,
     pinnedStudents,
-    carouselOptionId,
-    electiveDtoMap
+    carouselOptionId
   } = electiveState;
   const filteredList: StudentDTO[] = [];
-
-  console.log('student map: ', studentMap);
 
   if ((courseFilters && courseFilters.length > 0) || carouselOptionId) {
     studentMap.forEach((nextStudent, nextStudentId, map) => {
@@ -51,7 +48,7 @@ function filterStudentList(
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
-                let { uuid: nextUuid, isActive } = electivePreference;
+                let { courseId: nextUuid, isActive } = electivePreference;
                 return isActive && courseFilter.URI == nextUuid;
               });
             if (!couldMatch) break;
@@ -72,7 +69,7 @@ function filterStudentList(
           }
         } else if (filterType == FilterType.any) {
           let anyMatch = nextStudentPrefs.some((electivePreference) => {
-            let { uuid: nextUuid, isActive } = electivePreference;
+            let { courseId: nextUuid, isActive } = electivePreference;
             return courseFilters.some(
               (filterOption) => isActive && filterOption.URI == nextUuid
             );
@@ -205,7 +202,7 @@ export default function ElectiveSubscriberDisclosureGroup({
     activePreferencesThisStudent.forEach((preference) =>
       dispatch({
         type: 'setHighlightedCourses',
-        id: preference.uuid
+        id: preference.courseId
       })
     );
   }
@@ -270,7 +267,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                   preferencePosition,
                                   name,
                                   assignedCarouselOptionId,
-                                  uuid
+                                  courseId
                                 }) => {
                                   return (
                                     <div
@@ -291,7 +288,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                         <select
                                           className="select select-xs select-bordered w-16 grow-1"
                                           value={matchCarouselOrdinal(
-                                            uuid,
+                                            courseId,
                                             assignedCarouselOptionId,
                                             electiveDtoMap
                                           )}
@@ -306,7 +303,7 @@ export default function ElectiveSubscriberDisclosureGroup({
                                         >
                                           {mapOptions(
                                             electiveAvailability,
-                                            uuid,
+                                            courseId,
                                             student.id,
                                             preferencePosition
                                           )}

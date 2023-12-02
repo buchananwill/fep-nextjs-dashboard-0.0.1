@@ -15,11 +15,12 @@ export function createInitialTimetablesContext(): TimetablesState {
     pinnedLessonCycles: new Set<number>(),
     filterPending: false,
     filterType: FilterType.any,
-    lessonCycleMap: new Map<number, LessonCycle>(),
+    lessonCycleMap: new Map<string, LessonCycle>(),
     cycleDayFocusId: -1,
     focusPeriodId: -1,
     periodIdToLessonCycleMap: new Map<number, Set<LessonCycle>>(),
-    lessonCycleId: 0,
-    scheduleId: NaN
+    lessonCycleId: '',
+    scheduleId: NaN,
+    updatePending: false
   };
 }

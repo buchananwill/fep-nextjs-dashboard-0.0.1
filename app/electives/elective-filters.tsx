@@ -24,16 +24,16 @@ function createDistinctFilterOptions(
 
   return electiveDTOList
     .filter((electiveDTO) => {
-      const { uuid } = electiveDTO;
+      const { id } = electiveDTO;
 
-      if (!seenUuids.has(uuid)) {
-        seenUuids.add(uuid);
+      if (!seenUuids.has(id)) {
+        seenUuids.add(id);
         return true;
       }
       return false;
     })
-    .map(({ name, uuid }) => ({
-      URI: uuid,
+    .map(({ name, id }) => ({
+      URI: id,
       label: name,
       operator: FilterType.all
     }))

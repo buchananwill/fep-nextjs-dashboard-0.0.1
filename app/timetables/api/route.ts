@@ -97,7 +97,7 @@ export const swapTwoPeriods = async (
   periodId1: number,
   periodId2: number,
   scheduleId: number
-) => {
+): Promise<LessonCycleDTO[]> => {
   const tag = 'electiveAssignments';
 
   const swapObject = [periodId1, periodId2, scheduleId];
@@ -122,15 +122,13 @@ export const swapTwoPeriods = async (
 
     if (!response.ok) {
       console.error(`Error fetching data: HTTP ${response.status}`);
-      return null;
+      return [];
     }
 
-    const data = await response.json();
-
-    return data;
+    return response.json();
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return null;
+    return [];
   }
 };
 
@@ -158,6 +156,6 @@ export const fetchBuildMetricDto = async (
     return response.json();
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return { uuid: 'failed' };
+    return { id: 'failed' };
   }
 };

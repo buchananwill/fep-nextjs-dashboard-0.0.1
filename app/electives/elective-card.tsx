@@ -59,7 +59,7 @@ function getFiltered(courseFilters: FilterOption[], uuid: string) {
 }
 
 const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
-  const { name, carouselOrdinal, electiveOrdinal, uuid, id } = data;
+  const { name, carouselOrdinal, electiveOrdinal, id, courseId } = data;
 
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
@@ -98,11 +98,11 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   useEffect(() => {
     const borderNowVisible = getBorderVisible(electivesState, id);
     setBorderVisible(borderNowVisible);
-  }, [electivesState, carouselOrdinal, uuid]);
+  }, [electivesState, carouselOrdinal, id]);
 
   const opacity = getOpacity(isEnabled);
 
-  const highlightText = getHighlighted(highlightedCourses, uuid);
+  const highlightText = getHighlighted(highlightedCourses, courseId);
 
   const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
 
@@ -122,7 +122,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
         </div>
       )}
       <div className="indicator grow ">
-        {getFiltered(courseFilters, uuid) && (
+        {getFiltered(courseFilters, courseId) && (
           <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
         )}
         <div
@@ -139,7 +139,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
         pinIcon={PinIcons.mortarBoard}
         className={`${highlightText} mr-1`}
         isPinned={highlightText != ''}
-        setPinned={() => handleMortarBoardClick(uuid)}
+        setPinned={() => handleMortarBoardClick(courseId)}
       ></FillableButton>
       <Badge color={classesColor}>{numberOfClasses} </Badge>
       <Badge color={subscribersColor}>{subscribers}</Badge>

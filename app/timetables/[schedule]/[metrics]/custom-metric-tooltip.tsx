@@ -38,12 +38,17 @@ export const CustomToolTip: ComponentType<CustomTooltipType> = ({
               <p>
                 Total Allocation Area: {category.payload.totalAllocationArea}
               </p>
-              <div className="">
-                {qTreeNode.subjectBandwidths?.map(({ name, value }, index) => (
-                  <p key={index}>
-                    {name}: {value}
-                  </p>
-                ))}
+              <div className="mt-2">
+                <p className="text-tremor-content-emphasis font-bold">
+                  Periods per subject:
+                </p>
+                {qTreeNode.subjectContactTimeUnits?.map(
+                  ({ name, value }, index) => (
+                    <p key={index}>
+                      {name}: {value}
+                    </p>
+                  )
+                )}
               </div>
             </div>
           </div>

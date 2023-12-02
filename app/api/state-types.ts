@@ -1,7 +1,7 @@
-import { HasNumberId, Nameable } from './dto-interfaces';
+import { HasNumberId, HasUuid, Nameable } from './dto-interfaces';
 import { FilterType } from '../electives/elective-filter-reducers';
 
-export interface LessonCycle extends Nameable, HasNumberId {
+export interface LessonCycle extends Nameable, HasUuid {
   periodVenueAssignments: Map<number, string>;
   enrolledStudentIds: Set<number>;
   assignedTeacherIds: Set<number>;

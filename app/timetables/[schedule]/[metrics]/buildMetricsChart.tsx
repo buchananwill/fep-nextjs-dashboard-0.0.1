@@ -6,10 +6,10 @@ import { CustomToolTip } from './custom-metric-tooltip';
 const chartData: QueueTreeNodeDTO[] = [
   {
     nodeNumber: 1,
-    uuid: 'pretendUuid',
+    id: 'pretendUuid',
     netFailureCount: 30,
     totalAllocationArea: 14,
-    subjectBandwidths: [{ name: 'maths', value: 5 }]
+    subjectContactTimeUnits: [{ name: 'maths', value: 5 }]
   }
 ];
 

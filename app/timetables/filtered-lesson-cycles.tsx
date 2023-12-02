@@ -10,11 +10,11 @@ import { TimetablesContext } from './timetables-context';
 
 function filterLessonCycles(
   data: LessonCycle[],
-  pinnedLessonCycles: Set<number>,
+  pinnedLessonCycles: Set<string>,
   focusPeriodId: number,
-  periodIdToLessonCycleMap: Map<number, Set<LessonCycle>>,
+  periodIdToLessonCycleMap: Map<number, Set<string>>,
   cycleDayFocusId: number,
-  lessonCycleMap: Map<number, LessonCycle>
+  lessonCycleMap: Map<string, LessonCycle>
 ) {
   const setFromMap = periodIdToLessonCycleMap.get(focusPeriodId);
 
@@ -29,11 +29,11 @@ function filterLessonCycles(
 
   const filteredLessonCycles: LessonCycle[] = [];
 
-  const cyclesToAdd = new Set<number>();
+  const cyclesToAdd = new Set<string>();
 
   pinnedLessonCycles.forEach((cycleId) => cyclesToAdd.add(cycleId));
 
-  setFromMap && setFromMap.forEach((cycle) => cyclesToAdd.add(cycle.id));
+  setFromMap && setFromMap.forEach((cycleId) => cyclesToAdd.add(cycleId));
 
   return data.filter((lessonCycle) => cyclesToAdd.has(lessonCycle.id));
 }

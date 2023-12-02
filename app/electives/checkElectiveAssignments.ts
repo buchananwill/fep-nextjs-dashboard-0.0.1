@@ -7,7 +7,7 @@ export function compileElectiveAvailability(
   const responseElectiveAvailability: ElectiveAvailability = {};
 
   electives.forEach((electiveDTO) => {
-    const nextCourse = electiveDTO.uuid;
+    const nextCourse = electiveDTO.id;
     if (responseElectiveAvailability[nextCourse]) {
       responseElectiveAvailability[nextCourse] = [
         ...responseElectiveAvailability[nextCourse],
@@ -30,11 +30,11 @@ export function checkAssignment(
   preferencePosition: number
 ): boolean {
   if (!electivePreferences[preferencePosition].isActive) return true;
-  const { assignedCarouselOptionId: referenceAssignment, uuid } =
+  const { assignedCarouselOptionId: referenceAssignment, courseId } =
     electivePreferences[preferencePosition];
 
   const carouselOrdinal = matchCarouselOrdinal(
-    uuid,
+    courseId,
     referenceAssignment,
     electiveDtoMapList
   );
@@ -44,7 +44,7 @@ export function checkAssignment(
       otherPreference.isActive &&
       otherPreference.preferencePosition !== preferencePosition &&
       matchCarouselOrdinal(
-        otherPreference.uuid,
+        otherPreference.courseId,
         otherPreference.assignedCarouselOptionId,
         electiveDtoMapList
       ) === carouselOrdinal

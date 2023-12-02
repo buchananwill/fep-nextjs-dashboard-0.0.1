@@ -10,9 +10,10 @@ export interface NamedNumberRecord extends Nameable {
   stringIntegerMap: Record<string, number>;
 }
 
-export interface ElectiveDTO extends Nameable, HasUuid, HasNumberId {
+export interface ElectiveDTO extends Nameable, HasNumberId {
   electiveOrdinal: number;
   carouselOrdinal: number;
+  courseId: string;
   subscriberUserRoleIds: number[];
 }
 
@@ -20,7 +21,7 @@ export interface HasNumberId {
   id: number;
 }
 
-export interface LessonCycleDTO extends Nameable, HasNumberId {
+export interface LessonCycleDTO extends Nameable, HasUuid {
   periodVenueAssignments: Record<number, string>;
   enrolledStudentIds: number[];
   assignedTeacherIds: number[];
@@ -33,7 +34,7 @@ export interface Nameable {
 }
 
 export interface HasUuid {
-  uuid: string;
+  id: string;
 }
 
 export interface SubjectContactTimeDTO {
@@ -54,7 +55,7 @@ export interface ClassRoomDTO extends Nameable {
 
 export interface ElectivePreferenceDTO extends Nameable {
   userRoleId: number;
-  uuid: string;
+  courseId: string;
   preferencePosition: number;
   assignedCarouselOptionId: number;
   isActive: boolean;
@@ -112,7 +113,7 @@ export interface QueueTreeNodeDTO extends HasUuid {
   totalAllocationArea?: number;
   degreeOfNesting?: number;
   yearGroup?: number;
-  subjectBandwidths?: { name: string; value: number }[];
+  subjectContactTimeUnits?: { name: string; value: number }[];
 }
 
 export interface BuildMetricDTO extends HasUuid {

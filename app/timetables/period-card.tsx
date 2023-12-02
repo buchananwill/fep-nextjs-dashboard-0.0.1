@@ -13,20 +13,22 @@ import { FillableButton, PinIcons } from '../components/fillable-button';
 import { swapTwoPeriods } from './api/route';
 import { usePathname, useRouter } from 'next/navigation';
 import * as repl from 'repl';
-
-export const dynamic = 'force-dynamic';
+import { convertDtoToState } from './build-timetables-state';
 
 function countConcurrency(
   highlightedSubjects: Set<string>,
   periodId: number | null,
-  map: Map<number, Set<LessonCycle>>
+  map: Map<number, Set<string>>,
+  lessonCycleMap: Map<string, LessonCycle>
 ) {
   let concurrency = 0;
   if (!periodId) return concurrency;
   const setOrUndefined = map.get(periodId);
   if (!setOrUndefined) return concurrency;
-  setOrUndefined.forEach((lessonCycle) => {
-    if (highlightedSubjects.has(lessonCycle.subject)) concurrency++;
+  setOrUndefined.forEach((lessonCycleId) => {
+    const lessonCycle = lessonCycleMap.get(lessonCycleId);
+    if (lessonCycle && highlightedSubjects.has(lessonCycle.subject))
+      concurrency++;
   });
   return concurrency;
 }
@@ -58,7 +60,8 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
     lessonCycleId,
     periodIdToLessonCycleMap,
     highlightedSubjects,
-    scheduleId
+    scheduleId,
+    lessonCycleMap
   } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
   const [isPending, startTransition] = useTransition();
@@ -76,13 +79,13 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
       });
     });
   };
-  const [cycleIds, setCycleIds] = useState<Set<number>>(new Set());
+  const [cycleIds, setCycleIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (periodId) {
       const oldSet = periodIdToLessonCycleMap.get(periodId);
-      const updatedIds = new Set<number>();
-      oldSet?.forEach((lessonCycle) => updatedIds.add(lessonCycle.id));
+      const updatedIds = new Set<string>();
+      oldSet?.forEach((lessonCycleId) => updatedIds.add(lessonCycleId));
       setCycleIds(updatedIds);
     }
   }, [periodIdToLessonCycleMap, setCycleIds, periodId]);
@@ -98,7 +101,8 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   const concurrency = countConcurrency(
     highlightedSubjects,
     periodId,
-    periodIdToLessonCycleMap
+    periodIdToLessonCycleMap,
+    lessonCycleMap
   );
 
   const badgeColor = getBadgeColor(concurrency);
@@ -113,11 +117,25 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   };
 
   async function handleSwapClick() {
-    setPinned(true);
-    console.log('periodId: ', periodId);
-    swapTwoPeriods(periodId, periodId, scheduleId)
-      .then(() => setPinned(false))
-      .finally(() => console.log('You may now refresh.'));
+    dispatch({
+      type: 'setUpdatePending',
+      value: true
+    });
+
+    const updatedDtoList = await swapTwoPeriods(periodId, periodId, scheduleId);
+
+    const lessonCycles = updatedDtoList.map((dto) => convertDtoToState(dto));
+
+    dispatch({
+      type: 'updateLessonCycles',
+      lessonCycles: lessonCycles
+    });
+
+    console.log(updatedDtoList);
+    dispatch({
+      type: 'setUpdatePending',
+      value: false
+    });
   }
 
   const rotationClass = rotation[description] || '';

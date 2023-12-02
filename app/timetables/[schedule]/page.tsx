@@ -13,6 +13,8 @@ import TimetablesContextProvider from '../timetables-context-provider';
 import { FilteredLessonCycles } from '../filtered-lesson-cycles';
 
 import { buildTimetablesState } from '../build-timetables-state';
+import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
+import { bold } from 'next/dist/lib/picocolors';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +51,9 @@ export default async function TimetablesPage({
     <TimetablesContextProvider initialState={initialState}>
       <div className="flex w-full items-top justify-between pt-4  select-none">
         <BigTableCard>
+          <PendingScheduleEditionModal
+            isShowing={true}
+          ></PendingScheduleEditionModal>
           <DynamicDimensionTimetable<string, Period>
             tableContents={allPeriodsInCycle}
             cellDataTransformer={PeriodCardTransformer}

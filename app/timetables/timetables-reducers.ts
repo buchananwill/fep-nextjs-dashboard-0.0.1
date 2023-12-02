@@ -20,9 +20,9 @@ interface SetFocusPeriod {
   periodId: number;
 }
 
-interface FocusLessonCycle {
+interface SetFocusLessonCycle {
   type: 'setFocusLessonCycle';
-  lessonCycleId: number;
+  lessonCycleId: string;
 }
 
 interface SetFilterType {
@@ -37,7 +37,7 @@ interface SetFilterPending {
 
 interface SetPinnedLessonCycle {
   type: 'setPinnedLessonCycle';
-  lessonCycleId: number;
+  lessonCycleId: string;
 }
 
 interface SetHighlightedSubjects {
@@ -45,33 +45,40 @@ interface SetHighlightedSubjects {
   subject: string;
 }
 
-interface SetLessonCycles {
-  type: 'setLessonCycles';
+interface UpdateLessonCycles {
+  type: 'updateLessonCycles';
   lessonCycles: LessonCycle[];
+}
+
+interface SetUpdatePending {
+  type: 'setUpdatePending';
+  value: boolean;
 }
 
 export type TimetablesStateActions =
   | SetPeriod
   | SetActive
   | SetFocusPeriod
-  | FocusLessonCycle
+  | SetFocusLessonCycle
   | SetFilterType
   | SetFilterPending
   | SetPinnedLessonCycle
   | SetHighlightedSubjects
-  | SetLessonCycles;
+  | UpdateLessonCycles
+  | SetUpdatePending;
 
 export type TimetablesState = {
   highlightedSubjects: Set<string>;
-  pinnedLessonCycles: Set<number>;
+  pinnedLessonCycles: Set<string>;
   filterPending: boolean;
   filterType: FilterType;
-  lessonCycleMap: Map<number, LessonCycle>;
-  periodIdToLessonCycleMap: Map<number, Set<LessonCycle>>;
+  lessonCycleMap: Map<string, LessonCycle>;
+  periodIdToLessonCycleMap: Map<number, Set<string>>;
   cycleDayFocusId: number;
   focusPeriodId: number;
-  lessonCycleId: number;
+  lessonCycleId: string;
   scheduleId: number;
+  updatePending: boolean;
 };
 
 export default function timetablesReducer(
@@ -112,7 +119,7 @@ export default function timetablesReducer(
       const isFocus = lessonCycleId == timetablesState.lessonCycleId;
 
       return produce(timetablesState, (draftState) => {
-        draftState.lessonCycleId = isFocus ? -1 : lessonCycleId;
+        draftState.lessonCycleId = isFocus ? '' : lessonCycleId;
       });
     }
 
@@ -159,6 +166,82 @@ export default function timetablesReducer(
           updatedState.highlightedSubjects.delete(subject);
         } else {
           updatedState.highlightedSubjects.add(subject);
+        }
+      });
+    }
+    case 'setUpdatePending': {
+      const { value } = action;
+      return produce(timetablesState, (updatedState) => {
+        updatedState.updatePending = value;
+      });
+    }
+
+    case 'updateLessonCycles': {
+      const { lessonCycles } = action;
+
+      const { lessonCycleMap, periodIdToLessonCycleMap } = timetablesState;
+
+      const removeLessonsFromPeriodsMap = new Map<number, Set<string>>();
+      const addLessonsToPeriodsMap = new Map<number, Set<string>>();
+
+      for (let key of periodIdToLessonCycleMap.keys()) {
+        removeLessonsFromPeriodsMap.set(key, new Set());
+        addLessonsToPeriodsMap.set(key, new Set());
+      }
+      for (let lessonCycleFromUpdate of lessonCycles) {
+        const lessonCycleFromState = lessonCycleMap.get(
+          lessonCycleFromUpdate.id
+        );
+        if (lessonCycleFromState) {
+          // Find the periods that no longer have this lesson cycle.
+          for (let key of lessonCycleFromState.periodVenueAssignments.keys()) {
+            if (!lessonCycleFromUpdate.periodVenueAssignments.has(key))
+              removeLessonsFromPeriodsMap
+                .get(key)
+                ?.add(lessonCycleFromState.id);
+          }
+          // Find the periods that have gained a lesson cycle.
+          for (let key of lessonCycleFromUpdate.periodVenueAssignments.keys()) {
+            if (!lessonCycleFromState.periodVenueAssignments.has(key))
+              addLessonsToPeriodsMap.get(key)?.add(lessonCycleFromUpdate.id);
+          }
+        }
+      }
+
+      return produce(timetablesState, (updatedState) => {
+        const { lessonCycleMap, periodIdToLessonCycleMap } = updatedState;
+        // Update the Lesson Cycles
+        for (let incomingLessonCycle of lessonCycles) {
+          const outgoingLessonCycle = lessonCycleMap.get(
+            incomingLessonCycle.id
+          );
+          if (outgoingLessonCycle)
+            outgoingLessonCycle.periodVenueAssignments =
+              incomingLessonCycle.periodVenueAssignments;
+        }
+        // Remove the old period assignments
+        for (let periodId of removeLessonsFromPeriodsMap.keys()) {
+          const outgoingPeriodLessonCycleSet =
+            periodIdToLessonCycleMap.get(periodId);
+          if (outgoingPeriodLessonCycleSet) {
+            const removeTheseIds = removeLessonsFromPeriodsMap.get(periodId);
+            removeTheseIds &&
+              removeTheseIds.forEach((value) =>
+                outgoingPeriodLessonCycleSet.delete(value)
+              );
+          }
+        }
+        // Add the new period assignments
+        for (let periodId of addLessonsToPeriodsMap.keys()) {
+          const outgoingPeriodLessonCycleSet =
+            periodIdToLessonCycleMap.get(periodId);
+          if (outgoingPeriodLessonCycleSet) {
+            const addTheseIds = addLessonsToPeriodsMap.get(periodId);
+            addTheseIds &&
+              addTheseIds.forEach((value) =>
+                outgoingPeriodLessonCycleSet.add(value)
+              );
+          }
         }
       });
     }
