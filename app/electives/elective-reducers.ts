@@ -102,8 +102,8 @@ export default function electivePreferencesReducer(
         const updateablePreferencesList =
           draftElectiveState.electivePreferences.get(studentId);
         if (updateablePreferencesList) {
-          updateablePreferencesList[preferencePosition].isActive =
-            !updateablePreferencesList[preferencePosition].isActive;
+          updateablePreferencesList[preferencePosition].active =
+            !updateablePreferencesList[preferencePosition].active;
         }
       });
     }

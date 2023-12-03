@@ -1,10 +1,5 @@
 import axios from 'axios';
 
-// interface SearchParams {
-//     id: number
-//     // token: string
-// }
-
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 const fetchClassRooms = async () => {
