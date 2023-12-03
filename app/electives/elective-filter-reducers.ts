@@ -14,15 +14,15 @@ export enum FilterType {
 
 export interface SetCourseFilters {
   type: 'setCourseFilters';
-  entryList: FilterOption[];
+  entryList: FilterOption<string>[];
 }
 export interface SetCourseCarouselFilters {
   type: 'setCourseCarouselFilters';
-  entryList: FilterOption[];
+  entryList: FilterOption<string>[];
 }
 export interface SetStudentFilters {
   type: 'setStudentFilters';
-  entryList: FilterOption[];
+  entryList: FilterOption<number>[];
 }
 
 export type ElectiveFilterStateActions =
@@ -31,9 +31,9 @@ export type ElectiveFilterStateActions =
   | SetCourseFilters;
 
 export type ElectiveFilterState = {
-  courseFilters: FilterOption[];
-  courseCarouselFilters: FilterOption[];
-  studentFilters: FilterOption[];
+  courseFilters: FilterOption<string>[];
+  courseCarouselFilters: FilterOption<string>[];
+  studentFilters: FilterOption<number>[];
 };
 
 export default function electiveFilterReducer(
@@ -61,7 +61,7 @@ interface CourseFilter extends Filter<Record<string, ElectivePreferenceDTO[]>> {
   filterType: FilterType;
 }
 
-function createCourseFilter(filterOption: FilterOption): CourseFilter {
+function createCourseFilter(filterOption: FilterOption<string>): CourseFilter {
   return {
     URI: filterOption.URI,
     label: filterOption.label,

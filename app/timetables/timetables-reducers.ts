@@ -2,6 +2,7 @@ import { produce } from 'immer';
 
 import { FilterType } from '../electives/elective-filter-reducers';
 import { LessonCycle } from '../api/state-types';
+import { hi } from 'date-fns/locale';
 
 interface SetPeriod {
   type: 'setPeriod';
@@ -40,9 +41,14 @@ interface SetPinnedLessonCycle {
   lessonCycleId: string;
 }
 
+interface ToggleHighlightedSubject {
+  type: 'toggleHighlightedSubject';
+  subject: string;
+}
+
 interface SetHighlightedSubjects {
   type: 'setHighlightedSubjects';
-  subject: string;
+  subjects: string[];
 }
 
 interface UpdateLessonCycles {
@@ -63,12 +69,14 @@ export type TimetablesStateActions =
   | SetFilterType
   | SetFilterPending
   | SetPinnedLessonCycle
+  | ToggleHighlightedSubject
   | SetHighlightedSubjects
   | UpdateLessonCycles
   | SetUpdatePending;
 
 export type TimetablesState = {
   highlightedSubjects: Set<string>;
+  highlightedSubjectsList: string[];
   pinnedLessonCycles: Set<string>;
   filterPending: boolean;
   filterType: FilterType;
@@ -155,18 +163,32 @@ export default function timetablesReducer(
         }
       });
     }
-    case 'setHighlightedSubjects': {
+    case 'toggleHighlightedSubject': {
       const { subject } = action;
       const { highlightedSubjects } = timetablesState;
       const currentlyHighlighted =
         highlightedSubjects && highlightedSubjects.has(subject);
 
       return produce(timetablesState, (updatedState) => {
+        const highlightedSubjectsUpdate = updatedState.highlightedSubjects;
         if (currentlyHighlighted) {
-          updatedState.highlightedSubjects.delete(subject);
+          highlightedSubjectsUpdate.delete(subject);
+          updatedState.highlightedSubjectsList = [...highlightedSubjectsUpdate];
         } else {
-          updatedState.highlightedSubjects.add(subject);
+          highlightedSubjectsUpdate.add(subject);
+          updatedState.highlightedSubjectsList.push(subject);
         }
+      });
+    }
+    case 'setHighlightedSubjects': {
+      const { subjects } = action;
+      console.log('Inside the dispatch:', subjects);
+      return produce(timetablesState, (updatedStated) => {
+        updatedStated.highlightedSubjects.clear();
+        subjects?.forEach((subject) =>
+          updatedStated.highlightedSubjects.add(subject)
+        );
+        updatedStated.highlightedSubjectsList = subjects;
       });
     }
     case 'setUpdatePending': {

@@ -15,6 +15,8 @@ import { FilteredLessonCycles } from '../filtered-lesson-cycles';
 import { buildTimetablesState } from '../build-timetables-state';
 import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
 import { bold } from 'next/dist/lib/picocolors';
+import { SubjectFilters } from '../subject-filters';
+import { Text, Title } from '@tremor/react';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,11 +51,14 @@ export default async function TimetablesPage({
 
   return (
     <TimetablesContextProvider initialState={initialState}>
+      <div className="flex w-full items-baseline grow-0 mb-2">
+        <Title>Schedule Version Id: {scheduleId}</Title>
+        <Text className="mx-2">Schedule Layout</Text>
+      </div>
+      <SubjectFilters lessonCycleList={lessonCycleArray}></SubjectFilters>
       <div className="flex w-full items-top justify-between pt-4  select-none">
         <BigTableCard>
-          <PendingScheduleEditionModal
-            isShowing={true}
-          ></PendingScheduleEditionModal>
+          <PendingScheduleEditionModal></PendingScheduleEditionModal>
           <DynamicDimensionTimetable<string, Period>
             tableContents={allPeriodsInCycle}
             cellDataTransformer={PeriodCardTransformer}

@@ -18,13 +18,13 @@ const ButtonSurroundLessonCycle: ButtonSurroundTransformer<LessonCycle> = ({
   const { pinnedLessonCycles, lessonCycleId, highlightedSubjects } =
     useContext(TimetablesContext);
 
-  const handleRadioClick = (id: number) => {
+  const handleRadioClick = (id: string) => {
     dispatch({
       type: 'setFocusLessonCycle',
       lessonCycleId: id
     });
   };
-  const handlePinnedLessonCycle = (id: number) => {
+  const handlePinnedLessonCycle = (id: string) => {
     dispatch({
       type: 'setPinnedLessonCycle',
       lessonCycleId: id
@@ -32,7 +32,7 @@ const ButtonSurroundLessonCycle: ButtonSurroundTransformer<LessonCycle> = ({
   };
   const handleMortarBoardClick = (subject: string) => {
     dispatch({
-      type: 'setHighlightedSubjects',
+      type: 'toggleHighlightedSubject',
       subject: subject
     });
   };

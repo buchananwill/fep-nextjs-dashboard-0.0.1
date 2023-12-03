@@ -13,8 +13,8 @@ export interface ElectiveAvailability {
   [key: string]: number[];
 }
 
-export interface FilterOption {
-  URI: string;
+export interface FilterOption<T extends string | number> {
+  URI: T;
   label: string;
   operator: FilterType;
 }

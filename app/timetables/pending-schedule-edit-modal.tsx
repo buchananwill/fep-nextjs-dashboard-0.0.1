@@ -3,11 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useContext, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
 
-export default function PendingScheduleEditModal({
-  isShowing
-}: {
-  isShowing: boolean;
-}) {
+export default function PendingScheduleEditModal() {
   const { updatePending } = useContext(TimetablesContext);
 
   function cancelUpdate() {

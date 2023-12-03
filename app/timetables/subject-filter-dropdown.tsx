@@ -1,6 +1,6 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
   ElectiveContext,
@@ -13,6 +13,11 @@ import {
 } from '../electives/elective-filter-context';
 import { ElectiveFilterState } from '../electives/elective-filter-reducers';
 import { FilterOption } from '../api/state-types';
+import { TimetablesState } from './timetables-reducers';
+import {
+  TimetablesContext,
+  TimetablesDispatchContext
+} from './timetables-context';
 
 // For example, using TypeScript enum
 export enum CacheSetting {
@@ -28,23 +33,9 @@ export const colorSettings: Record<CacheSetting, string> = {
   [CacheSetting.NoCache]: 'red'
 };
 
-function summariseFilterSelections(
-  selectedFilters:
-    | string
-    | number
-    | FilterOption<any>[]
-    | { uuid: string; carouselId: string }[]
-    | number[]
-    | Record<number, ElectivePreferenceDTO[]>
-) {
+function summariseFilterSelections(selectedFilters: string[]) {
   if (Array.isArray(selectedFilters) && selectedFilters.length > 0) {
-    const joinedSelections = selectedFilters
-      .map((selection) =>
-        typeof selection !== 'number' && 'label' in selection
-          ? selection.label
-          : ''
-      )
-      .join(', ');
+    const joinedSelections = selectedFilters.join(', ');
     return joinedSelections.length < 10
       ? joinedSelections
       : joinedSelections.substring(0, 9) + '...';
@@ -52,41 +43,41 @@ function summariseFilterSelections(
 }
 
 interface Props {
-  filterOptions: FilterOption<string>[];
+  filterOptions: string[];
   filterReducerType: string;
-  filterContextProperty: keyof ElectiveFilterState;
 }
 
-export function FilterDropdown({
+export function SubjectFilterDropdown({
   filterOptions,
-  filterReducerType,
-  filterContextProperty
+  filterReducerType
 }: Props) {
-  const dispatch = useContext(ElectiveDispatchContext);
+  const dispatch = useContext(TimetablesDispatchContext);
+  const { highlightedSubjectsList } = useContext(TimetablesContext);
 
-  const electiveFilterState = useContext(ElectiveFilterContext);
-  const filterDispatch = useContext(ElectiveFilterDispatchContext);
-  const { filterPending } = useContext(ElectiveContext);
+  // useEffect(() => {
+  //
+  // }, [subjectFilters, dispatch, filterReducerType]);
 
-  const accessedFilterProperty = electiveFilterState[filterContextProperty];
+  function handleOnChange(selection: string[]) {
+    console.log('Selection: ', selection);
 
-  function handleOnChange(selectionList: FilterOption<string>[]) {
     dispatch({
       type: 'setFilterPending',
       pending: true
     });
 
-    filterDispatch({
+    dispatch({
       type: filterReducerType,
-      entryList: selectionList
+      subjects: selection
     });
+
+    // setSubjectFilters(selection);
   }
 
   return (
     <div className="w-48">
       <Listbox
-        value={accessedFilterProperty}
-        by="URI"
+        value={highlightedSubjectsList}
         onChange={handleOnChange}
         multiple
         // className={`btn bg-${color}-400 hover:bg-${color}-500 normal-case text-xs w-fit h-min min-h-0 p-2 my-0 mx-2`}
@@ -96,11 +87,9 @@ export function FilterDropdown({
             className={`w-full relative cursor-default rounded-lg py-4 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm`}
           >
             <span className="block">
-              {summariseFilterSelections(accessedFilterProperty)}
+              {summariseFilterSelections(highlightedSubjectsList)}
             </span>
-            {filterPending && (
-              <span className="absolute right-8 top-4 loading loading-spinner loading-sm"></span>
-            )}
+
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
                 className="h-5 w-5 text-gray-400"
@@ -128,7 +117,7 @@ export function FilterDropdown({
                       `
                     }
                   >
-                    <div className={'flex grow-1'}>{entry.label}</div>
+                    <div className={'flex grow-1'}>{entry}</div>
                   </Listbox.Option>
                 );
               })}

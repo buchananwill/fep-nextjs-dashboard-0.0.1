@@ -2,56 +2,47 @@
 import { Card, Text } from '@tremor/react';
 import { FilterDropdown } from '../components/filter-dropdown';
 import { useContext } from 'react';
-import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
+
 import Union from '../components/union';
 import Intersection from '../components/intersection';
-import { FilterType } from './elective-filter-reducers';
-import CommitChanges from './commit-changes';
+
 import { FillableButton, PinIcons } from '../components/fillable-button';
-import { ElectiveDTO } from '../api/dto-interfaces';
-import { FilterOption } from '../api/state-types';
+import { FilterOption, LessonCycle } from '../api/state-types';
+import { FilterType } from '../electives/elective-filter-reducers';
 import {
-  ElectiveFilterContext,
-  ElectiveFilterDispatchContext
-} from './elective-filter-context';
+  TimetablesContext,
+  TimetablesDispatchContext
+} from './timetables-context';
+import { SubjectFilterDropdown } from './subject-filter-dropdown';
 
 interface Props {
-  electiveDTOList: ElectiveDTO[];
+  lessonCycleList: LessonCycle[];
 }
 
-function createDistinctFilterOptions(
-  electiveDTOList: ElectiveDTO[]
-): FilterOption<string>[] {
-  if (!electiveDTOList) return [];
+function createDistinctFilterOptions(lessonCycleList: LessonCycle[]): string[] {
+  if (!lessonCycleList) return [];
 
-  console.log('Elective DTO list:', electiveDTOList);
+  const seenSubjects = new Set<string>();
 
-  const seenUuids = new Set<string>();
+  return lessonCycleList
+    .filter((lessonCycle) => {
+      const { subject } = lessonCycle;
 
-  return electiveDTOList
-    .filter((electiveDTO) => {
-      const { courseId } = electiveDTO;
-
-      if (!seenUuids.has(courseId)) {
-        seenUuids.add(courseId);
+      if (!seenSubjects.has(subject)) {
+        seenSubjects.add(subject);
         return true;
       }
       return false;
     })
-    .map(({ name, courseId }) => ({
-      URI: courseId,
-      label: name,
-      operator: FilterType.all
-    }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .map(({ subject }) => subject)
+    .sort((a, b) => a.localeCompare(b));
 }
 
-export function ElectiveFilters({ electiveDTOList }: Props) {
-  const { filterType, highlightedCourses } = useContext(ElectiveContext);
-  const dispatch = useContext(ElectiveDispatchContext);
-  const filterDispatch = useContext(ElectiveFilterDispatchContext);
+export function SubjectFilters({ lessonCycleList }: Props) {
+  const { filterType, highlightedSubjects } = useContext(TimetablesContext);
+  const dispatch = useContext(TimetablesDispatchContext);
 
-  const distinctCourses = createDistinctFilterOptions(electiveDTOList);
+  const distinctCourses = createDistinctFilterOptions(lessonCycleList);
 
   function handleUnionIntersection(value: string) {
     dispatch({
@@ -61,10 +52,10 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   }
 
   function handleResetMortarBoards() {
-    highlightedCourses.forEach((uuid) =>
+    highlightedSubjects.forEach((subject) =>
       dispatch({
-        type: 'setHighlightedCourses',
-        id: uuid
+        type: 'setHighlightedSubjects',
+        id: subject
       })
     );
   }
@@ -72,11 +63,10 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   return (
     <Card className="max-w-5xl my-0 p-4 flex flex-row justify-between sticky top-4 z-30 select-none">
       <Text className={'absolute top-1 left-2'}>Filters</Text>
-      <FilterDropdown
+      <SubjectFilterDropdown
         filterOptions={distinctCourses}
-        filterReducerType={'setCourseFilters'}
-        filterContextProperty={'courseFilters'}
-      ></FilterDropdown>
+        filterReducerType={'setHighlightedSubjects'}
+      ></SubjectFilterDropdown>
       <label className="swap ml-2 w-32">
         <input
           type={'checkbox'}
@@ -104,7 +94,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
           setPinned={handleResetMortarBoards}
         ></FillableButton>
       </div>
-      <CommitChanges>Commit Changes</CommitChanges>
+      {/*<CommitChanges>Commit Changes</CommitChanges>*/}
     </Card>
   );
 }
