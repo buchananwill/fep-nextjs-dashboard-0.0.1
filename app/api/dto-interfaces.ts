@@ -53,8 +53,9 @@ export interface ClassRoomDTO extends Nameable {
   building: string;
 }
 
-export interface ElectivePreferenceDTO extends Nameable {
+export interface ElectivePreferenceDTO {
   userRoleId: number;
+  courseName: string;
   courseId: string;
   preferencePosition: number;
   assignedCarouselOptionId: number;

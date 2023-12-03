@@ -1,6 +1,5 @@
 import { produce } from 'immer';
 import { FilterType } from './elective-filter-reducers';
-import { ca, gl } from 'date-fns/locale';
 import {
   ElectiveDTO,
   ElectivePreferenceDTO,

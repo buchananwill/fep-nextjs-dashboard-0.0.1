@@ -15,7 +15,11 @@ import { FilterType } from './elective-filter-reducers';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { Disclosure } from '@headlessui/react';
-import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
+import {
+  ElectiveDTO,
+  ElectivePreferenceDTO,
+  StudentDTO
+} from '../api/dto-interfaces';
 import { ElectiveAvailability, FilterOption } from '../api/state-types';
 import { ca } from 'date-fns/locale';
 
@@ -108,6 +112,86 @@ function filterStudentList(
   console.log(pinnedStudentDtos, filteredList);
 
   return [...pinnedStudentDtos, ...filteredList];
+}
+
+function getListMapping(
+  electivePreferences: Map<number, ElectivePreferenceDTO[]>,
+  student: StudentDTO,
+  electiveDtoMap: Map<string, ElectiveDTO>[],
+  handleAssignmentChange: (
+    studentId: number,
+    preferencePosition: number,
+    assignedCarouselOrdinal: number
+  ) => void,
+  setUnsaved: (state: boolean) => void,
+  electiveAvailability: ElectiveAvailability,
+  handleToggleClick: (studentId: number, preferencePosition: number) => void
+) {
+  const nextPreferences = electivePreferences.get(student.id);
+  if (!nextPreferences) return <></>;
+
+  console.log(nextPreferences);
+
+  return nextPreferences?.map(
+    ({
+      preferencePosition,
+      courseName,
+      assignedCarouselOptionId,
+      courseId
+    }) => {
+      return (
+        <div
+          key={`${student.id}-${preferencePosition}`}
+          className="flex grow-0 w-full justify-between"
+        >
+          {/* <span className="px-1 w-6">{preferencePosition}</span> */}
+          <span>{courseName} </span>
+          <span className="grow"></span>
+          <div className="indicator">
+            {getAssignmentIndicator(
+              checkAssignment(
+                electiveDtoMap,
+                nextPreferences,
+                preferencePosition
+              )
+            )}
+            <select
+              className="select select-xs select-bordered w-16 grow-1"
+              value={matchCarouselOrdinal(
+                courseId,
+                assignedCarouselOptionId,
+                electiveDtoMap
+              )}
+              onChange={(e) => {
+                handleAssignmentChange(
+                  student.id,
+                  preferencePosition,
+                  parseInt(e.target.value)
+                );
+                setUnsaved(true);
+              }}
+            >
+              {mapOptions(
+                electiveAvailability,
+                courseId,
+                student.id,
+                preferencePosition
+              )}
+            </select>
+          </div>
+          <input
+            type="checkbox"
+            className="toggle toggle-success ml-2"
+            defaultChecked={nextPreferences[preferencePosition].active}
+            onClick={() => {
+              handleToggleClick(student.id, preferencePosition);
+              setUnsaved(true);
+            }}
+          ></input>
+        </div>
+      );
+    }
+  );
 }
 
 export default function ElectiveSubscriberDisclosureGroup({
@@ -267,77 +351,15 @@ export default function ElectiveSubscriberDisclosureGroup({
                           <Disclosure.Panel className="border-dotted rounded border-2 px-4 pt-4 pb-2 text-sm text-gray-500">
                             <div className="flex flex-col mx-0 my-2 w-full ">
                               <div></div>
-                              {electivePreferences
-                                .get(student.id)
-                                ?.map(
-                                  ({
-                                    preferencePosition,
-                                    name,
-                                    assignedCarouselOptionId,
-                                    courseId
-                                  }) => {
-                                    const nextPreferences =
-                                      electivePreferences.get(student.id);
-                                    if (!nextPreferences) return <></>;
-                                    return (
-                                      <div
-                                        key={`${student.id}-${preferencePosition}`}
-                                        className="flex grow-0 w-full justify-between"
-                                      >
-                                        {/* <span className="px-1 w-6">{preferencePosition}</span> */}
-                                        <span>{name} </span>
-                                        <span className="grow"></span>
-                                        <div className="indicator">
-                                          {getAssignmentIndicator(
-                                            checkAssignment(
-                                              electiveDtoMap,
-                                              nextPreferences,
-                                              preferencePosition
-                                            )
-                                          )}
-                                          <select
-                                            className="select select-xs select-bordered w-16 grow-1"
-                                            value={matchCarouselOrdinal(
-                                              courseId,
-                                              assignedCarouselOptionId,
-                                              electiveDtoMap
-                                            )}
-                                            onChange={(e) => {
-                                              handleAssignmentChange(
-                                                student.id,
-                                                preferencePosition,
-                                                parseInt(e.target.value)
-                                              );
-                                              setUnsaved(true);
-                                            }}
-                                          >
-                                            {mapOptions(
-                                              electiveAvailability,
-                                              courseId,
-                                              student.id,
-                                              preferencePosition
-                                            )}
-                                          </select>
-                                        </div>
-                                        <input
-                                          type="checkbox"
-                                          className="toggle toggle-success ml-2"
-                                          defaultChecked={
-                                            nextPreferences[preferencePosition]
-                                              .active
-                                          }
-                                          onClick={() => {
-                                            handleToggleClick(
-                                              student.id,
-                                              preferencePosition
-                                            );
-                                            setUnsaved(true);
-                                          }}
-                                        ></input>
-                                      </div>
-                                    );
-                                  }
-                                )}
+                              {getListMapping(
+                                electivePreferences,
+                                student,
+                                electiveDtoMap,
+                                handleAssignmentChange,
+                                setUnsaved,
+                                electiveAvailability,
+                                handleToggleClick
+                              )}
                             </div>
                           </Disclosure.Panel>
                         </>

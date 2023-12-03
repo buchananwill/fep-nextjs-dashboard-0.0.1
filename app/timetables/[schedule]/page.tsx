@@ -40,14 +40,16 @@ export default async function TimetablesPage({
       ' ' +
       label.substring(label.length - 3, label.length)
   );
+  const scheduleId = schedule ? parseInt(schedule) : NaN;
+
+  if (isNaN(scheduleId)) {
+    return <Text>No schedules found.</Text>;
+  }
 
   const scheduleIds = await fetchScheduleIds();
-  const filteredIds = scheduleIds
-    .filter((number) => number > 1450)
-    .map((value) => value.toString());
+  const filteredIds = scheduleIds.map((value) => value.toString());
 
   // Temporary default hack to load the most recently generated schedule.
-  const scheduleId = schedule ? parseInt(schedule) : 1752;
 
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 

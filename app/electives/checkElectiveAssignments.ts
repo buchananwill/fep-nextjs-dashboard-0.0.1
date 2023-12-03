@@ -7,7 +7,7 @@ export function compileElectiveAvailability(
   const responseElectiveAvailability: ElectiveAvailability = {};
 
   electives.forEach((electiveDTO) => {
-    const nextCourse = electiveDTO.id;
+    const nextCourse = electiveDTO.courseId;
     if (responseElectiveAvailability[nextCourse]) {
       responseElectiveAvailability[nextCourse] = [
         ...responseElectiveAvailability[nextCourse],
