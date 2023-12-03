@@ -36,16 +36,11 @@ function filterStudentList(
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
-  console.log('Course filters for filtering students: ', courseFilters);
-  console.log('Student DTO map: ', studentMap);
-  console.log('Student preferences map: ', electivePreferences);
-
   if ((courseFilters && courseFilters.length > 0) || carouselOptionId) {
     studentMap.forEach((nextStudent, nextStudentId) => {
       const isPinned = pinnedStudents.has(nextStudentId);
       const nextStudentPrefs = electivePreferences.get(nextStudentId);
       if (!nextStudentPrefs) {
-        console.log('undefined prefs');
         return;
       }
 
@@ -53,14 +48,11 @@ function filterStudentList(
         if (filterType == FilterType.all) {
           let couldMatch = true;
           for (const { URI } of courseFilters) {
-            console.log('Filter uri: ', URI);
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
                 let { courseId, active } = electivePreference;
-                console.log('courseId: ', courseId);
                 if (active && URI == courseId) {
-                  console.log(courseId, URI);
                   return true;
                 }
               });
@@ -76,7 +68,6 @@ function filterStudentList(
               });
           }
           if (couldMatch) {
-            console.log('Could match!');
             const studentDto = studentMap.get(nextStudentId);
             studentDto && filteredList.push(studentDto);
           }

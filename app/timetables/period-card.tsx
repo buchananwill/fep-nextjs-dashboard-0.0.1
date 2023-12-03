@@ -11,8 +11,6 @@ import { Badge } from '@tremor/react';
 import { LessonCycle } from '../api/state-types';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import { swapTwoPeriods } from './api/route';
-import { usePathname, useRouter } from 'next/navigation';
-import * as repl from 'repl';
 import { convertDtoToState } from './build-timetables-state';
 
 function countConcurrency(
@@ -65,17 +63,13 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
     periodIdToLessonCycleMap,
     highlightedSubjects,
     scheduleId,
-    lessonCycleMap
+    lessonCycleMap,
+    updatePending
   } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
   const [isPending, startTransition] = useTransition();
-  const [isPinned, setPinned] = useState(false);
-  const { refresh, replace, push } = useRouter();
-  const pathname = usePathname();
 
   const handleCardClick = (periodId: number | null) => {
-    console.log('Period Id: ', periodId);
-
     startTransition(() => {
       dispatch({
         type: 'setFocusPeriod',
@@ -135,7 +129,6 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
       lessonCycles: lessonCycles
     });
 
-    console.log(updatedDtoList);
     dispatch({
       type: 'setUpdatePending',
       value: false
@@ -158,7 +151,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
       <FillableButton
         pinIcon={PinIcons.arrowUpOnSquare}
         className={`z-20 ${rotationClass}`}
-        isPinned={isPinned}
+        isPinned={updatePending}
         setPinned={handleSwapClick}
       ></FillableButton>
     </InteractiveTableCard>

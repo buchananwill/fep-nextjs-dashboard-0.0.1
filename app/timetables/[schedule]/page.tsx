@@ -49,9 +49,6 @@ export default async function TimetablesPage({
   // Temporary default hack to load the most recently generated schedule.
   const scheduleId = schedule ? parseInt(schedule) : 1752;
 
-  console.log('Schedule string: ', schedule);
-  console.log('Schedule Id:', scheduleId);
-
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
