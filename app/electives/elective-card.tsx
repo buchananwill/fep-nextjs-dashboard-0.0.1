@@ -19,13 +19,12 @@ const calculateSubscribers = (
   electivesState: ElectiveState
 ) => {
   const { id } = electiveDTO;
+  const { electivePreferences } = electivesState;
   let count = 0;
-  for (const [userRoleId, preferenceList] of Object.entries(
-    electivesState.electivePreferences
-  )) {
+  for (let preferenceList of electivePreferences.values()) {
     for (let electivePreference of preferenceList) {
       if (
-        electivePreference.isActive &&
+        electivePreference.active &&
         electivePreference.assignedCarouselOptionId == id
       )
         count++;
@@ -39,11 +38,13 @@ const getBorderVisible = (
   carouselOptionId: number
 ) => {
   const { userRoleId } = electiveState;
-  return electiveState?.electivePreferences[userRoleId]?.some(
-    (electivePreference) =>
-      electivePreference.isActive &&
-      electivePreference.assignedCarouselOptionId == carouselOptionId
-  )
+  return electiveState?.electivePreferences
+    .get(userRoleId)
+    ?.some(
+      (electivePreference) =>
+        electivePreference.active &&
+        electivePreference.assignedCarouselOptionId == carouselOptionId
+    )
     ? ''
     : 'border-transparent';
 };
@@ -54,7 +55,7 @@ function getHighlighted(highlightedCourses: string[], uuid: string) {
   return isHighlighted ? 'text-red-500' : '';
 }
 
-function getFiltered(courseFilters: FilterOption[], uuid: string) {
+function getFiltered(courseFilters: FilterOption<string>[], uuid: string) {
   return courseFilters.some((courseFilter) => courseFilter.URI == uuid);
 }
 

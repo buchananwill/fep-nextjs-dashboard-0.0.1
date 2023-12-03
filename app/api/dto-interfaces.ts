@@ -58,7 +58,7 @@ export interface ElectivePreferenceDTO extends Nameable {
   courseId: string;
   preferencePosition: number;
   assignedCarouselOptionId: number;
-  isActive: boolean;
+  active: boolean;
 }
 
 export interface YearGroupElectives {

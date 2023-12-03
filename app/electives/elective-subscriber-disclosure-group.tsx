@@ -36,20 +36,33 @@ function filterStudentList(
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
+  console.log('Course filters for filtering students: ', courseFilters);
+  console.log('Student DTO map: ', studentMap);
+  console.log('Student preferences map: ', electivePreferences);
+
   if ((courseFilters && courseFilters.length > 0) || carouselOptionId) {
-    studentMap.forEach((nextStudent, nextStudentId, map) => {
+    studentMap.forEach((nextStudent, nextStudentId) => {
       const isPinned = pinnedStudents.has(nextStudentId);
-      const nextStudentPrefs = electivePreferences[nextStudentId];
+      const nextStudentPrefs = electivePreferences.get(nextStudentId);
+      if (!nextStudentPrefs) {
+        console.log('undefined prefs');
+        return;
+      }
 
       if (!isPinned) {
         if (filterType == FilterType.all) {
           let couldMatch = true;
-          for (const courseFilter of courseFilters) {
+          for (const { URI } of courseFilters) {
+            console.log('Filter uri: ', URI);
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
-                let { courseId: nextUuid, isActive } = electivePreference;
-                return isActive && courseFilter.URI == nextUuid;
+                let { courseId, active } = electivePreference;
+                console.log('courseId: ', courseId);
+                if (active && URI == courseId) {
+                  console.log(courseId, URI);
+                  return true;
+                }
               });
             if (!couldMatch) break;
           }
@@ -57,30 +70,29 @@ function filterStudentList(
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
-                const { isActive, assignedCarouselOptionId } =
-                  electivePreference;
-                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                const { active, assignedCarouselOptionId } = electivePreference;
+                if (active && assignedCarouselOptionId == carouselOptionId)
                   return true;
               });
           }
           if (couldMatch) {
+            console.log('Could match!');
             const studentDto = studentMap.get(nextStudentId);
             studentDto && filteredList.push(studentDto);
           }
         } else if (filterType == FilterType.any) {
           let anyMatch = nextStudentPrefs.some((electivePreference) => {
-            let { courseId: nextUuid, isActive } = electivePreference;
+            let { courseId: nextUuid, active } = electivePreference;
             return courseFilters.some(
-              (filterOption) => isActive && filterOption.URI == nextUuid
+              (filterOption) => active && filterOption.URI == nextUuid
             );
           });
           if (carouselOptionId) {
             anyMatch =
               anyMatch ||
               nextStudentPrefs.some((electivePreference) => {
-                const { isActive, assignedCarouselOptionId } =
-                  electivePreference;
-                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                const { active, assignedCarouselOptionId } = electivePreference;
+                if (active && assignedCarouselOptionId == carouselOptionId)
                   return true;
               });
           }
@@ -101,6 +113,8 @@ function filterStudentList(
   }
   pinnedStudentDtos.sort((a, b) => a.name.localeCompare(b.name));
   filteredList.sort((a, b) => a.name.localeCompare(b.name));
+
+  console.log(pinnedStudentDtos, filteredList);
 
   return [...pinnedStudentDtos, ...filteredList];
 }
@@ -195,11 +209,11 @@ export default function ElectiveSubscriberDisclosureGroup({
       })
     );
 
-    const activePreferencesThisStudent = electivePreferences[id].filter(
-      (preference) => preference.isActive
-    );
+    const activePreferencesThisStudent = electivePreferences
+      .get(id)
+      ?.filter((preference) => preference.active);
 
-    activePreferencesThisStudent.forEach((preference) =>
+    activePreferencesThisStudent?.forEach((preference) =>
       dispatch({
         type: 'setHighlightedCourses',
         id: preference.courseId
@@ -262,73 +276,77 @@ export default function ElectiveSubscriberDisclosureGroup({
                           <Disclosure.Panel className="border-dotted rounded border-2 px-4 pt-4 pb-2 text-sm text-gray-500">
                             <div className="flex flex-col mx-0 my-2 w-full ">
                               <div></div>
-                              {electivePreferences[student.id].map(
-                                ({
-                                  preferencePosition,
-                                  name,
-                                  assignedCarouselOptionId,
-                                  courseId
-                                }) => {
-                                  return (
-                                    <div
-                                      key={`${student.id}-${preferencePosition}`}
-                                      className="flex grow-0 w-full justify-between"
-                                    >
-                                      {/* <span className="px-1 w-6">{preferencePosition}</span> */}
-                                      <span>{name} </span>
-                                      <span className="grow"></span>
-                                      <div className="indicator">
-                                        {getAssignmentIndicator(
-                                          checkAssignment(
-                                            electiveDtoMap,
-                                            electivePreferences[student.id],
-                                            preferencePosition
-                                          )
-                                        )}
-                                        <select
-                                          className="select select-xs select-bordered w-16 grow-1"
-                                          value={matchCarouselOrdinal(
-                                            courseId,
-                                            assignedCarouselOptionId,
-                                            electiveDtoMap
+                              {electivePreferences
+                                .get(student.id)
+                                ?.map(
+                                  ({
+                                    preferencePosition,
+                                    name,
+                                    assignedCarouselOptionId,
+                                    courseId
+                                  }) => {
+                                    const nextPreferences =
+                                      electivePreferences.get(student.id);
+                                    if (!nextPreferences) return <></>;
+                                    return (
+                                      <div
+                                        key={`${student.id}-${preferencePosition}`}
+                                        className="flex grow-0 w-full justify-between"
+                                      >
+                                        {/* <span className="px-1 w-6">{preferencePosition}</span> */}
+                                        <span>{name} </span>
+                                        <span className="grow"></span>
+                                        <div className="indicator">
+                                          {getAssignmentIndicator(
+                                            checkAssignment(
+                                              electiveDtoMap,
+                                              nextPreferences,
+                                              preferencePosition
+                                            )
                                           )}
-                                          onChange={(e) => {
-                                            handleAssignmentChange(
+                                          <select
+                                            className="select select-xs select-bordered w-16 grow-1"
+                                            value={matchCarouselOrdinal(
+                                              courseId,
+                                              assignedCarouselOptionId,
+                                              electiveDtoMap
+                                            )}
+                                            onChange={(e) => {
+                                              handleAssignmentChange(
+                                                student.id,
+                                                preferencePosition,
+                                                parseInt(e.target.value)
+                                              );
+                                              setUnsaved(true);
+                                            }}
+                                          >
+                                            {mapOptions(
+                                              electiveAvailability,
+                                              courseId,
                                               student.id,
-                                              preferencePosition,
-                                              parseInt(e.target.value)
+                                              preferencePosition
+                                            )}
+                                          </select>
+                                        </div>
+                                        <input
+                                          type="checkbox"
+                                          className="toggle toggle-success ml-2"
+                                          defaultChecked={
+                                            nextPreferences[preferencePosition]
+                                              .active
+                                          }
+                                          onClick={() => {
+                                            handleToggleClick(
+                                              student.id,
+                                              preferencePosition
                                             );
                                             setUnsaved(true);
                                           }}
-                                        >
-                                          {mapOptions(
-                                            electiveAvailability,
-                                            courseId,
-                                            student.id,
-                                            preferencePosition
-                                          )}
-                                        </select>
+                                        ></input>
                                       </div>
-                                      <input
-                                        type="checkbox"
-                                        className="toggle toggle-success ml-2"
-                                        defaultChecked={
-                                          electivePreferences?.[student.id]?.[
-                                            preferencePosition
-                                          ].isActive
-                                        }
-                                        onClick={() => {
-                                          handleToggleClick(
-                                            student.id,
-                                            preferencePosition
-                                          );
-                                          setUnsaved(true);
-                                        }}
-                                      ></input>
-                                    </div>
-                                  );
-                                }
-                              )}
+                                    );
+                                  }
+                                )}
                             </div>
                           </Disclosure.Panel>
                         </>

@@ -24,8 +24,6 @@ function createDistinctFilterOptions(
 ): FilterOption<string>[] {
   if (!electiveDTOList) return [];
 
-  console.log('Elective DTO list:', electiveDTOList);
-
   const seenUuids = new Set<string>();
 
   return electiveDTOList

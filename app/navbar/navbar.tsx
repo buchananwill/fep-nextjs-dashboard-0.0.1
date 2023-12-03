@@ -50,8 +50,6 @@ export default function Navbar({
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
 
-  console.log('Inside navbar:', scheduleId);
-
   const timetablesDropdown = [
     { name: 'Timetables', href: `/${scheduleId}` },
     { name: 'Build Metrics', href: `/build-metrics/${scheduleId}` }

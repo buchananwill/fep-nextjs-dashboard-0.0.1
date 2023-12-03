@@ -8,8 +8,5 @@ export default async function Nav() {
   const scheduleIds = await fetchScheduleIds();
   const latestSchedule = scheduleIds[scheduleIds.length - 1];
 
-  console.log('ids for navbar:', scheduleIds);
-  console.log('latest: ', latestSchedule);
-
   return <Navbar scheduleId={latestSchedule} user={session?.user} />;
 }

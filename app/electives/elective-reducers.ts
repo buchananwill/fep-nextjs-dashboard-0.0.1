@@ -68,7 +68,7 @@ export type ElectiveState = {
   studentMap: Map<number, StudentDTO>;
   carouselOptionId: number;
   electiveDtoMap: Map<string, ElectiveDTO>[];
-  electivePreferences: Record<number, ElectivePreferenceDTO[]>;
+  electivePreferences: Map<number, ElectivePreferenceDTO[]>;
   userRoleId: number;
 };
 
@@ -81,25 +81,30 @@ export default function electivePreferencesReducer(
       const { studentId, preferencePosition, assignedCarouselOrdinal } = action;
 
       const { electiveDtoMap, electivePreferences } = electivesState;
-      const uuid = electivePreferences[studentId][preferencePosition].courseId;
+      const preferenceList = electivePreferences.get(studentId);
+      if (!preferenceList) return electivesState;
+      const { courseId } = preferenceList[preferencePosition];
       const carousel = electiveDtoMap[assignedCarouselOrdinal];
-      const electiveDto = carousel && carousel.get(uuid);
+      const electiveDto = carousel && carousel.get(courseId);
 
       return produce(electivesState, (draftUpdate) => {
-        draftUpdate.electivePreferences[studentId][
-          preferencePosition
-        ].assignedCarouselOptionId = electiveDto ? electiveDto.id : -1;
+        const preferencesListToUpdate =
+          draftUpdate.electivePreferences.get(studentId);
+        if (preferencesListToUpdate)
+          preferencesListToUpdate[preferencePosition].assignedCarouselOptionId =
+            electiveDto ? electiveDto.id : -1;
       });
     }
     case 'setActive': {
       const { studentId, preferencePosition } = action;
 
       return produce(electivesState, (draftElectiveState) => {
-        draftElectiveState.electivePreferences[studentId][
-          preferencePosition
-        ].isActive =
-          !draftElectiveState.electivePreferences[studentId][preferencePosition]
-            .isActive;
+        const updateablePreferencesList =
+          draftElectiveState.electivePreferences.get(studentId);
+        if (updateablePreferencesList) {
+          updateablePreferencesList[preferencePosition].isActive =
+            !updateablePreferencesList[preferencePosition].isActive;
+        }
       });
     }
 
@@ -185,15 +190,15 @@ export function createElectivePreferenceRecords(
   electivePreferenceList: ElectivePreferenceDTO[]
 ) {
   const groupedByPartyId = electivePreferenceList.reduce<
-    Record<number, ElectivePreferenceDTO[]>
+    Map<number, ElectivePreferenceDTO[]>
   >((acc, curr) => {
-    if (!acc[curr.userRoleId]) {
-      acc[curr.userRoleId] = [];
+    if (acc.get(curr.userRoleId)) {
+      acc.get(curr.userRoleId)?.push(curr);
+    } else {
+      acc.set(curr.userRoleId, [curr]);
     }
-
-    acc[curr.userRoleId].push(curr);
     return acc;
-  }, {});
+  }, new Map());
 
   return groupedByPartyId;
 }
