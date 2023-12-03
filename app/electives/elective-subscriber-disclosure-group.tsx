@@ -24,7 +24,7 @@ interface Props {
 }
 
 function filterStudentList(
-  courseFilters: FilterOption[],
+  courseFilters: FilterOption<string>[],
   electiveState: ElectiveState
 ): StudentDTO[] {
   const {

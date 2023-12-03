@@ -1,14 +1,21 @@
 import { Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
 import { BuildMetricDTO } from '../../../api/dto-interfaces';
-import { fetchBuildMetricDto } from '../../api/route';
+import { fetchBuildMetricDto, fetchScheduleIds } from '../../api/route';
 import MetricsContextProvider from './metrics-context-provider';
+import DropdownParam from '../../../components/dropdown-param';
+import React from 'react';
 
 export default async function MetricsPage({
-  params: { schedule, metrics }
+  params: { schedule }
 }: {
-  params: { schedule: string; metrics: string };
+  params: { schedule: string };
 }) {
+  const scheduleIds = await fetchScheduleIds();
+  const filteredIds = scheduleIds
+    .filter((number) => number > 1450)
+    .map((value) => value.toString());
+
   const scheduleId = parseInt(schedule);
 
   const buildMetricDto: BuildMetricDTO = await fetchBuildMetricDto(scheduleId);
@@ -16,7 +23,12 @@ export default async function MetricsPage({
   return (
     <MetricsContextProvider buildMetricDto={buildMetricDto}>
       <Card>
-        <Title>Build Metric Overview, Schedule {scheduleId}</Title>
+        <div className="flex items-center">
+          <Title className="mr-2">
+            Build Metric Overview, Schedule {scheduleId}
+          </Title>
+          <DropdownParam paramOptions={filteredIds} />
+        </div>
         <Text>
           Total allocation loops: {buildMetricDto.totalAllocationLoops}
         </Text>

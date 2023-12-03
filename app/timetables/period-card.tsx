@@ -27,7 +27,11 @@ function countConcurrency(
   if (!setOrUndefined) return concurrency;
   setOrUndefined.forEach((lessonCycleId) => {
     const lessonCycle = lessonCycleMap.get(lessonCycleId);
-    if (lessonCycle && highlightedSubjects.has(lessonCycle.subject))
+    if (
+      lessonCycle &&
+      (highlightedSubjects.has(lessonCycle.subject) ||
+        highlightedSubjects.size == 0)
+    )
       concurrency++;
   });
   return concurrency;

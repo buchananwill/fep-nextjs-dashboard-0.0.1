@@ -11,6 +11,7 @@ import ProtectedNavigation from './protected-navigation';
 import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { fetchScheduleIds } from '../timetables/api/route';
 
 const electivesDropdown = [
   { name: 'Year 9', href: '/9' },
@@ -28,34 +29,19 @@ const contactTimeDropdown = [
 
 const studentsDropdown = [{ name: 'Students', href: '' }];
 
-const timetablesDropdown = [
-  { name: 'Timetables', href: '/1502' },
-  { name: 'Build Metrics', href: '/1502/build-metrics' }
-];
-
 const premisesDropdown = [{ name: 'Premises', href: '' }];
-
-const navigation = [
-  { name: 'Students', href: '/', dropdownItems: studentsDropdown },
-  {
-    name: 'Timetables',
-    href: '/timetables',
-    dropdownItems: timetablesDropdown
-  },
-  { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
-  {
-    name: 'Contact Time',
-    href: '/contact-time',
-    dropdownItems: contactTimeDropdown
-  },
-  { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({
+  user,
+  scheduleId
+}: {
+  scheduleId: number;
+  user: any;
+}) {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const unsaved = useSearchParams()?.get('unsaved') == 'true';
@@ -63,6 +49,29 @@ export default function Navbar({ user }: { user: any }) {
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
+
+  console.log('Inside navbar:', scheduleId);
+
+  const timetablesDropdown = [
+    { name: 'Timetables', href: `/${scheduleId}` },
+    { name: 'Build Metrics', href: `/build-metrics/${scheduleId}` }
+  ];
+
+  const navigation = [
+    { name: 'Students', href: '/', dropdownItems: studentsDropdown },
+    {
+      name: 'Timetables',
+      href: '/timetables',
+      dropdownItems: timetablesDropdown
+    },
+    { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
+    {
+      name: 'Contact Time',
+      href: '/contact-time',
+      dropdownItems: contactTimeDropdown
+    },
+    { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
+  ];
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;

@@ -5,7 +5,11 @@ import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../components/dynamic-dimension-timetable';
-import { fetchAllLessonCycles, fetchAllPeriodsInCycle } from '../api/route';
+import {
+  fetchAllLessonCycles,
+  fetchAllPeriodsInCycle,
+  fetchScheduleIds
+} from '../api/route';
 import { PeriodCardTransformer } from '../period-card';
 import { LessonCycle } from '../../api/state-types';
 
@@ -17,6 +21,7 @@ import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
 import { bold } from 'next/dist/lib/picocolors';
 import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
+import DropdownParam from '../../components/dropdown-param';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +41,13 @@ export default async function TimetablesPage({
       label.substring(label.length - 3, label.length)
   );
 
-  const scheduleId = parseInt(schedule);
+  const scheduleIds = await fetchScheduleIds();
+  const filteredIds = scheduleIds
+    .filter((number) => number > 1450)
+    .map((value) => value.toString());
+
+  // Temporary default hack to load the most recently generated schedule.
+  const scheduleId = schedule ? parseInt(schedule) : 1752;
 
   console.log('Schedule string: ', schedule);
   console.log('Schedule Id:', scheduleId);
@@ -54,6 +65,7 @@ export default async function TimetablesPage({
       <div className="flex w-full items-baseline grow-0 mb-2">
         <Title>Schedule Version Id: {scheduleId}</Title>
         <Text className="mx-2">Schedule Layout</Text>
+        <DropdownParam paramOptions={filteredIds} />
       </div>
       <SubjectFilters lessonCycleList={lessonCycleArray}></SubjectFilters>
       <div className="flex w-full items-top justify-between pt-4  select-none">

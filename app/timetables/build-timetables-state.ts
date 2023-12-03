@@ -39,6 +39,7 @@ export function buildTimetablesState(
 
   const initialState = {
     highlightedSubjects: new Set<string>(),
+    highlightedSubjectsList: [],
     pinnedLessonCycles: new Set<string>(),
     filterPending: false,
     filterType: FilterType.any,

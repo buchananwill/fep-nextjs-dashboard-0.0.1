@@ -15,7 +15,7 @@ export default function PendingScheduleEditModal() {
       <Transition appear show={updatePending} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10 select-none"
+          className="relative z-50 select-none"
           onClose={cancelUpdate}
         >
           <Transition.Child
