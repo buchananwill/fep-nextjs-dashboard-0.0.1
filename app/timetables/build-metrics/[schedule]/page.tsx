@@ -12,9 +12,7 @@ export default async function MetricsPage({
   params: { schedule: string };
 }) {
   const scheduleIds = await fetchScheduleIds();
-  const filteredIds = scheduleIds
-    .filter((number) => number > 1450)
-    .map((value) => value.toString());
+  const filteredIds = scheduleIds.map((value) => value.toString());
 
   const scheduleId = parseInt(schedule);
 

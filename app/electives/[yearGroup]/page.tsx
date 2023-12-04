@@ -31,6 +31,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function ElectivesPage({
   params: { yearGroup },
   searchParams: { cacheSetting }
