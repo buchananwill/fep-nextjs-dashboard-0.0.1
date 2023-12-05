@@ -55,8 +55,8 @@ function filterStudentList(
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
-                let { courseId, isActive } = electivePreference;
-                if (isActive && URI == courseId) {
+                let { courseId, active } = electivePreference;
+                if (active && URI == courseId) {
                   return true;
                 }
               });
@@ -66,9 +66,8 @@ function filterStudentList(
             couldMatch =
               couldMatch &&
               nextStudentPrefs.some((electivePreference) => {
-                const { isActive, assignedCarouselOptionId } =
-                  electivePreference;
-                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                const { active, assignedCarouselOptionId } = electivePreference;
+                if (active && assignedCarouselOptionId == carouselOptionId)
                   return true;
               });
           }
@@ -78,18 +77,17 @@ function filterStudentList(
           }
         } else if (filterType == FilterType.any) {
           let anyMatch = nextStudentPrefs.some((electivePreference) => {
-            let { courseId: nextUuid, isActive } = electivePreference;
+            let { courseId: nextUuid, active } = electivePreference;
             return courseFilters.some(
-              (filterOption) => isActive && filterOption.URI == nextUuid
+              (filterOption) => active && filterOption.URI == nextUuid
             );
           });
           if (carouselOptionId) {
             anyMatch =
               anyMatch ||
               nextStudentPrefs.some((electivePreference) => {
-                const { isActive, assignedCarouselOptionId } =
-                  electivePreference;
-                if (isActive && assignedCarouselOptionId == carouselOptionId)
+                const { active, assignedCarouselOptionId } = electivePreference;
+                if (active && assignedCarouselOptionId == carouselOptionId)
                   return true;
               });
           }
@@ -180,7 +178,7 @@ function getListMapping(
           <input
             type="checkbox"
             className="toggle toggle-success ml-2"
-            defaultChecked={nextPreferences[preferencePosition].isActive}
+            defaultChecked={nextPreferences[preferencePosition].active}
             onClick={() => {
               handleToggleClick(student.id, preferencePosition);
               setUnsaved(true);
@@ -285,7 +283,7 @@ export default function ElectiveSubscriberDisclosureGroup({
 
     const activePreferencesThisStudent = electivePreferences
       .get(id)
-      ?.filter((preference) => preference.isActive);
+      ?.filter((preference) => preference.active);
 
     activePreferencesThisStudent?.forEach((preference) =>
       dispatch({
