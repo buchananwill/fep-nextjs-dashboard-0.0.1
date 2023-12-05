@@ -1,17 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import { classNames } from '../utils/class-names';
 
 interface Props {
   onConfirm: Function;
-  children: string;
+  children: ReactNode;
   isActive: boolean;
   requestConfirmation: boolean;
   classNames: string;
 }
 const ProtectedNavigation = ({
   onConfirm,
-  children: buttonText,
+  children,
   isActive,
   requestConfirmation,
   classNames: moreClassNames
@@ -40,7 +40,7 @@ const ProtectedNavigation = ({
         )}
         aria-current={isActive ? 'page' : undefined}
       >
-        {buttonText}
+        {children}
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>

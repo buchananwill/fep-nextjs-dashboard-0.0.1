@@ -68,7 +68,7 @@ export type ElectiveState = {
   carouselOptionId: number;
   electiveDtoMap: Map<string, ElectiveDTO>[];
   electivePreferences: Map<number, ElectivePreferenceDTO[]>;
-  modifiedPreferences: Map<number, Set<number>>;
+  modifiedPreferences: Map<number, Set<number>>; // TODO Currently stores the preference position, but should really store the actual ID of the preference.
   userRoleId: number;
 };
 

@@ -1,7 +1,6 @@
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 import { ElectiveState } from '../electives/elective-reducers';
-import { redirect } from 'next/navigation';
 import { ElectivePreferenceDTO } from './dto-interfaces';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
@@ -37,8 +36,7 @@ export const fetchElectiveYearGroupWithAllStudents = async (
       return null;
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error('Error fetching data: ', error);
     return null;
@@ -101,7 +99,3 @@ export const updateElectiveAssignments = async ({
     return null;
   }
 };
-
-function mapToArray<V>(map: Map<number, V>) {
-  return Array.from(map.entries());
-}

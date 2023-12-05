@@ -202,6 +202,7 @@ export default function ElectiveSubscriberDisclosureGroup({
   const [filteredStudents, setFilteredStudents] = useState<StudentDTO[]>([]);
 
   const electiveState = useContext(ElectiveContext);
+
   const {
     electivePreferences,
     userRoleId,
