@@ -106,8 +106,8 @@ export default function electivePreferencesReducer(
         const updateablePreferencesList =
           draftElectiveState.electivePreferences.get(studentId);
         if (updateablePreferencesList) {
-          updateablePreferencesList[preferencePosition].active =
-            !updateablePreferencesList[preferencePosition].active;
+          updateablePreferencesList[preferencePosition].isActive =
+            !updateablePreferencesList[preferencePosition].isActive;
           draftElectiveState.modifiedPreferences
             .get(studentId)
             ?.add(preferencePosition);

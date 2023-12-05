@@ -24,7 +24,7 @@ const calculateSubscribers = (
   for (let preferenceList of electivePreferences.values()) {
     for (let electivePreference of preferenceList) {
       if (
-        electivePreference.active &&
+        electivePreference.isActive &&
         electivePreference.assignedCarouselOptionId == id
       )
         count++;
@@ -42,7 +42,7 @@ const getBorderVisible = (
     .get(userRoleId)
     ?.some(
       (electivePreference) =>
-        electivePreference.active &&
+        electivePreference.isActive &&
         electivePreference.assignedCarouselOptionId == carouselOptionId
     )
     ? ''

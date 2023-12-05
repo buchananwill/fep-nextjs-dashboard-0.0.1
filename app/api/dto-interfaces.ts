@@ -59,7 +59,7 @@ export interface ElectivePreferenceDTO {
   courseId: string;
   preferencePosition: number;
   assignedCarouselOptionId: number;
-  active: boolean;
+  isActive: boolean;
 }
 
 export interface YearGroupElectives {

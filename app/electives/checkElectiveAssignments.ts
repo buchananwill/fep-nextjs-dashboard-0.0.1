@@ -29,7 +29,7 @@ export function checkAssignment(
   electivePreferences: ElectivePreferenceDTO[],
   preferencePosition: number
 ): boolean {
-  if (!electivePreferences[preferencePosition].active) return true;
+  if (!electivePreferences[preferencePosition].isActive) return true;
   const { assignedCarouselOptionId: referenceAssignment, courseId } =
     electivePreferences[preferencePosition];
 
@@ -41,7 +41,7 @@ export function checkAssignment(
 
   return !electivePreferences.some(
     (otherPreference) =>
-      otherPreference.active &&
+      otherPreference.isActive &&
       otherPreference.preferencePosition !== preferencePosition &&
       matchCarouselOrdinal(
         otherPreference.courseId,

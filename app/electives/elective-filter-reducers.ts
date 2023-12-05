@@ -75,8 +75,8 @@ function createCourseFilter(filterOption: FilterOption<string>): CourseFilter {
         const nextStudentPrefs = record[numericKey];
 
         const foundStudent = nextStudentPrefs.some((electivePreference) => {
-          let { courseId, active } = electivePreference;
-          return active && this.URI == courseId;
+          let { courseId, isActive } = electivePreference;
+          return isActive && this.URI == courseId;
         });
 
         if (foundStudent) {
