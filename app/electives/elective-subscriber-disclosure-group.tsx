@@ -295,6 +295,8 @@ export default function ElectiveSubscriberDisclosureGroup({
     );
   }
 
+  console.log('Preferences: ', electivePreferences);
+
   const isPinned = (id: number) => {
     return pinnedStudents && pinnedStudents.has(id);
   };
