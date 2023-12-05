@@ -109,8 +109,6 @@ function filterStudentList(
   pinnedStudentDtos.sort((a, b) => a.name.localeCompare(b.name));
   filteredList.sort((a, b) => a.name.localeCompare(b.name));
 
-  console.log(pinnedStudentDtos, filteredList);
-
   return [...pinnedStudentDtos, ...filteredList];
 }
 
@@ -129,8 +127,6 @@ function getListMapping(
 ) {
   const nextPreferences = electivePreferences.get(student.id);
   if (!nextPreferences) return <></>;
-
-  console.log(nextPreferences);
 
   return nextPreferences?.map(
     ({

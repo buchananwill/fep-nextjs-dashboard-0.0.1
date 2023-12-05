@@ -68,6 +68,7 @@ export type ElectiveState = {
   carouselOptionId: number;
   electiveDtoMap: Map<string, ElectiveDTO>[];
   electivePreferences: Map<number, ElectivePreferenceDTO[]>;
+  modifiedPreferences: Map<number, Set<number>>;
   userRoleId: number;
 };
 
@@ -89,9 +90,13 @@ export default function electivePreferencesReducer(
       return produce(electivesState, (draftUpdate) => {
         const preferencesListToUpdate =
           draftUpdate.electivePreferences.get(studentId);
-        if (preferencesListToUpdate)
+        if (preferencesListToUpdate) {
           preferencesListToUpdate[preferencePosition].assignedCarouselOptionId =
             electiveDto ? electiveDto.id : -1;
+          draftUpdate.modifiedPreferences
+            .get(studentId)
+            ?.add(preferencePosition);
+        }
       });
     }
     case 'setActive': {
@@ -103,6 +108,9 @@ export default function electivePreferencesReducer(
         if (updateablePreferencesList) {
           updateablePreferencesList[preferencePosition].active =
             !updateablePreferencesList[preferencePosition].active;
+          draftElectiveState.modifiedPreferences
+            .get(studentId)
+            ?.add(preferencePosition);
         }
       });
     }
@@ -228,4 +236,25 @@ export function createElectiveDtoMap(
     )
   );
   return electiveDtoListMap;
+}
+
+function setModifiedPreference(
+  preference: ElectivePreferenceDTO,
+  modifiedList: ElectivePreferenceDTO[]
+): ElectivePreferenceDTO[] {
+  if (modifiedList.length == 0) return [preference];
+  let changed = false;
+  const responseList = [];
+  for (let nextPreference of modifiedList) {
+    const { preferencePosition, userRoleId } = preference;
+    const { preferencePosition: nextPref, userRoleId: nextId } = nextPreference;
+    if (preferencePosition == nextPref && userRoleId == nextId) {
+      responseList.push(preference);
+      changed = true;
+    } else responseList.push(nextPreference);
+  }
+  if (!changed) {
+    responseList.push(preference);
+  }
+  return responseList;
 }

@@ -11,7 +11,6 @@ import ProtectedNavigation from './protected-navigation';
 import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { fetchScheduleIds } from '../timetables/api/route';
 
 const electivesDropdown = [
   { name: 'Year 9', href: '/9' },

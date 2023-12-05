@@ -13,6 +13,7 @@ export const ElectiveContext = createContext<ElectiveState>({
   carouselOptionId: 0,
   electiveDtoMap: [],
   electivePreferences: new Map(),
+  modifiedPreferences: new Map(),
   userRoleId: 0
 });
 

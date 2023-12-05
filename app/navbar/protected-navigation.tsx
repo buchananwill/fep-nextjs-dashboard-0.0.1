@@ -9,14 +9,13 @@ interface Props {
   requestConfirmation: boolean;
   classNames: string;
 }
-
-export default function ProtectedNavigation({
+const ProtectedNavigation = ({
   onConfirm,
   children: buttonText,
   isActive,
   requestConfirmation,
   classNames: moreClassNames
-}: Props) {
+}: Props) => {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -115,4 +114,6 @@ export default function ProtectedNavigation({
       </Transition>
     </>
   );
-}
+};
+
+export default ProtectedNavigation;

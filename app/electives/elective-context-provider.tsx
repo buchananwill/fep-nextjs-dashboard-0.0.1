@@ -31,6 +31,12 @@ function createStudentDtoMap(studentList: StudentDTO[]) {
   return studentDtoMap;
 }
 
+function createModificationMap(studentList: StudentDTO[]) {
+  const map = new Map<number, Set<number>>();
+  studentList.forEach((student) => map.set(student.id, new Set()));
+  return map;
+}
+
 export default function ElectiveContextProvider({
   studentList,
   electivePreferenceList,
@@ -48,6 +54,7 @@ export default function ElectiveContextProvider({
     electivePreferences: createElectivePreferenceRecords(
       electivePreferenceList
     ),
+    modifiedPreferences: createModificationMap(studentList),
     userRoleId: 0
   };
   const pathname = usePathname();

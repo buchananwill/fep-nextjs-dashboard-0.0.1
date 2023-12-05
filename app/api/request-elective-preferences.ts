@@ -1,8 +1,8 @@
-'use server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { ElectiveState } from '../electives/elective-reducers';
 import { redirect } from 'next/navigation';
+import { ElectivePreferenceDTO } from './dto-interfaces';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
@@ -45,12 +45,29 @@ export const fetchElectiveYearGroupWithAllStudents = async (
   }
 };
 
-export const updateElectiveAssignments = async (
-  electivesState: ElectiveState
-) => {
+export const updateElectiveAssignments = async ({
+  electivePreferences,
+  modifiedPreferences
+}: ElectiveState) => {
   const tag = 'electiveAssignments';
 
-  const fetchURL = `http://localhost:8080/api/academic/electives/option-block-assignments`;
+  const fetchURL = `option-block-assignments`;
+
+  console.log('Inside first function: ', fetchURL);
+
+  const ePrefList: ElectivePreferenceDTO[] = [];
+
+  for (let value of electivePreferences.keys()) {
+    const modificationSet = modifiedPreferences.get(value);
+    const nextPreferences = electivePreferences.get(value);
+    if (modificationSet && modificationSet.size > 0 && nextPreferences) {
+      modificationSet.forEach((modifiedPreferencePosition) =>
+        ePrefList.push(nextPreferences[modifiedPreferencePosition])
+      );
+    }
+  }
+
+  console.log('body in first function: ', ePrefList);
 
   try {
     const response = await fetch(fetchURL, {
@@ -65,7 +82,7 @@ export const updateElectiveAssignments = async (
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(electivesState.electivePreferences) // body data type must match "Content-Type" header
+      body: JSON.stringify(ePrefList) // body data type must match "Content-Type" header
     });
 
     if (!response.ok) {
@@ -84,3 +101,7 @@ export const updateElectiveAssignments = async (
     return null;
   }
 };
+
+function mapToArray<V>(map: Map<number, V>) {
+  return Array.from(map.entries());
+}

@@ -36,7 +36,7 @@ const CommitChanges = ({ children }: Props) => {
 
   const disabled = useSearchParams()?.get('unsaved') !== 'true';
 
-  const electivePreferences = useContext(ElectiveContext);
+  const electiveState = useContext(ElectiveContext);
 
   const assignmentConflictCount = useSearchParams()?.get('assignmentConflict');
 
@@ -52,7 +52,7 @@ const CommitChanges = ({ children }: Props) => {
     params.set('cacheSetting', 'reload');
     const redirectUrl = `${pathname}?${params.toString()}`;
 
-    updateElectiveAssignments(electivePreferences)
+    updateElectiveAssignments(electiveState)
       .then(() => {
         setCommitPending(false);
       })
