@@ -52,12 +52,10 @@ export function SubjectFilters({ lessonCycleList }: Props) {
   }
 
   function handleResetMortarBoards() {
-    highlightedSubjects.forEach((subject) =>
-      dispatch({
-        type: 'setHighlightedSubjects',
-        id: subject
-      })
-    );
+    dispatch({
+      type: 'setHighlightedSubjects',
+      subjects: []
+    });
   }
 
   return (

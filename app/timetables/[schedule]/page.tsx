@@ -49,8 +49,6 @@ export default async function TimetablesPage({
   const scheduleIds = await fetchScheduleIds();
   const filteredIds = scheduleIds.map((value) => value.toString());
 
-  // Temporary default hack to load the most recently generated schedule.
-
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(

@@ -169,8 +169,6 @@ export default function timetablesReducer(
       const currentlyHighlighted =
         highlightedSubjects && highlightedSubjects.has(subject);
 
-      console.log('Toggled subject: ', subject);
-
       return produce(timetablesState, (updatedState) => {
         const highlightedSubjectsUpdate = updatedState.highlightedSubjects;
         if (currentlyHighlighted) {
