@@ -1,6 +1,6 @@
 'use client';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
-import { Period } from '../api/dto-interfaces';
+import { LessonCycleDTO, Period } from '../api/dto-interfaces';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import InteractiveTableCard from '../components/interactive-table-card';
 import {
@@ -10,7 +10,6 @@ import {
 import { Badge } from '@tremor/react';
 import { LessonCycle } from '../api/state-types';
 import { FillableButton, PinIcons } from '../components/fillable-button';
-import { swapTwoPeriods } from './api/route';
 import { convertDtoToState } from './build-timetables-state';
 
 function countConcurrency(
@@ -52,6 +51,29 @@ function getBadgeColor(concurrency: number) {
     default:
       return 'purple';
   }
+}
+
+async function swapPeriods(
+  periodId: number,
+  scheduleId: number
+): Promise<LessonCycleDTO[]> {
+  const response = await fetch('api', {
+    method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify([periodId, periodId, scheduleId])
+  }); //PUT(periodId, periodId, scheduleId);
+
+  console.log('Response inside period card:', response);
+
+  return await response.json();
 }
 
 export const PeriodCardTransformer: CellDataTransformer<Period> = ({
@@ -119,8 +141,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
       type: 'setUpdatePending',
       value: true
     });
-
-    const updatedDtoList = await swapTwoPeriods(periodId, periodId, scheduleId);
+    const updatedDtoList = await swapPeriods(periodId, scheduleId);
 
     const lessonCycles = updatedDtoList.map((dto) => convertDtoToState(dto));
 

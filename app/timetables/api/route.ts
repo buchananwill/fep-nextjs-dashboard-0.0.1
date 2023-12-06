@@ -6,6 +6,8 @@ import {
   TabularDTO
 } from '../../api/dto-interfaces';
 import { ElectiveState } from '../../electives/elective-reducers';
+import { NextRequest } from 'next/server';
+import { number } from 'prop-types';
 
 interface SearchParams {
   id: number;
@@ -119,16 +121,16 @@ export const fetchAllLessonCycles = async (
   }
 };
 
-export const swapTwoPeriods = async (
-  periodId1: number,
-  periodId2: number,
-  scheduleId: number
-): Promise<LessonCycleDTO[]> => {
+export const PUT = async (request: NextRequest) => {
   const tag = 'electiveAssignments';
 
-  const swapObject = [periodId1, periodId2, scheduleId];
+  console.log('Request inside API: ', request);
 
-  const fetchURL = `http://localhost:8080/api/academic/swap-periods-in-schedule`;
+  const requestArray = await request.json();
+
+  // const swapObject = [periodId1, periodId2, scheduleId];
+
+  const fetchURL = `${apiBaseUrl}/swap-periods-in-schedule`;
 
   try {
     const response = await fetch(fetchURL, {
@@ -143,7 +145,7 @@ export const swapTwoPeriods = async (
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(swapObject) // body data type must match "Content-Type" header
+      body: JSON.stringify(requestArray) // body data type must match "Content-Type" header
     });
 
     if (!response.ok) {
@@ -151,7 +153,7 @@ export const swapTwoPeriods = async (
       return [];
     }
 
-    return response.json();
+    return response;
   } catch (error) {
     console.error('Error fetching data: ', error);
     return [];
