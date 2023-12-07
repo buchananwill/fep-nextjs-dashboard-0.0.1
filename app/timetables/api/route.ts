@@ -5,9 +5,7 @@ import {
   Period,
   TabularDTO
 } from '../../api/dto-interfaces';
-import { ElectiveState } from '../../electives/elective-reducers';
 import { NextRequest } from 'next/server';
-import { number } from 'prop-types';
 
 interface SearchParams {
   id: number;
