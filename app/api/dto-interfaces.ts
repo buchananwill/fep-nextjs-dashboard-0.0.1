@@ -12,7 +12,7 @@ export interface NamedNumberRecord extends Nameable {
 
 export interface ElectiveDTO extends Nameable, HasNumberId {
   electiveOrdinal: number;
-  carouselOrdinal: number;
+  carouselOrdinal: number; // one-indexed
   courseId: string;
   subscriberUserRoleIds: number[];
 }
@@ -57,7 +57,7 @@ export interface ElectivePreferenceDTO {
   userRoleId: number;
   courseName: string;
   courseId: string;
-  preferencePosition: number;
+  preferencePosition: number; // one-indexed
   assignedCarouselOptionId: number;
   active: boolean;
 }

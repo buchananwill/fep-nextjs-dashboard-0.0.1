@@ -10,19 +10,34 @@ export function reconstructTableWithDimensions<D>(
     Array(numCols).fill(null)
   );
 
+  // Check starting index:
+  let columnStartingIndex = NaN;
+  let rowStartingIndex = NaN;
+  for (let { cellRow, cellColumn } of flatList) {
+    columnStartingIndex =
+      isNaN(columnStartingIndex) || cellColumn < columnStartingIndex
+        ? cellColumn
+        : columnStartingIndex;
+    rowStartingIndex =
+      isNaN(rowStartingIndex) || cellRow < rowStartingIndex
+        ? cellRow
+        : rowStartingIndex;
+  }
+
   // Populate the table based on the row and col indices from the flatList
-  for (const cell of flatList) {
-    // const cellCol = cell.cellColumn - firstColumn;
-    if (cell.cellRow < numRows && cell.cellColumn < numCols) {
-      table[cell.cellRow][cell.cellColumn] = cell.cellData;
+  for (const { cellColumn, cellData, cellRow } of flatList) {
+    const actualRow = cellRow - rowStartingIndex;
+    const actualColumn = cellColumn - columnStartingIndex;
+    if (actualRow < numRows && actualColumn < numCols) {
+      table[actualRow][actualColumn] = cellData;
     } else {
       console.error(
         'Invalid cell index. Col:',
-        cell.cellColumn,
+        actualColumn,
         'exceeds: ',
         numCols,
         ' or Row: ',
-        cell.cellRow,
+        actualRow,
         ' exceeds ',
         numRows
       );

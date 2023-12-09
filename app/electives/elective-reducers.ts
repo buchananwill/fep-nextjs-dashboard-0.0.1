@@ -9,14 +9,14 @@ import {
 interface SetCarousel {
   type: 'setCarousel';
   studentId: number;
-  preferencePosition: number;
-  assignedCarouselOrdinal: number;
+  preferencePosition: number; // one-indexed
+  assignedCarouselOrdinal: number; // one-indexed
 }
 
 interface SetActive {
   type: 'setActive';
   studentId: number;
-  preferencePosition: number;
+  preferencePosition: number; // one-indexed
 }
 
 interface FocusCarouselOption {
@@ -83,16 +83,17 @@ export default function electivePreferencesReducer(
       const { electiveDtoMap, electivePreferences } = electivesState;
       const preferenceList = electivePreferences.get(studentId);
       if (!preferenceList) return electivesState;
-      const { courseId } = preferenceList[preferencePosition];
-      const carousel = electiveDtoMap[assignedCarouselOrdinal];
+      const { courseId } = preferenceList[preferencePosition - 1];
+      const carousel = electiveDtoMap[assignedCarouselOrdinal - 1];
       const electiveDto = carousel && carousel.get(courseId);
 
       return produce(electivesState, (draftUpdate) => {
         const preferencesListToUpdate =
           draftUpdate.electivePreferences.get(studentId);
         if (preferencesListToUpdate) {
-          preferencesListToUpdate[preferencePosition].assignedCarouselOptionId =
-            electiveDto ? electiveDto.id : -1;
+          preferencesListToUpdate[
+            preferencePosition - 1
+          ].assignedCarouselOptionId = electiveDto ? electiveDto.id : -1;
           draftUpdate.modifiedPreferences
             .get(studentId)
             ?.add(preferencePosition);
@@ -106,8 +107,8 @@ export default function electivePreferencesReducer(
         const updateablePreferencesList =
           draftElectiveState.electivePreferences.get(studentId);
         if (updateablePreferencesList) {
-          updateablePreferencesList[preferencePosition].active =
-            !updateablePreferencesList[preferencePosition].active;
+          updateablePreferencesList[preferencePosition - 1].active =
+            !updateablePreferencesList[preferencePosition - 1].active;
           draftElectiveState.modifiedPreferences
             .get(studentId)
             ?.add(preferencePosition);
@@ -219,7 +220,6 @@ export function createElectiveDtoMap(
   for (let electiveDTO of electiveDtoList) {
     max = Math.max(electiveDTO.carouselOrdinal, max);
   }
-  max = max + 1; // Add 1 because ordinals are zero-indexed and we need the count.
 
   const electiveDtoListMap: Map<string, ElectiveDTO>[] = [];
 
@@ -230,7 +230,7 @@ export function createElectiveDtoMap(
 
   // For the entire electiveDtoList, find the right carousel and map the elective to the id of its course.
   electiveDtoList.forEach((electiveDto) =>
-    electiveDtoListMap[electiveDto.carouselOrdinal].set(
+    electiveDtoListMap[electiveDto.carouselOrdinal - 1].set(
       electiveDto.courseId,
       electiveDto
     )

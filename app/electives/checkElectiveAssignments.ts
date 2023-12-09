@@ -29,9 +29,9 @@ export function checkAssignment(
   electivePreferences: ElectivePreferenceDTO[],
   preferencePosition: number
 ): boolean {
-  if (!electivePreferences[preferencePosition].active) return true;
+  if (!electivePreferences[preferencePosition - 1].active) return true;
   const { assignedCarouselOptionId: referenceAssignment, courseId } =
-    electivePreferences[preferencePosition];
+    electivePreferences[preferencePosition - 1];
 
   const carouselOrdinal = matchCarouselOrdinal(
     courseId,

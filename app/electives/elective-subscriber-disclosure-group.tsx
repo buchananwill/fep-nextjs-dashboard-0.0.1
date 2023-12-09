@@ -178,7 +178,7 @@ function getListMapping(
           <input
             type="checkbox"
             className="toggle toggle-success ml-2"
-            defaultChecked={nextPreferences[preferencePosition].active}
+            defaultChecked={nextPreferences[preferencePosition - 1].active} // preferencePosition is one-indexed
             onClick={() => {
               handleToggleClick(student.id, preferencePosition);
               setUnsaved(true);
