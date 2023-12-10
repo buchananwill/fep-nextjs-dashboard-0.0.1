@@ -1,7 +1,6 @@
 'use client';
-import { Badge, Card, Color, Text } from '@tremor/react';
+import { Badge, Color, Text } from '@tremor/react';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
-import { classNames } from '../utils/class-names';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { FillableButton, PinIcons } from '../components/fillable-button';
@@ -9,7 +8,6 @@ import { ElectiveFilterContext } from './elective-filter-context';
 import { ElectiveDTO } from '../api/dto-interfaces';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
-import { da } from 'date-fns/locale';
 import { FilterOption } from '../api/state-types';
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import {
@@ -17,6 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '../components/tooltips/tooltip';
+import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
 const aLevelClassLimitInt = 25;
 
@@ -156,16 +155,16 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
         </InteractiveTableCard>
       </TooltipTrigger>
       <TooltipContent>
-        <div className="text-sm w-48 text-center bg-gray-700 text-gray-300 rounded-md p-2">
+        <StandardTooltipContent>
           <p>
-            Click the<strong> card </strong> to filter students taking this
-            course.
+            Click the<strong> subject name </strong> to filter students taking
+            this course.
           </p>{' '}
           <p>
             Click the <strong> mortar board </strong> to show the locations of
             matching courses.
           </p>
-        </div>
+        </StandardTooltipContent>
       </TooltipContent>
     </Tooltip>
   );

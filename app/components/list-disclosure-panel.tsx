@@ -47,7 +47,7 @@ export default function ListDisclosurePanel<D>({
                               data={element}
                               className="w-full"
                             >
-                              <Disclosure.Button className="border-x-2 border-dotted grow py-2 w-full text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
+                              <Disclosure.Button className="border-x-2 border-dotted grow p-0 m-0 w-full text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
                                 <ButtonTransformerComponent data={element} />
                               </Disclosure.Button>
                             </ButtonSurroundComponent>
@@ -58,7 +58,7 @@ export default function ListDisclosurePanel<D>({
                             />
                           </div>
                           <Disclosure.Panel className="border-dotted rounded border-2 px-4 pt-4 pb-2 text-sm text-gray-500">
-                            <div className="flex flex-col mx-0 my-2 w-full ">
+                            <div className="flex flex-col mx-0 mt-0 mb-2 w-full ">
                               <PanelTransformerComponent data={element} />
                             </div>
                           </Disclosure.Panel>
