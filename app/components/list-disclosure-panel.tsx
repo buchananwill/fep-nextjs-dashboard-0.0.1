@@ -4,35 +4,35 @@ import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-export type ButtonSurroundTransformer<R> = React.FC<TransformerProps<R>>;
+export type ButtonSurroundTransformer<D> = React.FC<TransformerProps<D>>;
 
-export type ButtonTransformer<R> = React.FC<TransformerProps<R>>;
+export type ButtonTransformer<D> = React.FC<TransformerProps<D>>;
 
-export type PanelTransformer<R> = React.FC<TransformerProps<R>>;
+export type PanelTransformer<D> = React.FC<TransformerProps<D>>;
 
-interface TransformerProps<R> {
-  data: R;
+interface TransformerProps<D> {
+  data: D;
   children?: React.ReactNode;
   className?: string;
 }
 
-interface FilterDisclosurePanelProps<R> {
-  data: R[];
-  buttonSurround: ButtonSurroundTransformer<R>;
-  buttonTransformer: ButtonTransformer<R>;
-  panelTransformer: PanelTransformer<R>;
+interface FilterDisclosurePanelProps<D> {
+  data: D[];
+  buttonSurround: ButtonSurroundTransformer<D>;
+  buttonTransformer: ButtonTransformer<D>;
+  panelTransformer: PanelTransformer<D>;
 }
 
-export default function FilterDisclosurePanel<R>({
+export default function ListDisclosurePanel<D>({
   data,
   panelTransformer: PanelTransformerComponent,
   buttonSurround: ButtonSurroundComponent,
   buttonTransformer: ButtonTransformerComponent
-}: FilterDisclosurePanelProps<R>) {
+}: FilterDisclosurePanelProps<D>) {
   try {
     return (
       <>
-        <div className="pb-4 justify-left px-2">
+        <div className="pb-4 justify-left">
           {data &&
             data.map((element, index) => (
               <div key={`${index}`}>
@@ -48,9 +48,7 @@ export default function FilterDisclosurePanel<R>({
                               className="w-full"
                             >
                               <Disclosure.Button className="border-x-2 border-dotted grow py-2 w-full text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
-                                <span className="grow ml-2">
-                                  <ButtonTransformerComponent data={element} />
-                                </span>
+                                <ButtonTransformerComponent data={element} />
                               </Disclosure.Button>
                             </ButtonSurroundComponent>
                             <ChevronUpIcon

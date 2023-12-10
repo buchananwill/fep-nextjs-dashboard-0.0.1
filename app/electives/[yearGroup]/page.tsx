@@ -74,7 +74,7 @@ export default async function ElectivesPage({
       tableCellsData =
         electiveDTOList?.map((elective) => ({
           cellRow: elective.electiveOrdinal,
-          cellColumn: elective.carouselOrdinal,
+          cellColumn: elective.carouselOrdinal - 1, // carousel ordinal is one-indexed
           cellData: elective
         })) ?? [];
 
@@ -117,6 +117,7 @@ export default async function ElectivesPage({
         electivePreferenceList={electivePreferences}
         studentList={studentDTOList}
         electiveDtoList={electiveDTOList}
+        electiveAvailability={electiveAvailability}
       >
         <ElectiveFilterContextProvider>
           <div className="flex w-full items-baseline grow-0 mb-2">

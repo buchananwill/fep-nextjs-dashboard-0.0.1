@@ -16,11 +16,13 @@ import {
   ElectivePreferenceDTO,
   StudentDTO
 } from '../api/dto-interfaces';
+import { ElectiveAvailability } from '../api/state-types';
 
 interface Props {
   electiveDtoList: ElectiveDTO[];
   studentList: StudentDTO[];
   electivePreferenceList: ElectivePreferenceDTO[];
+  electiveAvailability: ElectiveAvailability;
   children: ReactNode;
 }
 
@@ -41,7 +43,8 @@ export default function ElectiveContextProvider({
   studentList,
   electivePreferenceList,
   children,
-  electiveDtoList
+  electiveDtoList,
+  electiveAvailability
 }: Props) {
   const initialElectiveState: ElectiveState = {
     highlightedCourses: [],
@@ -51,6 +54,7 @@ export default function ElectiveContextProvider({
     studentMap: createStudentDtoMap(studentList),
     carouselOptionId: NaN,
     electiveDtoMap: createElectiveDtoMap(electiveDtoList),
+    electiveAvailability: electiveAvailability,
     electivePreferences: createElectivePreferenceRecords(
       electivePreferenceList
     ),

@@ -59,8 +59,9 @@ export const updateElectiveAssignments = async ({
     const modificationSet = modifiedPreferences.get(value);
     const nextPreferences = electivePreferences.get(value);
     if (modificationSet && modificationSet.size > 0 && nextPreferences) {
-      modificationSet.forEach((modifiedPreferencePosition) =>
-        ePrefList.push(nextPreferences[modifiedPreferencePosition])
+      modificationSet.forEach(
+        (modifiedPreferencePosition) =>
+          ePrefList.push(nextPreferences[modifiedPreferencePosition - 1]) // preferencePosition is one-indexed
       );
     }
   }

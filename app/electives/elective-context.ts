@@ -12,6 +12,7 @@ export const ElectiveContext = createContext<ElectiveState>({
   studentMap: new Map<number, StudentDTO>(),
   carouselOptionId: 0,
   electiveDtoMap: [],
+  electiveAvailability: {},
   electivePreferences: new Map(),
   modifiedPreferences: new Map(),
   userRoleId: 0

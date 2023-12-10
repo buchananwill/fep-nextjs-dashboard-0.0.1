@@ -5,6 +5,7 @@ import {
   ElectivePreferenceDTO,
   StudentDTO
 } from '../api/dto-interfaces';
+import { ElectiveAvailability } from '../api/state-types';
 
 interface SetCarousel {
   type: 'setCarousel';
@@ -67,6 +68,7 @@ export type ElectiveState = {
   studentMap: Map<number, StudentDTO>;
   carouselOptionId: number;
   electiveDtoMap: Map<string, ElectiveDTO>[];
+  electiveAvailability: ElectiveAvailability;
   electivePreferences: Map<number, ElectivePreferenceDTO[]>;
   modifiedPreferences: Map<number, Set<number>>; // TODO Currently stores the preference position, but should really store the actual ID of the preference.
   userRoleId: number;
@@ -104,11 +106,11 @@ export default function electivePreferencesReducer(
       const { studentId, preferencePosition } = action;
 
       return produce(electivesState, (draftElectiveState) => {
-        const updateablePreferencesList =
+        const mutablePreferencesList =
           draftElectiveState.electivePreferences.get(studentId);
-        if (updateablePreferencesList) {
-          updateablePreferencesList[preferencePosition - 1].active =
-            !updateablePreferencesList[preferencePosition - 1].active;
+        if (mutablePreferencesList) {
+          mutablePreferencesList[preferencePosition - 1].active =
+            !mutablePreferencesList[preferencePosition - 1].active;
           draftElectiveState.modifiedPreferences
             .get(studentId)
             ?.add(preferencePosition);
@@ -230,6 +232,7 @@ export function createElectiveDtoMap(
 
   // For the entire electiveDtoList, find the right carousel and map the elective to the id of its course.
   electiveDtoList.forEach((electiveDto) =>
+    // Carousel Ordinal is one-indexed
     electiveDtoListMap[electiveDto.carouselOrdinal - 1].set(
       electiveDto.courseId,
       electiveDto

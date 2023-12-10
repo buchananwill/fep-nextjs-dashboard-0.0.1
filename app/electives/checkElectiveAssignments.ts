@@ -60,7 +60,7 @@ export function matchCarouselOrdinal(
     const electiveDto = electiveDtoMap[i]?.get(uuid);
 
     if (electiveDto && electiveDto.id == carouselOptionId) {
-      return i;
+      return i + 1; // Carousel Ordinal is one-indexed
     }
   }
   return -1;
