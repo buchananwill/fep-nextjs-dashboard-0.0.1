@@ -7,6 +7,7 @@ import Nav from './navbar/nav';
 import React, { Suspense } from 'react';
 
 import Loading from './loading';
+import TooltipsContextProvider from './components/tooltips/tooltips-context-provider';
 
 enableMapSet();
 
@@ -24,14 +25,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
-        <Suspense>
-          <Nav />
-        </Suspense>
-        <main className="p-4 md:p-10 mx-auto max-w-full">
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </main>
-        <Analytics />
-        {/*<Toast />*/}
+        <TooltipsContextProvider disabled={false}>
+          <Suspense>
+            <Nav />
+          </Suspense>
+          <main className="p-4 md:p-10 mx-auto max-w-full">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </main>
+          <Analytics />
+          {/*<Toast />*/}
+        </TooltipsContextProvider>
       </body>
     </html>
   );

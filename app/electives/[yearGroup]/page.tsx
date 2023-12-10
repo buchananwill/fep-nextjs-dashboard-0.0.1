@@ -1,12 +1,11 @@
 import { Card, Text, Title } from '@tremor/react';
 import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
-import { reconstructTableWithDimensions } from '../../utils/tables';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshDropdown } from '../../components/refresh-dropdown';
 import FilteredStudentsCard from '../filtered-students-card';
 import ElectiveContextProvider from '../elective-context-provider';
-import ToolTipsToggle from '../tool-tips-toggle';
+import ToolTipsToggle from '../../components/tooltips/tool-tips-toggle';
 import { Suspense } from 'react';
 
 import { ElectiveFilters } from '../elective-filters';

@@ -11,6 +11,12 @@ import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import { da } from 'date-fns/locale';
 import { FilterOption } from '../api/state-types';
+import TooltipsContext from '../components/tooltips/tooltips-context';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '../components/tooltips/tooltip';
 
 const aLevelClassLimitInt = 25;
 
@@ -61,6 +67,7 @@ function getFiltered(courseFilters: FilterOption<string>[], uuid: string) {
 
 const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const { name, carouselOrdinal, electiveOrdinal, id, courseId } = data;
+  const { showTooltips } = useContext(TooltipsContext);
 
   const [subscribers, setSubscribers] = useState(0);
   const [borderVisible, setBorderVisible] = useState('border-transparent');
@@ -116,35 +123,42 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
     'py-0'
   ];
   return (
-    <InteractiveTableCard additionalClassNames={additionalClassNames}>
-      {isPending && (
-        <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
-          <span className="loading loading-ring loading-sm"></span>
-        </div>
-      )}
-      <div className="indicator grow ">
-        {getFiltered(courseFilters, courseId) && (
-          <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
-        )}
-        <div
-          className="px-1 py-3 cursor-pointer grow inline"
-          onClick={() => {
-            handleCardClick(id);
-          }}
-        >
-          <Text className="text-xs">{name}</Text>
-        </div>
-      </div>
+    <Tooltip enabled={showTooltips}>
+      <TooltipTrigger>
+        <InteractiveTableCard additionalClassNames={additionalClassNames}>
+          {isPending && (
+            <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
+              <span className="loading loading-ring loading-sm"></span>
+            </div>
+          )}
+          <div className="indicator grow ">
+            {getFiltered(courseFilters, courseId) && (
+              <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
+            )}
+            <div
+              className="px-1 py-3 cursor-pointer grow inline"
+              onClick={() => {
+                handleCardClick(id);
+              }}
+            >
+              <Text className="text-xs">{name}</Text>
+            </div>
+          </div>
 
-      <FillableButton
-        pinIcon={PinIcons.mortarBoard}
-        className={`${highlightText} mr-1`}
-        isPinned={highlightText != ''}
-        setPinned={() => handleMortarBoardClick(courseId)}
-      ></FillableButton>
-      <Badge color={classesColor}>{numberOfClasses} </Badge>
-      <Badge color={subscribersColor}>{subscribers}</Badge>
-    </InteractiveTableCard>
+          <FillableButton
+            pinIcon={PinIcons.mortarBoard}
+            className={`${highlightText} mr-1`}
+            isPinned={highlightText != ''}
+            setPinned={() => handleMortarBoardClick(courseId)}
+          ></FillableButton>
+          <Badge color={classesColor}>{numberOfClasses} </Badge>
+          <Badge color={subscribersColor}>{subscribers}</Badge>
+        </InteractiveTableCard>
+      </TooltipTrigger>
+      <TooltipContent>
+        Click the mortar board to show the locations of matching courses.
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
