@@ -124,7 +124,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   ];
   return (
     <Tooltip enabled={showTooltips}>
-      <TooltipTrigger>
+      <TooltipTrigger className="outline-0 w-full border-0">
         <InteractiveTableCard additionalClassNames={additionalClassNames}>
           {isPending && (
             <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
@@ -156,7 +156,16 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
         </InteractiveTableCard>
       </TooltipTrigger>
       <TooltipContent>
-        Click the mortar board to show the locations of matching courses.
+        <div className="text-sm w-48 text-center bg-gray-700 text-gray-300 rounded-md p-2">
+          <p>
+            Click the<strong> card </strong> to filter students taking this
+            course.
+          </p>{' '}
+          <p>
+            Click the <strong> mortar board </strong> to show the locations of
+            matching courses.
+          </p>
+        </div>
       </TooltipContent>
     </Tooltip>
   );

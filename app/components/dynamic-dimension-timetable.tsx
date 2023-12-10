@@ -27,6 +27,7 @@ interface Props<H, D> {
   tableContents: TabularDTO<H, D>;
   headerTransformer: HeaderTransformer<H>;
   cellDataTransformer: CellDataTransformer<D>;
+  className?: string;
 }
 
 export default function DynamicDimensionTimetable<H, D>({
@@ -37,7 +38,8 @@ export default function DynamicDimensionTimetable<H, D>({
     numberOfRows
   },
   headerTransformer: HeaderTransformerComponent,
-  cellDataTransformer: CellTransformerComponent
+  cellDataTransformer: CellTransformerComponent,
+  className
 }: Props<H, D>) {
   const mainTable = reconstructTableWithDimensions<D>(
     cellDataAndMetaData,
@@ -60,13 +62,14 @@ export default function DynamicDimensionTimetable<H, D>({
           ))}
         </TableRow>
       </TableHead>
-      <TableBody>
+      <TableBody className="divide-y-0">
         {mainTable.map((row, rowIndex) => (
           <TableRow key={`row-${rowIndex}`}>
             {row.map((data, cellIndex) => (
               <TableCell
                 key={`cell-${rowIndex}-${cellIndex}`}
                 className="p-0 max-w-fit"
+                style={{ borderTop: 'none', borderBottom: 'none' }}
                 aria-labelledby={`header-${cellIndex}`}
               >
                 <CellTransformerComponent data={data} />
