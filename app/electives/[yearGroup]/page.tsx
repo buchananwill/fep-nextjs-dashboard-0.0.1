@@ -141,9 +141,7 @@ export default async function ElectivesPage({
                     />
                   </BigTableCard>
 
-                  <FilteredStudentsCard
-                    electiveAvailability={electiveAvailability}
-                  ></FilteredStudentsCard>
+                  <FilteredStudentsCard></FilteredStudentsCard>
                 </div>
               ) : (
                 <>
