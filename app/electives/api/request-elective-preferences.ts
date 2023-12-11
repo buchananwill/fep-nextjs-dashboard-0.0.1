@@ -1,26 +1,22 @@
 import { revalidateTag } from 'next/cache';
 
-import { ElectiveState } from '../electives/elective-reducers';
-import { ElectivePreferenceDTO } from './dto-interfaces';
+import { ElectiveState } from '../elective-reducers';
+import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 export const fetchElectiveYearGroupWithAllStudents = async (
-  yearGroup: number,
-  cacheSetting: RequestCache
+  yearGroup: number
 ) => {
   const tag = 'electives';
-
-  if (cacheSetting == 'reload') revalidateTag(tag);
 
   const fetchURL = `${apiBaseUrl}/electives-yeargroup-with-all-students/${yearGroup}`;
 
   try {
     const response = await fetch(fetchURL, {
-      next: { revalidate: 300, tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      // cache: cacheSetting, // *default, no-cache, reload, force-cache, only-if-cached
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'

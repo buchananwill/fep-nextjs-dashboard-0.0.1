@@ -1,5 +1,5 @@
 import { Card, Text, Title } from '@tremor/react';
-import { fetchElectiveYearGroupWithAllStudents } from '../../api/request-elective-preferences';
+import { fetchElectiveYearGroupWithAllStudents } from '../api/request-elective-preferences';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import { RefreshDropdown } from '../../components/refresh-dropdown';
@@ -48,10 +48,7 @@ export default async function ElectivesPage({
   }
 
   const yearGroupElectiveData: YearGroupElectives =
-    await fetchElectiveYearGroupWithAllStudents(
-      yearGroupAsNumber,
-      requestCacheValue
-    );
+    await fetchElectiveYearGroupWithAllStudents(yearGroupAsNumber);
 
   // Initialize with empty arrays or nulls
   let tableCellsData: CellDataAndMetaData<ElectiveDTO>[] = [];
@@ -125,7 +122,7 @@ export default async function ElectivesPage({
             <span className="grow"></span>
 
             <ToolTipsToggle></ToolTipsToggle>
-            <RefreshDropdown />
+            {/*<RefreshDropdown />*/}
           </div>
           <ElectiveFilters electiveDTOList={electiveDTOList}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">

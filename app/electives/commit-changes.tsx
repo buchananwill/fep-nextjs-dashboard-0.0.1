@@ -9,7 +9,7 @@ import {
 } from 'next/navigation';
 import { Fragment, useState, useTransition } from 'react';
 import { ElectiveContext } from './elective-context';
-import { updateElectiveAssignments } from '../api/request-elective-preferences';
+import { updateElectiveAssignments } from './api/request-elective-preferences';
 import { revalidateTag } from 'next/cache';
 import { CacheSetting } from '../components/refresh-dropdown';
 import { Dialog, Transition } from '@headlessui/react';
