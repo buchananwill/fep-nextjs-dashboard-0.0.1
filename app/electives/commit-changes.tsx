@@ -13,6 +13,13 @@ import { updateElectiveAssignments } from '../api/request-elective-preferences';
 import { revalidateTag } from 'next/cache';
 import { CacheSetting } from '../components/refresh-dropdown';
 import { Dialog, Transition } from '@headlessui/react';
+import TooltipsContext from '../components/tooltips/tooltips-context';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '../components/tooltips/tooltip';
+import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
 interface Props {
   children: React.ReactNode;
@@ -25,6 +32,7 @@ const CommitChanges = ({ children }: Props) => {
   const { replace } = useRouter();
   const pathname = usePathname();
   let [isOpen, setIsOpen] = useState(false);
+  const { showTooltips } = useContext(TooltipsContext);
 
   function closeModal() {
     setIsOpen(false);
@@ -81,19 +89,28 @@ const CommitChanges = ({ children }: Props) => {
 
   return (
     <div className="indicator mx-2">
-      <button
-        className={`btn normal-case`}
-        disabled={disabled || commitPending}
-        onClick={() => openModal()}
-      >
-        {!disabled && conflictCountInt && (
-          <span className="indicator-item badge badge-error">
-            {conflictCountInt}
-          </span>
-        )}
-        {children}
-        {spinner}
-      </button>
+      <Tooltip>
+        <TooltipTrigger>
+          <button
+            className={`btn normal-case`}
+            disabled={disabled || commitPending}
+            onClick={() => openModal()}
+          >
+            {!disabled && conflictCountInt && (
+              <span className="indicator-item badge badge-error">
+                {conflictCountInt}
+              </span>
+            )}
+            {children}
+            {spinner}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Submit all unsaved edits to the database.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>
           <Transition.Child

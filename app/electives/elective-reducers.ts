@@ -70,7 +70,8 @@ export type ElectiveState = {
   electiveDtoMap: Map<string, ElectiveDTO>[];
   electiveAvailability: ElectiveAvailability;
   electivePreferences: Map<number, ElectivePreferenceDTO[]>;
-  modifiedPreferences: Map<number, Set<number>>; // TODO Currently stores the preference position, but should really store the actual ID of the preference.
+  // TODO Currently stores the preference position, but should really store the actual ID of the preference.
+  modifiedPreferences: Map<number, Set<number>>;
   userRoleId: number;
 };
 
@@ -135,8 +136,10 @@ export default function electivePreferencesReducer(
     case 'focusStudent': {
       const { studentId } = action;
 
+      const isCurrentFocus = electivesState.userRoleId == studentId;
+
       return produce(electivesState, (draftState) => {
-        draftState.userRoleId = studentId;
+        draftState.userRoleId = isCurrentFocus ? NaN : studentId;
       });
     }
 

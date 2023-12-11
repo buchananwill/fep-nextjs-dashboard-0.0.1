@@ -37,7 +37,7 @@ export function ToggleElectivePreferenceActive({
   return (
     <input
       type="checkbox"
-      className="toggle toggle-success ml-2"
+      className="toggle toggle-success ml-2 min-h-0"
       defaultChecked={
         electivePreferenceDTOS[electivePreference.preferencePosition - 1].active
       } // preferencePosition is one-indexed

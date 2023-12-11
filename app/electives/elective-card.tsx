@@ -43,7 +43,7 @@ const getBorderVisible = (
   carouselOptionId: number
 ) => {
   const { userRoleId } = electiveState;
-  return electiveState?.electivePreferences
+  return electiveState.electivePreferences
     .get(userRoleId)
     ?.some(
       (electivePreference) =>
@@ -65,7 +65,7 @@ function getFiltered(courseFilters: FilterOption<string>[], uuid: string) {
 }
 
 const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
-  const { name, carouselOrdinal, electiveOrdinal, id, courseId } = data;
+  const { name, carouselOrdinal, id, courseId } = data;
   const { showTooltips } = useContext(TooltipsContext);
 
   const [subscribers, setSubscribers] = useState(0);
@@ -122,15 +122,15 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
     'py-0'
   ];
   return (
-    <Tooltip enabled={showTooltips}>
-      <TooltipTrigger className="outline-0 w-full border-0">
-        <InteractiveTableCard additionalClassNames={additionalClassNames}>
+    <InteractiveTableCard additionalClassNames={additionalClassNames}>
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger className="outline-0 w-full border-0">
           {isPending && (
             <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
               <span className="loading loading-ring loading-sm"></span>
             </div>
           )}
-          <div className="indicator grow ">
+          <div className="indicator grow w-full">
             {getFiltered(courseFilters, courseId) && (
               <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
             )}
@@ -143,30 +143,51 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
               <Text className="text-xs">{name}</Text>
             </div>
           </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            <p>
+              Click the<strong> subject name </strong> to filter students taking
+              this course.
+            </p>{' '}
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
 
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger className="m-0 outline-0 border-o">
           <FillableButton
             pinIcon={PinIcons.mortarBoard}
-            className={`${highlightText} mr-1`}
+            className={`${highlightText} mr-1 align-middle py-2`}
             isPinned={highlightText != ''}
             setPinned={() => handleMortarBoardClick(courseId)}
           ></FillableButton>
-          <Badge color={classesColor}>{numberOfClasses} </Badge>
-          <Badge color={subscribersColor}>{subscribers}</Badge>
-        </InteractiveTableCard>
-      </TooltipTrigger>
-      <TooltipContent>
-        <StandardTooltipContent>
-          <p>
-            Click the<strong> subject name </strong> to filter students taking
-            this course.
-          </p>{' '}
-          <p>
-            Click the <strong> mortar board </strong> to show the locations of
-            matching courses.
-          </p>
-        </StandardTooltipContent>
-      </TooltipContent>
-    </Tooltip>
+        </TooltipTrigger>
+        <TooltipContent className="">
+          <StandardTooltipContent>
+            <p>
+              Click the <strong> mortar board </strong> to show the locations of
+              matching courses.
+            </p>
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger>
+          <div className="py-2">
+            <Badge color={classesColor}>{numberOfClasses} </Badge>
+            <Badge color={subscribersColor}>{subscribers}</Badge>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Number of classes in this block, with a max size of{' '}
+            {aLevelClassLimitInt} students.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
+    </InteractiveTableCard>
   );
 };
 

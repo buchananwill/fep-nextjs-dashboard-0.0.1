@@ -14,6 +14,13 @@ import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
 } from './elective-filter-context';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '../components/tooltips/tooltip';
+import TooltipsContext from '../components/tooltips/tooltips-context';
+import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -51,6 +58,8 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
 
   const distinctCourses = createDistinctFilterOptions(electiveDTOList);
 
+  const { showTooltips } = useContext(TooltipsContext);
+
   function handleUnionIntersection(value: string) {
     dispatch({
       type: 'setFilterType',
@@ -68,39 +77,72 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
   }
 
   return (
-    <Card className="max-w-5xl my-0 p-4 flex flex-row justify-between sticky top-4 z-30 select-none">
-      <Text className={'absolute top-1 left-2'}>Filters</Text>
-      <FilterDropdown
-        filterOptions={distinctCourses}
-        filterReducerType={'setCourseFilters'}
-        filterContextProperty={'courseFilters'}
-      ></FilterDropdown>
-      <label className="swap ml-2 w-32">
-        <input
-          type={'checkbox'}
-          className="inline w-32"
-          value={filterType}
-          onChange={(e) => handleUnionIntersection(e.target.value)}
-        />
-        <div className="swap-off ">
-          <Union size={48} className={''}>
-            <span>Match {filterType}</span>
-          </Union>
-        </div>
-        <div className="swap-on">
-          <Intersection size={48} className={''}>
-            <span>Match {filterType}</span>
-          </Intersection>
-        </div>
-      </label>
+    <Card className="max-w-5xl my-0 p-2 flex flex-row justify-between sticky top-4 z-30 select-none">
+      <Tooltip>
+        <TooltipTrigger>
+          <FilterDropdown
+            filterOptions={distinctCourses}
+            filterReducerType={'setCourseFilters'}
+            filterContextProperty={'courseFilters'}
+          ></FilterDropdown>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Select <strong>course</strong> types to filter students.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger>
+          <label className="swap ml-2 w-32">
+            <input
+              type={'checkbox'}
+              className="inline w-32"
+              value={filterType}
+              onChange={(e) => handleUnionIntersection(e.target.value)}
+            />
+            <div className="swap-off ">
+              <Union size={48} className={''}>
+                <span>Match {filterType}</span>
+              </Union>
+            </div>
+            <div className="swap-on">
+              <Intersection size={48} className={''}>
+                <span>Match {filterType}</span>
+              </Intersection>
+            </div>
+          </label>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            <p>
+              <strong>All: </strong> filter students enrolled in all selected
+              course types.
+            </p>
+            <p>
+              <strong>Any: </strong>filter students enrolled in any of the
+              selected course types.
+            </p>
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
       <div className="flex flew-row items-center">
         <Text className="mr-2">Reset: </Text>
-        <FillableButton
-          pinIcon={PinIcons.mortarBoard}
-          className={''}
-          isPinned={false}
-          setPinned={handleResetMortarBoards}
-        ></FillableButton>
+        <Tooltip enabled={showTooltips}>
+          <TooltipTrigger>
+            <FillableButton
+              pinIcon={PinIcons.mortarBoard}
+              className={''}
+              isPinned={false}
+              setPinned={handleResetMortarBoards}
+            ></FillableButton>
+          </TooltipTrigger>
+          <TooltipContent>
+            <StandardTooltipContent>
+              Reset highlighted mortar boards.
+            </StandardTooltipContent>
+          </TooltipContent>
+        </Tooltip>
       </div>
       <CommitChanges>Commit Changes</CommitChanges>
     </Card>

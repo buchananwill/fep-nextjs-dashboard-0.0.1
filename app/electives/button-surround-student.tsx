@@ -3,6 +3,13 @@ import { StudentDTO } from '../api/dto-interfaces';
 import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '../components/tooltips/tooltip';
+import TooltipsContext from '../components/tooltips/tooltips-context';
+import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
 export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
   data: { id },
@@ -16,6 +23,8 @@ export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
     electivePreferences
   } = useContext(ElectiveContext);
   const dispatch = useContext(ElectiveDispatchContext);
+
+  const { showTooltips } = useContext(TooltipsContext);
 
   function handleRadioClick(clickedId: number) {
     dispatch({
@@ -52,27 +61,58 @@ export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
 
   return (
     <>
-      <FillableButton
-        pinIcon={PinIcons.arrowLeftCircle}
-        className="z-20"
-        isPinned={id == userRoleId}
-        setPinned={() => handleRadioClick(id)}
-      ></FillableButton>
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger>
+          <FillableButton
+            pinIcon={PinIcons.arrowLeftCircle}
+            className="z-20"
+            isPinned={id == userRoleId}
+            setPinned={() => handleRadioClick(id)}
+          ></FillableButton>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Click the <strong>arrow</strong> to show options enrolled by this
+            student.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
 
       {children}
 
-      <FillableButton
-        pinIcon={PinIcons.mapPin}
-        className="z-20"
-        isPinned={pinnedStudents.has(id)}
-        setPinned={() => handlePinnedStudent(id)}
-      ></FillableButton>
-      <FillableButton
-        pinIcon={PinIcons.mortarBoard}
-        className={`mr-1`}
-        isPinned={false}
-        setPinned={() => handleMortarBoardClick(id)}
-      ></FillableButton>
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger>
+          <FillableButton
+            pinIcon={PinIcons.mapPin}
+            className="z-20 py-1"
+            isPinned={pinnedStudents.has(id)}
+            setPinned={() => handlePinnedStudent(id)}
+          ></FillableButton>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Click the <strong>pin</strong> to keep this student in the filtered
+            list.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip enabled={showTooltips}>
+        <TooltipTrigger>
+          <FillableButton
+            pinIcon={PinIcons.mortarBoard}
+            className={`mr-1 py-1`}
+            isPinned={false}
+            setPinned={() => handleMortarBoardClick(id)}
+          ></FillableButton>
+        </TooltipTrigger>
+        <TooltipContent>
+          <StandardTooltipContent>
+            Click the <strong>mortar board</strong> to show all the options
+            delivering the student{"'"}s active elective preferences.
+          </StandardTooltipContent>
+        </TooltipContent>
+      </Tooltip>
     </>
   );
 };

@@ -69,7 +69,6 @@ export default function DynamicDimensionTimetable<H, D>({
               <TableCell
                 key={`cell-${rowIndex}-${cellIndex}`}
                 className="p-0 max-w-fit"
-                style={{ borderTop: 'none', borderBottom: 'none' }}
                 aria-labelledby={`header-${cellIndex}`}
               >
                 <CellTransformerComponent data={data} />

@@ -121,7 +121,7 @@ export default async function ElectivesPage({
         <ElectiveFilterContextProvider>
           <div className="flex w-full items-baseline grow-0 mb-2">
             <Title>Option Blocks</Title>
-            <Text className="mx-2">Subscription Analysis</Text>
+            <Text className="mx-2">Enrollment Analysis</Text>
             <span className="grow"></span>
 
             <ToolTipsToggle></ToolTipsToggle>

@@ -21,7 +21,8 @@ export const ButtonStudent: ButtonTransformer<StudentDTO> = ({
       </TooltipTrigger>
       <TooltipContent>
         <StandardTooltipContent>
-          Click to view student elective preferences
+          Click the <strong>name tag</strong> to view student elective
+          preferences
         </StandardTooltipContent>
       </TooltipContent>
     </Tooltip>
