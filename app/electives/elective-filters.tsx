@@ -78,7 +78,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
 
   return (
     <Card className="max-w-5xl my-0 p-2 flex flex-row justify-between sticky top-4 z-30 select-none">
-      <Tooltip>
+      <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
           <FilterDropdown
             filterOptions={distinctCourses}

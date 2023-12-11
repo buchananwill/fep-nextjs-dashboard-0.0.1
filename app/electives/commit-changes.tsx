@@ -89,7 +89,7 @@ const CommitChanges = ({ children }: Props) => {
 
   return (
     <div className="indicator mx-2">
-      <Tooltip>
+      <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
           <button
             className={`btn normal-case`}
