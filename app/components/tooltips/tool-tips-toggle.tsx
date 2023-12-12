@@ -1,8 +1,6 @@
 'use client';
 import { Text } from '@tremor/react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import path from 'path';
-import React, { useContext, useTransition } from 'react';
+import React, { useContext } from 'react';
 import TooltipsContext from './tooltips-context';
 
 const ToolTipsToggle = () => {

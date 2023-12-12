@@ -1,11 +1,8 @@
 import { NextRequest } from 'next/server';
 import { fetchAllPeriodsInCycle } from '../../../../timetables/api/route';
+import { fetch } from 'next/dist/compiled/@edge-runtime/primitives';
 
-export const GET = (request: NextRequest) => {
-  const searchParams = request.nextUrl.searchParams;
-  searchParams.get('scheduleId');
-  return { status: 200, body: [] };
-};
+const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 export async function getFormattedPeriodsInCycle() {
   const allPeriodsInCycle = await fetchAllPeriodsInCycle();
@@ -20,10 +17,19 @@ export async function getFormattedPeriodsInCycle() {
 }
 
 export async function getLessonCycleMetricsWithInfinityCosts(schedule: string) {
-  const apiBaseUrl = process.env.API_ACADEMIC_URL;
-
   return await fetch(
     `${apiBaseUrl}/get-list-of-lesson-cycle-metrics-with-infinity-costs?scheduleId=${schedule}`,
     {}
+  );
+}
+
+export async function getLessonCycleBuildMetricSummary(lessonCycleId: string) {
+  return await fetch(
+    `${apiBaseUrl}/get-lesson-cycle-build-metric-summary?lessonCycleId=${lessonCycleId}`,
+    {
+      headers: {
+        Accept: 'application/json'
+      }
+    }
   );
 }

@@ -3,13 +3,14 @@ import {
   Period,
   TabularDTO
 } from '../../../api/dto-interfaces';
-import { Card } from '@tremor/react';
+import { Button, Card } from '@tremor/react';
 import LessonCycleSelector from './lesson-cycle-selector';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../components/dynamic-dimension-timetable';
 import { BuildMetricPeriodCardTransformer } from './period-card';
 import React from 'react';
+import Link from 'next/link';
 
 export function LessonCycleBuildMetricsCard({
   nameIdStringTuples,
@@ -24,10 +25,18 @@ export function LessonCycleBuildMetricsCard({
 }) {
   return (
     <Card>
-      Build metrics for the lesson cycles in schedule {schedule}
+      Instances of (Finite cost - Infinite cost) in Lesson Cycles for{' '}
+      <Link href={'/build-metrics/2'}>
+        <Button
+          color="gray"
+          className="ml-2 hover:bg-gray-400 outline-0 border-0"
+        >
+          Schedule {schedule}
+        </Button>
+      </Link>
       {nameIdStringTuples.length > 0 && (
         <LessonCycleSelector
-          selected={selectedLessonCycle}
+          selectedProp={selectedLessonCycle}
           availableLessonCycleMetrics={nameIdStringTuples}
         />
       )}

@@ -1,4 +1,4 @@
-import { Card, Text, Title } from '@tremor/react';
+import { Button, Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
 import { BuildMetricDTO } from '../../api/dto-interfaces';
 import {
@@ -8,6 +8,7 @@ import {
 import MetricsContextProvider from './metrics-context-provider';
 import DropdownParam from '../../components/dropdown-param';
 import React from 'react';
+import Link from 'next/link';
 
 export default async function BuildMetricsOverview({
   params: { schedule }
@@ -29,6 +30,14 @@ export default async function BuildMetricsOverview({
             Build Metric Overview, Schedule {scheduleId}
           </Title>
           <DropdownParam paramOptions={filteredIds} />
+          <Link href={'/build-metrics/lesson-cycles/2'}>
+            <Button
+              color="gray"
+              className="ml-2 hover:bg-gray-400 outline-0 border-0"
+            >
+              Lesson Cycles
+            </Button>
+          </Link>
         </div>
         <Text>
           Total allocation loops: {buildMetricDto.totalAllocationLoops}

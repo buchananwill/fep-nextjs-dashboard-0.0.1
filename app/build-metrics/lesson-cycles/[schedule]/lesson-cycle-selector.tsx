@@ -1,59 +1,42 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
-import React, { Fragment, startTransition, useEffect, useState } from 'react';
+import React, { Fragment, startTransition, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { NameIdStringTuple } from '../../../api/dto-interfaces';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function LessonCycleSelector({
   availableLessonCycleMetrics,
-  selected
+  selectedProp
 }: {
   availableLessonCycleMetrics: NameIdStringTuple[];
-  selected: NameIdStringTuple;
+  selectedProp: NameIdStringTuple;
 }) {
+  const [selected, setSelected] = useState(availableLessonCycleMetrics[0]);
   const { push } = useRouter();
   const pathname = usePathname();
-  const readonlyURLSearchParams = useSearchParams();
-  const params = new URLSearchParams(window.location.search);
-  const selectedId = params.get('q');
 
-  const foundLessonCycleMetric = availableLessonCycleMetrics.find(
-    (tuple) => tuple.id === selectedId
-  );
+  const updateSearchParams = (updatedSelection: NameIdStringTuple) => {
+    const params = new URLSearchParams(window.location.search);
 
-  const setSelected = (selected: NameIdStringTuple) => {
-    if (!pathname) throw new Error('No pathname found');
-
-    params.set('q', selected.id);
-
-    console.log(
-      selectedId,
-      ' ??= ',
-      selected.id,
-      readonlyURLSearchParams,
-      params
-    );
+    params.set('lessonCycle', updatedSelection.id);
 
     startTransition(() => {
-      push(`${pathname}?${params.toString()}`);
+      push(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
-  useEffect(() => {}, []);
-
-  console.log('Selected: ', selected);
-  console.log('Tuple: ', foundLessonCycleMetric);
+  console.log('selected prop:', selectedProp);
 
   return (
-    <Listbox value={foundLessonCycleMetric} by={'id'} onChange={setSelected}>
+    <Listbox value={selectedProp} by={'id'} onChange={updateSearchParams}>
       <div className="relative mt-1 z-40">
         <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
           <span className="block truncate">
             Selected Lesson Cycle:{' '}
-            {selected ? (
-              <strong>{selected.name}</strong>
+            {selectedProp ? (
+              <strong>{selectedProp.name}</strong>
             ) : (
               'No Lesson Cycle Selected'
             )}
