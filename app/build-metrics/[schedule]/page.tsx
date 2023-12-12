@@ -1,12 +1,15 @@
 import { Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
-import { BuildMetricDTO } from '../../../api/dto-interfaces';
-import { fetchBuildMetricDto, fetchScheduleIds } from '../../api/route';
+import { BuildMetricDTO } from '../../api/dto-interfaces';
+import {
+  fetchBuildMetricDto,
+  fetchScheduleIds
+} from '../../timetables/api/route';
 import MetricsContextProvider from './metrics-context-provider';
-import DropdownParam from '../../../components/dropdown-param';
+import DropdownParam from '../../components/dropdown-param';
 import React from 'react';
 
-export default async function MetricsPage({
+export default async function BuildMetricsOverview({
   params: { schedule }
 }: {
   params: { schedule: string };

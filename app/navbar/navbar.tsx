@@ -49,9 +49,11 @@ export default function Navbar({
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
 
-  const timetablesDropdown = [
-    { name: 'Timetables', href: `/${scheduleId}` },
-    { name: 'Build Metrics', href: `/build-metrics/${scheduleId}` }
+  const timetablesDropdown = [{ name: 'Overview', href: `/${scheduleId}` }];
+
+  const buildMetricsDropdown = [
+    { name: 'Overview', href: `/${scheduleId}` },
+    { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
   ];
 
   const navigation = [
@@ -60,6 +62,11 @@ export default function Navbar({
       name: 'Timetables',
       href: '/timetables',
       dropdownItems: timetablesDropdown
+    },
+    {
+      name: 'Build Metrics',
+      href: `/build-metrics`,
+      dropdownItems: buildMetricsDropdown
     },
     { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
     {
@@ -78,7 +85,7 @@ export default function Navbar({
   };
 
   return (
-    <Disclosure as="nav" className="bg-white shadow-sm">
+    <Disclosure as="menu" className="bg-white shadow-sm">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

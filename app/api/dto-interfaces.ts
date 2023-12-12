@@ -125,3 +125,17 @@ export interface BuildMetricDTO extends HasUuid {
 }
 
 export const notAnId = 'notAnId';
+
+export interface LessonCycleMetricDTO extends HasNumberId {
+  lessonCycleId: string;
+  periodIdList: number[];
+  infinityCostCount: number;
+  finiteCostCount: number;
+}
+
+export interface LessonCycleMetricSummary extends HasUuid {
+  lessonCycleMetrics: LessonCycleMetricDTO[];
+  lessonCycleSummary: string;
+}
+
+export interface NameIdStringTuple extends HasUuid, Nameable {}

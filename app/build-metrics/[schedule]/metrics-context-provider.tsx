@@ -1,6 +1,6 @@
 'use client';
 
-import { BuildMetricDTO } from '../../../api/dto-interfaces';
+import { BuildMetricDTO } from '../../api/dto-interfaces';
 import { ReactNode } from 'react';
 import { MetricsContext } from './metrics-context';
 

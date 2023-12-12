@@ -6,6 +6,7 @@ import {
   TabularDTO
 } from '../../api/dto-interfaces';
 import { NextRequest } from 'next/server';
+import Error from 'next/error';
 
 interface SearchParams {
   id: number;
@@ -39,10 +40,10 @@ export const fetchAllPeriodsInCycle = async (): Promise<
 
   try {
     const response = await fetch(fetchURL, {
-      // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
+      next: { revalidate: 3600 }, // Next collection tag for revalidation handling.
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
@@ -112,6 +113,11 @@ export const fetchAllLessonCycles = async (
       // body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
 
+    if (response.status != 200) {
+      console.log(response);
+      return [];
+    }
+
     return response.json();
   } catch (error) {
     console.error('Error fetching data: ', error);
@@ -120,10 +126,6 @@ export const fetchAllLessonCycles = async (
 };
 
 export const PUT = async (request: NextRequest) => {
-  const tag = 'electiveAssignments';
-
-  console.log('Request inside API: ', request);
-
   const requestArray = await request.json();
 
   // const swapObject = [periodId1, periodId2, scheduleId];
@@ -135,7 +137,7 @@ export const PUT = async (request: NextRequest) => {
       // next: { tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-store', //cacheSetting *default, no-cache, reload, force-cache, only-if-cached
+      cache: 'no-cache', //cacheSetting *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'

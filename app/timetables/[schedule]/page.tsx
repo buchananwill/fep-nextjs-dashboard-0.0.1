@@ -22,6 +22,7 @@ import { bold } from 'next/dist/lib/picocolors';
 import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
 import DropdownParam from '../../components/dropdown-param';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,6 +68,24 @@ export default async function TimetablesPage({
       <SubjectFilters lessonCycleList={lessonCycleArray}></SubjectFilters>
       <div className="flex w-full items-top justify-between pt-4  select-none">
         <BigTableCard>
+          {allLessonCycles.length == 0 && (
+            <>
+              <Text className="max-w-2xl">
+                No lesson cycles were returned from the database. The schedule
+                build may not have completed.
+              </Text>
+              <Text>
+                {' '}
+                Recommendation: consult the corresponding{' '}
+                <Link
+                  href={`/build-metrics/${scheduleId}`}
+                  className="text-gray-950 font-bold hover:text-accent"
+                >
+                  Build Metric.
+                </Link>
+              </Text>
+            </>
+          )}
           <PendingScheduleEditionModal></PendingScheduleEditionModal>
           <DynamicDimensionTimetable<string, Period>
             tableContents={allPeriodsInCycle}

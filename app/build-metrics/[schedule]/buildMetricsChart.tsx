@@ -1,6 +1,6 @@
 'use client';
 import { LineChart } from '@tremor/react';
-import { BuildMetricDTO, QueueTreeNodeDTO } from '../../../api/dto-interfaces';
+import { BuildMetricDTO, QueueTreeNodeDTO } from '../../api/dto-interfaces';
 import { CustomToolTip } from './custom-metric-tooltip';
 
 const chartData: QueueTreeNodeDTO[] = [
