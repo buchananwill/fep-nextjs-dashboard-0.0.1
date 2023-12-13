@@ -50,6 +50,8 @@ export default async function TimetablesPage({
   const scheduleIds = await fetchScheduleIds();
   const filteredIds = scheduleIds.map((value) => value.toString());
 
+  console.log('schedule id:', scheduleId);
+
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(

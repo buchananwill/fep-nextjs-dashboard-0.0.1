@@ -1,4 +1,4 @@
-import { ButtonSurroundTransformer } from '../components/list-disclosure-panel';
+import { ButtonClusterTransformer } from '../components/list-disclosure-panel';
 import { StudentDTO } from '../api/dto-interfaces';
 import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
@@ -11,7 +11,7 @@ import {
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
-export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
+export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
   data: { id },
   className,
   children
@@ -60,12 +60,12 @@ export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
   }
 
   return (
-    <>
+    <div className="flex align-baseline">
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
           <FillableButton
             pinIcon={PinIcons.arrowLeftCircle}
-            className="z-20"
+            className="z-20 py-1"
             isPinned={id == userRoleId}
             setPinned={() => handleRadioClick(id)}
           ></FillableButton>
@@ -113,6 +113,6 @@ export const ButtonSurroundStudent: ButtonSurroundTransformer<StudentDTO> = ({
           </StandardTooltipContent>
         </TooltipContent>
       </Tooltip>
-    </>
+    </div>
   );
 };

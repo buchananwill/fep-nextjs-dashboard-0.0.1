@@ -47,8 +47,6 @@ export const updateElectiveAssignments = async ({
 
   const fetchURL = `option-block-assignments`;
 
-  console.log('Inside first function: ', fetchURL);
-
   const ePrefList: ElectivePreferenceDTO[] = [];
 
   for (let value of electivePreferences.keys()) {
@@ -61,8 +59,6 @@ export const updateElectiveAssignments = async ({
       );
     }
   }
-
-  console.log('body in first function: ', ePrefList);
 
   try {
     const response = await fetch(fetchURL, {

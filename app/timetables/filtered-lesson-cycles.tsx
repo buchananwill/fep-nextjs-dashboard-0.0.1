@@ -2,8 +2,8 @@
 import { LessonCycle } from '../api/state-types';
 import RightHandToolCard from '../components/right-hand-tool-card';
 import ListDisclosurePanel from '../components/list-disclosure-panel';
-import { ButtonTransformerLessonCycle } from './button-transformer-lesson-cycle';
-import ButtonSurroundLessonCycle from './button-surround-lesson-cycle';
+import { DisclosureButtonLessonCycle } from './disclosure-button-lesson-cycle';
+import ButtonClusterLessonCycle from './button-cluster-lesson-cycle';
 import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';
 import React, { useContext } from 'react';
 import { TimetablesContext } from './timetables-context';
@@ -17,8 +17,6 @@ function filterLessonCycles(
   lessonCycleMap: Map<string, LessonCycle>
 ) {
   const setFromMap = periodIdToLessonCycleMap.get(focusPeriodId);
-
-  console.log('focusPeriodId: ', focusPeriodId);
 
   if (
     pinnedLessonCycles.size == 0 &&
@@ -63,8 +61,8 @@ export function FilteredLessonCycles({ data }: { data: LessonCycle[] }) {
       <RightHandToolCard.LowerFiveSixths>
         <ListDisclosurePanel
           data={filteredLessonCycles}
-          buttonTransformer={ButtonTransformerLessonCycle}
-          buttonSurround={ButtonSurroundLessonCycle}
+          disclosureLabelTransformer={DisclosureButtonLessonCycle}
+          buttonCluster={ButtonClusterLessonCycle}
           panelTransformer={PanelTransformerConcrete}
         />
       </RightHandToolCard.LowerFiveSixths>

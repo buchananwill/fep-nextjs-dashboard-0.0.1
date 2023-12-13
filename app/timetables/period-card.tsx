@@ -71,8 +71,6 @@ async function swapPeriods(
     body: JSON.stringify([periodId, periodId, scheduleId])
   }); //PUT(periodId, periodId, scheduleId);
 
-  console.log('Response inside period card:', response);
-
   return await response.json();
 }
 

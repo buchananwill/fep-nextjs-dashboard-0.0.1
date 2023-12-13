@@ -4,9 +4,9 @@ import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-export type ButtonSurroundTransformer<D> = React.FC<TransformerProps<D>>;
+export type ButtonClusterTransformer<D> = React.FC<TransformerProps<D>>;
 
-export type ButtonTransformer<D> = React.FC<TransformerProps<D>>;
+export type DisclosureLabelTransformer<D> = React.FC<TransformerProps<D>>;
 
 export type PanelTransformer<D> = React.FC<TransformerProps<D>>;
 
@@ -18,16 +18,16 @@ interface TransformerProps<D> {
 
 interface FilterDisclosurePanelProps<D> {
   data: D[];
-  buttonSurround: ButtonSurroundTransformer<D>;
-  buttonTransformer: ButtonTransformer<D>;
+  buttonCluster: ButtonClusterTransformer<D>;
+  disclosureLabelTransformer: DisclosureLabelTransformer<D>;
   panelTransformer: PanelTransformer<D>;
 }
 
 export default function ListDisclosurePanel<D>({
   data,
   panelTransformer: PanelTransformerComponent,
-  buttonSurround: ButtonSurroundComponent,
-  buttonTransformer: ButtonTransformerComponent
+  buttonCluster: ButtonCluster,
+  disclosureLabelTransformer: ButtonTransformerComponent
 }: FilterDisclosurePanelProps<D>) {
   try {
     return (
@@ -42,15 +42,11 @@ export default function ListDisclosurePanel<D>({
                       {({ open }) => (
                         <>
                           {' '}
-                          <div className="flex w-full items-center grow-0 justify-between rounded-lg bg-gray-100">
-                            <ButtonSurroundComponent
-                              data={element}
-                              className="w-full"
-                            >
-                              <Disclosure.Button className="border-x-2 border-dotted grow p-0 m-0 w-full text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
-                                <ButtonTransformerComponent data={element} />
-                              </Disclosure.Button>
-                            </ButtonSurroundComponent>
+                          <div className="flex w-full h-full items-center grow-0 justify-between rounded-lg bg-gray-100">
+                            <ButtonCluster data={element}></ButtonCluster>
+                            <Disclosure.Button className="box-content border-x-2 border-y-0 border-dotted h-full grow p-0 m-0 w-full text-left text-sm font-medium hover:bg-emerald-100 focus:outline-none focus-visible:ring focus-visible:ring-emerald-500/75">
+                              <ButtonTransformerComponent data={element} />
+                            </Disclosure.Button>
                             <ChevronUpIcon
                               className={`${
                                 open ? 'rotate-180 transform' : ''
@@ -73,6 +69,6 @@ export default function ListDisclosurePanel<D>({
       </>
     );
   } catch (error) {
-    console.log('Error: ', error);
+    console.error('Error: ', error);
   }
 }

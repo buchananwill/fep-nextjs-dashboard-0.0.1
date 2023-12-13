@@ -11,8 +11,6 @@ export async function PUT(request: NextRequest) {
 
   const body = await request.json();
 
-  console.log('Inside second function, request body: ', body);
-
   try {
     const response = await fetch(completeUrl, {
       // next: { tags: [tag] }, // Next collection tag for revalidation handling.

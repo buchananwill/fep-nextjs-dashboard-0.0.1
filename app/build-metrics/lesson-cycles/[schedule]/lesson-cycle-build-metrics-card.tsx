@@ -4,7 +4,7 @@ import {
   TabularDTO
 } from '../../../api/dto-interfaces';
 import { Button, Card } from '@tremor/react';
-import LessonCycleSelector from './lesson-cycle-selector';
+import NameIdTupleSelector from './name-id-tuple-selector';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../components/dynamic-dimension-timetable';
@@ -35,9 +35,10 @@ export function LessonCycleBuildMetricsCard({
         </Button>
       </Link>
       {nameIdStringTuples.length > 0 && (
-        <LessonCycleSelector
+        <NameIdTupleSelector
+          selectionDescriptor={'Selected Lesson Cycle: '}
           selectedProp={selectedLessonCycle}
-          availableLessonCycleMetrics={nameIdStringTuples}
+          selectionList={nameIdStringTuples}
         />
       )}
       <DynamicDimensionTimetable

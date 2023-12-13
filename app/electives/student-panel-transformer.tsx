@@ -42,8 +42,8 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
             <span className="grow"></span>
             <Tooltip enabled={showTooltips}>
               <TooltipTrigger className="p-0 m-0 border-0 outline-0 h-full">
-                <OptionBlockChooser electivePreference={electivePreference} />
                 <div className="indicator">
+                  <OptionBlockChooser electivePreference={electivePreference} />
                   {getAssignmentIndicator(
                     checkAssignment(
                       electiveDtoMap,

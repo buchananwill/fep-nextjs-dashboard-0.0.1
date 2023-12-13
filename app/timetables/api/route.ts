@@ -95,14 +95,16 @@ export const fetchScheduleIds = async (): Promise<number[]> => {
 export const fetchAllLessonCycles = async (
   scheduleId: number
 ): Promise<LessonCycleDTO[]> => {
-  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?id=${scheduleId}`;
+  const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?scheduleId=${scheduleId}`;
+
+  console.log('And now in the route handler: ', scheduleId, fetchURL);
 
   try {
     const response = await fetch(fetchURL, {
       // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-store', // *default, no-cache, reload, force-cache, only-if-cached
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
@@ -114,7 +116,7 @@ export const fetchAllLessonCycles = async (
     });
 
     if (response.status != 200) {
-      console.log(response);
+      console.error(response);
       return [];
     }
 

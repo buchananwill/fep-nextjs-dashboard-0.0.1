@@ -182,7 +182,7 @@ export default function timetablesReducer(
     }
     case 'setHighlightedSubjects': {
       const { subjects } = action;
-      console.log('Inside the dispatch:', subjects);
+
       return produce(timetablesState, (updatedStated) => {
         updatedStated.highlightedSubjects.clear();
         subjects?.forEach((subject) =>

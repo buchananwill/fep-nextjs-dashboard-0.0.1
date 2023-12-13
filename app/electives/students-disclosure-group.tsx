@@ -10,7 +10,7 @@ import { StudentDTO } from '../api/dto-interfaces';
 import { FilterOption } from '../api/state-types';
 import ListDisclosurePanel from '../components/list-disclosure-panel';
 import { ButtonStudent } from './button-student';
-import { ButtonSurroundStudent } from './button-surround-student';
+import { ButtonClusterStudent } from './button-cluster-student';
 import { StudentPanelTransformer } from './student-panel-transformer';
 
 function filterStudentList(
@@ -123,12 +123,12 @@ export default function StudentsDisclosureGroup() {
     return (
       <ListDisclosurePanel
         data={filteredStudents}
-        buttonSurround={ButtonSurroundStudent}
-        buttonTransformer={ButtonStudent}
+        buttonCluster={ButtonClusterStudent}
+        disclosureLabelTransformer={ButtonStudent}
         panelTransformer={StudentPanelTransformer}
       />
     );
   } catch (error) {
-    console.log('Error: ', error);
+    console.error('Error: ', error);
   }
 }

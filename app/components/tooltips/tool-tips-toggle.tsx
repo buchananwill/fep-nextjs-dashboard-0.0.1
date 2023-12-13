@@ -15,7 +15,6 @@ const ToolTipsToggle = () => {
         className="toggle toggle-xs ml-1"
         checked={showTooltips}
         onChange={() => {
-          console.log('Changing toggle.');
           setShowTooltips(!showTooltips);
         }}
       ></input>

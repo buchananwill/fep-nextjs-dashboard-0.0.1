@@ -1,5 +1,5 @@
 'use client';
-import { ButtonTransformer } from '../components/list-disclosure-panel';
+import { DisclosureLabelTransformer } from '../components/list-disclosure-panel';
 import { StudentDTO } from '../api/dto-interfaces';
 import React, { useContext } from 'react';
 import TooltipsContext from '../components/tooltips/tooltips-context';
@@ -10,7 +10,7 @@ import {
 } from '../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 
-export const ButtonStudent: ButtonTransformer<StudentDTO> = ({
+export const ButtonStudent: DisclosureLabelTransformer<StudentDTO> = ({
   data: { name }
 }) => {
   const { showTooltips } = useContext(TooltipsContext);

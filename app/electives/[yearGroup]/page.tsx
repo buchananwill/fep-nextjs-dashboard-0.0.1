@@ -108,6 +108,10 @@ export default async function ElectivesPage({
       return <>Error caught.</>;
     }
 
+    if (!yearGroupElectiveData) {
+      return <BigTableCard>No elective data found.</BigTableCard>;
+    }
+
     return (
       <ElectiveContextProvider
         electivePreferenceList={electivePreferences}
@@ -122,37 +126,21 @@ export default async function ElectivesPage({
             <span className="grow"></span>
 
             <ToolTipsToggle></ToolTipsToggle>
-            {/*<RefreshDropdown />*/}
           </div>
           <ElectiveFilters electiveDTOList={electiveDTOList}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">
             <Suspense>
-              {yearGroupElectiveData ? (
-                <div className="flex w-full items-top justify-between pt-4  select-none">
-                  <BigTableCard>
-                    <DynamicDimensionTimetable
-                      tableContents={optionBlocksTabularDTO}
-                      headerTransformer={OptionBlockHeader}
-                      cellDataTransformer={ElectiveCard}
-                    />
-                  </BigTableCard>
+              <div className="flex w-full items-top justify-between pt-4  select-none">
+                <BigTableCard>
+                  <DynamicDimensionTimetable
+                    tableContents={optionBlocksTabularDTO}
+                    headerTransformer={OptionBlockHeader}
+                    cellDataTransformer={ElectiveCard}
+                  />
+                </BigTableCard>
 
-                  <FilteredStudentsCard></FilteredStudentsCard>
-                </div>
-              ) : (
-                <>
-                  {' '}
-                  <div className="flex w-full items-top justify-between pt-4">
-                    <Card className="flex-shrink-0 flex-grow max-w-4xl max-h-[70vh]">
-                      Unable to find requested table.
-                    </Card>
-
-                    <Card className="max-w-sm ml-2 p-4 max-h-96 overflow-y-scroll sticky top-4">
-                      No yeargroup loaded.
-                    </Card>
-                  </div>
-                </>
-              )}
+                <FilteredStudentsCard></FilteredStudentsCard>
+              </div>
             </Suspense>
           </div>
         </ElectiveFilterContextProvider>

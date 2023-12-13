@@ -59,8 +59,6 @@ export function SubjectFilterDropdown({
   // }, [subjectFilters, dispatch, filterReducerType]);
 
   function handleOnChange(selection: string[]) {
-    console.log('Selection: ', selection);
-
     dispatch({
       type: 'setFilterPending',
       pending: true

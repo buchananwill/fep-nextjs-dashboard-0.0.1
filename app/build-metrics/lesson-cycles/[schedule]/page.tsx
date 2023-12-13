@@ -13,14 +13,12 @@ import LessonCycleMetricContextProvider from './lesson-cycle-metric-context-prov
 
 export default async function LessonCycleBuildMetrics({
   params: { schedule },
-  searchParams: { lessonCycle }
+  searchParams: { id }
 }: {
   params: { schedule: string };
-  searchParams: { lessonCycle: string };
+  searchParams: { id: string };
 }) {
   const allPeriodsInCycle = await getFormattedPeriodsInCycle();
-
-  console.log('search param q: ', lessonCycle);
 
   const scheduleId = parseInt(schedule);
   const response = await getLessonCycleMetricsWithInfinityCosts(schedule);
@@ -28,7 +26,7 @@ export default async function LessonCycleBuildMetrics({
   const availableLessonCycleMetrics: NameIdStringTuple[] =
     await response.json();
 
-  if (!lessonCycle) {
+  if (!id) {
     return (
       <LessonCycleBuildMetricsCard
         selectedLessonCycle={{ name: '', id: '' }}
@@ -40,11 +38,10 @@ export default async function LessonCycleBuildMetrics({
   }
 
   const foundLessonCycleMetric = availableLessonCycleMetrics.find(
-    (tuple) => tuple.id === lessonCycle
+    (tuple) => tuple.id === id
   );
 
-  const lessonCycleSummaryResponse =
-    await getLessonCycleBuildMetricSummary(lessonCycle);
+  const lessonCycleSummaryResponse = await getLessonCycleBuildMetricSummary(id);
 
   const lessonCycleMetricSummary: LessonCycleMetricSummary =
     await lessonCycleSummaryResponse.json();

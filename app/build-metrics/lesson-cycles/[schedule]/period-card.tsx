@@ -1,18 +1,14 @@
 'use client';
 import { CellDataTransformer } from '../../../components/dynamic-dimension-timetable';
 import { Period } from '../../../api/dto-interfaces';
-import React, { useContext, useEffect, useState, useTransition } from 'react';
+import React, { useContext, useState, useTransition } from 'react';
 import InteractiveTableCard from '../../../components/interactive-table-card';
 
 import { Badge } from '@tremor/react';
-
-import { FillableButton, PinIcons } from '../../../components/fillable-button';
-import { LessonCycle } from '../../../api/state-types';
 import { LessonCycleMetricContext } from './lesson-cycle-metric-context';
+
 function getColorGrade(cost: number, bound: number) {
-  const number = (Math.round((cost * 6) / bound) + 1) * 100;
-  console.log('Grade: ', number);
-  return number;
+  return (Math.round((cost * 6) / bound) + 1) * 100;
 }
 
 function getBadgeAndTextColor(cost: number, range: number[]) {
