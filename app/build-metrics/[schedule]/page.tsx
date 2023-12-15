@@ -30,7 +30,7 @@ export default async function BuildMetricsOverview({
             Build Metric Overview, Schedule {scheduleId}
           </Title>
           <DropdownParam paramOptions={filteredIds} />
-          <Link href={'/build-metrics/lesson-cycles/2'}>
+          <Link href={`/build-metrics/lesson-cycles/${scheduleId}`}>
             <Button
               color="gray"
               className="ml-2 hover:bg-gray-400 outline-0 border-0"
