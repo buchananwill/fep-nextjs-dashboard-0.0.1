@@ -118,7 +118,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
     `opacity-${opacity}`,
     borderVisible,
     carouselOptionIdSet.has(id) ? 'bg-emerald-100' : '',
-    'py-0'
+    'py-0 w-48'
   ];
   return (
     <InteractiveTableCard additionalClassNames={additionalClassNames}>
@@ -134,7 +134,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
               <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
             )}
             <div
-              className="px-1 py-3 cursor-pointer grow inline"
+              className="px-0 py-3 cursor-pointer grow inline"
               onClick={() => {
                 handleCardClick(id);
               }}

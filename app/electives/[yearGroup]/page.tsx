@@ -155,5 +155,9 @@ export default async function ElectivesPage({
 }
 
 const OptionBlockHeader: HeaderTransformer<ElectiveDTO> = ({ data }) => {
-  return <>Option Block {data.carouselOrdinal} </>;
+  return (
+    <div className="text-sm p-2 font-medium">
+      Option Block {data.carouselOrdinal}
+    </div>
+  );
 };
