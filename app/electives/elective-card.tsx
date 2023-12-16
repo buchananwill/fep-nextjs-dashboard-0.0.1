@@ -77,8 +77,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const electivesState = useContext(ElectiveContext);
   const { courseFilters } = useContext(ElectiveFilterContext);
   const dispatch = useContext(ElectiveDispatchContext);
-  const { carouselOptionId: focusCarouselOptionId, highlightedCourses } =
-    electivesState;
+  const { carouselOptionIdSet, highlightedCourses } = electivesState;
 
   useEffect(() => {
     const updatedSubscribers = calculateSubscribers(data, electivesState);
@@ -118,7 +117,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const additionalClassNames = [
     `opacity-${opacity}`,
     borderVisible,
-    id == focusCarouselOptionId ? 'bg-emerald-100' : '',
+    carouselOptionIdSet.has(id) ? 'bg-emerald-100' : '',
     'py-0'
   ];
   return (

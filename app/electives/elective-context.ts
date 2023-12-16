@@ -10,7 +10,7 @@ export const ElectiveContext = createContext<ElectiveState>({
   filterPending: false,
   filterType: FilterType.any,
   studentMap: new Map<number, StudentDTO>(),
-  carouselOptionId: 0,
+  carouselOptionIdSet: new Set(),
   electiveDtoMap: [],
   electiveAvailability: {},
   electivePreferences: new Map(),

@@ -66,7 +66,7 @@ export type ElectiveState = {
   filterPending: boolean;
   filterType: FilterType;
   studentMap: Map<number, StudentDTO>;
-  carouselOptionId: number;
+  carouselOptionIdSet: Set<number>;
   electiveDtoMap: Map<string, ElectiveDTO>[];
   electiveAvailability: ElectiveAvailability;
   electivePreferences: Map<number, ElectivePreferenceDTO[]>;
@@ -121,14 +121,15 @@ export default function electivePreferencesReducer(
 
     case 'focusCarouselOption': {
       const { carouselOptionId } = action;
-      const { carouselOptionId: oldCarouselOptionId } = electivesState;
+      const { carouselOptionIdSet: oldCarouselOptionIdSet } = electivesState;
 
-      const carouselOptionIdMatch = carouselOptionId == oldCarouselOptionId;
+      const carouselOptionIdMatch =
+        oldCarouselOptionIdSet.has(carouselOptionId);
 
       return produce(electivesState, (draftState) => {
-        draftState.carouselOptionId = carouselOptionIdMatch
-          ? NaN
-          : carouselOptionId;
+        if (!carouselOptionIdMatch)
+          draftState.carouselOptionIdSet.add(carouselOptionId);
+        else draftState.carouselOptionIdSet.delete(carouselOptionId);
         draftState.filterPending = true;
       });
     }

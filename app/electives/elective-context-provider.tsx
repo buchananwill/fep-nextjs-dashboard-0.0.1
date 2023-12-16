@@ -52,7 +52,7 @@ export default function ElectiveContextProvider({
     filterPending: false,
     filterType: FilterType.any,
     studentMap: createStudentDtoMap(studentList),
-    carouselOptionId: NaN,
+    carouselOptionIdSet: new Set(),
     electiveDtoMap: createElectiveDtoMap(electiveDtoList),
     electiveAvailability: electiveAvailability,
     electivePreferences: createElectivePreferenceRecords(

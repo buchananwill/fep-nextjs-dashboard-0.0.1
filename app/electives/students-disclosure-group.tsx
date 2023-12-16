@@ -6,7 +6,7 @@ import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
 
 import { FilterType } from './elective-filter-reducers';
-import { StudentDTO } from '../api/dto-interfaces';
+import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
 import { FilterOption } from '../api/state-types';
 import ListDisclosurePanel from '../components/list-disclosure-panel';
 import { ButtonStudent } from './button-student';
@@ -22,11 +22,12 @@ function filterStudentList(
     studentMap,
     filterType,
     pinnedStudents,
-    carouselOptionId
+    carouselOptionIdSet
   } = electiveState;
   const filteredList: StudentDTO[] = [];
 
-  if ((courseFilters && courseFilters.length > 0) || carouselOptionId) {
+  const idSetSize = carouselOptionIdSet.size;
+  if ((courseFilters && courseFilters.length > 0) || idSetSize > 0) {
     studentMap.forEach((nextStudent, nextStudentId) => {
       const isPinned = pinnedStudents.has(nextStudentId);
       const nextStudentPrefs = electivePreferences.get(nextStudentId);
@@ -48,14 +49,10 @@ function filterStudentList(
               });
             if (!couldMatch) break;
           }
-          if (carouselOptionId) {
+          if (idSetSize > 0) {
             couldMatch =
               couldMatch &&
-              nextStudentPrefs.some((electivePreference) => {
-                const { active, assignedCarouselOptionId } = electivePreference;
-                if (active && assignedCarouselOptionId == carouselOptionId)
-                  return true;
-              });
+              matchCarouselOptionIdSet(nextStudentPrefs, carouselOptionIdSet);
           }
           if (couldMatch) {
             const studentDto = studentMap.get(nextStudentId);
@@ -68,12 +65,12 @@ function filterStudentList(
               (filterOption) => active && filterOption.URI == nextUuid
             );
           });
-          if (carouselOptionId) {
+          if (idSetSize > 0) {
             anyMatch =
               anyMatch ||
               nextStudentPrefs.some((electivePreference) => {
                 const { active, assignedCarouselOptionId } = electivePreference;
-                if (active && assignedCarouselOptionId == carouselOptionId)
+                if (active && carouselOptionIdSet.has(assignedCarouselOptionId))
                   return true;
               });
           }
@@ -132,3 +129,17 @@ export default function StudentsDisclosureGroup() {
     console.error('Error: ', error);
   }
 }
+
+const matchCarouselOptionIdSet = (
+  nextStudentPrefs: ElectivePreferenceDTO[],
+  carouselOptionIdSet: Set<number>
+) => {
+  let matchesFound = 0;
+  for (let { assignedCarouselOptionId, active } of nextStudentPrefs) {
+    if (active && carouselOptionIdSet.has(assignedCarouselOptionId)) {
+      matchesFound++;
+      if (matchesFound == carouselOptionIdSet.size) return true;
+    }
+  }
+  return false;
+};
