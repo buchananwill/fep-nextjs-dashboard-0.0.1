@@ -97,8 +97,6 @@ export const fetchAllLessonCycles = async (
 ): Promise<LessonCycleDTO[]> => {
   const fetchURL = `${apiBaseUrl}/get-all-lesson-cycles?scheduleId=${scheduleId}`;
 
-  console.log('And now in the route handler: ', scheduleId, fetchURL);
-
   try {
     const response = await fetch(fetchURL, {
       // next: { revalidate: 60, tags: [tag] }, // Next collection tag for revalidation handling.

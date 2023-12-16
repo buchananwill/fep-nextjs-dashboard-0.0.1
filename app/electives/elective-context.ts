@@ -7,6 +7,7 @@ import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
 export const ElectiveContext = createContext<ElectiveState>({
   highlightedCourses: [],
   pinnedStudents: new Set<number>(),
+  filteredStudents: [],
   filterPending: false,
   filterType: FilterType.any,
   studentMap: new Map<number, StudentDTO>(),

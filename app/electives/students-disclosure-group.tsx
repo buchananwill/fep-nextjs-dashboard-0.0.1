@@ -12,24 +12,55 @@ import { filterStudentList } from './filter-student-list';
 
 export default function StudentsDisclosureGroup() {
   const [isPending, startTransition] = useTransition();
-  const [filteredStudents, setFilteredStudents] = useState<StudentDTO[]>([]);
+  // const [filteredStudents, setFilteredStudents] = useState<StudentDTO[]>([]);
 
   const electiveState = useContext(ElectiveContext);
   const electiveFilterState = useContext(ElectiveFilterContext);
+
+  const {
+    filteredStudents,
+    electivePreferences,
+    studentMap,
+    filterType,
+    carouselOptionIdSet,
+    pinnedStudents
+  } = electiveState;
 
   const { courseFilters } = electiveFilterState;
   const dispatch = useContext(ElectiveDispatchContext);
 
   useEffect(() => {
+    dispatch({
+      type: 'setFilterPending',
+      pending: true
+    });
     startTransition(() => {
-      const updatedFilterList = filterStudentList(courseFilters, electiveState);
-      setFilteredStudents(updatedFilterList);
+      const updatedFilterList = filterStudentList(
+        courseFilters,
+        electivePreferences,
+        studentMap,
+        filterType,
+        pinnedStudents,
+        carouselOptionIdSet
+      );
       dispatch({
-        type: 'setFilterPending',
-        pending: false
+        type: 'setFilteredStudents',
+        filteredStudents: updatedFilterList
       });
     });
-  }, [courseFilters, dispatch, electiveState]);
+    dispatch({
+      type: 'setFilterPending',
+      pending: false
+    });
+  }, [
+    courseFilters,
+    dispatch,
+    pinnedStudents,
+    carouselOptionIdSet,
+    electivePreferences,
+    studentMap,
+    filterType
+  ]);
 
   try {
     return (

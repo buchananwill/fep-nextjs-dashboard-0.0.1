@@ -1,6 +1,6 @@
 import { FilterOption } from '../api/state-types';
 import { ElectiveState } from './elective-reducers';
-import { StudentDTO } from '../api/dto-interfaces';
+import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
 import genericPredicateFactorySupplier from './elective-filters/elective-preference-factory-supplier';
 import {
   packageRequest,
@@ -11,15 +11,12 @@ import { FilterType } from './elective-filter-reducers';
 
 export function filterStudentList(
   courseFilters: FilterOption<string>[],
-  electiveState: ElectiveState
+  electivePreferences: Map<number, ElectivePreferenceDTO[]>,
+  studentMap: Map<number, StudentDTO>,
+  filterType: FilterType,
+  pinnedStudents: Set<number>,
+  carouselOptionIdSet: Set<number>
 ): StudentDTO[] {
-  const {
-    electivePreferences,
-    studentMap,
-    filterType,
-    pinnedStudents,
-    carouselOptionIdSet
-  } = electiveState;
   const filteredList: StudentDTO[] = [];
 
   const courseIdSet = new Set<string>();
@@ -29,8 +26,6 @@ export function filterStudentList(
   if (strings?.length > 0) {
     strings.forEach((string) => courseIdSet.add(string));
   }
-
-  console.log('Course URI strings: ', strings);
 
   const coursePredicateFactoryList = courseFilters.map(({ URI }) =>
     genericPredicateFactorySupplier(

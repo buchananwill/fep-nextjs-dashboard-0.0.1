@@ -33,7 +33,7 @@ export type ElectiveFilterStateActions =
 export type ElectiveFilterState = {
   courseFilters: FilterOption<string>[];
   courseCarouselFilters: FilterOption<string>[];
-  studentFilters: FilterOption<number>[];
+  filteredStudents: FilterOption<number>[];
 };
 
 export default function electiveFilterReducer(

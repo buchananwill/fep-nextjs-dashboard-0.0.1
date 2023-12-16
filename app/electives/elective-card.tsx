@@ -174,7 +174,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
 
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
-          <div className="py-2">
+          <div className="py-2 flex">
             <Badge color={classesColor}>{numberOfClasses} </Badge>
             <Badge color={subscribersColor}>{subscribers}</Badge>
           </div>

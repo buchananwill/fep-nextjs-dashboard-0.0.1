@@ -20,7 +20,7 @@ export default function ElectiveFilterContextProvider({ children }: Props) {
   const initialElectiveFilterState: ElectiveFilterState = {
     courseFilters: [],
     courseCarouselFilters: [],
-    studentFilters: []
+    filteredStudents: []
   };
 
   const [electiveFilterState, dispatch] = useReducer(

@@ -50,6 +50,11 @@ interface SetHighlightedCourses {
   id: string;
 }
 
+interface SetFilteredStudents {
+  type: 'setFilteredStudents';
+  filteredStudents: StudentDTO[];
+}
+
 export type ElectiveStateActions =
   | SetCarousel
   | SetActive
@@ -58,11 +63,13 @@ export type ElectiveStateActions =
   | SetFilterType
   | SetFilterPending
   | SetPinnedStudent
-  | SetHighlightedCourses;
+  | SetHighlightedCourses
+  | SetFilteredStudents;
 
 export type ElectiveState = {
   highlightedCourses: string[];
   pinnedStudents: Set<number>;
+  filteredStudents: StudentDTO[];
   filterPending: boolean;
   filterType: FilterType;
   studentMap: Map<number, StudentDTO>;
@@ -191,6 +198,12 @@ export default function electivePreferencesReducer(
         } else {
           updatedState.highlightedCourses.push(id);
         }
+      });
+    }
+    case 'setFilteredStudents': {
+      const { filteredStudents } = action;
+      return produce(electivesState, (draftState) => {
+        draftState.filteredStudents = filteredStudents;
       });
     }
 

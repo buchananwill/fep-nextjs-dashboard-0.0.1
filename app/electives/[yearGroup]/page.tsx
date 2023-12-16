@@ -1,8 +1,7 @@
-import { Card, Text, Title } from '@tremor/react';
+import { Button, Text, Title } from '@tremor/react';
 import { fetchElectiveYearGroupWithAllStudents } from '../api/request-elective-preferences';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
-import { RefreshDropdown } from '../../components/refresh-dropdown';
 import FilteredStudentsCard from '../filtered-students-card';
 import ElectiveContextProvider from '../elective-context-provider';
 import ToolTipsToggle from '../../components/tooltips/tool-tips-toggle';
@@ -22,6 +21,8 @@ import DynamicDimensionTimetable, {
 } from '../../components/dynamic-dimension-timetable';
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
+import { RotateCarouselButton } from './rotate-carousel-button';
 
 interface Props {
   params: { yearGroup: string };
@@ -130,8 +131,12 @@ export default async function ElectivesPage({
           <ElectiveFilters electiveDTOList={electiveDTOList}></ElectiveFilters>
           <div className="flex w-full items-top justify-between pt-4">
             <Suspense>
-              <div className="flex w-full items-top justify-between pt-4  select-none">
+              <div className="flex w-full items-top justify-between pt-4 select-none">
                 <BigTableCard>
+                  <div className="flex justify-center gap-2">
+                    <RotateCarouselButton direction="LEFT"></RotateCarouselButton>
+                    <RotateCarouselButton direction="RIGHT"></RotateCarouselButton>
+                  </div>
                   <DynamicDimensionTimetable
                     tableContents={optionBlocksTabularDTO}
                     headerTransformer={OptionBlockHeader}

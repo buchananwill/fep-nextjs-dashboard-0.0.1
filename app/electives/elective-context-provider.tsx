@@ -49,6 +49,7 @@ export default function ElectiveContextProvider({
   const initialElectiveState: ElectiveState = {
     highlightedCourses: [],
     pinnedStudents: new Set<number>(),
+    filteredStudents: [],
     filterPending: false,
     filterType: FilterType.any,
     studentMap: createStudentDtoMap(studentList),
