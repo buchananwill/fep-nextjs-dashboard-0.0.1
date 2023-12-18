@@ -5,7 +5,7 @@ import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ElectiveFilterContext } from './elective-filter-context';
-import { ElectiveDTO } from '../api/dto-interfaces';
+import { ElectiveDTO, ElectivePreferenceDTO } from '../api/dto-interfaces';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import { FilterOption } from '../api/state-types';
@@ -21,10 +21,10 @@ const aLevelClassLimitInt = 25;
 
 const calculateSubscribers = (
   electiveDTO: ElectiveDTO,
-  electivesState: ElectiveState
+  electivePreferences: Map<number, ElectivePreferenceDTO[]>
 ) => {
   const { id } = electiveDTO;
-  const { electivePreferences } = electivesState;
+
   let count = 0;
   for (let preferenceList of electivePreferences.values()) {
     for (let electivePreference of preferenceList) {
@@ -77,12 +77,25 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   const electivesState = useContext(ElectiveContext);
   const { courseFilters } = useContext(ElectiveFilterContext);
   const dispatch = useContext(ElectiveDispatchContext);
-  const { carouselOptionIdSet, highlightedCourses } = electivesState;
+  const {
+    carouselOptionIdSet,
+    highlightedCourses,
+    electivePreferences,
+    studentMap
+  } = electivesState;
+
+  let yearInt = 0;
+  for (let value of studentMap.values()) {
+    if (value.yearGroup) {
+      yearInt = value.yearGroup;
+      break;
+    }
+  }
 
   useEffect(() => {
-    const updatedSubscribers = calculateSubscribers(data, electivesState);
+    const updatedSubscribers = calculateSubscribers(data, electivePreferences);
     setSubscribers(updatedSubscribers);
-  }, [data, electivesState]);
+  }, [data, electivePreferences]);
 
   function handleCardClick(carouselOptionId: number) {
     startTransition(() => {
@@ -110,7 +123,9 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
 
   const highlightText = getHighlighted(highlightedCourses, courseId);
 
-  const numberOfClasses = Math.ceil(subscribers / aLevelClassLimitInt);
+  const classSizeLimit = yearInt == 9 ? 30 : aLevelClassLimitInt;
+
+  const numberOfClasses = Math.ceil(subscribers / classSizeLimit);
 
   const classesColor = getClassesColor(numberOfClasses);
 

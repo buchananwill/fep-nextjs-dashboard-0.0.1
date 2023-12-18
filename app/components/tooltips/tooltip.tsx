@@ -98,8 +98,8 @@ export function Tooltip({
 }: { children: React.ReactNode } & TooltipOptions) {
   // This can accept any props as options, e.g. `placement`,
   // or other positioning options.
-
   const tooltip = useTooltip(options);
+
   return (
     <TooltipContext.Provider value={tooltip}>
       {children}
@@ -147,9 +147,10 @@ export const TooltipContent = React.forwardRef<
   const context = useTooltipContext();
   const ref = useMergeRefs([context.refs.setFloating, propRef]);
 
+  if (!context.enabled) return null;
+
   if (!context.open) return null;
 
-  if (!context.enabled) return null;
 
   return (
     <FloatingPortal>

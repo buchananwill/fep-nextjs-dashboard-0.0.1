@@ -1,7 +1,7 @@
 'use client';
 import { Button, NumberInput } from '@tremor/react';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
-import { ElectiveContext } from '../elective-context';
+import { ElectiveContext, ElectiveDispatchContext } from '../elective-context';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import TooltipsContext from '../../components/tooltips/tooltips-context';
 import {
@@ -15,6 +15,8 @@ import {
   useModal
 } from '../../components/confirmation-modal';
 import '../../components/custom-component-styles.css';
+import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
+import { UpdateElectivePreference } from '../elective-reducers';
 
 export type direction = 'LEFT' | 'RIGHT';
 
@@ -48,6 +50,7 @@ export function RotateCarouselButton({
   const { filteredStudents, carouselOptionIdSet, filterType } =
     useContext(ElectiveContext);
   const { showTooltips } = useContext(TooltipsContext);
+  const dispatch = useContext(ElectiveDispatchContext);
   const { isOpen, openModal, closeModal } = useModal();
   const [rotationNumber, setRotationNumber] = useState(0);
 
@@ -59,17 +62,47 @@ export function RotateCarouselButton({
     } else setShowError(false);
   }, [rotationNumber, setRotationNumber, filteredStudents.length]);
 
-  const handleRotationConfirm = (number: number) => {
+  const handleRotationConfirm = async (number: number) => {
     if (filteredStudents.length == 0 || filterType == 'any') return;
-    const slicedFilteredList = filteredStudents.slice(0, number);
-    console.log(
-      'Confirming the rotation of these students: ',
-      slicedFilteredList
-    );
-    console.log(
-      'In these Carousel Options: ',
-      { filteredStudents, carouselOptionIdSet }.carouselOptionIdSet
-    );
+    const slicedFilteredList = filteredStudents
+      .slice(0, number)
+      .map((student) => student.id);
+    const carouselOptionIdList: number[] = [];
+    carouselOptionIdSet.forEach((id) => carouselOptionIdList.push(id));
+
+    const response = await fetch('option-block-assignments', {
+      method: 'PUT',
+      cache: 'no-store',
+      body: JSON.stringify({
+        forwardingUrl: 'put-carousel-option-student-rotation',
+        forwardingBody: {
+          studentIdList: slicedFilteredList,
+          carouselOptionIdList: carouselOptionIdList,
+          rotationDirection: direction == 'LEFT' ? -1 : 1
+        }
+      })
+    });
+
+    console.log(response);
+
+    const bodyResponse: ElectivePreferenceDTO[] = await response.json();
+
+    bodyResponse.forEach((preference) => {
+      const dispatchRequest: UpdateElectivePreference = {
+        type: 'updateElectivePreference',
+        electivePreference: preference
+      };
+      dispatch(dispatchRequest);
+    });
+
+    //   console.log(
+    //     'Confirming the rotation of these students: ',
+    //     slicedFilteredList
+    //   );
+    //   console.log(
+    //     'In these Carousel Options: ',
+    //     { filteredStudents, carouselOptionIdSet }.carouselOptionIdSet
+    //   );
   };
 
   return (
@@ -88,8 +121,16 @@ export function RotateCarouselButton({
         </TooltipTrigger>
         <TooltipContent>
           <StandardTooltipContent>
-            Rotate the filtered students between the highlighted Carousel
-            Options.
+            If any <strong>students</strong> are enrolled in{' '}
+            <strong>all</strong> the highlighted <strong>options</strong>, and
+            each <strong>option</strong> is present in the next{' '}
+            <strong>block</strong> also, <strong>students</strong> can be
+            automatically re-allocated from the highlighted{' '}
+            <strong>options</strong> (decreasing their enrollment count) to the
+            corresponding <strong>option</strong> in the next{' '}
+            <strong>block</strong>. The last <strong>option</strong> in the
+            direction of rotation wraps back to the first
+            <strong> block</strong>.
           </StandardTooltipContent>
         </TooltipContent>
       </Tooltip>

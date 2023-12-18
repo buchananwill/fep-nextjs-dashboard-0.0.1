@@ -5,11 +5,22 @@ const apiBaseUrl = process.env.API_ACADEMIC_URL;
 export async function PUT(request: NextRequest) {
   const url = request.url;
 
+  const body = await request.json();
+
+  const forwardingUrl = body.forwardingUrl;
+
+  const forwardingBody = body.forwardingBody;
+
   const startOfUrl = url.indexOf('/electives');
 
-  const completeUrl = `${apiBaseUrl}${url.substring(startOfUrl)}`;
+  console.log(
+    'Inside the forwarding handler: ',
+    forwardingUrl,
+    '\n to body: ',
+    forwardingBody
+  );
 
-  const body = await request.json();
+  const completeUrl = `${apiBaseUrl}/electives/${forwardingUrl}`;
 
   try {
     const response = await fetch(completeUrl, {
@@ -24,7 +35,7 @@ export async function PUT(request: NextRequest) {
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(body) // body data type must match "Content-Type" header
+      body: JSON.stringify(forwardingBody) // body data type must match "Content-Type" header
     });
 
     if (!response.ok) {

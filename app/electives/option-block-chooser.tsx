@@ -22,18 +22,18 @@ export function OptionBlockChooser({
   const { electiveAvailability, electiveDtoMap } = useContext(ElectiveContext);
   const pathname = usePathname();
   const { replace } = useRouter();
-
-  const setUnsaved = (state: boolean) => {
-    if (state) {
-      const params = new URLSearchParams(window.location.search);
-
-      params.set('unsaved', 'true');
-
-      startTransition(() => {
-        replace(`${pathname}?${params.toString()}`, { scroll: false });
-      });
-    }
-  };
+  //
+  // const setUnsaved = (state: boolean) => {
+  //   if (state) {
+  //     const params = new URLSearchParams(window.location.search);
+  //
+  //     // params.set('unsaved', 'true');
+  //
+  //     // startTransition(() => {
+  //     //   replace(`${pathname}?${params.toString()}`, { scroll: false });
+  //     // });
+  //   }
+  // };
 
   function handleAssignmentChange(
     studentId: number,
@@ -62,7 +62,7 @@ export function OptionBlockChooser({
           preferencePosition,
           parseInt(e.target.value)
         );
-        setUnsaved(true);
+        // setUnsaved(true);
       }}
     >
       {mapOptions(

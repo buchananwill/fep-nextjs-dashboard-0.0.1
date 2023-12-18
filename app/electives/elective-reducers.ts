@@ -55,6 +55,15 @@ interface SetFilteredStudents {
   filteredStudents: StudentDTO[];
 }
 
+export interface UpdateElectivePreference {
+  type: 'updateElectivePreference';
+  electivePreference: ElectivePreferenceDTO;
+}
+
+export interface ClearModifications {
+  type: 'clearModifications';
+}
+
 export type ElectiveStateActions =
   | SetCarousel
   | SetActive
@@ -64,7 +73,9 @@ export type ElectiveStateActions =
   | SetFilterPending
   | SetPinnedStudent
   | SetHighlightedCourses
-  | SetFilteredStudents;
+  | SetFilteredStudents
+  | UpdateElectivePreference
+  | ClearModifications;
 
 export type ElectiveState = {
   highlightedCourses: string[];
@@ -204,6 +215,23 @@ export default function electivePreferencesReducer(
       const { filteredStudents } = action;
       return produce(electivesState, (draftState) => {
         draftState.filteredStudents = filteredStudents;
+      });
+    }
+    case 'updateElectivePreference': {
+      const { electivePreference } = action;
+      const { userRoleId, preferencePosition } = electivePreference;
+      return produce(electivesState, (updatedState) => {
+        const preferenceList = updatedState.electivePreferences.get(userRoleId);
+        if (preferenceList) {
+          preferenceList[preferencePosition - 1] = electivePreference; // convert from one-indexed to zero-indexed
+        }
+      });
+    }
+    case 'clearModifications': {
+      return produce(electivesState, (draft) => {
+        for (let modifiedPreference of draft.modifiedPreferences) {
+          modifiedPreference[1].clear();
+        }
       });
     }
 

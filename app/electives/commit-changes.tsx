@@ -1,7 +1,13 @@
 'use client';
-import React, { Fragment, useContext, useState, useTransition } from 'react';
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useState,
+  useTransition
+} from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ElectiveContext } from './elective-context';
+import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { updateElectiveAssignments } from './api/request-elective-preferences';
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import {
@@ -11,6 +17,10 @@ import {
 } from '../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
 import { ConfirmationModal, useModal } from '../components/confirmation-modal';
+import { ElectivePreferenceDTO } from '../api/dto-interfaces';
+import { UpdateElectivePreference } from './elective-reducers';
+import { router } from 'next/client';
+import { el } from 'date-fns/locale';
 
 interface Props {
   children: React.ReactNode;
@@ -19,15 +29,26 @@ interface Props {
 const CommitChanges = ({ children }: Props) => {
   const [transitionPending, startTransition] = useTransition();
   const [commitPending, setCommitPending] = useState(false);
-  const [error, setError] = useState(null);
   const { replace } = useRouter();
   const pathname = usePathname();
   const { showTooltips } = useContext(TooltipsContext);
   let { isOpen, closeModal, openModal } = useModal();
-
-  const disabled = useSearchParams()?.get('unsaved') !== 'true';
-
   const electiveState = useContext(ElectiveContext);
+  const [enabled, setEnabled] = useState(false);
+  const { modifiedPreferences } = electiveState;
+
+  useEffect(() => {
+    for (let modifiedPreference of modifiedPreferences) {
+      if (modifiedPreference[1].size > 0) {
+        setEnabled(true);
+        break;
+      } else {
+        setEnabled(false);
+      }
+    }
+  }, [setEnabled, modifiedPreferences]);
+
+  const dispatch = useContext(ElectiveDispatchContext);
 
   const assignmentConflictCount = useSearchParams()?.get('assignmentConflict');
 
@@ -37,30 +58,31 @@ const CommitChanges = ({ children }: Props) => {
   async function handleCommitClick() {
     setCommitPending(true);
 
-    const params = new URLSearchParams(window.location.search);
+    // const params = new URLSearchParams(window.location.search);
 
-    params.delete('unsaved');
-    params.set('cacheSetting', 'reload');
-    const redirectUrl = `${pathname}?${params.toString()}`;
+    // params.delete('unsaved');
+    // params.set('cacheSetting', 'reload');
+    // const redirectUrl = `${pathname}?${params.toString()}`;
 
-    updateElectiveAssignments(electiveState)
-      .then(() => {
-        setCommitPending(false);
-      })
-      .then(() => {
-        startTransition(() => {
-          replace(redirectUrl);
-        });
-      })
-      .catch((error) => {
-        setError(error);
-        setCommitPending(false);
-      })
-      .finally(() => {
-        params.delete('cacheSetting');
-        const finalRedirect = `${pathname}?${params.toString()}`;
-        replace(finalRedirect);
+    const response = await updateElectiveAssignments(electiveState);
+    if (response) {
+      const updatedAssignments: ElectivePreferenceDTO[] = await response.json();
+      updatedAssignments.forEach((preference) => {
+        const dispatchRequest: UpdateElectivePreference = {
+          type: 'updateElectivePreference',
+          electivePreference: preference
+        };
+        dispatch(dispatchRequest);
       });
+    }
+
+    setCommitPending(false);
+
+    dispatch({
+      type: 'clearModifications'
+    });
+
+    // replace(redirectUrl, { scroll: false });
   }
 
   const spinner =
@@ -76,10 +98,10 @@ const CommitChanges = ({ children }: Props) => {
         <TooltipTrigger>
           <button
             className={`btn normal-case`}
-            disabled={disabled || commitPending}
+            disabled={!enabled}
             onClick={() => openModal()}
           >
-            {!disabled && conflictCountInt && (
+            {!enabled && conflictCountInt && (
               <span className="indicator-item badge badge-error">
                 {conflictCountInt}
               </span>

@@ -60,6 +60,11 @@ export const updateElectiveAssignments = async ({
     }
   }
 
+  const requestBody = {
+    forwardingUrl: fetchURL,
+    forwardingBody: ePrefList
+  };
+
   try {
     const response = await fetch(fetchURL, {
       next: { tags: [tag] }, // Next collection tag for revalidation handling.
@@ -73,7 +78,7 @@ export const updateElectiveAssignments = async ({
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(ePrefList) // body data type must match "Content-Type" header
+      body: JSON.stringify(requestBody) // body data type must match "Content-Type" header
     });
 
     if (!response.ok) {
@@ -81,12 +86,10 @@ export const updateElectiveAssignments = async ({
       return null;
     }
 
-    const data = await response.json();
+    return response;
 
     // revalidatePath("/electives/") // Update cached posts
     // redirect(redirectUrl) // Navigate to new route
-
-    return data;
   } catch (error) {
     console.error('Error fetching data: ', error);
     return null;

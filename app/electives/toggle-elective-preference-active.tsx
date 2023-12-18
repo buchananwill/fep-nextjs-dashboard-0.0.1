@@ -14,17 +14,17 @@ export function ToggleElectivePreferenceActive({
   const { replace } = useRouter();
   const pathname = usePathname();
 
-  const setUnsaved = (state: boolean) => {
-    if (state) {
-      const params = new URLSearchParams(window.location.search);
-
-      params.set('unsaved', 'true');
-
-      startTransition(() => {
-        replace(`${pathname}?${params.toString()}`, { scroll: false });
-      });
-    }
-  };
+  // const setUnsaved = (state: boolean) => {
+  //   if (state) {
+  //     // const params = new URLSearchParams(window.location.search);
+  //
+  //     // params.set('unsaved', 'true');
+  //
+  //     // startTransition(() => {
+  //     //   replace(`${pathname}?${params.toString()}`, { scroll: false });
+  //     // });
+  //   }
+  // };
 
   function handleToggleClick(studentId: number, preferencePosition: number) {
     dispatch({
@@ -46,7 +46,7 @@ export function ToggleElectivePreferenceActive({
           electivePreference.userRoleId,
           electivePreference.preferencePosition
         );
-        setUnsaved(true);
+        // setUnsaved(true);
       }}
     ></input>
   );
