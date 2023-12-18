@@ -3,6 +3,7 @@ import { produce } from 'immer';
 import { FilterType } from '../electives/elective-filter-reducers';
 import { LessonCycle } from '../api/state-types';
 import { hi } from 'date-fns/locale';
+import { LessonEnrollmentDTO } from '../api/dto-interfaces';
 
 interface SetPeriod {
   type: 'setPeriod';
@@ -87,6 +88,7 @@ export type TimetablesState = {
   lessonCycleId: string;
   scheduleId: number;
   updatePending: boolean;
+  studentTimetables: Map<number, LessonEnrollmentDTO[]>;
 };
 
 export default function timetablesReducer(

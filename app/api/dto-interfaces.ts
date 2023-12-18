@@ -21,6 +21,12 @@ export interface HasNumberId {
   id: number;
 }
 
+export interface LessonEnrollmentDTO extends HasNumberId {
+  lessonCycleId: string;
+  periodId: number;
+  userRoleId: number;
+}
+
 export interface LessonCycleDTO extends Nameable, HasUuid {
   periodVenueAssignments: Record<number, string>;
   enrolledStudentIds: number[];

@@ -22,6 +22,7 @@ export function createInitialTimetablesContext(): TimetablesState {
     periodIdToLessonCycleMap: new Map<number, Set<string>>(),
     lessonCycleId: '',
     scheduleId: NaN,
-    updatePending: false
+    updatePending: false,
+    studentTimetables: new Map()
   };
 }

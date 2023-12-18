@@ -1,37 +1,12 @@
-import axios from 'axios';
 import {
   BuildMetricDTO,
   LessonCycleDTO,
+  LessonEnrollmentDTO,
   Period,
   TabularDTO
 } from '../../api/dto-interfaces';
 import { NextRequest } from 'next/server';
-import Error from 'next/error';
-
-interface SearchParams {
-  id: number;
-  // token: string
-}
-
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
-
-export const fetchSchedule = async (searchId: number) => {
-  try {
-    if (Number.isNaN(searchId)) return null;
-
-    const response = await axios.get(`${apiBaseUrl}/schedules`, {
-      params: { id: searchId }
-      // headers: {
-      //     'Authorization': `Bearer ${searchParams.token}`
-      // }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return null;
-  }
-};
 
 export const fetchAllPeriodsInCycle = async (): Promise<
   TabularDTO<string, Period>
@@ -63,6 +38,23 @@ export const fetchAllPeriodsInCycle = async (): Promise<
       cellDataAndMetaData: [],
       headerData: []
     };
+  }
+};
+
+export const fetchLessonEnrollments = async (
+  studentId: number,
+  scheduleId: number
+): Promise<LessonEnrollmentDTO[]> => {
+  const fetchURL = `${apiBaseUrl}/get-lesson-enrollments/${scheduleId}?studentId=${studentId}`;
+  try {
+    const response = await fetch(fetchURL, {
+      next: { revalidate: 120 }
+    });
+    console.log('In the fetch function: ', response);
+    return response.json();
+  } catch (e) {
+    console.error('Error: ', e);
+    return [];
   }
 };
 

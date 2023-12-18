@@ -49,7 +49,8 @@ export function buildTimetablesState(
     periodIdToLessonCycleMap: periodToLessonCycleMap,
     lessonCycleId: '',
     scheduleId: scheduleId,
-    updatePending: false
+    updatePending: false,
+    studentTimetables: new Map()
   };
 
   return { initialState, lessonCycleArray };
