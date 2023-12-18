@@ -10,9 +10,9 @@ import {
 import { ArrayDTO, StudentDTO } from '../api/dto-interfaces';
 
 export default function StudentsTable({
-  students: { allItems: students }
+  students
 }: {
-  students: ArrayDTO<StudentDTO>;
+  students: StudentDTO[];
 }) {
   return (
     <Table>

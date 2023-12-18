@@ -14,11 +14,7 @@ export default async function IndexPage({
   const search = searchParams.q ?? '';
   const regex = new RegExp(search, 'i');
 
-  const studentDTO = await fetchAllStudents(searchParams);
-  const students = {
-    // allItems: studentDTO.filter((student) => student.name.match(regex))
-    allItems: studentDTO
-  };
+  const studentDTOs = await fetchAllStudents(searchParams);
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-full px-6">
@@ -26,7 +22,7 @@ export default async function IndexPage({
       <Text>A list of users retrieved from a PostgreSQL database.</Text>
       <Search />
       <Card className="mt-6">
-        <StudentsTable students={students} />
+        <StudentsTable students={studentDTOs} />
       </Card>
     </main>
   );

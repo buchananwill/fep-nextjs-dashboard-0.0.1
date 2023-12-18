@@ -2,7 +2,7 @@ import { produce } from 'immer';
 
 import { FilterType } from '../electives/elective-filter-reducers';
 import { LessonCycle } from '../api/state-types';
-import { hi } from 'date-fns/locale';
+import { ca, hi } from 'date-fns/locale';
 import { LessonEnrollmentDTO } from '../api/dto-interfaces';
 
 interface SetPeriod {
@@ -62,6 +62,17 @@ interface SetUpdatePending {
   value: boolean;
 }
 
+interface SetStudentTimetable {
+  type: 'setStudentTimetable';
+  id: number;
+  timetable: LessonEnrollmentDTO[];
+}
+
+interface SetStudent {
+  type: 'setStudent';
+  id: number;
+}
+
 export type TimetablesStateActions =
   | SetPeriod
   | SetActive
@@ -73,7 +84,9 @@ export type TimetablesStateActions =
   | ToggleHighlightedSubject
   | SetHighlightedSubjects
   | UpdateLessonCycles
-  | SetUpdatePending;
+  | SetUpdatePending
+  | SetStudentTimetable
+  | SetStudent;
 
 export type TimetablesState = {
   highlightedSubjects: Set<string>;
@@ -89,6 +102,7 @@ export type TimetablesState = {
   scheduleId: number;
   updatePending: boolean;
   studentTimetables: Map<number, LessonEnrollmentDTO[]>;
+  studentId: number;
 };
 
 export default function timetablesReducer(
@@ -267,6 +281,18 @@ export default function timetablesReducer(
               );
           }
         }
+      });
+    }
+    case 'setStudentTimetable': {
+      const { id, timetable } = action;
+      return produce(timetablesState, (updatedState) => {
+        updatedState.studentTimetables.set(id, timetable);
+      });
+    }
+    case 'setStudent': {
+      const { id } = action;
+      return produce(timetablesState, (draft) => {
+        draft.studentId = id;
       });
     }
 

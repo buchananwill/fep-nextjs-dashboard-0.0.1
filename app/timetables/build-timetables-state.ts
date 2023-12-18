@@ -50,7 +50,8 @@ export function buildTimetablesState(
     lessonCycleId: '',
     scheduleId: scheduleId,
     updatePending: false,
-    studentTimetables: new Map()
+    studentTimetables: new Map(),
+    studentId: NaN
   };
 
   return { initialState, lessonCycleArray };

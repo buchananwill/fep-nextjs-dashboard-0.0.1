@@ -6,6 +6,7 @@ import {
   TabularDTO
 } from '../../api/dto-interfaces';
 import { NextRequest } from 'next/server';
+
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 export const fetchAllPeriodsInCycle = async (): Promise<
@@ -50,11 +51,35 @@ export const fetchLessonEnrollments = async (
     const response = await fetch(fetchURL, {
       next: { revalidate: 120 }
     });
-    console.log('In the fetch function: ', response);
+
     return response.json();
   } catch (e) {
     console.error('Error: ', e);
     return [];
+  }
+};
+
+export const GET = async (request: NextRequest) => {
+  const searchParams = request.nextUrl.searchParams;
+  const studentId = searchParams.get('studentId');
+  const scheduleId = searchParams.get('scheduleId');
+
+  console.log('Request receeived: ', request);
+
+  if (scheduleId && studentId) {
+    const fetchURL = `${apiBaseUrl}/get-lesson-enrollments/${scheduleId}?studentId=${studentId}`;
+    try {
+      const response = await fetch(fetchURL, {
+        next: { revalidate: 120 }
+      });
+      console.log('In the fetch function: ', response);
+      return response;
+    } catch (e) {
+      console.error('Error: ', e);
+      return { status: 500 };
+    }
+  } else {
+    return { status: 500 };
   }
 };
 

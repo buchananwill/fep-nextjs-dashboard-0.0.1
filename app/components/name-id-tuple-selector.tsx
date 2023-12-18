@@ -3,7 +3,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment, startTransition, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { NameIdStringTuple } from '../../../api/dto-interfaces';
+import { NameIdStringTuple } from '../api/dto-interfaces';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function NameIdTupleSelector({
@@ -15,7 +15,6 @@ export default function NameIdTupleSelector({
   selectionList: NameIdStringTuple[];
   selectedProp: NameIdStringTuple;
 }) {
-  const [selected, setSelected] = useState(selectionList[0]);
   const { push } = useRouter();
   const pathname = usePathname();
 
@@ -34,7 +33,10 @@ export default function NameIdTupleSelector({
       <div className="relative mt-1">
         <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
           <span className="block truncate">
-            <strong>{selectionDescriptor}</strong>
+            <strong>
+              {selectionDescriptor}
+              {': '}
+            </strong>
             {selectedProp.name != '' ? selectedProp.name : 'No Selection'}
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -51,7 +53,7 @@ export default function NameIdTupleSelector({
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-40">
-            {selectionList.map((lessonCycle, index) => (
+            {selectionList.map((tuple, index) => (
               <Listbox.Option
                 key={index}
                 className={({ active }) =>
@@ -59,7 +61,7 @@ export default function NameIdTupleSelector({
                     active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                   }`
                 }
-                value={lessonCycle}
+                value={tuple}
               >
                 {({ selected }) => (
                   <>
@@ -68,7 +70,7 @@ export default function NameIdTupleSelector({
                         selected ? 'font-medium' : 'font-normal'
                       }`}
                     >
-                      {lessonCycle.name}
+                      {tuple.name}
                     </span>
                     {selected ? (
                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">

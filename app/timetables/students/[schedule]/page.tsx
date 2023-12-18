@@ -17,20 +17,21 @@ import { FilteredLessonCycles } from '../../filtered-lesson-cycles';
 
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
-import { SubjectFilters } from '../../subject-filters';
 import { Text, Title } from '@tremor/react';
 import DropdownParam from '../../../components/dropdown-param';
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
+import fetchAllStudents from '../../../api/student-search';
+import { StudentTimetableSelector } from './student-timetable-selector';
 
 export const dynamic = 'force-dynamic';
 
 export default async function TimetablesPage({
   params: { schedule },
-  searchParams: { year, student }
+  searchParams: { year, id }
 }: {
   params: { schedule: string };
-  searchParams: { year: string; student: string };
+  searchParams: { year: string; id: string };
 }) {
   const allPeriodsInCycle = await fetchAllPeriodsInCycle();
 
@@ -42,22 +43,23 @@ export default async function TimetablesPage({
   );
   const scheduleId = schedule ? parseInt(schedule) : NaN;
 
-  const studentId = student ? parseInt(student) : NaN;
-
-  if (isNaN(scheduleId) || isNaN(studentId)) {
+  if (isNaN(scheduleId)) {
     return <Text>No schedules found.</Text>;
   }
 
+  const studentId = id ? parseInt(id) : NaN;
+
+  const studentDTOS = await fetchAllStudents({ q: 'dav' });
+
+  const nameIdTupleList = studentDTOS.map((studentDTO) => ({
+    name: studentDTO.name,
+    id: studentDTO.id.toString()
+  }));
+
   const scheduleIds = await fetchScheduleIds();
-  const filteredIds = scheduleIds.map((value) => value.toString());
+  const scheduleIdsToString = scheduleIds.map((value) => value.toString());
 
   const allLessonCycles = await fetchAllLessonCycles(scheduleId);
-  const lessonEnrollmentDTOS = await fetchLessonEnrollments(
-    studentId,
-    scheduleId
-  );
-
-  console.log('Enrollments for ', studentId, ': ', lessonEnrollmentDTOS);
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
     allPeriodsInCycle,
@@ -65,18 +67,15 @@ export default async function TimetablesPage({
     scheduleId
   );
 
-  if (lessonEnrollmentDTOS) {
-    initialState.studentTimetables.set(studentId, lessonEnrollmentDTOS);
-  }
-
   return (
     <TimetablesContextProvider initialState={initialState}>
       <div className="flex w-full items-baseline grow-0 mb-2">
         <Title>Schedule Version Id: {scheduleId}</Title>
         <Text className="mx-2">Schedule Layout</Text>
-        <DropdownParam paramOptions={filteredIds} />
+        <DropdownParam paramOptions={scheduleIdsToString} />
+        <StudentTimetableSelector selectionList={nameIdTupleList} />
       </div>
-      <SubjectFilters lessonCycleList={lessonCycleArray}></SubjectFilters>
+
       <div className="flex w-full items-top justify-between pt-4  select-none">
         <BigTableCard>
           {allLessonCycles.length == 0 && (

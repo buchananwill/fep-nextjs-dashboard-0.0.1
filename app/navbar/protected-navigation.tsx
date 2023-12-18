@@ -1,22 +1,28 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, ReactNode, useState } from 'react';
+import { forwardRef, Fragment, ReactNode, useRef, useState } from 'react';
 import { classNames } from '../utils/class-names';
 
 interface Props {
-  onConfirm: Function;
+  onConfirm: () => void;
   children: ReactNode;
   isActive: boolean;
   requestConfirmation: boolean;
   classNames: string;
 }
-const ProtectedNavigation = ({
-  onConfirm,
-  children,
-  isActive,
-  requestConfirmation,
-  classNames: moreClassNames
-}: Props) => {
+const ProtectedNavigation = forwardRef(function ProtectedNavigation(
+  props: Props,
+  ref
+) {
+  const {
+    onConfirm,
+    children,
+    isActive,
+    requestConfirmation,
+    classNames: moreClassNames
+  } = props;
   let [isOpen, setIsOpen] = useState(false);
+
+  let confirmButtonRef = useRef(null);
 
   function closeModal() {
     setIsOpen(false);
@@ -96,6 +102,7 @@ const ProtectedNavigation = ({
                     <span></span>
                     <button
                       type="button"
+                      ref={confirmButtonRef}
                       className="inline-flex justify-center rounded-md border border-transparent bg-orange-200 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-orange-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
                         onConfirm();
@@ -114,6 +121,6 @@ const ProtectedNavigation = ({
       </Transition>
     </>
   );
-};
+});
 
 export default ProtectedNavigation;

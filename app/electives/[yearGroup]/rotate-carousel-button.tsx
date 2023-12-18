@@ -83,8 +83,6 @@ export function RotateCarouselButton({
       })
     });
 
-    console.log(response);
-
     const bodyResponse: ElectivePreferenceDTO[] = await response.json();
 
     bodyResponse.forEach((preference) => {

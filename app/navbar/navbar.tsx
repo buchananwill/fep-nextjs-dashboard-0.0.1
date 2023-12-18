@@ -49,7 +49,10 @@ export default function Navbar({
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
 
-  const timetablesDropdown = [{ name: 'Overview', href: `/${scheduleId}` }];
+  const timetablesDropdown = [
+    { name: 'Overview', href: `/${scheduleId}` },
+    { name: 'Students', href: `/students/${scheduleId}` }
+  ];
 
   const buildMetricsDropdown = [
     { name: 'Overview', href: `/${scheduleId}` },
@@ -142,7 +145,7 @@ export default function Navbar({
                                           requestConfirmation={unsaved}
                                           classNames="group flex w-full items-center rounded-md px-2 py-2 text-sm"
                                         >
-                                          {dropdown.name}
+                                          <Text>{dropdown.name}</Text>
                                         </ProtectedNavigation>
                                       )}
                                     </Menu.Item>

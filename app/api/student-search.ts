@@ -9,10 +9,10 @@ interface SearchParams {
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
 export const fetchAllStudents = async (
-  searchParams: SearchParams
+  searchParams?: SearchParams
 ): Promise<StudentDTO[]> => {
   const fetchUrl = `${apiBaseUrl}/students${
-    searchParams.q ? '?q=' + searchParams.q : ''
+    searchParams?.q ? '?q=' + searchParams.q : ''
   }`;
 
   try {
