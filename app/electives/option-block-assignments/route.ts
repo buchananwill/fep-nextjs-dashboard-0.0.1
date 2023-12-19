@@ -13,13 +13,6 @@ export async function PUT(request: NextRequest) {
 
   const startOfUrl = url.indexOf('/electives');
 
-  console.log(
-    'Inside the forwarding handler: ',
-    forwardingUrl,
-    '\n to body: ',
-    forwardingBody
-  );
-
   const completeUrl = `${apiBaseUrl}/electives/${forwardingUrl}`;
 
   try {

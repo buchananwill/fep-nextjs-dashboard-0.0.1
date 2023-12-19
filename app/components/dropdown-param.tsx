@@ -26,10 +26,10 @@ export default function DropdownParam({
     <div className="w-32 relative">
       <Menu as="div" className="text-right">
         <div>
-          <Menu.Button className="w-full flex justify-center rounded-lg bg-gray-500 px-4 py-2 text-sm font-medium text-white hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+          <Menu.Button className="w-full flex justify-center rounded-lg bg-gray-300 px-4 py-2 text-sm font-medium text-white hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
             Schedules
             <ChevronDownIcon
-              className="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
+              className="-mr-1 ml-2 h-5 w-5 text-gray-500 "
               aria-hidden="true"
             />
           </Menu.Button>

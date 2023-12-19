@@ -17,12 +17,14 @@ import { FilteredLessonCycles } from '../../filtered-lesson-cycles';
 
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
-import { Text, Title } from '@tremor/react';
+import { Card, Text, Title } from '@tremor/react';
 import DropdownParam from '../../../components/dropdown-param';
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
 import fetchAllStudents from '../../../api/student-search';
 import { StudentTimetableSelector } from './student-timetable-selector';
+import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
+import LessonColorSelector from './lesson-color-selector';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,33 +79,35 @@ export default async function TimetablesPage({
       </div>
 
       <div className="flex w-full items-top justify-between pt-4  select-none">
-        <BigTableCard>
-          {allLessonCycles.length == 0 && (
-            <>
-              <Text className="max-w-2xl">
-                No lesson cycles were returned from the database. The schedule
-                build may not have completed.
-              </Text>
-              <Text>
-                {' '}
-                Recommendation: consult the corresponding{' '}
-                <Link
-                  href={`/build-metrics/${scheduleId}`}
-                  className="text-gray-950 font-bold hover:text-accent"
-                >
-                  Build Metric.
-                </Link>
-              </Text>
-            </>
-          )}
-          <PendingScheduleEditionModal></PendingScheduleEditionModal>
-          <DynamicDimensionTimetable<string, Period>
-            tableContents={allPeriodsInCycle}
-            cellDataTransformer={LessonCardTransformer}
-            headerTransformer={HeaderTransformerConcrete}
-          ></DynamicDimensionTimetable>
-        </BigTableCard>
-        <FilteredLessonCycles data={lessonCycleArray} />
+        <Card className="flex-shrink-0 flex-grow max-w-full max-h-min h-min overflow-x-auto p-2">
+          <div className="m-2 p-2 min-w-max max-h-min overflow-visible flex">
+            {allLessonCycles.length == 0 && (
+              <>
+                <Text className="max-w-2xl">
+                  No lesson cycles were returned from the database. The schedule
+                  build may not have completed.
+                </Text>
+                <Text>
+                  {' '}
+                  Recommendation: consult the corresponding{' '}
+                  <Link
+                    href={`/build-metrics/${scheduleId}`}
+                    className="text-gray-950 font-bold hover:text-accent"
+                  >
+                    Build Metric.
+                  </Link>
+                </Text>
+              </>
+            )}
+            <PendingScheduleEditionModal></PendingScheduleEditionModal>
+            <DynamicDimensionTimetable<string, Period>
+              tableContents={allPeriodsInCycle}
+              cellDataTransformer={LessonCardTransformer}
+              headerTransformer={HeaderTransformerConcrete}
+            ></DynamicDimensionTimetable>
+            <LessonColorSelector />
+          </div>
+        </Card>
       </div>
     </TimetablesContextProvider>
   );

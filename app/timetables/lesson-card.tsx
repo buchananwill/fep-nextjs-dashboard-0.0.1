@@ -13,6 +13,51 @@ const freePeriod: LessonEnrollmentDTO = {
   lessonCycleId: '',
   userRoleId: NaN
 };
+
+function getTextStyling(lessonText: string): { color: string } {
+  switch (lessonText) {
+    case 'Free': {
+      return { color: 'gray-200' };
+    }
+    case 'German':
+    case 'French':
+    case 'Computing':
+    case 'Classical Civ':
+    case 'Latin': {
+      return { color: 'blue-400' };
+    }
+    case 'Maths': {
+      return { color: 'fuchsia-400' };
+    }
+    case 'Physics':
+    case 'Biology':
+    case 'Chemistry': {
+      return { color: 'emerald-400' };
+    }
+    case 'English': {
+      return { color: 'yellow-600' };
+    }
+    case 'Art':
+    case 'Design And T': {
+      return { color: 'lime-500' };
+    }
+    case 'Geography':
+    case 'History': {
+      return { color: 'orange-400' };
+    }
+    case 'Registration': {
+      return { color: 'gray-300' };
+    }
+    case 'Games':
+    case 'Pe': {
+      return { color: 'teal-400' };
+    }
+    default: {
+      return { color: 'red-400' };
+    }
+  }
+}
+
 export const LessonCardTransformer: CellDataTransformer<Period> = ({
   data
 }) => {
@@ -40,12 +85,16 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
   } else {
     const name = lessonCycleMap.get(lesson.lessonCycleId)?.name;
 
-    lessonText = (name && name.substring(0, name.indexOf(','))) || '??';
+    lessonText = (name && name.substring(0, name.indexOf(','))) || 'Free';
   }
 
+  const textStyling = getTextStyling(lessonText);
+
+  const classNameStyling = `text-sm font-medium text-${textStyling.color}`;
+
   return (
-    <InteractiveTableCard additionalClassNames={['border-transparent w-24']}>
-      <Text>{lessonText}</Text>
+    <InteractiveTableCard additionalClassNames={['border-transparent w-28 ']}>
+      <Text className={classNameStyling}>{lessonText}</Text>
     </InteractiveTableCard>
   );
 };

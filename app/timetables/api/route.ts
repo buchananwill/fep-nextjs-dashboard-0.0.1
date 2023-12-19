@@ -64,8 +64,6 @@ export const GET = async (request: NextRequest) => {
   const studentId = searchParams.get('studentId');
   const scheduleId = searchParams.get('scheduleId');
 
-  console.log('Request receeived: ', request);
-
   if (scheduleId && studentId) {
     const fetchURL = `${apiBaseUrl}/get-lesson-enrollments/${scheduleId}?studentId=${studentId}`;
     try {
