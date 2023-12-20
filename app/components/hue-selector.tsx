@@ -1,7 +1,6 @@
+'use client';
 import { Listbox, Transition } from '@headlessui/react';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment, useContext } from 'react';
-import { CheckIcon } from '@heroicons/react/20/solid';
 import { DEFAULT_COLOR } from '@tremor/react/dist/lib';
 import { ColorContext } from './color-context';
 import { ArrowDownCircleIcon } from '@heroicons/react/24/solid';

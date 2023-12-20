@@ -6,6 +6,19 @@ import { TimetablesContext } from './timetables-context';
 import { useSearchParams } from 'next/navigation';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { Text } from '@tremor/react';
+import {
+  SubjectColorCoding,
+  SubjectColorCodingDispatch
+} from '../subject-color-coding/context';
+import { current, produce } from 'immer';
+import { useColorState } from '../components/color-selector';
+import { ColorSelectModal, useModal } from '../components/color-select-modal';
+import {
+  ColorState,
+  defaultColorState,
+  HUE_OPTIONS,
+  LIGHTNESS_OPTIONS
+} from '../components/color-context';
 
 const freePeriod: LessonEnrollmentDTO = {
   id: NaN,
@@ -67,6 +80,10 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
   const readonlyURLSearchParams = useSearchParams();
   const student = readonlyURLSearchParams?.get('id');
   const [lesson, setLesson] = useState(freePeriod);
+  const [lessonText, setLessonText] = useState('Free');
+  const [textColor, setTextColor] = useState(defaultColorState);
+  const subjectColorCoding = useContext(SubjectColorCoding);
+  const { setSubjectColorCoding } = useContext(SubjectColorCodingDispatch);
 
   useEffect(() => {
     const timetables = studentTimetables.get(studentId);
@@ -79,22 +96,65 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
     }
     setLesson(updatedLesson);
   }, [setLesson, studentId, studentTimetables, lessonCycleMap, periodId]);
-  let lessonText: string;
-  if (lesson === freePeriod) {
-    lessonText = 'Free';
-  } else {
-    const name = lessonCycleMap.get(lesson.lessonCycleId)?.name;
 
-    lessonText = (name && name.substring(0, name.indexOf(','))) || 'Free';
-  }
+  useEffect(() => {
+    let updatedText: string;
+    if (lesson === freePeriod) {
+      updatedText = 'Free';
+    } else {
+      const name = lessonCycleMap.get(lesson.lessonCycleId)?.name;
+      updatedText = (name && name.substring(0, name.indexOf(','))) || 'Free';
+    }
+    setLessonText(updatedText);
+  }, [lesson, setLessonText, lessonCycleMap]);
 
-  const textStyling = getTextStyling(lessonText);
+  useEffect(() => {
+    const subjectColorCodingElement = subjectColorCoding[lessonText];
+    let updatedTextColor;
+    if (!subjectColorCodingElement) {
+      console.log('Undefined color coding');
+      setSubjectColorCoding(() => {
+        return produce(subjectColorCoding, (draft) => {
+          draft[lessonText] = defaultColorState;
+        });
+      });
+      updatedTextColor = defaultColorState;
+    } else {
+      updatedTextColor = subjectColorCodingElement;
+    }
+    setTextColor(updatedTextColor);
+  }, [setSubjectColorCoding, lessonText, setTextColor, subjectColorCoding]);
 
-  const classNameStyling = `text-sm font-medium text-${textStyling.color}`;
+  const handleColorConfirm = (updatedColorStateValue: ColorState) => {
+    setSubjectColorCoding(() => {
+      return produce(subjectColorCoding, (draft) => {
+        draft[lessonText] = updatedColorStateValue;
+      });
+    });
+  };
+
+  const { hue, lightness } = textColor;
+
+  const { isOpen, closeModal, openModal } = useModal();
+
+  const classNameStyling = `text-sm font-medium text-${hue.id}-${lightness.id}`;
 
   return (
-    <InteractiveTableCard additionalClassNames={['border-transparent w-28 ']}>
-      <Text className={classNameStyling}>{lessonText}</Text>
-    </InteractiveTableCard>
+    <>
+      <InteractiveTableCard
+        additionalClassNames={['border-transparent w-28 py-0']}
+      >
+        <div className="py-2" onClick={() => openModal()}>
+          <Text className={classNameStyling}>{lessonText}</Text>
+        </div>
+      </InteractiveTableCard>
+      <ColorSelectModal
+        show={isOpen}
+        initialState={textColor}
+        onClose={closeModal}
+        onConfirm={handleColorConfirm}
+        onCancel={() => closeModal()}
+      />
+    </>
   );
 };

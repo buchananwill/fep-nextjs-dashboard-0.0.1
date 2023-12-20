@@ -2,7 +2,12 @@
 import { createContext, useContext, useState } from 'react';
 import HueSelector, { HueOption } from './hue-selector';
 import LightnessSelector, { LightnessOption } from './lightness-selector';
-import { ColorContext, HUE_OPTIONS, LIGHTNESS_OPTIONS } from './color-context';
+import {
+  ColorContext,
+  ColorState,
+  HUE_OPTIONS,
+  LIGHTNESS_OPTIONS
+} from './color-context';
 import TooltipsContext from './tooltips/tooltips-context';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltips/tooltip';
 import { StandardTooltipContent } from './tooltips/standard-tooltip-content';
@@ -29,19 +34,34 @@ const lessonColors = {
   other: 'red-400'
 };
 
-export default function ColorSelector({}: {}) {
-  const [selectedHue, setSelectedHue] = useState(HUE_OPTIONS[0]);
-  const [selectedLightness, setSelectedLightness] = useState(
-    LIGHTNESS_OPTIONS[0]
-  );
+export function useColorState(initialState?: ColorState) {
+  const initialHue = initialState ? initialState.hue : HUE_OPTIONS[0];
+  const initialLightness = initialState
+    ? initialState.lightness
+    : LIGHTNESS_OPTIONS[0];
+  const [hue, setHue] = useState(initialHue);
+  const [lightness, setLightness] = useState(initialLightness);
 
+  return {
+    hue,
+    setHue,
+    lightness,
+    setLightness
+  };
+}
+
+export default function ColorSelector({
+  colorState: { hue, setHue, lightness, setLightness }
+}: {
+  colorState: ColorState;
+}) {
   const { showTooltips } = useContext(TooltipsContext);
 
   const colorContext = {
-    hue: selectedHue,
-    setHue: setSelectedHue,
-    lightness: selectedLightness,
-    setLightness: setSelectedLightness
+    hue: hue,
+    setHue: setHue,
+    lightness: lightness,
+    setLightness: setLightness
   };
 
   return (

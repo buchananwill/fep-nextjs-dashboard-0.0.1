@@ -10,6 +10,7 @@ export interface ColorState {
 }
 
 export const HUE_OPTIONS: HueOption[] = [
+  { name: 'Gray', id: 'gray' },
   { name: 'Red', id: 'red' },
   { name: 'Orange', id: 'orange' },
   { name: 'Amber', id: 'amber' },
@@ -30,9 +31,14 @@ export const HUE_OPTIONS: HueOption[] = [
 ];
 export const LIGHTNESS_OPTIONS: LightnessOption[] = [
   { name: 'Light', id: 200 },
-  { name: 'Medium', id: 500 },
-  { name: 'Dark', id: 800 }
+  { name: 'Medium', id: 400 },
+  { name: 'Dark', id: 600 }
 ];
+
+export const defaultColorState = {
+  hue: { name: 'Gray', id: 'gray' },
+  lightness: { name: 'Medium', id: 500 }
+};
 
 export const ColorContext = createContext<ColorState>({
   hue: HUE_OPTIONS[0],

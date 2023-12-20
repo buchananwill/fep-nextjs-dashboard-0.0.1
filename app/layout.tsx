@@ -8,6 +8,7 @@ import React, { Suspense } from 'react';
 
 import Loading from './loading';
 import TooltipsContextProvider from './components/tooltips/tooltips-context-provider';
+import SubjectColorCodingProvider from './subject-color-coding/subject-color-coding-provider';
 
 enableMapSet();
 
@@ -26,14 +27,16 @@ export default async function RootLayout({
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
         <TooltipsContextProvider disabled={false}>
-          <Suspense>
-            <Nav />
-          </Suspense>
-          <main className="p-4 md:p-10 mx-auto max-w-full">
-            <Suspense fallback={<Loading />}>{children}</Suspense>
-          </main>
-          <Analytics />
-          {/*<Toast />*/}
+          <SubjectColorCodingProvider>
+            <Suspense>
+              <Nav />
+            </Suspense>
+            <main className="p-4 md:p-10 mx-auto max-w-full">
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </main>
+            <Analytics />
+            {/*<Toast />*/}
+          </SubjectColorCodingProvider>
         </TooltipsContextProvider>
       </body>
     </html>
