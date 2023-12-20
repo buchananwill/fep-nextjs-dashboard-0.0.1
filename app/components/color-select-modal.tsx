@@ -29,14 +29,11 @@ export function ColorSelectModal({
   show: boolean;
   initialState: ColorState;
   onClose: () => void;
-  onConfirm: (colorString: string) => void;
+  onConfirm: (colorState: ColorState) => void;
   onCancel: () => void;
   children?: ReactNode;
 }) {
   console.log('Color select modal: ', initialState);
-  const colorState = useColorState(initialState);
-
-  console.log('Color select modal color state: ', colorState);
 
   return (
     <Transition appear show={show} as={Fragment}>
@@ -69,13 +66,13 @@ export function ColorSelectModal({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Select Color
+                  Select Color for
                 </Dialog.Title>
                 <div className="mt-2">
                   <div className="text-sm text-gray-500">
                     {children}
 
-                    <ColorSelector colorState={colorState}></ColorSelector>
+                    <ColorSelector colorState={initialState}></ColorSelector>
                   </div>
                 </div>
 
@@ -85,7 +82,7 @@ export function ColorSelectModal({
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     onClick={() => {
-                      onConfirm(colorState);
+                      onConfirm(initialState);
                       onClose();
                     }}
                   >

@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { Text } from '@tremor/react';
 import {
+  ModalColorSelectContext,
   SubjectColorCoding,
   SubjectColorCodingDispatch
 } from '../subject-color-coding/context';
@@ -84,6 +85,12 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
   const [textColor, setTextColor] = useState(defaultColorState);
   const subjectColorCoding = useContext(SubjectColorCoding);
   const { setSubjectColorCoding } = useContext(SubjectColorCodingDispatch);
+  const {
+    setLessonText: setModalLessonText,
+    openModal,
+    setHue,
+    setLightness
+  } = useContext(ModalColorSelectContext);
 
   useEffect(() => {
     const timetables = studentTimetables.get(studentId);
@@ -125,36 +132,26 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
     setTextColor(updatedTextColor);
   }, [setSubjectColorCoding, lessonText, setTextColor, subjectColorCoding]);
 
-  const handleColorConfirm = (updatedColorStateValue: ColorState) => {
-    setSubjectColorCoding(() => {
-      return produce(subjectColorCoding, (draft) => {
-        draft[lessonText] = updatedColorStateValue;
-      });
-    });
-  };
-
   const { hue, lightness } = textColor;
 
-  const { isOpen, closeModal, openModal } = useModal();
-
   const classNameStyling = `text-sm font-medium text-${hue.id}-${lightness.id}`;
+
+  const handleCardClick = () => {
+    setHue(hue);
+    setLightness(lightness);
+    setModalLessonText(lessonText);
+    openModal();
+  };
 
   return (
     <>
       <InteractiveTableCard
         additionalClassNames={['border-transparent w-28 py-0']}
       >
-        <div className="py-2" onClick={() => openModal()}>
+        <div className="py-2" onClick={() => handleCardClick()}>
           <Text className={classNameStyling}>{lessonText}</Text>
         </div>
       </InteractiveTableCard>
-      <ColorSelectModal
-        show={isOpen}
-        initialState={textColor}
-        onClose={closeModal}
-        onConfirm={handleColorConfirm}
-        onCancel={() => closeModal()}
-      />
     </>
   );
 };

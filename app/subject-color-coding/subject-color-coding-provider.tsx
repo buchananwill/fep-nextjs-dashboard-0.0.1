@@ -1,8 +1,19 @@
 'use client';
-import { ReactNode, useContext, useState } from 'react';
-import { SubjectColorCoding, SubjectColorCodingDispatch } from './context';
+import React, { ReactNode, useContext, useState } from 'react';
+import {
+  ModalColorSelectContext,
+  SubjectColorCoding,
+  SubjectColorCodingDispatch
+} from './context';
 import { useColorState } from '../components/color-selector';
-import { HUE_OPTIONS, LIGHTNESS_OPTIONS } from '../components/color-context';
+import {
+  ColorState,
+  defaultColorState,
+  HUE_OPTIONS,
+  LIGHTNESS_OPTIONS
+} from '../components/color-context';
+import { ColorSelectModal, useModal } from '../components/color-select-modal';
+import { produce } from 'immer';
 
 const someSubjects = ['Maths', 'Art', 'Science'];
 
@@ -12,6 +23,7 @@ export default function SubjectColorCodingProvider({
   children: ReactNode;
 }) {
   const context = useContext(SubjectColorCoding);
+  const [lessonText, setLessonText] = useState<string>('');
 
   someSubjects.forEach(
     (subject) =>
@@ -22,12 +34,42 @@ export default function SubjectColorCodingProvider({
   );
   const [subjectColorCoding, setSubjectColorCoding] = useState(context);
 
+  const modalInitialState = { ...useColorState(defaultColorState) };
+
+  const { isOpen, closeModal, openModal } = useModal();
+
+  const handleColorConfirm = (updatedColorStateValue: ColorState) => {
+    setSubjectColorCoding(() => {
+      return produce(subjectColorCoding, (draft) => {
+        draft[lessonText] = {
+          hue: updatedColorStateValue.hue,
+          lightness: updatedColorStateValue.lightness
+        };
+      });
+    });
+  };
+
   return (
     <SubjectColorCoding.Provider value={subjectColorCoding}>
       <SubjectColorCodingDispatch.Provider
         value={{ setSubjectColorCoding: setSubjectColorCoding }}
       >
-        {children}
+        <ModalColorSelectContext.Provider
+          value={{
+            setLessonText: setLessonText,
+            openModal: openModal,
+            ...modalInitialState
+          }}
+        >
+          {children}
+          <ColorSelectModal
+            show={isOpen}
+            initialState={modalInitialState}
+            onClose={closeModal}
+            onConfirm={handleColorConfirm}
+            onCancel={() => closeModal()}
+          />
+        </ModalColorSelectContext.Provider>
       </SubjectColorCodingDispatch.Provider>
     </SubjectColorCoding.Provider>
   );

@@ -15,3 +15,5 @@ export const SubjectColorCoding = createContext<SubjectColorCodingState>({});
 
 export const SubjectColorCodingDispatch =
   createContext<SubjectColorCodingDispatchState>(() => null);
+
+export const ModalColorSelectContext = createContext({});
