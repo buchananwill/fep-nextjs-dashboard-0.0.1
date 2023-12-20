@@ -4,7 +4,9 @@ import { createContext, useState } from 'react';
 
 export interface ColorState {
   hue: HueOption;
+  setHue: (value: HueOption) => void;
   lightness: LightnessOption;
+  setLightness: (value: LightnessOption) => void;
 }
 
 export const HUE_OPTIONS: HueOption[] = [
@@ -34,5 +36,7 @@ export const LIGHTNESS_OPTIONS: LightnessOption[] = [
 
 export const ColorContext = createContext<ColorState>({
   hue: HUE_OPTIONS[0],
-  lightness: LIGHTNESS_OPTIONS[0]
+  setHue: (value) => null,
+  lightness: LIGHTNESS_OPTIONS[0],
+  setLightness: (value) => null
 });

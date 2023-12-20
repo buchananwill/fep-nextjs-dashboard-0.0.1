@@ -3,6 +3,9 @@ import { createContext, useContext, useState } from 'react';
 import HueSelector, { HueOption } from './hue-selector';
 import LightnessSelector, { LightnessOption } from './lightness-selector';
 import { ColorContext, HUE_OPTIONS, LIGHTNESS_OPTIONS } from './color-context';
+import TooltipsContext from './tooltips/tooltips-context';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltips/tooltip';
+import { StandardTooltipContent } from './tooltips/standard-tooltip-content';
 
 const lessonColors = {
   Free: 'gray-200',
@@ -32,29 +35,40 @@ export default function ColorSelector({}: {}) {
     LIGHTNESS_OPTIONS[0]
   );
 
+  const { showTooltips } = useContext(TooltipsContext);
+
   const colorContext = {
     hue: selectedHue,
-    lightness: selectedLightness
+    setHue: setSelectedHue,
+    lightness: selectedLightness,
+    setLightness: setSelectedLightness
   };
-
-  console.log('Hue: ', selectedHue);
-  console.log('Lightness: ', selectedLightness);
 
   return (
     <>
       <ColorContext.Provider value={colorContext}>
-        <LightnessSelector
-          selectedState={selectedLightness}
-          selectionList={LIGHTNESS_OPTIONS}
-          updateSelectedState={setSelectedLightness}
-          selectionDescriptor={'L'}
-        />
-        <HueSelector
-          selectedState={selectedHue}
-          selectionList={HUE_OPTIONS}
-          updateSelectedState={setSelectedHue}
-          selectionDescriptor={'H'}
-        />
+        <div>
+          <Tooltip enabled={showTooltips}>
+            <TooltipTrigger>
+              <LightnessSelector selectionList={LIGHTNESS_OPTIONS} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <StandardTooltipContent>
+                Select color <strong>lightness</strong>.
+              </StandardTooltipContent>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <HueSelector selectionList={HUE_OPTIONS} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <StandardTooltipContent>
+                Select color <strong>hue</strong>.
+              </StandardTooltipContent>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </ColorContext.Provider>
     </>
   );
