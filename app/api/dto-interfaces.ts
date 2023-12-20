@@ -145,3 +145,5 @@ export interface LessonCycleMetricSummary extends HasUuid {
 }
 
 export interface NameIdStringTuple extends HasUuid, Nameable {}
+
+export interface NameIdNumberTuple extends HasNumberId, Nameable {}

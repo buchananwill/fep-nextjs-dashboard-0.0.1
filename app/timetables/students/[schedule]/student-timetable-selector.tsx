@@ -19,7 +19,7 @@ import {
   LessonEnrollmentDTO,
   NameIdStringTuple
 } from '../../../api/dto-interfaces';
-import StateSelector from '../../../components/state-selector';
+import StringTupleSelector from '../../../components/string-tuple-selector';
 
 const noSelection = { name: '', id: '' };
 
@@ -65,7 +65,7 @@ export function StudentTimetableSelector({
   const selectionDescriptor = 'Student: ';
 
   return (
-    <StateSelector
+    <StringTupleSelector
       selectedState={listSelection}
       selectionList={selectionList}
       updateSelectedState={updateStudentTimetable}

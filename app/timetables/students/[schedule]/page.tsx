@@ -24,7 +24,7 @@ import { LessonCardTransformer } from '../../lesson-card';
 import fetchAllStudents from '../../../api/student-search';
 import { StudentTimetableSelector } from './student-timetable-selector';
 import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
-import LessonColorSelector from './lesson-color-selector';
+import ColorSelector from '../../../components/color-selector';
 
 export const dynamic = 'force-dynamic';
 
@@ -105,7 +105,7 @@ export default async function TimetablesPage({
               cellDataTransformer={LessonCardTransformer}
               headerTransformer={HeaderTransformerConcrete}
             ></DynamicDimensionTimetable>
-            <LessonColorSelector />
+            <ColorSelector />
           </div>
         </Card>
       </div>

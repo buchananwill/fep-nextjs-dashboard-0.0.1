@@ -1,19 +1,24 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { NameIdStringTuple } from '../api/dto-interfaces';
+import { ColorContext } from './color-context';
 
-export type OptionTransformer = React.FC<OptionTransformerProps>;
+export type LightnessTransformer = React.FC<LightnessTransformerProps>;
 
-interface OptionTransformerProps {
+export interface LightnessOption {
+  name: string;
+  id: 200 | 500 | 800;
+}
+
+interface LightnessTransformerProps {
   selected: boolean;
-  tuple: NameIdStringTuple;
+  tuple: LightnessOption;
 }
 
 function DefaultTransformer(props: {
   selected: boolean;
-  tuple: NameIdStringTuple;
+  tuple: LightnessOption;
 }) {
   return (
     <span
@@ -26,22 +31,23 @@ function DefaultTransformer(props: {
   );
 }
 
-export default function StateSelector({
+export default function LightnessSelector({
   selectedState,
   selectionList,
   updateSelectedState,
   selectionDescriptor,
   optionTransformer: OptionTransformerComponent
 }: {
-  selectedState: NameIdStringTuple;
-  selectionList: NameIdStringTuple[];
-  updateSelectedState: (value: NameIdStringTuple) => void;
+  selectedState: LightnessOption;
+  selectionList: LightnessOption[];
+  updateSelectedState: (value: LightnessOption) => void;
   selectionDescriptor: string;
-  optionTransformer?: OptionTransformer;
+  optionTransformer?: LightnessTransformer;
 }) {
+  const { hue, lightness } = useContext(ColorContext);
   return (
     <Listbox
-      value={selectedState}
+      value={lightness}
       by={'id'}
       onChange={(value) => updateSelectedState(value)}
     >
@@ -52,7 +58,7 @@ export default function StateSelector({
               {selectionDescriptor}
               {': '}
             </strong>
-            {selectedState.name != '' ? selectedState.name : 'No Selection'}
+            {lightness.name != '' ? lightness.name : 'No Selection'}
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
@@ -68,31 +74,43 @@ export default function StateSelector({
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-40">
-            {selectionList.map((tuple, index) => (
+            {selectionList.map((option, index) => (
               <Listbox.Option
                 key={index}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                    active
+                      ? `bg-${hue.id}-${option.id} text-${hue.id}-50`
+                      : 'text-gray-900'
                   }`
                 }
-                value={tuple}
+                value={option}
               >
                 {({ selected }) => (
                   <>
                     {OptionTransformerComponent ? (
                       <OptionTransformerComponent
                         selected={selected}
-                        tuple={tuple}
+                        tuple={option}
                       />
                     ) : (
-                      <DefaultTransformer selected={selected} tuple={tuple} />
+                      <DefaultTransformer selected={selected} tuple={option} />
                     )}
                     {selected ? (
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <div
+                          className={`rounded-full h-5 w-5 bg-${hue.id}-${option.id}`}
+                          aria-hidden="true"
+                        />
                       </span>
-                    ) : null}
+                    ) : (
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-4">
+                        <div
+                          className={`rounded-full h-3 w-3 bg-${hue.id}-${option.id}`}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    )}
                   </>
                 )}
               </Listbox.Option>
