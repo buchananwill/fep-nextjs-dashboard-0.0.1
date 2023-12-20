@@ -25,13 +25,6 @@ export default function SubjectColorCodingProvider({
   const context = useContext(SubjectColorCoding);
   const [lessonText, setLessonText] = useState<string>('');
 
-  someSubjects.forEach(
-    (subject) =>
-      (context[subject] = {
-        hue: HUE_OPTIONS[1],
-        lightness: LIGHTNESS_OPTIONS[1]
-      })
-  );
   const [subjectColorCoding, setSubjectColorCoding] = useState(context);
 
   const modalInitialState = { ...useColorState(defaultColorState) };

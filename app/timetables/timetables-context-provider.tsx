@@ -1,13 +1,22 @@
 'use client';
 
-import { ReactNode, useReducer } from 'react';
+import { ReactNode, useContext, useEffect, useReducer } from 'react';
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
-import { enableMapSet } from 'immer';
+import { enableMapSet, produce } from 'immer';
 
 import timetablesReducer, { TimetablesState } from './timetables-reducers';
+import {
+  SubjectColorCoding,
+  SubjectColorCodingDispatch,
+  SubjectColorCodingState
+} from '../subject-color-coding/context';
+import { LessonCycle } from '../api/state-types';
+import { HUE_OPTIONS, LIGHTNESS_OPTIONS } from '../components/color-context';
+import { HueOption } from '../components/hue-selector';
+import { LightnessOption } from '../components/lightness-selector';
 
 interface Props {
   children: ReactNode;
@@ -22,6 +31,9 @@ export default function TimetablesContextProvider({
     timetablesReducer,
     initialState
   );
+
+  const subjectColorCodingState = useContext(SubjectColorCoding);
+  const { setSubjectColorCoding } = useContext(SubjectColorCodingDispatch);
 
   enableMapSet();
 

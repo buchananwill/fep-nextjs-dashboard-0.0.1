@@ -1,4 +1,3 @@
-import { ColorState } from '../components/color-context';
 import { createContext } from 'react';
 import { HueOption } from '../components/hue-selector';
 import { LightnessOption } from '../components/lightness-selector';
@@ -14,6 +13,8 @@ export interface SubjectColorCodingDispatchState {
 export const SubjectColorCoding = createContext<SubjectColorCodingState>({});
 
 export const SubjectColorCodingDispatch =
-  createContext<SubjectColorCodingDispatchState>(() => null);
+  createContext<SubjectColorCodingDispatchState>({
+    setSubjectColorCoding: () => null
+  });
 
 export const ModalColorSelectContext = createContext({});
