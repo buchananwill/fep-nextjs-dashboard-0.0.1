@@ -68,7 +68,9 @@ export default function SubjectColorCodingProvider({
             onClose={closeModal}
             onConfirm={handleColorConfirm}
             onCancel={() => closeModal()}
-          />
+          >
+            {lessonText}
+          </ColorSelectModal>
         </ModalColorSelectContext.Provider>
       </SubjectColorCodingDispatch.Provider>
     </SubjectColorCoding.Provider>

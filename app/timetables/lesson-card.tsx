@@ -148,7 +148,10 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
       <InteractiveTableCard
         additionalClassNames={['border-transparent w-28 py-0']}
       >
-        <div className="py-2" onClick={() => handleCardClick()}>
+        <div
+          className="py-2 w-full h-full text-center"
+          onClick={() => handleCardClick()}
+        >
           <Text className={classNameStyling}>{lessonText}</Text>
         </div>
       </InteractiveTableCard>

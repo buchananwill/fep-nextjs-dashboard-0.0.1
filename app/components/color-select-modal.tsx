@@ -1,8 +1,9 @@
 'use client';
-import React, { Fragment, ReactNode, useState } from 'react';
+import React, { Fragment, ReactNode, useContext, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import ColorSelector, { useColorState } from './color-selector';
 import { ColorState } from './color-context';
+import { ModalColorSelectContext } from '../subject-color-coding/context';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,7 @@ export function ColorSelectModal({
   children?: ReactNode;
 }) {
   console.log('Color select modal: ', initialState);
+  const { lessonText } = useContext(ModalColorSelectContext);
 
   return (
     <Transition appear show={show} as={Fragment}>
@@ -61,17 +63,15 @@ export function ColorSelectModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-fit transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="max-w-fit text-lg font-medium leading-6 text-gray-900"
                 >
-                  Select Color for
+                  Select Color for {children}
                 </Dialog.Title>
-                <div className="mt-2">
+                <div className="flex mt-2 justify-center">
                   <div className="text-sm text-gray-500">
-                    {children}
-
                     <ColorSelector colorState={initialState}></ColorSelector>
                   </div>
                 </div>
