@@ -8,7 +8,7 @@ export type LightnessTransformer = React.FC<LightnessTransformerProps>;
 
 export interface LightnessOption {
   name: string;
-  id: 200 | 500 | 800;
+  id: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950;
 }
 
 interface LightnessTransformerProps {
@@ -40,8 +40,8 @@ export default function LightnessSelector({
   optionTransformer?: LightnessTransformer;
 }) {
   const { hue, lightness, setLightness } = useContext(ColorContext);
-  const { name, id } = lightness ? lightness : { name: 'Medium', id: 500 };
-  const { id: hueId } = hue ? hue : { name: 'Gray', id: 'gray' };
+  const { name, id } = lightness; // ? lightness : { name: 'Medium', id: 500 };
+  const { id: hueId } = hue; // ? hue : { name: 'Gray', id: 'gray' };
   return (
     <Listbox
       value={lightness}

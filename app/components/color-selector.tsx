@@ -34,7 +34,10 @@ const lessonColors = {
   other: 'red-400'
 };
 
-export function useColorState(initialState?: ColorState) {
+export function useColorState(initialState?: {
+  hue: HueOption;
+  lightness: LightnessOption;
+}) {
   const initialHue = initialState ? initialState.hue : HUE_OPTIONS[0];
   const initialLightness = initialState
     ? initialState.lightness

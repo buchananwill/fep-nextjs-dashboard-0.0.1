@@ -20,6 +20,8 @@ import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
 } from '../components/color-context';
+import { HueOption } from '../components/hue-selector';
+import { LightnessOption } from '../components/lightness-selector';
 
 const freePeriod: LessonEnrollmentDTO = {
   id: NaN,
@@ -119,12 +121,10 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
     const subjectColorCodingElement = subjectColorCoding[lessonText];
     let updatedTextColor;
     if (!subjectColorCodingElement) {
-      console.log('Undefined color coding');
-      setSubjectColorCoding(() => {
-        return produce(subjectColorCoding, (draft) => {
-          draft[lessonText] = defaultColorState;
-        });
+      const subjectColorCodingState = produce(subjectColorCoding, (draft) => {
+        draft[lessonText] = defaultColorState;
       });
+      setSubjectColorCoding(subjectColorCodingState);
       updatedTextColor = defaultColorState;
     } else {
       updatedTextColor = subjectColorCodingElement;

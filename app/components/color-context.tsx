@@ -36,8 +36,8 @@ export const LIGHTNESS_OPTIONS: LightnessOption[] = [
 ];
 
 export const defaultColorState = {
-  hue: { name: 'Gray', id: 'gray' },
-  lightness: { name: 'Medium', id: 500 }
+  hue: HUE_OPTIONS[0],
+  lightness: LIGHTNESS_OPTIONS[1]
 };
 
 export const ColorContext = createContext<ColorState>({
