@@ -5,12 +5,12 @@ import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
-export const fetchElectiveYearGroupWithAllStudents = async (
-  yearGroup: number
+export const fetchCarouselGroupWithAllStudents = async (
+  carouselGroupId: string
 ) => {
   const tag = 'electives';
 
-  const fetchURL = `${apiBaseUrl}/electives-yeargroup-with-all-students/${yearGroup}`;
+  const fetchURL = `${apiBaseUrl}/electives-yeargroup-with-all-students/${carouselGroupId}`;
 
   try {
     const response = await fetch(fetchURL, {

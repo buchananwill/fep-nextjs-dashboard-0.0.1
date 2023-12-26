@@ -1,5 +1,5 @@
 import { Button, Text, Title } from '@tremor/react';
-import { fetchElectiveYearGroupWithAllStudents } from '../api/request-elective-preferences';
+import { fetchCarouselGroupWithAllStudents } from '../api/request-elective-preferences';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import FilteredStudentsCard from '../filtered-students-card';
@@ -25,7 +25,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import { RotateCarouselButton } from './rotate-carousel-button';
 
 interface Props {
-  params: { yearGroup: string };
+  params: { carouselGroupId: string };
   searchParams: {
     cacheSetting: string;
   };
@@ -34,10 +34,10 @@ interface Props {
 export const dynamic = 'force-dynamic';
 
 export default async function ElectivesPage({
-  params: { yearGroup },
+  params: { carouselGroupId },
   searchParams: { cacheSetting }
 }: Props) {
-  const yearGroupAsNumber = parseInt(yearGroup);
+  // const yearGroupAsNumber = parseInt(carouselGroupId);
 
   let requestCacheValue: RequestCache;
   if (cacheSetting === 'reload') {
@@ -49,7 +49,7 @@ export default async function ElectivesPage({
   }
 
   const yearGroupElectiveData: YearGroupElectives =
-    await fetchElectiveYearGroupWithAllStudents(yearGroupAsNumber);
+    await fetchCarouselGroupWithAllStudents(carouselGroupId);
 
   // Initialize with empty arrays or nulls
   let tableCellsData: CellDataAndMetaData<ElectiveDTO>[] = [];
@@ -58,7 +58,7 @@ export default async function ElectivesPage({
 
   if (yearGroupElectiveData !== null) {
     const {
-      yearGroupRankInt,
+      id,
       carouselRows,
       carouselColumns: carouselCols,
       studentDTOList,
@@ -112,6 +112,8 @@ export default async function ElectivesPage({
     if (!yearGroupElectiveData) {
       return <BigTableCard>No elective data found.</BigTableCard>;
     }
+
+    console.log('Length: ', electiveDTOList.length);
 
     return (
       <ElectiveContextProvider

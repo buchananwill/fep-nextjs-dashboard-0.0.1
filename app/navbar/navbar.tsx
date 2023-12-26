@@ -11,13 +11,16 @@ import ProtectedNavigation from './protected-navigation';
 import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import useSWR, { Fetcher } from 'swr';
+import { CarouselGroupDto } from '../api/dto-interfaces';
 
-const electivesDropdown = [
-  { name: 'Year 9', href: '/9' },
-  { name: 'Year 10', href: '/10' },
-  { name: 'Year 11', href: '/11' },
-  { name: 'Year 12', href: '/12' },
-  { name: 'Year 13', href: '/13' }
+const electivesLoading = [
+  { name: 'Loading...', href: '' }
+  // { name: 'Year 9', href: '/9' },
+  // { name: 'Year 10', href: '/10' },
+  // { name: 'Year 11', href: '/11' },
+  // { name: 'Year 12', href: '/12' },
+  // { name: 'Year 13', href: '/13' }
 ];
 
 const contactTimeDropdown = [
@@ -34,6 +37,9 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+const fetcher: Fetcher<CarouselGroupDto[], string> = (url: string) =>
+  fetch(url).then((res) => res.json());
+
 export default function Navbar({
   user,
   scheduleId
@@ -48,6 +54,19 @@ export default function Navbar({
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
+  const { data, error, isLoading } = useSWR('api/option-blocks', fetcher);
+
+  if (error) console.log(error);
+  if (isLoading) console.log('loading...');
+  console.log(data);
+
+  const electivesURIs = data?.map((carouselGroupDto) => ({
+    name: carouselGroupDto.name,
+    href: `/${carouselGroupDto.id}`
+  }));
+
+  const electivesDropdown =
+    isLoading || !electivesURIs ? electivesLoading : electivesURIs;
 
   const timetablesDropdown = [
     { name: 'Overview', href: `/${scheduleId}` },

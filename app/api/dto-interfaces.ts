@@ -2,6 +2,8 @@ export interface ArrayDTO<T> {
   allItems: T[];
 }
 
+export interface CarouselGroupDto extends HasUuid, Nameable {}
+
 export interface StudentDTO extends Nameable, HasNumberId {
   yearGroup: number;
 }
@@ -68,8 +70,7 @@ export interface ElectivePreferenceDTO {
   active: boolean;
 }
 
-export interface YearGroupElectives {
-  yearGroupRankInt: number;
+export interface YearGroupElectives extends HasUuid {
   carouselRows: number;
   carouselColumns: number;
   studentDTOList: StudentDTO[];
