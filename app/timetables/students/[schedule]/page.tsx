@@ -5,12 +5,6 @@ import BigTableCard from '../../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../components/dynamic-dimension-timetable';
-import {
-  fetchAllLessonCycles,
-  fetchAllPeriodsInCycle,
-  fetchLessonEnrollments,
-  fetchScheduleIds
-} from '../../api/route';
 
 import TimetablesContextProvider from '../../timetables-context-provider';
 import { FilteredLessonCycles } from '../../filtered-lesson-cycles';
@@ -27,6 +21,12 @@ import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
 import ColorSelector, {
   useColorState
 } from '../../../components/color-selector';
+import {
+  fetchAllLessonCycles,
+  fetchAllPeriodsInCycle,
+  fetchLessonEnrollments,
+  fetchScheduleIds
+} from '../../data-fetching-functions';
 
 export const dynamic = 'force-dynamic';
 

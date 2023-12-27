@@ -5,11 +5,6 @@ import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../components/dynamic-dimension-timetable';
-import {
-  fetchAllLessonCycles,
-  fetchAllPeriodsInCycle,
-  fetchScheduleIds
-} from '../api/route';
 import { PeriodCardTransformer } from '../period-card';
 
 import TimetablesContextProvider from '../timetables-context-provider';
@@ -21,6 +16,11 @@ import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
 import DropdownParam from '../../components/dropdown-param';
 import Link from 'next/link';
+import {
+  fetchAllLessonCycles,
+  fetchAllPeriodsInCycle,
+  fetchScheduleIds
+} from '../data-fetching-functions';
 
 export const dynamic = 'force-dynamic';
 

@@ -1,6 +1,7 @@
 import Navbar from './navbar';
 import { getServerSession } from 'next-auth/next';
-import { fetchScheduleIds } from '../timetables/api/route';
+
+import { fetchScheduleIds } from '../timetables/data-fetching-functions';
 
 export default async function Nav() {
   const session = await getServerSession();

@@ -1,6 +1,5 @@
-import { NextRequest } from 'next/server';
-import { fetchAllPeriodsInCycle } from '../../../../timetables/api/route';
 import { fetch } from 'next/dist/compiled/@edge-runtime/primitives';
+import { fetchAllPeriodsInCycle } from '../../../timetables/data-fetching-functions';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 

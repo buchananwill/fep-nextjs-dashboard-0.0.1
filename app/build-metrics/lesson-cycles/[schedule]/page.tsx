@@ -2,7 +2,7 @@ import {
   getFormattedPeriodsInCycle,
   getLessonCycleBuildMetricSummary,
   getLessonCycleMetricsWithInfinityCosts
-} from './api/route';
+} from './data-fetching-functions';
 import {
   LessonCycleMetricSummary,
   NameIdStringTuple

@@ -1,14 +1,14 @@
 import { Button, Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
 import { BuildMetricDTO } from '../../api/dto-interfaces';
-import {
-  fetchBuildMetricDto,
-  fetchScheduleIds
-} from '../../timetables/api/route';
 import MetricsContextProvider from './metrics-context-provider';
 import DropdownParam from '../../components/dropdown-param';
 import React from 'react';
 import Link from 'next/link';
+import {
+  fetchBuildMetricDto,
+  fetchScheduleIds
+} from '../../timetables/data-fetching-functions';
 
 export default async function BuildMetricsOverview({
   params: { schedule }
