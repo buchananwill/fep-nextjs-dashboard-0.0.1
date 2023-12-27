@@ -38,7 +38,7 @@ function classNames(...classes: string[]) {
 }
 
 const fetcher: Fetcher<CarouselGroupDto[], string> = (url: string) =>
-  fetch(url).then((res) => res.json());
+  fetch(url, { next: { revalidate: 60 } }).then((res) => res.json());
 
 export default function Navbar({
   user,
