@@ -8,6 +8,6 @@ export async function GET(request: NextRequest) {
   try {
     return await fetch(fullUrl, { cache: 'no-store' });
   } catch (e) {
-    return [];
+    return { status: 500 };
   }
 }
