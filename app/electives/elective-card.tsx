@@ -65,8 +65,6 @@ function getFiltered(courseFilters: FilterOption<string>[], uuid: string) {
 }
 
 const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
-  console.log('Elective Card data: ', data);
-
   const { name, carouselOrdinal, id, courseId } = data;
   const { showTooltips } = useContext(TooltipsContext);
 

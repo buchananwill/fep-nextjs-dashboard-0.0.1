@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LessonCycleDTO, Period } from '../../api/dto-interfaces';
+import { Period } from '../../api/dto-interfaces';
 import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
@@ -11,14 +11,12 @@ import {
   fetchScheduleIds
 } from '../api/route';
 import { PeriodCardTransformer } from '../period-card';
-import { LessonCycle } from '../../api/state-types';
 
 import TimetablesContextProvider from '../timetables-context-provider';
 import { FilteredLessonCycles } from '../filtered-lesson-cycles';
 
 import { buildTimetablesState } from '../build-timetables-state';
 import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
-import { bold } from 'next/dist/lib/picocolors';
 import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
 import DropdownParam from '../../components/dropdown-param';

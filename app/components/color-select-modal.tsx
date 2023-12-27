@@ -1,4 +1,3 @@
-'use client';
 import React, { Fragment, ReactNode, useContext, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import ColorSelector, { useColorState } from './color-selector';
@@ -34,9 +33,6 @@ export function ColorSelectModal({
   onCancel: () => void;
   children?: ReactNode;
 }) {
-  console.log('Color select modal: ', initialState);
-  const { lessonText } = useContext(ModalColorSelectContext);
-
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>

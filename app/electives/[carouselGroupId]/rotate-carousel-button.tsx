@@ -92,15 +92,6 @@ export function RotateCarouselButton({
       };
       dispatch(dispatchRequest);
     });
-
-    //   console.log(
-    //     'Confirming the rotation of these students: ',
-    //     slicedFilteredList
-    //   );
-    //   console.log(
-    //     'In these Carousel Options: ',
-    //     { filteredStudents, carouselOptionIdSet }.carouselOptionIdSet
-    //   );
   };
 
   return (

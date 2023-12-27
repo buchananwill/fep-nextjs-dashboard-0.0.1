@@ -113,8 +113,6 @@ export default async function ElectivesPage({
       return <BigTableCard>No elective data found.</BigTableCard>;
     }
 
-    console.log('Length: ', electiveDTOList.length);
-
     return (
       <ElectiveContextProvider
         electivePreferenceList={electivePreferences}
@@ -135,6 +133,9 @@ export default async function ElectivesPage({
             <Suspense>
               <div className="flex w-full items-top justify-between pt-4 select-none">
                 <BigTableCard>
+                  <div className="p-0 flex justify-center pb-2">
+                    <Title>{yearGroupElectiveData.name}</Title>
+                  </div>
                   <div className="flex justify-center gap-2">
                     <RotateCarouselButton direction="LEFT"></RotateCarouselButton>
                     <RotateCarouselButton direction="RIGHT"></RotateCarouselButton>

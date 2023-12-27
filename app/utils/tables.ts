@@ -5,16 +5,6 @@ export function reconstructTableWithDimensions<D>(
   numCols: number,
   numRows: number
 ): D[][] {
-  console.log('numCols: ', numCols);
-  console.log('numRows: ', numRows);
-
-  // TODO FIX THE 2+ TABLE SCENARIO
-  if (numCols == 12) {
-    numCols = 6;
-  }
-
-  console.log('Flatlist: ', flatList);
-
   // Initialize the 2D array
   const table: D[][] = Array.from({ length: numRows }, () =>
     Array(numCols).fill(null)

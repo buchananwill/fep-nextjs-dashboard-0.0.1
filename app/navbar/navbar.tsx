@@ -38,7 +38,7 @@ function classNames(...classes: string[]) {
 }
 
 const fetcher: Fetcher<CarouselGroupDto[], string> = (url: string) =>
-  fetch(url, { next: { revalidate: 60 } }).then((res) => res.json());
+  fetch(url).then((res) => res.json());
 
 export default function Navbar({
   user,
@@ -54,11 +54,14 @@ export default function Navbar({
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
-  const { data, error, isLoading } = useSWR('api/option-blocks', fetcher);
+  const { data, error, isLoading } = useSWR('api/option-blocks', fetcher, {
+    refreshInterval: 60000,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true
+  });
 
   if (error) console.log(error);
   if (isLoading) console.log('loading...');
-  console.log(data);
 
   const electivesURIs = data?.map((carouselGroupDto) => ({
     name: carouselGroupDto.name,

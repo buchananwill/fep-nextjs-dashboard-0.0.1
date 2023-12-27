@@ -70,7 +70,7 @@ export interface ElectivePreferenceDTO {
   active: boolean;
 }
 
-export interface YearGroupElectives extends HasUuid {
+export interface YearGroupElectives extends HasUuid, Nameable {
   carouselRows: number;
   carouselColumns: number;
   studentDTOList: StudentDTO[];
