@@ -2,7 +2,6 @@ import { createContext } from 'react';
 import { TimetablesState } from './timetables-reducers';
 import { FilterType } from '../electives/elective-filter-reducers';
 import { LessonCycle } from '../api/state-types';
-import { number } from 'prop-types';
 
 export const TimetablesContext = createContext<TimetablesState>(
   createInitialTimetablesContext()
