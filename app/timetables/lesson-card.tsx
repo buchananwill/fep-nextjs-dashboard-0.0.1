@@ -134,7 +134,7 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
 
   const { hue, lightness } = textColor;
 
-  const classNameStyling = `text-sm font-medium text-${hue.id}-${lightness.id}`;
+  const classNameStyling = `text-xs font-medium text-${hue.id}-${lightness.id}`;
 
   const handleCardClick = () => {
     setHue(hue);

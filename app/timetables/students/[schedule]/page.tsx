@@ -53,7 +53,7 @@ export default async function TimetablesPage({
 
   const studentId = id ? parseInt(id) : NaN;
 
-  const studentDTOS = await fetchAllStudents({ q: 'dav' });
+  const studentDTOS = await fetchAllStudents({ q: 'ell' });
 
   const nameIdTupleList = studentDTOS.map((studentDTO) => ({
     name: studentDTO.name,
