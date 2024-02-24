@@ -1,6 +1,9 @@
 import { revalidateTag } from 'next/cache';
-import { CacheSetting } from '../components/filter-dropdown';
-import { AllSubjectsContactTimeDTO, NamedNumberRecord } from './dto-interfaces';
+import { CacheSetting } from '../../components/filter-dropdown';
+import {
+  AllSubjectsContactTimeDTO,
+  NamedNumberRecord
+} from '../dto-interfaces';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 

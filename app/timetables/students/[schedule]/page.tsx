@@ -15,7 +15,7 @@ import { Card, Text, Title } from '@tremor/react';
 import DropdownParam from '../../../components/dropdown-param';
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
-import fetchAllStudents from '../../../api/student-search';
+import fetchAllStudents from '../../../api/actions/student-search';
 import { StudentTimetableSelector } from './student-timetable-selector';
 import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
 import ColorSelector, {

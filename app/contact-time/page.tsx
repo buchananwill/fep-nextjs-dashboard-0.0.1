@@ -1,5 +1,5 @@
 import SubjectContactTime from './all-subjects-scatterchart';
-import { fetchAllSubjectsContactTime } from '../api/request-subject-contact-time-metrics';
+import { fetchAllSubjectsContactTime } from '../api/actions/request-subject-contact-time-metrics';
 
 export default async function SubjectsContactTime() {
   const data = await fetchAllSubjectsContactTime();

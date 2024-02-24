@@ -1,6 +1,6 @@
 import { Title, Text, Grid } from '@tremor/react';
 import ClassRoomCard from './class-room-card';
-import fetchClassRooms from '../api/request-class-rooms';
+import fetchClassRooms from '../api/actions/request-class-rooms';
 import { Suspense } from 'react';
 import Loading from '../loading';
 import { ClassRoomDTO } from '../api/dto-interfaces';

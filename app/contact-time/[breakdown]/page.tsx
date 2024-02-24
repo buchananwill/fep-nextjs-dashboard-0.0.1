@@ -2,7 +2,7 @@ import { PerSubjectDonut } from '../per-subject-donut';
 import {
   fetchAllSubjectsByYearGroupContactTime,
   fetchSingleSubjectByYearGroupContactTime
-} from '../../api/request-subject-contact-time-metrics';
+} from '../../api/actions/request-subject-contact-time-metrics';
 import { transformRecordToObjectArray } from '../../utils/data-transformations';
 import { NamedNumberRecord } from '../../api/dto-interfaces';
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { StudentDTO } from './dto-interfaces';
+import { StudentDTO } from '../dto-interfaces';
 
 interface SearchParams {
   q: string;
