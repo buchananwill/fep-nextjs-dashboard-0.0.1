@@ -24,7 +24,7 @@ export default async function PlaygroundPage() {
             <CurriculumDeliveryModel key={item.id} model={item} />
           ))}
         </Grid>
-        <ForceGraphPageWtt></ForceGraphPageWtt>
+        <ForceGraphPage></ForceGraphPage>
       </>
     );
 }

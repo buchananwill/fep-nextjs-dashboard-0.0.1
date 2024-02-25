@@ -6,28 +6,22 @@ import { GenericNodeContext } from '../nodes/generic-node-context-creator';
 import { GenericLinkContext } from '../links/generic-link-context-creator';
 import { index } from 'd3';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
+import { WorkProjectSeriesDeliveryDto } from '../../api/dtos/WorkProjectSeriesDeliveryDtoSchema';
 
-export default function PartyDtoDetails({
+export default function CurriculumDeliveryDetails({
+  deliveryList,
   node
 }: {
+  deliveryList: WorkProjectSeriesDeliveryDto[];
   node: DataNode<PartyDto>;
 }) {
-  const nodeContext = useContext(GenericNodeContext);
-  const linkContext = useContext(GenericLinkContext);
-  const nodes = (nodeContext?.nodes as DataNode<PartyDto>[]) || [];
-  const links = (linkContext?.links as DataLink<PartyDto>[]) || [];
-  const dependencyNodes = links
-    .filter((l) => (l.source as DataNode<PartyDto>).id == node.id)
-    .map((l) => l.target as DataNode<PartyDto>)
-    .map((n, index) => (
-      <TaskItem
-        key={n.id}
-        taskElementLabel={`Dependency ${index + 1}:`}
-        taskElementValue={n.data.name}
-      />
-    ));
-
-  const noTransformation = {};
+  const elements = deliveryList.map((delivery) => (
+    <TaskItem
+      key={`${node.data.id}-${delivery.workProjectSeriesSchema.id}`}
+      taskElementLabel={'Course'}
+      taskElementValue={delivery.workProjectSeriesSchema.name}
+    />
+  ));
 
   return (
     <table className={'p-2 divide-y'}>
@@ -40,7 +34,7 @@ export default function PartyDtoDetails({
         {/*  taskElementLabel={'Attached To:'}*/}
         {/*  taskElementValue={node.data.}*/}
         {/*></TaskItem>*/}
-        {...dependencyNodes}
+        {[...elements]}
       </tbody>
     </table>
   );

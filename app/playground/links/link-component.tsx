@@ -8,7 +8,6 @@ import {
 } from '../nodes/node-interaction-context';
 import { BASE_HSL } from '../../contexts/color/color-context';
 import * as d3 from 'd3';
-import { useBooleanContext } from '../../components/boolean-context/boolean-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 
 export function LinkComponent<T>({
@@ -72,8 +71,8 @@ export function LinkComponent<T>({
     { x: x2, y: y2 }
   );
 
-  const arrowToParentLocation = { ...locationInterpolation(0.95) };
-  const arrowToChildLocation = { ...locationInterpolation(0.05) };
+  const arrowToParentLocation = { ...locationInterpolation(0.85) };
+  const arrowToChildLocation = { ...locationInterpolation(0.15) };
 
   const parentRotationAngle = calculateRotationAngle(
     x1,

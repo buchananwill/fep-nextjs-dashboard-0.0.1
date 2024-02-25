@@ -6,12 +6,16 @@ import { ProductComponentStateDto } from '../api/dtos/ProductComponentStateDtoSc
 import { GraphViewer } from './graph/graph-viewer';
 import GraphForceAdjuster from './components/graph-force-adjustment';
 import GraphContextProvider from './graph/graph-context-provider';
-import PartyDtoDetails from './components/party-dto-details';
+import CurriculumDeliveryDetails from './components/curriculum-delivery-details';
 import NodeDetails from './components/node-details';
-import { getOrganizationGraph } from '../api/actions/curriculum-delivery-model';
+import {
+  getCurriculumDeliveries,
+  getOrganizationGraph
+} from '../api/actions/curriculum-delivery-model';
 import { PartyDto } from '../api/dtos/PartyDtoSchema';
 import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
 import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
+import { WorkProjectSeriesDeliveryDto } from '../api/dtos/WorkProjectSeriesDeliveryDtoSchema';
 
 export interface NodePayload<T> {
   node: DataNode<T>;
@@ -26,12 +30,21 @@ export default async function ForceGraphPage() {
   }
   const organizationGraph: GraphDto<PartyDto> = actionResponse.data;
 
+  const partyIds = organizationGraph.nodes.map((dateNode) => dateNode.data.id);
+  const actionResponse2 = await getCurriculumDeliveries(partyIds);
+
+  const { data } = actionResponse2;
+
+  if (data === undefined) {
+    return <Card>No deliveries!</Card>;
+  }
+
+  const classList: string[] = [];
   const descriptionList: string[] = [];
-  const componentList: string[] = [];
 
   organizationGraph.nodes.forEach((n: DataNode<PartyDto>) => {
+    classList.push(n.data.name);
     descriptionList.push(n.data.name);
-    componentList.push(n.data.name);
   });
 
   const titleList = organizationGraph.nodes.map(
@@ -39,10 +52,21 @@ export default async function ForceGraphPage() {
   );
 
   const nodeDetailElements: NodePayload<PartyDto>[] =
-    organizationGraph.nodes.map((node, index) => ({
-      node,
-      payload: <PartyDtoDetails key={index} node={node}></PartyDtoDetails>
-    }));
+    organizationGraph.nodes.map((node, index) => {
+      const deliveries = data.filter(
+        (delivery) => delivery.partyId === node.id
+      );
+      return {
+        node: node,
+        payload: (
+          <CurriculumDeliveryDetails
+            key={`delivery-details-${node.data.id}`}
+            deliveryList={deliveries}
+            node={node}
+          ></CurriculumDeliveryDetails>
+        )
+      };
+    });
 
   return (
     <>
@@ -57,7 +81,7 @@ export default async function ForceGraphPage() {
             <GraphForceAdjuster />
             <NodeDetails
               nodeDetailElements={nodeDetailElements}
-              labels={componentList}
+              labels={classList}
             />
           </GraphViewer>
         </GraphContextProvider>
