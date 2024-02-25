@@ -14,7 +14,7 @@ export default function NodeDetails<T>({
       {nodeDetailElements.map((detailElement, index) => (
         <NodeDetailWrapper
           key={`${index}-${labels[index]}`}
-          label={`Task ${index + 1}: ${labels[index]}`}
+          label={`${labels[index]}`}
           node={detailElement.node}
         >
           {detailElement.payload}

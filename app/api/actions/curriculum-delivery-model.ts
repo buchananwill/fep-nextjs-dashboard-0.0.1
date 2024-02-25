@@ -24,7 +24,7 @@ export async function getOrganizationGraph(): ActionResponsePromise<
   GraphDto<PartyDto>
 > {
   try {
-    const response = await fetch(`${API_BASE_URL}/graphs`, {
+    const response = await fetch(`${API_BASE_URL}/graphs/organizations`, {
       cache: 'no-cache'
     });
     const graph: GraphDto<PartyDto> = await response.json();

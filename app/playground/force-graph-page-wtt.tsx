@@ -2,46 +2,51 @@ import { Card } from '@tremor/react';
 
 import React from 'react';
 import { DataNode, GraphDto } from '../api/zod-mods';
-import { ProductComponentStateDto } from '../api/dtos/ProductComponentStateDtoSchema';
 import { GraphViewer } from './graph/graph-viewer';
 import GraphForceAdjuster from './components/graph-force-adjustment';
 import GraphContextProvider from './graph/graph-context-provider';
-import PartyDtoDetails from './components/party-dto-details';
+
 import NodeDetails from './components/node-details';
-import { getOrganizationGraph } from '../api/actions/curriculum-delivery-model';
-import { PartyDto } from '../api/dtos/PartyDtoSchema';
-import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
+
 import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
+import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
+import WorkTaskTypeDtoDetails from './components/work-task-type-dto-details';
 
 export interface NodePayload<T> {
   node: DataNode<T>;
   payload: React.JSX.Element;
 }
 
-export default async function ForceGraphPage() {
-  const actionResponse = await getOrganizationGraph();
+export default async function ForceGraphPageWtt() {
+  const actionResponse = await getWorkTaskTypeGraph();
 
   if (!actionResponse.data) {
     return <Card>No graphs!</Card>;
   }
-  const organizationGraph: GraphDto<PartyDto> = actionResponse.data;
+  // const workTaskTypeGraph: GraphDto<WorkTaskTypeDto> = actionResponse.data;
+  const workTaskTypeGraph: GraphDto<WorkTaskTypeDto> = actionResponse.data;
 
   const descriptionList: string[] = [];
   const componentList: string[] = [];
 
-  organizationGraph.nodes.forEach((n: DataNode<PartyDto>) => {
+  workTaskTypeGraph.nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     descriptionList.push(n.data.name);
     componentList.push(n.data.name);
   });
 
-  const titleList = organizationGraph.nodes.map(
-    (n: DataNode<PartyDto>) => n.data.partyType
+  const titleList = workTaskTypeGraph.nodes.map(
+    (n: DataNode<WorkTaskTypeDto>) => n.data.serviceCategoryName
   );
 
-  const nodeDetailElements: NodePayload<PartyDto>[] =
-    organizationGraph.nodes.map((node, index) => ({
+  const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] =
+    workTaskTypeGraph.nodes.map((node, index) => ({
       node,
-      payload: <PartyDtoDetails key={index} node={node}></PartyDtoDetails>
+      payload: (
+        <WorkTaskTypeDtoDetails
+          key={index}
+          node={node}
+        ></WorkTaskTypeDtoDetails>
+      )
     }));
 
   return (
@@ -49,7 +54,7 @@ export default async function ForceGraphPage() {
       <div className={'flex'}>
         <GraphContextProvider uniqueGraphName={'party-dto-graph'}>
           <GraphViewer
-            graphDto={organizationGraph}
+            graphDto={workTaskTypeGraph}
             textList={descriptionList}
             titleList={titleList}
             uniqueGraphName={'party-dto-graph'}

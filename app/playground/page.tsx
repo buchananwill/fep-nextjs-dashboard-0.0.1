@@ -3,6 +3,7 @@ import { getCurriculumDeliveryModelSchemas } from '../api/actions/curriculum-del
 import { CurriculumDeliveryModel } from './curriculum-delivery-model';
 import BoxHierarchies from './box-hierarchies';
 import ForceGraphPage from './force-graph-page';
+import ForceGraphPageWtt from './force-graph-page-wtt';
 
 export default async function PlaygroundPage() {
   const curriculumDeliveryModelSchemas =
@@ -23,7 +24,7 @@ export default async function PlaygroundPage() {
             <CurriculumDeliveryModel key={item.id} model={item} />
           ))}
         </Grid>
-        <ForceGraphPage></ForceGraphPage>
+        <ForceGraphPageWtt></ForceGraphPageWtt>
       </>
     );
 }
