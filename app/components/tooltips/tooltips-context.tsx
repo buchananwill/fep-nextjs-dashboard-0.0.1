@@ -6,6 +6,6 @@ export interface TooltipsState {
 }
 
 export default createContext<TooltipsState>({
-  showTooltips: true,
+  showTooltips: false,
   setShowTooltips: () => {}
 });

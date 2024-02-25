@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 import { ConfirmationModal, useModal } from '../components/confirmation-modal';
 import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import { UpdateElectivePreference } from './elective-reducers';
@@ -111,9 +111,9 @@ const CommitChanges = ({ children }: Props) => {
           </button>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Submit all unsaved edits to the database.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
       <ConfirmationModal

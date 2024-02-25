@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 
 export const ButtonStudent: DisclosureLabelTransformer<StudentDTO> = ({
   data: { name }
@@ -20,10 +20,10 @@ export const ButtonStudent: DisclosureLabelTransformer<StudentDTO> = ({
         <span className="grow ml-2 w-full">{name}</span>
       </TooltipTrigger>
       <TooltipContent>
-        <StandardTooltipContent>
+        <StandardTooltipContentOld>
           Click the <strong>name tag</strong> to view student elective
           preferences
-        </StandardTooltipContent>
+        </StandardTooltipContentOld>
       </TooltipContent>
     </Tooltip>
   );

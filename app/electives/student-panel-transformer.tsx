@@ -11,7 +11,7 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import TooltipsContext from '../components/tooltips/tooltips-context';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 
 export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
   data: { id, name }
@@ -54,11 +54,11 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <StandardTooltipContent>
+                <StandardTooltipContentOld>
                   Select in which <strong>option block</strong> this{' '}
                   <strong>student</strong> will attend this{' '}
                   <strong>course</strong>.
-                </StandardTooltipContent>
+                </StandardTooltipContentOld>
               </TooltipContent>
             </Tooltip>
             <Tooltip enabled={showTooltips}>
@@ -69,10 +69,10 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
                 />
               </TooltipTrigger>
               <TooltipContent>
-                <StandardTooltipContent>
+                <StandardTooltipContentOld>
                   Toggle whether this <strong>elective enrollment</strong> is
                   active.
-                </StandardTooltipContent>
+                </StandardTooltipContentOld>
               </TooltipContent>
             </Tooltip>
           </div>

@@ -1,22 +1,22 @@
 'use client';
 import { Text } from '@tremor/react';
 import React, { useContext } from 'react';
-import TooltipsContext from './tooltips-context';
+
+import { useSelectiveContextDispatchBoolean } from '../selective-context/selective-context-manager-boolean';
+import { useTooltipsContext } from './tooltips-context-provider';
 
 const ToolTipsToggle = () => {
-  const { showTooltips, setShowTooltips } = useContext(TooltipsContext);
+  const { showTooltips, setShowTooltips } = useTooltipsContext();
 
   return (
     <label className="flex items-center">
-      <Text>Tool tips:</Text>
+      <Text className={'text-gray-200'}>Tool tips:</Text>
       <input
         type="checkbox"
         name="tool-tips"
-        className="toggle toggle-xs ml-1"
+        className="toggle toggle-xs ml-1 toggle-success"
         checked={showTooltips}
-        onChange={() => {
-          setShowTooltips(!showTooltips);
-        }}
+        onChange={() => setShowTooltips(!showTooltips)}
       ></input>
     </label>
   );

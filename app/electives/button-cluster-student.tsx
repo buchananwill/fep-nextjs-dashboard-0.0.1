@@ -9,7 +9,7 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import TooltipsContext from '../components/tooltips/tooltips-context';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 
 export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
   data: { id },
@@ -71,10 +71,10 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Click the <strong>arrow</strong> to show options enrolled by this
             student.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
 
@@ -90,10 +90,10 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Click the <strong>pin</strong> to keep this student in the filtered
             list.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
 
@@ -107,10 +107,10 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Click the <strong>mortar board</strong> to show all the options
             delivering the student{"'"}s active elective preferences.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
     </div>

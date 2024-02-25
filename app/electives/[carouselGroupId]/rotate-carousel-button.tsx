@@ -9,7 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../../components/tooltips/standard-tooltip-content-old';
 import {
   ConfirmationModal,
   useModal
@@ -109,7 +109,7 @@ export function RotateCarouselButton({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             If any <strong>students</strong> are enrolled in{' '}
             <strong>all</strong> the highlighted <strong>options</strong>, and
             each <strong>option</strong> is present in the next{' '}
@@ -120,7 +120,7 @@ export function RotateCarouselButton({
             <strong>block</strong>. The last <strong>option</strong> in the
             direction of rotation wraps back to the first
             <strong> block</strong>.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
       <ConfirmationModal

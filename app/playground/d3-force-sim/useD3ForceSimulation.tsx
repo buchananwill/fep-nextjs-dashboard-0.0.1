@@ -1,0 +1,239 @@
+import {
+  AssetDto,
+  DataLink,
+  DataNode,
+  ProductComponentNode
+} from '../../api/zod-mods';
+import { MutableRefObject, useEffect, useRef } from 'react';
+import * as d3 from 'd3';
+import { Simulation, SimulationLinkDatum, SimulationNodeDatum } from 'd3';
+
+import { useForceAttributeListeners } from '../../api/dtos/ForceGraphAttributesDtoSchema';
+import { getGridX, updateForceX } from './forces/force-x';
+import { getModulusGridY, updateForceY } from './forces/force-y';
+import {
+  getForceManyBody,
+  getManyBody,
+  updateManyBodyForce
+} from './forces/force-many-body';
+import {
+  getLinkForceMinCosFallOffBusiestNode,
+  updateLinkForce
+} from './forces/force-link';
+import { getForceCenter } from './forces/force-center';
+import { getForceCollide } from './forces/force-collide';
+import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { negativeLogTen } from './forces/math-functions';
+import { updateForceRadial } from './forces/force-radial';
+
+export function useD3ForceSimulation<T>(
+  nodesRef: MutableRefObject<DataNode<T>[]>,
+  linksRef: MutableRefObject<DataLink<T>[]>,
+  ticked: () => void,
+  uniqueGraphName: string
+) {
+  const width = 1800; //inputs?.width || 720;
+  const height = 1200; //inputs?.height || 720;
+
+  const forceAttributeListeners = useForceAttributeListeners(uniqueGraphName);
+
+  const { isTrue: isReady } = useSelectiveContextListenerBoolean(
+    `${uniqueGraphName}-ready`,
+    `${uniqueGraphName}-force-sim`
+  );
+
+  const simulationRef: MutableRefObject<Simulation<
+    DataNode<T>,
+    DataLink<T>
+  > | null> = useRef(null);
+
+  useEffect(() => {
+    const numberOfNodes = nodesRef.current?.length || 0;
+    const spacingX = numberOfNodes > 0 ? (width - 200) / numberOfNodes : 1;
+    const spacingY = numberOfNodes > 0 ? (height / numberOfNodes) * 2 : 1;
+
+    const nodesMutable = nodesRef.current;
+    const linksMutable = linksRef.current;
+
+    const {
+      forceYStrength,
+      forceXStrength,
+      forceRadialStrength,
+      forceRadialXRelative,
+      forceRadialYRelative,
+      manyBodyStrength,
+      centerStrength,
+      collideStrength,
+      linkStrength,
+      manyBodyMinDistance,
+      manyBodyMaxDistance,
+      manyBodyTheta,
+      linkDistance
+    } = forceAttributeListeners;
+
+    function beginSim() {
+      const forceX = getGridX(width, spacingX, negativeLogTen(forceXStrength));
+
+      const forceY = getModulusGridY(
+        spacingY,
+        height,
+        () => forceYStrength / 100
+      );
+
+      const forceManyBody = getForceManyBody(
+        manyBodyMaxDistance,
+        manyBodyMinDistance,
+        () => manyBodyStrength / 100
+      );
+
+      const forceLink = getLinkForceMinCosFallOffBusiestNode(
+        linksRef.current,
+        nodesRef.current.length,
+        linkStrength
+      );
+
+      const forceCenter = getForceCenter(width, height);
+
+      const forceCollide = getForceCollide(5, collideStrength);
+
+      const forceRadial = d3
+        .forceRadial(
+          width / 3,
+          width / (forceRadialXRelative / 50),
+          height / (forceRadialYRelative / 50)
+        )
+        .strength((nextNode, i, allNodes) => {
+          const assetNode = nextNode as DataNode<T>;
+          return (
+            forceRadialStrength *
+            ((assetNode.distanceFromRoot + 1) / (maxDepth + 3))
+          );
+        });
+
+      const predicate = (nodeComparison: DataNode<T>) => {
+        return (link: SimulationLinkDatum<DataNode<T>>) => {
+          const source = link.source as DataNode<T>;
+          const target = link.target as DataNode<T>;
+
+          return (
+            nodeComparison.id == source.id || nodeComparison.id == target.id
+          );
+        };
+      };
+
+      const maxDepth = nodesMutable
+        .map((asset) => asset.distanceFromRoot)
+        .reduce((prev, curr) => Math.max(prev, curr), 0.1);
+
+      const linkDistance = (
+        link: SimulationLinkDatum<DataNode<T>>,
+        index: number,
+        data: SimulationNodeDatum[]
+      ) => {
+        const dLink = link as DataLink<T>;
+        const child = link.source as ProductComponentNode;
+        const distanceFromRoot = child.distanceFromRoot + 2.8;
+        return 100 / Math.log(distanceFromRoot) / dLink.weighting;
+      };
+
+      const simulation = d3.forceSimulation<DataNode<T>, DataLink<T>>(
+        nodesMutable
+      );
+      if (forceLink) {
+        console.log('Adding forcelink...');
+        simulation.force('link', forceLink);
+      } else {
+        nodesMutable
+          .map((nextNode) => {
+            return linksMutable.filter(predicate(nextNode)).length;
+          })
+          .reduce((prev, curr) => Math.max(prev, curr), 0.1);
+
+        simulation.force(
+          'link',
+          d3
+            .forceLink(linksMutable)
+            .id((d) => {
+              const linkD = d as DataNode<T>;
+              return linkD.id;
+            })
+            .distance(linkDistance)
+        );
+      }
+
+      if (forceManyBody) {
+        simulation.force('charge', forceManyBody);
+      } else {
+        simulation.force(
+          'charge',
+          d3
+            .forceManyBody()
+            .strength(getManyBody(nodesMutable, maxDepth))
+            .distanceMin(0)
+            .distanceMax(400)
+        );
+      }
+      if (forceCollide) {
+        simulation.force('collide', forceCollide);
+      } else {
+        simulation.force(
+          'collide',
+          d3
+            .forceCollide((d) => {
+              const assetNode = d as DataNode<AssetDto>;
+              return (4 - assetNode.distanceFromRoot) * 2 + 12;
+            })
+            .strength(0.1)
+        );
+      }
+      if (forceCenter) {
+        simulation.force('center', forceCenter);
+      } else {
+        simulation.force('center', d3.forceCenter(width / 2, height / 2));
+      }
+      if (forceRadial) {
+        simulation.force('radial', forceRadial);
+      }
+      if (forceX) simulation.force('forceX', forceX);
+      if (forceY) simulation.force('forceY', forceY);
+      simulation.on('tick', ticked);
+
+      simulation.alphaDecay(0.0);
+      simulation.alphaTarget(0);
+      simulationRef.current = simulation;
+    }
+
+    function updateValues(currentSim: Simulation<DataNode<T>, DataLink<T>>) {
+      updateLinkForce(currentSim, linkStrength, linkDistance);
+      updateManyBodyForce(
+        currentSim,
+        manyBodyStrength,
+        manyBodyTheta,
+        manyBodyMinDistance,
+        manyBodyMaxDistance
+      );
+      updateForceX(currentSim, forceXStrength);
+      updateForceY(currentSim, forceYStrength);
+      updateForceRadial(currentSim, forceRadialStrength);
+    }
+
+    if (!simulationRef.current) {
+      if (isReady) {
+        beginSim();
+        console.log('Beginning sim:', forceAttributeListeners);
+      }
+    } else {
+      updateValues(simulationRef.current!);
+      // console.log('restarting simulation', simulationRef.current?.alpha());
+      // simulationRef.current?.restart();
+    }
+  }, [
+    forceAttributeListeners,
+    nodesRef,
+    linksRef,
+    width,
+    height,
+    ticked,
+    isReady
+  ]);
+}

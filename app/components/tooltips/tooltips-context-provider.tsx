@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import TooltipsContext, { TooltipsState } from './tooltips-context';
 
 export default function TooltipsContextProvider({
@@ -25,4 +25,8 @@ export default function TooltipsContextProvider({
       {children}
     </TooltipsContext.Provider>
   );
+}
+
+export function useTooltipsContext() {
+  return useContext(TooltipsContext);
 }

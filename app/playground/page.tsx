@@ -1,6 +1,8 @@
-import { Badge, Card, Grid } from '@tremor/react';
+import { Card, Grid } from '@tremor/react';
 import { getCurriculumDeliveryModelSchemas } from '../api/actions/curriculum-delivery-model';
 import { CurriculumDeliveryModel } from './curriculum-delivery-model';
+import BoxHierarchies from './box-hierarchies';
+import ForceGraphPage from './force-graph-page';
 
 export default async function PlaygroundPage() {
   const curriculumDeliveryModelSchemas =
@@ -14,10 +16,14 @@ export default async function PlaygroundPage() {
     return <Card>{message}</Card>;
   } else
     return (
-      <Grid numItemsSm={1} numItemsLg={2} className="gap-6">
-        {data.map((item) => (
-          <CurriculumDeliveryModel key={item.id} model={item} />
-        ))}
-      </Grid>
+      <>
+        <BoxHierarchies></BoxHierarchies>
+        <Grid numItemsSm={1} numItemsLg={2} className="gap-6">
+          {data.map((item) => (
+            <CurriculumDeliveryModel key={item.id} model={item} />
+          ))}
+        </Grid>
+        <ForceGraphPage></ForceGraphPage>
+      </>
     );
 }

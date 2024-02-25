@@ -10,7 +10,7 @@ import {
 } from './color-context';
 import TooltipsContext from './tooltips/tooltips-context';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltips/tooltip';
-import { StandardTooltipContent } from './tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from './tooltips/standard-tooltip-content-old';
 
 const lessonColors = {
   Free: 'gray-200',
@@ -76,9 +76,9 @@ export default function ColorSelector({
               <LightnessSelector selectionList={LIGHTNESS_OPTIONS} />
             </TooltipTrigger>
             <TooltipContent>
-              <StandardTooltipContent>
+              <StandardTooltipContentOld>
                 Select color <strong>lightness</strong>.
-              </StandardTooltipContent>
+              </StandardTooltipContentOld>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -86,9 +86,9 @@ export default function ColorSelector({
               <HueSelector selectionList={HUE_OPTIONS} />
             </TooltipTrigger>
             <TooltipContent>
-              <StandardTooltipContent>
+              <StandardTooltipContentOld>
                 Select color <strong>hue</strong>.
-              </StandardTooltipContent>
+              </StandardTooltipContentOld>
             </TooltipContent>
           </Tooltip>
         </div>

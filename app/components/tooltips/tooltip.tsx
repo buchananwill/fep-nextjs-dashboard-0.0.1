@@ -15,6 +15,11 @@ import {
   FloatingPortal
 } from '@floating-ui/react';
 import type { Placement } from '@floating-ui/react';
+import { useContext } from 'react';
+import TooltipsContext from './tooltips-context';
+import { useBooleanContext } from '../boolean-context/boolean-context-creator';
+import { useSelectiveContextListenerBoolean } from '../selective-context/selective-context-manager-boolean';
+import { useTooltipsContext } from './tooltips-context-provider';
 
 interface TooltipOptions {
   initialOpen?: boolean;
@@ -98,7 +103,8 @@ export function Tooltip({
 }: { children: React.ReactNode } & TooltipOptions) {
   // This can accept any props as options, e.g. `placement`,
   // or other positioning options.
-  const tooltip = useTooltip(options);
+  const { showTooltips } = useTooltipsContext();
+  const tooltip = useTooltip({ ...options, enabled: showTooltips });
 
   return (
     <TooltipContext.Provider value={tooltip}>
@@ -150,7 +156,6 @@ export const TooltipContent = React.forwardRef<
   if (!context.enabled) return null;
 
   if (!context.open) return null;
-
 
   return (
     <FloatingPortal>

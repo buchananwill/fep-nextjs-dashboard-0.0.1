@@ -20,7 +20,7 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import TooltipsContext from '../components/tooltips/tooltips-context';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -87,9 +87,9 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
           ></FilterDropdown>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Select <strong>course</strong> types to filter students.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
       <Tooltip enabled={showTooltips}>
@@ -114,7 +114,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
           </label>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             <p>
               <strong>All: </strong> filter students enrolled in all selected
               course types.
@@ -123,7 +123,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
               <strong>Any: </strong>filter students enrolled in any of the
               selected course types.
             </p>
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
       <div className="flex flew-row items-center">
@@ -138,9 +138,9 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
             ></FillableButton>
           </TooltipTrigger>
           <TooltipContent>
-            <StandardTooltipContent>
+            <StandardTooltipContentOld>
               Reset highlighted mortar boards.
-            </StandardTooltipContent>
+            </StandardTooltipContentOld>
           </TooltipContent>
         </Tooltip>
       </div>

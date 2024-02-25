@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
 
 const aLevelClassLimitInt = 25;
 
@@ -159,12 +159,12 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
           </div>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             <p>
               Click the<strong> subject name </strong> to filter students taking
               this course.
             </p>{' '}
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
 
@@ -178,12 +178,12 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent className="">
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             <p>
               Click the <strong> mortar board </strong> to show the locations of
               matching courses.
             </p>
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
 
@@ -195,10 +195,10 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
           </div>
         </TooltipTrigger>
         <TooltipContent>
-          <StandardTooltipContent>
+          <StandardTooltipContentOld>
             Number of classes in this block, with a max size of{' '}
             {aLevelClassLimitInt} students.
-          </StandardTooltipContent>
+          </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
     </InteractiveTableCard>

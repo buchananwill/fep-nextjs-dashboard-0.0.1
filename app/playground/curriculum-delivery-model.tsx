@@ -14,9 +14,13 @@ function DeliveryAllocation({
   for (let i = 0; i < count; i++) {
     const units: React.JSX.Element[] = [];
     for (let j = 0; j < deliveryAllocationSize; j++) {
-      allocation.push(<AllocationUnit></AllocationUnit>);
+      allocation.push(<AllocationUnit key={`unit-${j}-${i}`}></AllocationUnit>);
     }
-    allocation.push(<div className={'flex m-0 p-1'}>{[...units]}</div>);
+    allocation.push(
+      <div key={`allocation-${i}`} className={'flex m-0 p-1'}>
+        {[...units]}
+      </div>
+    );
   }
 
   return <div className={'flex'}>{[...allocation]}</div>;
@@ -26,7 +30,7 @@ function AllocationUnit() {
   return (
     <div
       className={
-        'w-6 h-6 bg-blue-400 border-blue-600 border-2 rounded-md m-0 p-0'
+        'w-4 h-4 bg-blue-400 border-blue-600 border-2 rounded-md m-0 p-0'
       }
     ></div>
   );
@@ -58,7 +62,7 @@ export function CurriculumDeliveryModel({
       <Title>{model.name}</Title>
       <Flex justifyContent="start" alignItems="baseline" className="space-x-2">
         {deliveryAllocations.map((deliveryAllocation) => (
-          <div key={deliveryAllocation.id}>
+          <div key={`del-al-${deliveryAllocation.id}`}>
             <div
               className={
                 'w-fit flex border-2 border-slate-400 rounded-lg divide-x mb-2 items-center'
