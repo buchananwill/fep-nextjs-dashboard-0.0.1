@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useTransition } from 'react';
+import { Fragment, useEffect, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -12,16 +12,12 @@ import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import useSWR, { Fetcher } from 'swr';
-import { CarouselGroupDto } from '../api/dto-interfaces';
 
-const electivesLoading = [
-  { name: 'Loading...', href: '' }
-  // { name: 'Year 9', href: '/9' },
-  // { name: 'Year 10', href: '/10' },
-  // { name: 'Year 11', href: '/11' },
-  // { name: 'Year 12', href: '/12' },
-  // { name: 'Year 13', href: '/13' }
-];
+import { getOptionBlocks } from '../api/actions/option-blocks';
+
+import { CarouselGroupDto } from '../api/dtos/CarouselGroupDtoSchema';
+
+const electivesLoading = [{ name: 'Loading...', href: '' }];
 
 const contactTimeDropdown = [
   { name: 'Scatter summary', href: '' },
@@ -37,8 +33,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const fetcher: Fetcher<CarouselGroupDto[], string> = (url: string) =>
-  fetch(url).then((res) => res.json());
+const fetcher: Fetcher<CarouselGroupDto[]> = () =>
+  getOptionBlocks().then((res) => (res.data ? res.data : []));
 
 export default function Navbar({
   user,
@@ -54,22 +50,28 @@ export default function Navbar({
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
-  const { data, error, isLoading } = useSWR('api/option-blocks', fetcher, {
+  const { data, error, isLoading } = useSWR<CarouselGroupDto[]>(fetcher, {
     refreshInterval: 60000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true
   });
+  const [electivesDropdown, setElectivesDropdown] = useState(electivesLoading);
 
-  if (error) console.log(error);
-  if (isLoading) console.log('loading...');
+  useEffect(() => {
+    if (!isLoading && data != undefined) {
+      try {
+        const receivedDropdownData = data.map((carouselGroupDto) => ({
+          name: carouselGroupDto.name,
+          href: `/${carouselGroupDto.id}`
+        }));
+        setElectivesDropdown(receivedDropdownData);
+      } catch (e) {
+        console.error('Data incorrect structure:', e, data);
+      }
+    }
+  }, [isLoading, data]);
 
-  const electivesURIs = data?.map((carouselGroupDto) => ({
-    name: carouselGroupDto.name,
-    href: `/${carouselGroupDto.id}`
-  }));
-
-  const electivesDropdown =
-    isLoading || !electivesURIs ? electivesLoading : electivesURIs;
+  console.log(data);
 
   const timetablesDropdown = [
     { name: 'Overview', href: `/${scheduleId}` },

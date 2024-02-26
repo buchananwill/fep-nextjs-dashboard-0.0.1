@@ -5,7 +5,7 @@ import BoxHierarchies from './box-hierarchies';
 import ForceGraphPage from './force-graph-page';
 import ForceGraphPageWtt from './force-graph-page-wtt';
 
-export default async function PlaygroundPage() {
+export default async function PlaygroundPage({}:{}) {
   const curriculumDeliveryModelSchemas =
     await getCurriculumDeliveryModelSchemas();
 

@@ -19,8 +19,6 @@ import { StandardTooltipContentOld } from '../components/tooltips/standard-toolt
 import { ConfirmationModal, useModal } from '../components/confirmation-modal';
 import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import { UpdateElectivePreference } from './elective-reducers';
-import { router } from 'next/client';
-import { el } from 'date-fns/locale';
 
 interface Props {
   children: React.ReactNode;
@@ -57,12 +55,6 @@ const CommitChanges = ({ children }: Props) => {
 
   async function handleCommitClick() {
     setCommitPending(true);
-
-    // const params = new URLSearchParams(window.location.search);
-
-    // params.delete('unsaved');
-    // params.set('cacheSetting', 'reload');
-    // const redirectUrl = `${pathname}?${params.toString()}`;
 
     const response = await updateElectiveAssignments(electiveState);
     if (response) {

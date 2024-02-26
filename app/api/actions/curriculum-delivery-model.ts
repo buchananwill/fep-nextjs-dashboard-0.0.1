@@ -1,22 +1,37 @@
-import { ActionResponse, ActionResponsePromise } from './actionResponse';
+import {
+  ActionResponse,
+  ActionResponsePromise,
+  errorResponse,
+  successResponse
+} from './actionResponse';
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
 import { API_BASE_URL, Page } from '../main';
 import { GraphDto } from '../zod-mods';
 import { PartyDto } from '../dtos/PartyDtoSchema';
 import { WorkProjectSeriesDeliveryDto } from '../dtos/WorkProjectSeriesDeliveryDtoSchema';
+import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { number } from 'zod';
 
-export async function getCurriculumDeliveryModelSchemas(): ActionResponsePromise<
-  WorkProjectSeriesSchemaDto[]
-> {
+export async function getCurriculumDeliveryModelSchemas(
+  yearGroup?: number,
+  page: number = 0,
+  size: number = 10
+): ActionResponsePromise<Page<WorkProjectSeriesSchemaDto>> {
+  let url = `${API_BASE_URL}/workProjectSeriesSchemas`;
+  const paging = `?page=${page}&size=${size}&sort=name,asc`;
+  if (!!yearGroup) {
+    url = `${url}/knowledge-level-ordinal/${yearGroup}`;
+  }
+  url = url + paging;
   try {
-    const response = await fetch(`${API_BASE_URL}/workProjectSeriesSchemas`, {
+    const response = await fetch(url, {
       cache: 'no-cache'
     });
     const schemas: Page<WorkProjectSeriesSchemaDto> = await response.json();
-    return ActionResponse.success(schemas.content);
+    return successResponse(schemas);
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return ActionResponse.error(`${error}`);
+    return errorResponse(`${error}`);
   }
 }
 
@@ -28,15 +43,15 @@ export async function getOrganizationGraph(): ActionResponsePromise<
       cache: 'no-cache'
     });
     const graph: GraphDto<PartyDto> = await response.json();
-    return ActionResponse.success(graph);
+    return successResponse(graph);
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return ActionResponse.error(`${error}`);
+    return errorResponse(`${error}`);
   }
 }
 export async function getCurriculumDeliveries(
   idList: number[]
-): ActionResponsePromise<WorkProjectSeriesDeliveryDto[]> {
+): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
   try {
     const response = await fetch(
       `${API_BASE_URL}/workProjectSeriesSchemas/deliveries/by-party-id`,
@@ -49,10 +64,10 @@ export async function getCurriculumDeliveries(
         body: JSON.stringify(idList)
       }
     );
-    const deliveries: WorkProjectSeriesDeliveryDto[] = await response.json();
-    return ActionResponse.success(deliveries);
+    const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
+    return successResponse(deliveries);
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return ActionResponse.error(`${error}`);
+    return errorResponse(`${error}`);
   }
 }

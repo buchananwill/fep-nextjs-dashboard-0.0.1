@@ -1,4 +1,9 @@
-import { ActionResponse, ActionResponsePromise } from './actionResponse';
+import {
+  ActionResponse,
+  ActionResponsePromise,
+  errorResponse,
+  successResponse
+} from './actionResponse';
 import { GraphDto } from '../zod-mods';
 import { PartyDto } from '../dtos/PartyDtoSchema';
 import { API_BASE_URL } from '../main';
@@ -12,9 +17,9 @@ export async function getWorkTaskTypeGraph(): ActionResponsePromise<
       cache: 'no-cache'
     });
     const graph: GraphDto<WorkTaskTypeDto> = await response.json();
-    return ActionResponse.success(graph);
+    return successResponse(graph);
   } catch (error) {
     console.error('Error fetching data: ', error);
-    return ActionResponse.error(`${error}`);
+    return errorResponse(`${error}`);
   }
 }

@@ -7,21 +7,24 @@ import { GenericLinkContext } from '../links/generic-link-context-creator';
 import { index } from 'd3';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import { WorkProjectSeriesDeliveryDto } from '../../api/dtos/WorkProjectSeriesDeliveryDtoSchema';
+import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 
 export default function CurriculumDeliveryDetails({
-  deliveryList,
+  deliveryBundle,
   node
 }: {
-  deliveryList: WorkProjectSeriesDeliveryDto[];
+  deliveryBundle?: WorkSeriesBundleDeliveryDto;
   node: DataNode<PartyDto>;
 }) {
-  const elements = deliveryList.map((delivery) => (
-    <TaskItem
-      key={`${node.data.id}-${delivery.workProjectSeriesSchema.id}`}
-      taskElementLabel={'Course'}
-      taskElementValue={delivery.workProjectSeriesSchema.name}
-    />
-  ));
+  const elements = deliveryBundle?.workProjectSeriesSchemaDtos.map(
+    (workProjectSeriesSchema) => (
+      <TaskItem
+        key={`${node.data.id}-${workProjectSeriesSchema.id}`}
+        taskElementLabel={'Course'}
+        taskElementValue={workProjectSeriesSchema.name}
+      />
+    )
+  );
 
   return (
     <table className={'p-2 divide-y'}>
@@ -34,7 +37,7 @@ export default function CurriculumDeliveryDetails({
         {/*  taskElementLabel={'Attached To:'}*/}
         {/*  taskElementValue={node.data.}*/}
         {/*></TaskItem>*/}
-        {[...elements]}
+        {elements && [...elements]}
       </tbody>
     </table>
   );

@@ -1,6 +1,6 @@
 'use client';
 import { DataNode } from '../../api/zod-mods';
-import React, { useContext, useMemo } from 'react';
+import React, { ReactNode, useContext, useMemo } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
 import {
   GenericNodeRefContext,
@@ -12,11 +12,13 @@ import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-
 export function NodeComponent<T>({
   gProps,
   enableRunnable,
-  nodeIndex
+  nodeIndex,
+  children
 }: {
   gProps?: React.SVGProps<SVGGElement>;
   nodeIndex: number;
   enableRunnable?: boolean;
+  children?: ReactNode;
 }) {
   const { nodes } = useGenericNodeContext<T>();
   const updatedNodeData = nodes[nodeIndex] as DataNode<T>;
@@ -75,6 +77,8 @@ export function NodeComponent<T>({
         r={Math.max((4 - (distanceFromRoot || 0)) * 2 + 10, 10)}
         className={'fill-transparent stroke-slate-600 stroke-2'}
       ></circle>
+
+      {children && children}
     </g>
   );
 }

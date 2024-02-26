@@ -1,6 +1,6 @@
 import { DataLink, DataNode, GraphDto } from '../../api/zod-mods';
 import { getLinkElements } from './get-link-elements';
-import { getNodeElements } from './get-node-elements';
+import { useBasicNodeElements } from './get-node-elements';
 import { useTextElements } from './use-text-elements';
 import { Predicate } from '../../components/filters/filter-types';
 import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
@@ -14,7 +14,7 @@ function useSVGElements<T>(
   titleAccessor: (n: number) => string
 ) {
   const linkElements = getLinkElements(links);
-  const nodeElements = getNodeElements(nodes);
+  const nodeElements = useBasicNodeElements(nodes);
   const textElements = useTextElements(nodes, textAccessor, titleAccessor);
   return { nodeElements, linkElements, textElements };
 }

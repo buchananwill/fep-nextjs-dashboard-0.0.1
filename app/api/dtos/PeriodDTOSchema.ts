@@ -1,7 +1,7 @@
 import { zTimeOnly } from '../zod-mods';
 import { z } from 'zod';
 export const PeriodDTOSchema = z.object({
-  periodId: z.number(),
+  id: z.number(),
   description: z.string(),
   startTime: zTimeOnly,
   endTime: zTimeOnly,

@@ -4,6 +4,9 @@ import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaD
 import { DeliveryAllocationDto } from '../api/dtos/DeliveryAllocationDtoSchema';
 import React, { useState } from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { mode } from 'd3';
+
+const allocationSizes = [1, 2];
 
 function DeliveryAllocation({
   deliveryAllocation: { deliveryAllocationSize, count }
@@ -41,12 +44,42 @@ export function CurriculumDeliveryModel({
 }: {
   model: WorkProjectSeriesSchemaDto;
 }) {
-  const [deliveryAllocations, setDeliveryAllocations] = useState(
-    model.deliveryAllocations
+  const { name, deliveryAllocations: receivedAllocations } = model;
+
+  return (
+    <Card className={'overflow-x-auto p-4'}>
+      <Title className={'mb-2'}>{model.workTaskType.knowledgeDomainName}</Title>
+      <AdjustAllocation
+        receivedAllocations={receivedAllocations}
+      ></AdjustAllocation>
+
+      <Flex className="mt-6">
+        <Text>{model.workTaskType.knowledgeDomainName}</Text>
+        <Text className="text-right">
+          {model.workTaskType.serviceCategoryKnowledgeDomainDescriptor}
+        </Text>
+      </Flex>
+    </Card>
   );
+}
+
+function AdjustAllocation({
+  receivedAllocations
+}: {
+  receivedAllocations: DeliveryAllocationDto[];
+}) {
+  const startingAllocations = allocationSizes.map((size: number) => {
+    const found = receivedAllocations.find(
+      (da) => da.deliveryAllocationSize === size
+    );
+    return found || { id: NaN, count: 0, deliveryAllocationSize: size };
+  });
+
+  const [deliveryAllocations, setDeliveryAllocations] =
+    useState(startingAllocations);
 
   const handleModifyAllocation = (size: number, up: boolean) => {
-    const updatedDevAll = deliveryAllocations.map((allocation) => {
+    const updatedDevAlloc = deliveryAllocations.map((allocation) => {
       if (allocation.deliveryAllocationSize === size) {
         const newCount = up
           ? Math.min(allocation.count + 1, 10)
@@ -54,15 +87,14 @@ export function CurriculumDeliveryModel({
         return { ...allocation, count: newCount };
       } else return allocation;
     });
-    setDeliveryAllocations(updatedDevAll);
+    setDeliveryAllocations(updatedDevAlloc);
   };
 
   return (
-    <Card>
-      <Title>{model.name}</Title>
+    <>
       <Flex justifyContent="start" alignItems="baseline" className="space-x-2">
-        {deliveryAllocations.map((deliveryAllocation) => (
-          <div key={`del-al-${deliveryAllocation.id}`}>
+        {deliveryAllocations.map((deliveryAllocation, index) => (
+          <div key={`del-al-${index}`}>
             <div
               className={
                 'w-fit flex border-2 border-slate-400 rounded-lg divide-x mb-2 items-center'
@@ -105,12 +137,6 @@ export function CurriculumDeliveryModel({
           .map((da) => da.deliveryAllocationSize * da.count)
           .reduce((prev, curr) => prev + curr, 0)}
       </Text>
-      <Flex className="mt-6">
-        <Text>{model.workTaskType.knowledgeDomainName}</Text>
-        <Text className="text-right">
-          {model.workTaskType.serviceCategoryKnowledgeDomainDescriptor}
-        </Text>
-      </Flex>
-    </Card>
+    </>
   );
 }
