@@ -1,0 +1,39 @@
+'use client';
+import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { Text } from '@tremor/react';
+import React from 'react';
+import { useStepperContext } from './stepper/stepper-context-creator';
+
+export default function LandscapeStepper() {
+  const { increment, max, min, decrement, current } = useStepperContext();
+
+  const atMinimum = min !== undefined && current <= min;
+  const atMaximum = max !== undefined && current >= max;
+
+  console.log(atMinimum);
+  console.log(atMaximum);
+
+  return (
+    <div
+      className={
+        'w-fit flex border-2 border-slate-400 rounded-lg divide-x mb-2 items-center overflow-hidden'
+      }
+    >
+      <button
+        onClick={decrement}
+        disabled={atMinimum}
+        className={`${atMinimum ? 'bg-slate-400 opacity-50' : ''}`}
+      >
+        <MinusIcon className={`w-6 h-6`}></MinusIcon>
+      </button>
+      <button
+        onClick={increment}
+        disabled={atMaximum}
+        className={`${atMaximum ? 'bg-slate-400 opacity-50' : ''}`}
+      >
+        <PlusIcon className={'w-6 h-6'}></PlusIcon>
+      </button>
+      <Text className={'text-sm w-8 text-center'}>{current}</Text>
+    </div>
+  );
+}
