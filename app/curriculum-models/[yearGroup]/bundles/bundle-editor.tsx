@@ -1,34 +1,75 @@
 'use client';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { Card } from '@tremor/react';
-import { useSelectiveContextDispatchStringList } from '../../../components/selective-context/selective-context-manager-string-list';
+import {
+  useSelectiveContextDispatchStringList,
+  useSelectiveContextListenerStringList
+} from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
 import React, {
   Fragment,
   PropsWithChildren,
   ReactNode,
+  useEffect,
   useMemo,
   useState
 } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
+import { schema } from 'yaml/dist/schema/core/schema';
+import { useSelectiveContextDispatchString } from '../../../components/selective-context/selective-context-manager-string';
 
 const bundleEditorKey = 'bundles-editor';
 
+interface OptionChooserItemProps {
+  checked: boolean;
+}
+
+interface OptionChooserItemProps {
+  bundleKey: string;
+}
+
 function OptionChooserItem({
   children,
+  checkedStyling,
+  bundleKey,
+  optionKey,
+  listenerKey,
   ...props
-}: { children: ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
+}: {
+  children: ReactNode;
+  checkedStyling: string;
+  bundleKey: string;
+  optionKey: string;
+  listenerKey: string;
+} & React.HTMLAttributes<HTMLInputElement>) {
+  const { currentState } = useSelectiveContextListenerStringList(
+    bundleKey,
+    listenerKey,
+    []
+  );
+
+  useEffect(() => {
+    console.log(listenerKey, 'has: ', currentState);
+  }, [listenerKey, optionKey, currentState]);
+  const checked = currentState.includes(optionKey);
+
   return (
-    <div
-      className={
-        'w-full select-none cursor-pointer text-sm hover:bg-blue-100 p-1'
-      }
-      {...props}
+    <label
+      className={`inline-block relative w-full select-none cursor-pointer text-sm hover:bg-blue-200 p-1 ${
+        checked ? checkedStyling : ''
+      } focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-blue-500 focus-within:z-20 `}
     >
+      <input
+        type={'checkbox'}
+        checked={checked}
+        {...props}
+        className={'pointer-events-none absolute opacity-0  '}
+        aria-labelledby={`label-${optionKey}`}
+      />
       {children}
-    </div>
+    </label>
   );
 }
 
@@ -59,19 +100,23 @@ function BundlePanel({
 
   return (
     <TabPanelStyled>
-      <div className={'grid-cols-2 w-full flex'}>
+      <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
         <div className={'w-full'}>
           {currentState.map((schema) => {
             const name = schemaOptions[schema];
             return (
               <OptionChooserItem
                 key={`${bundleId}-${schema}`}
-                onClick={() => {
+                bundleKey={schemaBundleKey}
+                optionKey={schema}
+                listenerKey={`${schemaBundleKey}-summary`}
+                onChange={() => {
                   dispatchUpdate({
                     contextKey: schemaBundleKey,
                     value: currentState.filter((id) => id !== schema)
                   });
                 }}
+                checkedStyling={'bg-emerald-100'}
               >
                 {schemaOptions[schema]}
               </OptionChooserItem>
@@ -80,18 +125,30 @@ function BundlePanel({
         </div>
         <div className={'w-full'}>
           {Object.keys(schemaOptions)
-            .filter((schemaOption) => !currentState.includes(schemaOption))
+            // .filter((schemaOption) => !currentState.includes(schemaOption))
             .map((option) => {
               const schemaName = schemaOptions[option];
               return (
                 <OptionChooserItem
-                  key={`${bundleId}-${option}`}
-                  onClick={() => {
-                    dispatchUpdate({
-                      contextKey: schemaBundleKey,
-                      value: [...currentState, option]
-                    });
+                  key={`${bundleId}-${option}-optional`}
+                  bundleKey={schemaBundleKey}
+                  optionKey={option}
+                  listenerKey={`${schemaBundleKey}-${option}-optional`}
+                  onChange={(event) => {
+                    const include = event.currentTarget.checked;
+                    if (include) {
+                      dispatchUpdate({
+                        contextKey: schemaBundleKey,
+                        value: [...currentState, option]
+                      });
+                    } else {
+                      dispatchUpdate({
+                        contextKey: schemaBundleKey,
+                        value: currentState.filter((id) => id !== option)
+                      });
+                    }
                   }}
+                  checkedStyling={'opacity-25'}
                 >
                   {schemaName}
                 </OptionChooserItem>
