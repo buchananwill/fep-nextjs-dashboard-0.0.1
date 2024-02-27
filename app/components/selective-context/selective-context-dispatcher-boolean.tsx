@@ -20,6 +20,7 @@ export function SelectiveContextDispatcherBoolean({
   return (
     <input
       type={'checkbox'}
+      id={uniqueKey}
       onChange={() => {
         dispatchUpdate({ contextKey: uniqueKey, value: !isTrue });
       }}

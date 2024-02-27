@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useState, useTransition } from 'react';
+import { Fragment, useEffect, useMemo, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -33,8 +33,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const fetcher: Fetcher<CarouselGroupDto[]> = () =>
-  getOptionBlocks().then((res) => (res.data ? res.data : []));
+// const fetcher: Fetcher<CarouselGroupDto[]> = () =>
+//   getOptionBlocks().then((res) => (res.data ? res.data : []));
 
 export default function Navbar({
   user,
@@ -50,11 +50,14 @@ export default function Navbar({
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
-  const { data, error, isLoading } = useSWR<CarouselGroupDto[]>(fetcher, {
-    refreshInterval: 60000,
-    revalidateOnFocus: true,
-    revalidateOnReconnect: true
-  });
+  // const { data, error, isLoading } = useSWR<CarouselGroupDto[]>(fetcher, {
+  //   refreshInterval: 100000,
+  //   revalidateOnFocus: false,
+  //   revalidateOnReconnect: false
+  // });
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<CarouselGroupDto[] | undefined>(undefined);
+
   const [electivesDropdown, setElectivesDropdown] = useState(electivesLoading);
 
   useEffect(() => {
@@ -73,36 +76,45 @@ export default function Navbar({
 
   console.log(data);
 
-  const timetablesDropdown = [
-    { name: 'Overview', href: `/${scheduleId}` },
-    { name: 'Students', href: `/students/${scheduleId}` }
-  ];
+  const { timetablesDropdown, buildMetricsDropdown, navigation } =
+    useMemo(() => {
+      const timetablesDropdown = [
+        { name: 'Overview', href: `/${scheduleId}` },
+        { name: 'Students', href: `/students/${scheduleId}` }
+      ];
 
-  const buildMetricsDropdown = [
-    { name: 'Overview', href: `/${scheduleId}` },
-    { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
-  ];
+      const buildMetricsDropdown = [
+        { name: 'Overview', href: `/${scheduleId}` },
+        { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
+      ];
 
-  const navigation = [
-    { name: 'Students', href: '/', dropdownItems: studentsDropdown },
-    {
-      name: 'Timetables',
-      href: '/timetables',
-      dropdownItems: timetablesDropdown
-    },
-    {
-      name: 'Build Metrics',
-      href: `/build-metrics`,
-      dropdownItems: buildMetricsDropdown
-    },
-    { name: 'Electives', href: '/electives', dropdownItems: electivesDropdown },
-    {
-      name: 'Contact Time',
-      href: '/contact-time',
-      dropdownItems: contactTimeDropdown
-    },
-    { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
-  ];
+      const navigation = [
+        { name: 'Students', href: '/', dropdownItems: studentsDropdown },
+        {
+          name: 'Timetables',
+          href: '/timetables',
+          dropdownItems: timetablesDropdown
+        },
+        {
+          name: 'Build Metrics',
+          href: `/build-metrics`,
+          dropdownItems: buildMetricsDropdown
+        },
+        {
+          name: 'Electives',
+          href: '/electives',
+          dropdownItems: electivesDropdown
+        },
+        {
+          name: 'Contact Time',
+          href: '/contact-time',
+          dropdownItems: contactTimeDropdown
+        },
+        { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
+      ];
+
+      return { timetablesDropdown, buildMetricsDropdown, navigation };
+    }, [electivesDropdown, scheduleId]);
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;

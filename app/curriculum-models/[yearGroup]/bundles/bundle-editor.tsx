@@ -5,7 +5,7 @@ import { useSelectiveContextDispatchString } from '../../../components/selective
 import { useSelectiveContextDispatchStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React from 'react';
+import React, { useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 
@@ -26,12 +26,28 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
       schemaBundleIds,
       panelKey
     );
+
   return (
     <TabPanelStyled>
       {
         <ul>
           {currentState.map((schema) => (
-            <li key={`${bundleId}-${schema}`}>Schema ID: {schema}</li>
+            <li key={`${bundleId}-${schema}`}>
+              <label className={'cursor-pointer select-none'}>
+                Schema ID: {schema}
+                <input
+                  type={'checkbox'}
+                  id={schema}
+                  className={'hidden'}
+                  onClick={() =>
+                    dispatchUpdate({
+                      contextKey: schemaBundleKey,
+                      value: currentState.filter((id) => id !== schema)
+                    })
+                  }
+                ></input>
+              </label>
+            </li>
           ))}
         </ul>
       }
@@ -50,6 +66,13 @@ export function BundleEditor({
   );
   const { currentState: currentBundles, dispatchUpdate } =
     useSelectiveContextDispatchStringList(bundleEditorKey, bundleIds);
+
+  if (
+    currentBundles == undefined ||
+    (currentBundles && currentBundles.length == 0)
+  ) {
+    return <Card>No bundles!</Card>;
+  }
   return (
     <Card>
       <Tab.Group>
@@ -57,7 +80,10 @@ export function BundleEditor({
           <Tab.List
             as={'div'}
             style={{
-              gridTemplateColumns: `repeat(${currentBundles.length}, minmax(0, 1fr)`,
+              gridTemplateColumns: `repeat(${Math.max(
+                currentBundles.length,
+                1
+              )}, minmax(0, 1fr)`,
               display: 'grid',
               width: 'calc(100% - 50px)',
               flexGrow: 1

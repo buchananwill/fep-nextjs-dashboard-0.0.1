@@ -50,16 +50,9 @@ export default function ForceSimWrapper<T>({
 
       if (linksRef)
         genericLinkDispatch(linksRef.current.map((d) => ({ ...d })));
-      if (!simDisplaying) setSimDisplaying(true);
-      console.log('Ticking!');
+      setSimDisplaying(true);
     };
-  }, [
-    linksRef,
-    nodesRef,
-    genericNodeDispatch,
-    genericLinkDispatch,
-    simDisplaying
-  ]);
+  }, [linksRef, nodesRef, genericNodeDispatch, genericLinkDispatch]);
 
   useD3ForceSimulation(nodesRef!, linksRef!, ticked, uniqueGraphName);
 

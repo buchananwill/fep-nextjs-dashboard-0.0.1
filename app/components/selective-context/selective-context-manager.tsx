@@ -56,7 +56,8 @@ export function useSelectiveContextManager<T>(initialContext: ContextRef<T>) {
   );
   const contextRef = useRef(updatedContext);
 
-  useEffect(() => {
+  const completeDispatch = (action: UpdateAction<T>) => {
+    dispatch(action);
     const staleContexts = validateUpdatedContext(contextRef, updatedContext);
     for (let staleContext of staleContexts) {
       const freshContextElement = updatedContext[staleContext];
@@ -67,6 +68,7 @@ export function useSelectiveContextManager<T>(initialContext: ContextRef<T>) {
         console.error(e);
       }
     }
-  }, [contextRef, updatedContext]);
-  return { dispatch, triggerUpdateRef, contextRef };
+  };
+
+  return { dispatch: completeDispatch, triggerUpdateRef, contextRef };
 }
