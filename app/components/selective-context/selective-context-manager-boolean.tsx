@@ -6,7 +6,7 @@ import {
   UpdateRefContextBoolean
 } from './selective-context-creator';
 import {
-  ContextRef,
+  LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
 import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
@@ -16,7 +16,7 @@ export default function SelectiveContextManagerBoolean({
   children
 }: PropsWithChildren) {
   const { dispatch, triggerUpdateRef, contextRef } = useSelectiveContextManager(
-    {} as ContextRef<boolean>
+    {} as LatestValueRef<boolean>
   );
 
   return (
@@ -33,15 +33,15 @@ export default function SelectiveContextManagerBoolean({
 export function useSelectiveContextDispatchBoolean(
   contextKey: string,
   initialValue: boolean,
-  listenerKey?: string
+  listenerKey: string
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,
+    listenerKey,
     initialValue,
     UpdateRefContextBoolean,
     DispatchUpdateContextBoolean,
-    ContextRefBoolean,
-    listenerKey || contextKey
+    ContextRefBoolean
   );
 
   return { isTrue: currentState, dispatchUpdate };
@@ -55,9 +55,9 @@ export function useSelectiveContextListenerBoolean(
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
+    fallbackValue,
     UpdateRefContextBoolean,
-    ContextRefBoolean,
-    fallbackValue
+    ContextRefBoolean
   );
 
   return { isTrue: currentState };

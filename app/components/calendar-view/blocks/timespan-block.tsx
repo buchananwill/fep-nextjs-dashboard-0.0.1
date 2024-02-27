@@ -1,7 +1,6 @@
 'use client';
 import React, { ReactNode, useContext, useMemo, useState } from 'react';
 
-import { ColorCoding } from '../../../color-coding/context';
 import { ZoomScaleContext } from '../scale/zoom-scale-context';
 
 import { NormalizedInterval } from 'date-fns/types';

@@ -1,24 +1,15 @@
 'use client';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import {
-  ContextRefNumber,
-  ContextRefString,
   ContextRefStringList,
-  DispatchUpdateContextNumber,
-  DispatchUpdateContextString,
   DispatchUpdateContextStringList,
-  UpdateRefContextNumber,
-  UpdateRefContextString,
   UpdateRefContextStringList
 } from './selective-context-creator';
 import {
-  ContextRef,
+  LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
-import {
-  useSelectiveContextDispatchBoolean,
-  useSelectiveContextListenerBoolean
-} from './selective-context-manager-boolean';
+
 import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
@@ -26,7 +17,7 @@ export default function SelectiveContextManagerStringList({
   children
 }: PropsWithChildren) {
   const { dispatch, triggerUpdateRef, contextRef } = useSelectiveContextManager(
-    {} as ContextRef<string[]>
+    {} as LatestValueRef<string[]>
   );
 
   return (
@@ -42,16 +33,16 @@ export default function SelectiveContextManagerStringList({
 
 export function useSelectiveContextDispatchStringList(
   contextKey: string,
-  initialValue: string[],
-  listenerKey?: string
+  listenerKey: string,
+  initialValue: string[]
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,
+    listenerKey,
     initialValue,
     UpdateRefContextStringList,
     DispatchUpdateContextStringList,
-    ContextRefStringList,
-    listenerKey || contextKey
+    ContextRefStringList
   );
 
   return { currentState, dispatchUpdate };
@@ -59,14 +50,15 @@ export function useSelectiveContextDispatchStringList(
 
 export function useSelectiveContextListenerStringList(
   contextKey: string,
-  listenerKey: string
+  listenerKey: string,
+  fallbackValue: string[]
 ) {
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
+    fallbackValue,
     UpdateRefContextStringList,
-    ContextRefStringList,
-    []
+    ContextRefStringList
   );
 
   return { currentState };

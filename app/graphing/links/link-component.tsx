@@ -30,19 +30,23 @@ export function LinkComponent<T>({
 
   const { isTrue: showArrowsToParents } = useSelectiveContextListenerBoolean(
     `arrows-to-parents-${uniqueGraphName}`,
-    listenerKey
+    listenerKey,
+    true
   );
   const { isTrue: showArrowsToChildren } = useSelectiveContextListenerBoolean(
     `arrows-to-children-${uniqueGraphName}`,
-    listenerKey
+    listenerKey,
+    true
   );
   const { isTrue: showEdgesFromChildren } = useSelectiveContextListenerBoolean(
     `highlight-from-source-${uniqueGraphName}`,
-    listenerKey
+    listenerKey,
+    true
   );
   const { isTrue: showEdgesFromParents } = useSelectiveContextListenerBoolean(
     `highlight-from-target-${uniqueGraphName}`,
-    listenerKey
+    listenerKey,
+    true
   );
 
   const updatedLink = genericLinks[linkIndex] as DataLink<T>;

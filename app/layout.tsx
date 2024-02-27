@@ -31,13 +31,13 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
-        <SelectiveContextManagerStringList>
-          <TooltipsContextProvider>
-            <SelectiveContextManagerBoolean>
-              <SelectiveContextManagerNumber>
-                <SelectiveContextManagerString>
-                  <KeyListenerManager>
-                    <SubjectColorCodingProvider>
+        <TooltipsContextProvider>
+          <SelectiveContextManagerBoolean>
+            <SelectiveContextManagerNumber>
+              <SelectiveContextManagerString>
+                <KeyListenerManager>
+                  <SubjectColorCodingProvider>
+                    <SelectiveContextManagerStringList>
                       <Suspense>
                         <Nav />
                       </Suspense>
@@ -46,13 +46,13 @@ export default async function RootLayout({
                       </main>
                       <Analytics />
                       {/*<Toast />*/}
-                    </SubjectColorCodingProvider>
-                  </KeyListenerManager>
-                </SelectiveContextManagerString>
-              </SelectiveContextManagerNumber>
-            </SelectiveContextManagerBoolean>
-          </TooltipsContextProvider>
-        </SelectiveContextManagerStringList>
+                    </SelectiveContextManagerStringList>
+                  </SubjectColorCodingProvider>
+                </KeyListenerManager>
+              </SelectiveContextManagerString>
+            </SelectiveContextManagerNumber>
+          </SelectiveContextManagerBoolean>
+        </TooltipsContextProvider>
       </body>
     </html>
   );

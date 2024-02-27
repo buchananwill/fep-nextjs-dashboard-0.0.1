@@ -41,7 +41,8 @@ export function useD3ForceSimulation<T>(
   const listenerKey = `${uniqueGraphName}-force-sim`;
   const { isTrue: isReady } = useSelectiveContextListenerBoolean(
     contextKey,
-    listenerKey
+    listenerKey,
+    false
   );
 
   const simulationRef: MutableRefObject<Simulation<
@@ -142,7 +143,6 @@ export function useD3ForceSimulation<T>(
         nodesMutable
       );
       if (forceLink) {
-        console.log('Adding forcelink...');
         simulation.force('link', forceLink);
       } else {
         nodesMutable
@@ -222,7 +222,6 @@ export function useD3ForceSimulation<T>(
     if (!simulationRef.current) {
       if (isReady) {
         beginSim();
-        console.log('Beginning sim:', forceAttributeListeners);
       }
     } else {
       updateValues(simulationRef.current!);

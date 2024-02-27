@@ -9,7 +9,7 @@ import {
   UpdateRefContextString
 } from './selective-context-creator';
 import {
-  ContextRef,
+  LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
 import {
@@ -23,7 +23,7 @@ export default function SelectiveContextManagerString({
   children
 }: PropsWithChildren) {
   const { dispatch, triggerUpdateRef, contextRef } = useSelectiveContextManager(
-    {} as ContextRef<string>
+    {} as LatestValueRef<string>
   );
 
   return (
@@ -39,16 +39,16 @@ export default function SelectiveContextManagerString({
 
 export function useSelectiveContextDispatchString(
   contextKey: string,
-  initialValue: string = '',
-  listenerKey?: string
+  listenerKey: string,
+  initialValue: string = ''
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,
     initialValue,
+    listenerKey,
     UpdateRefContextString,
     DispatchUpdateContextString,
-    ContextRefString,
-    listenerKey || contextKey
+    ContextRefString
   );
 
   return { currentState, dispatchUpdate };
@@ -61,9 +61,9 @@ export function useSelectiveContextListenerString(
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
+    '',
     UpdateRefContextString,
-    ContextRefString,
-    ''
+    ContextRefString
   );
 
   return { currentState };

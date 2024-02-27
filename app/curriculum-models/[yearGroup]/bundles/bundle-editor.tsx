@@ -5,7 +5,7 @@ import { useSelectiveContextDispatchString } from '../../../components/selective
 import { useSelectiveContextDispatchStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, { useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 
@@ -23,8 +23,8 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
   const { currentState, dispatchUpdate } =
     useSelectiveContextDispatchStringList(
       schemaBundleKey,
-      schemaBundleIds,
-      panelKey
+      panelKey,
+      schemaBundleIds
     );
 
   if (currentState === undefined) {
@@ -44,8 +44,6 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
                   id={schema}
                   className={'hidden'}
                   onClick={() => {
-                    const strings = currentState.filter((id) => id !== schema);
-                    console.log(strings);
                     dispatchUpdate({
                       contextKey: schemaBundleKey,
                       value: currentState.filter((id) => id !== schema)
@@ -73,33 +71,40 @@ export function BundleEditor({
   const schemaBundles = useMemo(() => {
     return bundleLeanDtos.map((dto) => dto.workProjectSeriesSchemaIds);
   }, [bundleLeanDtos]);
-  const [currentBundles, setCurrentBundles] = useState(bundleIds);
+  // const [currentBundles, setCurrentBundles] = useState(bundleIds);
+  const { currentState: currentBundles, dispatchUpdate } =
+    useSelectiveContextDispatchStringList(
+      bundleEditorKey,
+      bundleEditorKey,
+      bundleIds
+    );
 
   if (
-    currentBundles == undefined ||
+    currentBundles === undefined ||
     (currentBundles && currentBundles.length == 0)
   ) {
     return <Card>No bundles!</Card>;
   }
+
+  const gridColumns = currentBundles.length;
+
   return (
     <Card>
       <Tab.Group>
         <div className={'w-full flex items-center mb-2'}>
-          <Tab.List
-            as={'div'}
-            style={{
-              gridTemplateColumns: `repeat(${Math.max(
-                currentBundles.length,
-                1
-              )}, minmax(0, 1fr)`,
-              display: 'grid',
-              width: 'calc(100% - 50px)',
-              flexGrow: 1
-            }}
-          >
-            {currentBundles.map((id) => (
-              <TabStyled key={id}>{id}</TabStyled>
-            ))}
+          <Tab.List as={Fragment}>
+            <div
+              style={{
+                gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`,
+                display: 'grid',
+                width: 'calc(100% - 50px)',
+                flexGrow: 1
+              }}
+            >
+              {currentBundles.map((id) => (
+                <TabStyled key={id}>{id}</TabStyled>
+              ))}
+            </div>
           </Tab.List>
 
           <button className={` btn btn-sm btn-outline px-0 w-[50px] `}>

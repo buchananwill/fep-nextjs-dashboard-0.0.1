@@ -51,7 +51,6 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (!isTrue) {
-      console.log('Ready to graph?', readyToGraph);
       dispatchUpdate({ contextKey: readyToGraph, value: true });
     }
   }, [dispatchUpdate, isTrue, readyToGraph]);
@@ -68,7 +67,8 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
         <div className={'flex items-center w-full justify-between'}>
           <label htmlFor={stringKey}>{entry[0]}</label>
           <SelectiveContextRangeSlider
-            uniqueKey={stringKey}
+            dispatchKey={stringKey}
+            listenerKey={stringKey}
             minValue={0}
             maxValue={max}
             initialValue={initial}

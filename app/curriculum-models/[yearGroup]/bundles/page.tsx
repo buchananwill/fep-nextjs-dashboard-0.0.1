@@ -9,7 +9,7 @@ import { CurriculumDeliveryModel } from '../../curriculum-delivery-model';
 import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleEditor } from './bundle-editor';
 
-export default async function PlaygroundPage({
+export default async function BundlesPage({
   params: { yearGroup },
   searchParams
 }: {

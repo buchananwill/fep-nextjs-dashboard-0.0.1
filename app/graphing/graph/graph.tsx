@@ -22,20 +22,6 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 
-function getDependencyDepthGrid(nodes: DataNode<ProductComponentStateDto>[]): {
-  grid: number[];
-  maxDepth: number;
-} {
-  let maxDepth = 0;
-  const grid: number[] = [];
-  for (let node of nodes) {
-    const nextMaxDependencyDepth = node.distanceFromRoot;
-    grid.push(nextMaxDependencyDepth);
-    maxDepth = Math.max(maxDepth, nextMaxDependencyDepth);
-  }
-  return { grid, maxDepth };
-}
-
 export default function Graph<T>({
   graphDto,
   titleList,
@@ -65,13 +51,6 @@ export default function Graph<T>({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: 'draggable'
   });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
-        // zIndex: '100'
-      }
-    : undefined;
-
   const { currentState } = useSelectiveContextListenerNumber(
     `zoom-${uniqueGraphName}`,
     `${uniqueGraphName}`
@@ -174,24 +153,5 @@ export default function Graph<T>({
         </GenericLinkContextProvider>
       </GenericNodeContextProvider>
     </MouseDownDispatchContext.Provider>
-  );
-}
-
-export function SelectiveContextListener({
-  contextKey,
-  listenerKey
-}: {
-  contextKey: string;
-  listenerKey: string;
-}) {
-  const { isTrue } = useSelectiveContextListenerBoolean(
-    contextKey,
-    listenerKey
-  );
-
-  return (
-    <div className={` ${isTrue ? 'bg-emerald-600' : 'bg-red-300'} `}>
-      I listen to the same component!
-    </div>
   );
 }

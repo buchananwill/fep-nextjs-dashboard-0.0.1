@@ -71,7 +71,8 @@ export default function GraphViewOptions() {
         <Tooltip>
           <TooltipTrigger>
             <SelectiveContextRangeSlider
-              uniqueKey={`zoom-${uniqueGraphName}`}
+              dispatchKey={`zoom-${uniqueGraphName}`}
+              listenerKey={`zoom-${uniqueGraphName}-slider`}
               maxValue={200}
               minValue={30}
               initialValue={60}
@@ -82,7 +83,8 @@ export default function GraphViewOptions() {
         <Tooltip>
           <TooltipTrigger>
             <SelectiveContextRangeSlider
-              uniqueKey={`text-size-${uniqueGraphName}`}
+              dispatchKey={`text-size-${uniqueGraphName}`}
+              listenerKey={`text-size-${uniqueGraphName}-slider`}
               maxValue={200}
               minValue={1}
               initialValue={100}

@@ -39,8 +39,6 @@ export function GraphViewer<T, U>({
   const [forceGraphDraggable, setForceGraphDraggable] =
     useState<ForceGraphDraggable>({});
 
-  console.log(graphDto);
-
   return (
     <DraggableToTranslate>
       <ZoomScaleContextProvider>

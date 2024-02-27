@@ -6,13 +6,9 @@ import {
   UpdateRefContextNumber
 } from './selective-context-creator';
 import {
-  ContextRef,
+  LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
-import {
-  useSelectiveContextDispatchBoolean,
-  useSelectiveContextListenerBoolean
-} from './selective-context-manager-boolean';
 import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
@@ -20,32 +16,32 @@ export default function SelectiveContextManagerNumber({
   children
 }: PropsWithChildren) {
   const { dispatch, triggerUpdateRef, contextRef } = useSelectiveContextManager(
-    {} as ContextRef<number>
+    {} as LatestValueRef<number>
   );
 
   return (
-    <DispatchUpdateContextNumber.Provider value={dispatch}>
-      <UpdateRefContextNumber.Provider value={triggerUpdateRef}>
+    <UpdateRefContextNumber.Provider value={triggerUpdateRef}>
+      <DispatchUpdateContextNumber.Provider value={dispatch}>
         <ContextRefNumber.Provider value={contextRef}>
           {children}
         </ContextRefNumber.Provider>
-      </UpdateRefContextNumber.Provider>
-    </DispatchUpdateContextNumber.Provider>
+      </DispatchUpdateContextNumber.Provider>
+    </UpdateRefContextNumber.Provider>
   );
 }
 
 export function useSelectiveContextDispatchNumber(
   contextKey: string,
-  initialValue: number,
-  listenerKey?: string
+  listenerKey: string,
+  initialValue: number
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,
+    listenerKey,
     initialValue,
     UpdateRefContextNumber,
     DispatchUpdateContextNumber,
-    ContextRefNumber,
-    listenerKey || contextKey
+    ContextRefNumber
   );
 
   return { currentState, dispatchUpdate };
@@ -53,14 +49,15 @@ export function useSelectiveContextDispatchNumber(
 
 export function useSelectiveContextListenerNumber(
   contextKey: string,
-  listenerKey: string
+  listenerKey: string,
+  fallbackValue?: number
 ) {
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
+    fallbackValue || (1 as number),
     UpdateRefContextNumber,
-    ContextRefNumber,
-    1 as number
+    ContextRefNumber
   );
 
   return { currentState };

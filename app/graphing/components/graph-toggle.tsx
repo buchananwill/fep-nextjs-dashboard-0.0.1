@@ -14,11 +14,15 @@ export interface GraphToggleProps {
 export function GraphToggle({ toggleKey, tooltipContent }: GraphToggleProps) {
   const { uniqueGraphName } = useContext(GraphContext);
 
+  const selfKey = `${toggleKey}-${uniqueGraphName}`;
+
   return (
     <Tooltip>
       <TooltipTrigger>
         <SelectiveContextDispatcherBoolean
-          uniqueKey={`${toggleKey}-${uniqueGraphName}`}
+          uniqueKey={selfKey}
+          listenerKey={selfKey}
+          initialValue={true}
         ></SelectiveContextDispatcherBoolean>
       </TooltipTrigger>
       <StandardTooltipContent>{tooltipContent}</StandardTooltipContent>

@@ -31,7 +31,8 @@ export default function NodeText<T>({
 
   const { isTrue: pinTextToSelected } = useSelectiveContextListenerBoolean(
     `lock-text-with-select-${uniqueGraphName}`,
-    listenerKey
+    listenerKey,
+    false
   );
 
   const { id } = updatedData;

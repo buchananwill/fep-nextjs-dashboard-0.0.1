@@ -8,7 +8,7 @@ import { ReactNode, useReducer, useState } from 'react';
 import calendarRangeReducers from './calendar-range-reducers';
 import { NormalizedInterval } from 'date-fns/types';
 import ZoomScaleContextProvider from '../scale/zoom-scale-context-provider';
-import { createLocalDate } from '../../../classes/local-date';
+
 import { addDays } from 'date-fns/fp';
 import { interval } from 'date-fns/interval';
 
@@ -52,11 +52,7 @@ export default function CalendarRangeContextProvider({
   return (
     <CalendarRangeContext.Provider value={calendarRangeState}>
       <CalendarRangeDispatch.Provider value={dispatch}>
-        <ZoomScaleContextProvider
-          xScale={dayWidth}
-          hours={hours}
-          yScale={hourHeight}
-        >
+        <ZoomScaleContextProvider xScale={dayWidth} yScale={hourHeight}>
           {children}
         </ZoomScaleContextProvider>
       </CalendarRangeDispatch.Provider>

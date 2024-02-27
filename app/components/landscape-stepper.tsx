@@ -10,9 +10,6 @@ export default function LandscapeStepper() {
   const atMinimum = min !== undefined && current <= min;
   const atMaximum = max !== undefined && current >= max;
 
-  console.log(atMinimum);
-  console.log(atMaximum);
-
   return (
     <div
       className={
