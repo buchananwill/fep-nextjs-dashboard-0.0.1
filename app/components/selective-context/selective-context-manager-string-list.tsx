@@ -9,9 +9,7 @@ import {
   DispatchUpdateContextStringList,
   UpdateRefContextNumber,
   UpdateRefContextString,
-  UpdateRefContextStringList,
-  useSelectiveContextDispatch,
-  useSelectiveContextListener
+  UpdateRefContextStringList
 } from './selective-context-creator';
 import {
   ContextRef,
@@ -21,6 +19,8 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from './selective-context-manager-boolean';
+import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
+import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export default function SelectiveContextManagerStringList({
   children
@@ -42,7 +42,7 @@ export default function SelectiveContextManagerStringList({
 
 export function useSelectiveContextDispatchStringList(
   contextKey: string,
-  initialValue: string[] = [],
+  initialValue: string[],
   listenerKey?: string
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(

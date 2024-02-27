@@ -5,7 +5,7 @@ import { useSelectiveContextDispatchString } from '../../../components/selective
 import { useSelectiveContextDispatchStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 
@@ -27,6 +27,10 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
       panelKey
     );
 
+  if (currentState === undefined) {
+    return <div>No state to render!</div>;
+  }
+
   return (
     <TabPanelStyled>
       {
@@ -39,12 +43,14 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
                   type={'checkbox'}
                   id={schema}
                   className={'hidden'}
-                  onClick={() =>
+                  onClick={() => {
+                    const strings = currentState.filter((id) => id !== schema);
+                    console.log(strings);
                     dispatchUpdate({
                       contextKey: schemaBundleKey,
                       value: currentState.filter((id) => id !== schema)
-                    })
-                  }
+                    });
+                  }}
                 ></input>
               </label>
             </li>
@@ -60,12 +66,14 @@ export function BundleEditor({
 }: {
   bundleLeanDtos: WorkSeriesSchemaBundleLeanDto[];
 }) {
-  const bundleIds = bundleLeanDtos.map(({ id }) => id.toString());
-  const schemaBundles = bundleLeanDtos.map(
-    (dto) => dto.workProjectSeriesSchemaIds
+  const bundleIds = useMemo(
+    () => bundleLeanDtos.map(({ id }) => id.toString()),
+    [bundleLeanDtos]
   );
-  const { currentState: currentBundles, dispatchUpdate } =
-    useSelectiveContextDispatchStringList(bundleEditorKey, bundleIds);
+  const schemaBundles = useMemo(() => {
+    return bundleLeanDtos.map((dto) => dto.workProjectSeriesSchemaIds);
+  }, [bundleLeanDtos]);
+  const [currentBundles, setCurrentBundles] = useState(bundleIds);
 
   if (
     currentBundles == undefined ||

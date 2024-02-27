@@ -3,14 +3,14 @@ import { PropsWithChildren } from 'react';
 import {
   ContextRefBoolean,
   DispatchUpdateContextBoolean,
-  UpdateRefContextBoolean,
-  useSelectiveContextDispatch,
-  useSelectiveContextListener
+  UpdateRefContextBoolean
 } from './selective-context-creator';
 import {
   ContextRef,
   useSelectiveContextManager
 } from './selective-context-manager';
+import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
+import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export default function SelectiveContextManagerBoolean({
   children
@@ -49,14 +49,15 @@ export function useSelectiveContextDispatchBoolean(
 
 export function useSelectiveContextListenerBoolean(
   contextKey: string,
-  listenerKey: string
+  listenerKey: string,
+  fallbackValue: boolean
 ) {
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
     UpdateRefContextBoolean,
     ContextRefBoolean,
-    false as boolean
+    fallbackValue
   );
 
   return { isTrue: currentState };

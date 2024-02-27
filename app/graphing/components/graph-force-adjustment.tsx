@@ -44,13 +44,14 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
   const showAdjustments = `${uniqueGraphName}-show-adjustments`;
   const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     readyToGraph,
-    false
+    false,
+    readyToGraph
   );
   const [showSliders, setShowSliders] = useState(false);
 
   useEffect(() => {
     if (!isTrue) {
-      console.log('Ready to graph?');
+      console.log('Ready to graph?', readyToGraph);
       dispatchUpdate({ contextKey: readyToGraph, value: true });
     }
   }, [dispatchUpdate, isTrue, readyToGraph]);

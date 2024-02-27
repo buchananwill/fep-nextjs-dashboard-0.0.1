@@ -3,9 +3,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import {
   ContextRefNumber,
   DispatchUpdateContextNumber,
-  UpdateRefContextNumber,
-  useSelectiveContextDispatch,
-  useSelectiveContextListener
+  UpdateRefContextNumber
 } from './selective-context-creator';
 import {
   ContextRef,
@@ -15,6 +13,8 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from './selective-context-manager-boolean';
+import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
+import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export default function SelectiveContextManagerNumber({
   children

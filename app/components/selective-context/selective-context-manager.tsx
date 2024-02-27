@@ -57,16 +57,23 @@ export function useSelectiveContextManager<T>(initialContext: ContextRef<T>) {
   const contextRef = useRef(updatedContext);
 
   const completeDispatch = (action: UpdateAction<T>) => {
-    dispatch(action);
-    const staleContexts = validateUpdatedContext(contextRef, updatedContext);
-    for (let staleContext of staleContexts) {
-      const freshContextElement = updatedContext[staleContext];
-      const listeners = triggerUpdateRef.current[staleContext];
+    const { contextKey, value } = action;
+    const currentElement = contextRef.current[contextKey];
+    if (currentElement !== value) {
+      // dispatch(action);
+      // const staleContexts = validateUpdatedContext(contextRef, updatedContext);
+      // for (let staleContext of staleContexts) {
+      //   const freshContextElement = updatedContext[staleContext];
+      const listeners = triggerUpdateRef.current[contextKey];
+      if (action.contextKey === 'party-dto-graph-ready')
+        console.log('Here it is!', action, listeners);
       try {
-        Object.values(listeners).forEach((l) => l(freshContextElement));
+        Object.values(listeners).forEach((l) => l(value));
       } catch (e) {
         console.error(e);
       }
+      contextRef.current[contextKey] = value;
+      // }
     }
   };
 

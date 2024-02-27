@@ -37,9 +37,11 @@ export function useD3ForceSimulation<T>(
 
   const forceAttributeListeners = useForceAttributeListeners(uniqueGraphName);
 
+  const contextKey = `${uniqueGraphName}-ready`;
+  const listenerKey = `${uniqueGraphName}-force-sim`;
   const { isTrue: isReady } = useSelectiveContextListenerBoolean(
-    `${uniqueGraphName}-ready`,
-    `${uniqueGraphName}-force-sim`
+    contextKey,
+    listenerKey
   );
 
   const simulationRef: MutableRefObject<Simulation<

@@ -6,9 +6,7 @@ import {
   DispatchUpdateContextNumber,
   DispatchUpdateContextString,
   UpdateRefContextNumber,
-  UpdateRefContextString,
-  useSelectiveContextDispatch,
-  useSelectiveContextListener
+  UpdateRefContextString
 } from './selective-context-creator';
 import {
   ContextRef,
@@ -18,6 +16,8 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from './selective-context-manager-boolean';
+import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
+import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export default function SelectiveContextManagerString({
   children
