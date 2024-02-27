@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
-import { DataLink, DataNode } from '../../../api/zod-mods';
+import { DataLink, DataNode } from '../../api/zod-mods';
 import { negativeLogTen } from './math-functions';
 
 export function updateForceRadial<T>(

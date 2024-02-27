@@ -1,8 +1,8 @@
 import * as D3 from 'd3';
 import * as d3 from 'd3';
 import { Simulation, SimulationLinkDatum } from 'd3';
-import { DataLink, DataNode } from '../../../api/zod-mods';
-import { ProductComponentStateDto } from '../../../api/dtos/ProductComponentStateDtoSchema';
+import { DataLink, DataNode } from '../../api/zod-mods';
+import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 
 export function getCosFallOffFunction(numberOfNodes: number) {
   return (

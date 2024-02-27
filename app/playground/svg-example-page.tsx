@@ -1,5 +1,5 @@
 'use client';
-import { RootSvgContext } from './root-svg-context';
+import { RootSvgContext } from '../graphing/root-svg-context';
 import { ExampleSvgCanvas } from './example-svg-canvas';
 import React from 'react';
 

@@ -1,8 +1,8 @@
 import { getCurriculumDeliveryModelSchemas } from '../../api/actions/curriculum-delivery-model';
 import { Card, Grid } from '@tremor/react';
 import BoxHierarchies from '../../playground/box-hierarchies';
-import { CurriculumDeliveryModel } from '../../playground/curriculum-delivery-model';
-import ForceGraphPage from '../../playground/force-graph-page';
+import { CurriculumDeliveryModel } from '../curriculum-delivery-model';
+import ForceGraphPage from '../../graphing/force-graph-page';
 import { Pagination } from '../../components/pagination';
 import { normalizeQueryParamToNumber } from '../../api/utils';
 

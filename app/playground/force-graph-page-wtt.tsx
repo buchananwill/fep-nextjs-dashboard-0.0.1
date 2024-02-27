@@ -2,15 +2,15 @@ import { Card } from '@tremor/react';
 
 import React from 'react';
 import { DataNode, GraphDto } from '../api/zod-mods';
-import { GraphViewer } from './graph/graph-viewer';
-import GraphForceAdjuster from './components/graph-force-adjustment';
-import GraphContextProvider from './graph/graph-context-provider';
+import { GraphViewer } from '../graphing/graph/graph-viewer';
+import GraphForceAdjuster from '../graphing/components/graph-force-adjustment';
+import GraphContextProvider from '../graphing/graph/graph-context-provider';
 
-import NodeDetails from './components/node-details';
+import NodeDetails from '../graphing/components/node-details';
 
 import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
-import WorkTaskTypeDtoDetails from './components/work-task-type-dto-details';
+import WorkTaskTypeDtoDetails from '../graphing/components/work-task-type-dto-details';
 
 export interface NodePayload<T> {
   node: DataNode<T>;

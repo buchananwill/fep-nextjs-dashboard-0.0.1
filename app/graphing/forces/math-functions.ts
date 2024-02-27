@@ -1,6 +1,6 @@
 import { SimulationNodeDatum } from 'd3';
-import { DataNode } from '../../../api/zod-mods';
-import { ProductComponentStateDto } from '../../../api/dtos/ProductComponentStateDtoSchema';
+import { DataNode } from '../../api/zod-mods';
+import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 
 export function getLog10Function(factor: number, constant: number) {
   return (d: SimulationNodeDatum) =>

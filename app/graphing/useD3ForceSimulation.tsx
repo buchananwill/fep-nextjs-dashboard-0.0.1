@@ -3,12 +3,12 @@ import {
   DataLink,
   DataNode,
   ProductComponentNode
-} from '../../api/zod-mods';
+} from '../api/zod-mods';
 import { MutableRefObject, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Simulation, SimulationLinkDatum, SimulationNodeDatum } from 'd3';
 
-import { useForceAttributeListeners } from '../../api/dtos/ForceGraphAttributesDtoSchema';
+import { useForceAttributeListeners } from '../api/dtos/ForceGraphAttributesDtoSchema';
 import { getGridX, updateForceX } from './forces/force-x';
 import { getModulusGridY, updateForceY } from './forces/force-y';
 import {
@@ -22,7 +22,7 @@ import {
 } from './forces/force-link';
 import { getForceCenter } from './forces/force-center';
 import { getForceCollide } from './forces/force-collide';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import { negativeLogTen } from './forces/math-functions';
 import { updateForceRadial } from './forces/force-radial';
 

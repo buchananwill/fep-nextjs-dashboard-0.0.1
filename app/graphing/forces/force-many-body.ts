@@ -1,7 +1,7 @@
 import * as D3 from 'd3';
 import * as d3 from 'd3';
 import { Simulation, SimulationNodeDatum } from 'd3';
-import { DataLink, DataNode } from '../../../api/zod-mods';
+import { DataLink, DataNode } from '../../api/zod-mods';
 
 export function getForceManyBody(
   maxDist: number,

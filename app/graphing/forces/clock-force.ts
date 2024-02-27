@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { SimulationNodeDatum } from 'd3';
-import { AssetDto, DataNode } from '../../../api/zod-mods';
+import { AssetDto, DataNode } from '../../api/zod-mods';
 import { useMemo } from 'react';
 
 export function useClockForce<T>(

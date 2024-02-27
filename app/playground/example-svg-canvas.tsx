@@ -3,7 +3,7 @@ import DraggableRect from './draggable-rect';
 import {
   useDraggableSvgElement,
   useDraggableSvgRoot
-} from './use-draggable-svg';
+} from '../graphing/use-draggable-svg';
 
 const width = 1800;
 const height = 1200;

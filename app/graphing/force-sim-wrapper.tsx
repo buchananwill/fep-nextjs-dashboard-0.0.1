@@ -8,19 +8,19 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { DataLink, DataNode } from '../../api/zod-mods';
+import { DataLink, DataNode } from '../api/zod-mods';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
-import NodeInteractionProvider from '../nodes/node-interaction-context';
+import NodeInteractionProvider from './nodes/node-interaction-context';
 import {
   GenericLinkRefContext,
   useGenericLinkContext
-} from '../links/generic-link-context-creator';
+} from './links/generic-link-context-creator';
 import {
   GenericNodeRefContext,
   useGenericNodeContext
-} from '../nodes/generic-node-context-creator';
+} from './nodes/generic-node-context-creator';
 
-import { ForceSimSettings } from '../components/graph-force-adjustment';
+import { ForceSimSettings } from './components/graph-force-adjustment';
 
 export default function ForceSimWrapper<T>({
   linkElements,

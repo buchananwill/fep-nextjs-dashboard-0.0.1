@@ -2,7 +2,7 @@
 import { DataNode, GraphDto } from '../../api/zod-mods';
 import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
-import ForceSimWrapper from '../d3-force-sim/force-sim-wrapper';
+import ForceSimWrapper from '../force-sim-wrapper';
 import React, { PropsWithChildren, useRef } from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';

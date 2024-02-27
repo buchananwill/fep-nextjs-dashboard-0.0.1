@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDraggableSvgElement } from './use-draggable-svg';
+import { useDraggableSvgElement } from '../graphing/use-draggable-svg';
 
 export default function DraggableRect({
   uniqueElementKey,
