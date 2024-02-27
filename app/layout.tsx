@@ -13,6 +13,7 @@ import SelectiveContextManagerBoolean from './components/selective-context/selec
 import SelectiveContextManagerNumber from './components/selective-context/selective-context-manager-number';
 import SelectiveContextManagerString from './components/selective-context/selective-context-manager-string';
 import KeyListenerManager from './components/key-listener-context/key-listener-manager';
+import SelectiveContextManagerStringList from './components/selective-context/selective-context-manager-string-list';
 
 enableMapSet();
 
@@ -34,18 +35,20 @@ export default async function RootLayout({
           <SelectiveContextManagerBoolean>
             <SelectiveContextManagerNumber>
               <SelectiveContextManagerString>
-                <KeyListenerManager>
-                  <SubjectColorCodingProvider>
-                    <Suspense>
-                      <Nav />
-                    </Suspense>
-                    <main className="p-4 md:p-10 mx-auto max-w-full">
-                      <Suspense fallback={<Loading />}>{children}</Suspense>
-                    </main>
-                    <Analytics />
-                    {/*<Toast />*/}
-                  </SubjectColorCodingProvider>
-                </KeyListenerManager>
+                <SelectiveContextManagerStringList>
+                  <KeyListenerManager>
+                    <SubjectColorCodingProvider>
+                      <Suspense>
+                        <Nav />
+                      </Suspense>
+                      <main className="p-4 md:p-10 mx-auto max-w-full">
+                        <Suspense fallback={<Loading />}>{children}</Suspense>
+                      </main>
+                      <Analytics />
+                      {/*<Toast />*/}
+                    </SubjectColorCodingProvider>
+                  </KeyListenerManager>
+                </SelectiveContextManagerStringList>
               </SelectiveContextManagerString>
             </SelectiveContextManagerNumber>
           </SelectiveContextManagerBoolean>

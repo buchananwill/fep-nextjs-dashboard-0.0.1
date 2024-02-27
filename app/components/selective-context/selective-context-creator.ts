@@ -12,13 +12,6 @@ import {
   UpdateRefInterface
 } from './selective-context-manager';
 
-export const UpdateTriggerRefContext = createContext<
-  MutableRefObject<UpdateRefInterface<any>>
->({} as MutableRefObject<UpdateRefInterface<any>>);
-export const DispatchUpdateContext = createContext<Dispatch<UpdateAction<any>>>(
-  () => {}
-);
-
 export const ContextRefBoolean = createContext<
   MutableRefObject<ContextRef<boolean>>
 >({} as MutableRefObject<ContextRef<boolean>>);
@@ -31,6 +24,9 @@ export const DispatchUpdateContextBoolean = createContext<
   Dispatch<UpdateAction<boolean>>
 >(() => {});
 
+export const ContextRefString = createContext<
+  MutableRefObject<ContextRef<string>>
+>({} as MutableRefObject<ContextRef<string>>);
 export const UpdateRefContextString = createContext<
   MutableRefObject<UpdateRefInterface<string>>
 >({} as MutableRefObject<UpdateRefInterface<string>>);
@@ -38,9 +34,16 @@ export const UpdateRefContextString = createContext<
 export const DispatchUpdateContextString = createContext<
   Dispatch<UpdateAction<string>>
 >(() => {});
-export const ContextRefString = createContext<
-  MutableRefObject<ContextRef<string>>
->({} as MutableRefObject<ContextRef<string>>);
+export const ContextRefStringList = createContext<
+  MutableRefObject<ContextRef<string[]>>
+>({} as MutableRefObject<ContextRef<string[]>>);
+export const UpdateRefContextStringList = createContext<
+  MutableRefObject<UpdateRefInterface<string[]>>
+>({} as MutableRefObject<UpdateRefInterface<string[]>>);
+
+export const DispatchUpdateContextStringList = createContext<
+  Dispatch<UpdateAction<string[]>>
+>(() => {});
 export const ContextRefNumber = createContext<
   MutableRefObject<ContextRef<number>>
 >({} as MutableRefObject<ContextRef<number>>);

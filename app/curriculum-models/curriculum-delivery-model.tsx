@@ -1,13 +1,13 @@
 'use client';
-import { Badge, Card, Flex, Text, Title } from '@tremor/react';
+import { Card, Flex, Text, Title } from '@tremor/react';
 import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { DeliveryAllocationDto } from '../api/dtos/DeliveryAllocationDtoSchema';
 import React, { Fragment, useState } from 'react';
-import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { mode } from 'd3';
 import { Tab } from '@headlessui/react';
 import LandscapeStepper from '../components/landscape-stepper';
 import { StepperContext } from '../components/stepper/stepper-context-creator';
+import { TabStyled } from '../components/tab-layouts/tab-styled';
+import { TabPanelStyled } from '../components/tab-layouts/tab-panel-styled';
 
 const allocationSizes = [1, 2];
 
@@ -24,8 +24,8 @@ export function CurriculumDeliveryModel({
   return (
     <Card className={'overflow-x-auto p-4'}>
       <Tab.Group>
-        <div className={'flex'}>
-          <Title className={'mb-2 text-left grow'}>{name}</Title>
+        <div className={'flex mb-2 items-center'}>
+          <Title className={'text-left grow'}>{name}</Title>
           <Tab.List className={'grid grid-cols-2 grow'}>
             <TabStyled>Allocations</TabStyled>
             <TabStyled>Details</TabStyled>
@@ -45,34 +45,6 @@ export function CurriculumDeliveryModel({
         </TabPanelStyled>
       </Tab.Group>
     </Card>
-  );
-}
-
-function TabStyled({ children }: { children: string }) {
-  return (
-    <Tab as={Fragment}>
-      {({ selected }) => (
-        <button
-          className={`w-full btn btn-sm btn-outline px-0 ${
-            selected ? '' : 'opacity-50'
-          }`}
-        >
-          <span className={'text-xs'}>{children}</span>
-        </button>
-      )}
-    </Tab>
-  );
-}
-
-function TabPanelStyled({ children }: { children: React.ReactNode }) {
-  return (
-    <Tab.Panel
-      className={
-        'outline-2 outline-slate-200 overflow-auto outline outline-offset-2 rounded-md'
-      }
-    >
-      {children}
-    </Tab.Panel>
   );
 }
 

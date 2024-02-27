@@ -11,6 +11,7 @@ import { PartyDto } from '../dtos/PartyDtoSchema';
 import { WorkProjectSeriesDeliveryDto } from '../dtos/WorkProjectSeriesDeliveryDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { number } from 'zod';
+import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 export async function getCurriculumDeliveryModelSchemas(
   yearGroup?: number,
@@ -65,6 +66,29 @@ export async function getCurriculumDeliveries(
       }
     );
     const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
+    return successResponse(deliveries);
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return errorResponse(`${error}`);
+  }
+}
+
+export async function getBundles(
+  idList: string[]
+): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/workProjectSeriesSchemas/bundles/schema-id-list`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // Indicate we're sending JSON data
+        },
+        cache: 'no-cache',
+        body: JSON.stringify(idList)
+      }
+    );
+    const deliveries: WorkSeriesSchemaBundleLeanDto[] = await response.json();
     return successResponse(deliveries);
   } catch (error) {
     console.error('Error fetching data: ', error);
