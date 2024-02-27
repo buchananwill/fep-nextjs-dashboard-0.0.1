@@ -1,22 +1,48 @@
 'use client';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { Card } from '@tremor/react';
-import { useSelectiveContextDispatchString } from '../../../components/selective-context/selective-context-manager-string';
 import { useSelectiveContextDispatchStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, {
+  Fragment,
+  PropsWithChildren,
+  ReactNode,
+  useMemo,
+  useState
+} from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 
 const bundleEditorKey = 'bundles-editor';
 
+function OptionChooserItem({
+  children,
+  ...props
+}: { children: ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={
+        'w-full select-none cursor-pointer text-sm hover:bg-blue-100 p-1'
+      }
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
 interface BundlePanelProps {
   bundleId: string;
   schemaBundleIds: string[];
+  schemaOptions: { [key: string]: string };
 }
 
-function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
+function BundlePanel({
+  bundleId,
+  schemaBundleIds,
+  schemaOptions
+}: BundlePanelProps) {
   const schemaBundleKey = `schema-bundle-${bundleId}`;
   const panelKey = `${schemaBundleKey}-panel`;
 
@@ -33,36 +59,56 @@ function BundlePanel({ bundleId, schemaBundleIds }: BundlePanelProps) {
 
   return (
     <TabPanelStyled>
-      {
-        <ul>
-          {currentState.map((schema) => (
-            <li key={`${bundleId}-${schema}`}>
-              <label className={'cursor-pointer select-none'}>
-                Schema ID: {schema}
-                <input
-                  type={'checkbox'}
-                  id={schema}
-                  className={'hidden'}
+      <div className={'grid-cols-2 w-full flex'}>
+        <div className={'w-full'}>
+          {currentState.map((schema) => {
+            const name = schemaOptions[schema];
+            return (
+              <OptionChooserItem
+                key={`${bundleId}-${schema}`}
+                onClick={() => {
+                  dispatchUpdate({
+                    contextKey: schemaBundleKey,
+                    value: currentState.filter((id) => id !== schema)
+                  });
+                }}
+              >
+                {schemaOptions[schema]}
+              </OptionChooserItem>
+            );
+          })}
+        </div>
+        <div className={'w-full'}>
+          {Object.keys(schemaOptions)
+            .filter((schemaOption) => !currentState.includes(schemaOption))
+            .map((option) => {
+              const schemaName = schemaOptions[option];
+              return (
+                <OptionChooserItem
+                  key={`${bundleId}-${option}`}
                   onClick={() => {
                     dispatchUpdate({
                       contextKey: schemaBundleKey,
-                      value: currentState.filter((id) => id !== schema)
+                      value: [...currentState, option]
                     });
                   }}
-                ></input>
-              </label>
-            </li>
-          ))}
-        </ul>
-      }
+                >
+                  {schemaName}
+                </OptionChooserItem>
+              );
+            })}
+        </div>
+      </div>
     </TabPanelStyled>
   );
 }
 
 export function BundleEditor({
-  bundleLeanDtos
+  bundleLeanDtos,
+  schemaOptions
 }: {
   bundleLeanDtos: WorkSeriesSchemaBundleLeanDto[];
+  schemaOptions: { [key: string]: string };
 }) {
   const bundleIds = useMemo(
     () => bundleLeanDtos.map(({ id }) => id.toString()),
@@ -117,6 +163,7 @@ export function BundleEditor({
               key={bundleId}
               bundleId={bundleId}
               schemaBundleIds={schemaBundles[index]}
+              schemaOptions={schemaOptions}
             ></BundlePanel>
           ))}
         </Tab.Panels>

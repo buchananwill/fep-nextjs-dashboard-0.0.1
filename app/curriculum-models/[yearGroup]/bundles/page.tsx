@@ -8,6 +8,7 @@ import BoxHierarchies from '../../../playground/box-hierarchies';
 import { CurriculumDeliveryModel } from '../../curriculum-delivery-model';
 import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleEditor } from './bundle-editor';
+import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 
 export default async function BundlesPage({
   params: { yearGroup },
@@ -33,6 +34,13 @@ export default async function BundlesPage({
 
   const schemaIdList = data.content.map((schema) => schema.id);
 
+  const schemasIdsAndNames = data.content.reduce(
+    (prev, curr, currentIndex) => {
+      return { ...prev, [curr.id]: curr.name };
+    },
+    {} as { [key: string]: string }
+  );
+
   const actionResponse = await getBundles(schemaIdList);
 
   if (actionResponse.data === undefined) {
@@ -49,7 +57,10 @@ export default async function BundlesPage({
   return (
     <>
       <BoxHierarchies></BoxHierarchies>
-      <BundleEditor bundleLeanDtos={bundleLeanDtos} />
+      <BundleEditor
+        bundleLeanDtos={bundleLeanDtos}
+        schemaOptions={schemasIdsAndNames}
+      />
 
       <div className={'w-60'}>
         {/*<Pagination first={first} last={last} pageNumber={number} />*/}
