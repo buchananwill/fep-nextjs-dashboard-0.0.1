@@ -33,7 +33,7 @@ export function Pagination({
       const params = new URLSearchParams(window.location.search);
       params.set('page', nextPageNum.toString());
       const redirectUrl = `${pathname}?${params.toString()}`;
-      appRouterInstance.push(redirectUrl);
+      appRouterInstance.push(redirectUrl, { scroll: false });
     });
   }
 

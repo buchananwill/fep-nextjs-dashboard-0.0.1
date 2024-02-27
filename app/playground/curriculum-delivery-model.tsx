@@ -16,15 +16,16 @@ export function CurriculumDeliveryModel({
 }: {
   model: WorkProjectSeriesSchemaDto;
 }) {
-  const { name, deliveryAllocations: receivedAllocations } = model;
+  const { workTaskType, deliveryAllocations: receivedAllocations } = model;
+  const workTaskTypeName = workTaskType.name;
+  const lastColon = workTaskTypeName.lastIndexOf(':');
+  const name = workTaskTypeName.substring(lastColon + 2);
 
   return (
     <Card className={'overflow-x-auto p-4'}>
       <Tab.Group>
         <div className={'flex'}>
-          <Title className={'mb-2 mx-4'}>
-            {model.workTaskType.knowledgeDomainName}
-          </Title>
+          <Title className={'mb-2 text-left grow'}>{name}</Title>
           <Tab.List className={'grid grid-cols-2 grow'}>
             <TabStyled>Allocations</TabStyled>
             <TabStyled>Details</TabStyled>
