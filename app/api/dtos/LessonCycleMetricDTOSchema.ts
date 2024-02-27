@@ -1,4 +1,3 @@
-import { z.number() } from './z.number()';
 import { z } from 'zod';
 export const LessonCycleMetricDTOSchema = z.object({
   id: z.number(),

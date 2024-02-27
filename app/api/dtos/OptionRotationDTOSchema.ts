@@ -1,4 +1,3 @@
-import { z.number() } from './z.number()';
 import { z } from 'zod';
 export const OptionRotationDTOSchema = z.object({
   studentIdList: z.array(z.number()),

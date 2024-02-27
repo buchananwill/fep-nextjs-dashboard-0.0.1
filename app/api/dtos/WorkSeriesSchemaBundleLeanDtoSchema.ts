@@ -1,4 +1,3 @@
-import { z.string() } from './z.string()';
 import { z } from 'zod';
 export const WorkSeriesSchemaBundleLeanDtoSchema = z.object({
   id: z.number(),
