@@ -7,29 +7,11 @@ import {
 } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, {
-  Fragment,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import React, { Fragment, ReactNode, useEffect, useMemo } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
-import { schema } from 'yaml/dist/schema/core/schema';
-import { useSelectiveContextDispatchString } from '../../../components/selective-context/selective-context-manager-string';
 
 const bundleEditorKey = 'bundles-editor';
-
-interface OptionChooserItemProps {
-  checked: boolean;
-}
-
-interface OptionChooserItemProps {
-  bundleKey: string;
-}
-
 function OptionChooserItem({
   children,
   checkedStyling,
@@ -174,7 +156,6 @@ export function BundleEditor({
   const schemaBundles = useMemo(() => {
     return bundleLeanDtos.map((dto) => dto.workProjectSeriesSchemaIds);
   }, [bundleLeanDtos]);
-  // const [currentBundles, setCurrentBundles] = useState(bundleIds);
   const { currentState: currentBundles, dispatchUpdate } =
     useSelectiveContextDispatchStringList(
       bundleEditorKey,
