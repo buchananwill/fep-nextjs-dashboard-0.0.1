@@ -13,8 +13,8 @@ export function SelectiveContextDispatcherBoolean({
 }) {
   const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     uniqueKey,
-    initialValue,
-    listenerKey
+    listenerKey,
+    initialValue
   );
 
   return (

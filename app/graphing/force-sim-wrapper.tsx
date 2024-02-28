@@ -5,12 +5,10 @@ import React, {
   ReactNode,
   useContext,
   useMemo,
-  useRef,
   useState
 } from 'react';
 import { DataLink, DataNode } from '../api/zod-mods';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
-import NodeInteractionProvider from './nodes/node-interaction-context';
 import {
   GenericLinkRefContext,
   useGenericLinkContext
@@ -19,8 +17,7 @@ import {
   GenericNodeRefContext,
   useGenericNodeContext
 } from './nodes/generic-node-context-creator';
-
-import { ForceSimSettings } from './components/graph-force-adjustment';
+import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
 
 export default function ForceSimWrapper<T>({
   linkElements,
@@ -40,14 +37,23 @@ export default function ForceSimWrapper<T>({
 
   const nodesRef = useContext(GenericNodeRefContext);
   const linksRef = useContext(GenericLinkRefContext);
+  const contextAlterKey = `${uniqueGraphName}-ready`;
+  const listenerAlterKey = `${uniqueGraphName}-force-sim-wrapper`;
+
+  const { currentState: simVersion } = useSelectiveContextListenerNumber(
+    contextAlterKey,
+    listenerAlterKey,
+    0
+  );
 
   const [simDisplaying, setSimDisplaying] = useState(false);
 
   const ticked = useMemo(() => {
     return () => {
-      if (nodesRef)
+      if (nodesRef) {
+        // console.log('Nodes count: ', nodesRef.current.length);
         genericNodeDispatch(nodesRef.current.map((d) => ({ ...d })));
-
+      }
       if (linksRef)
         genericLinkDispatch(linksRef.current.map((d) => ({ ...d })));
       setSimDisplaying(true);

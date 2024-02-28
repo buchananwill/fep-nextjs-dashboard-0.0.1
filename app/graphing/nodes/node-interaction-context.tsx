@@ -14,7 +14,7 @@ import { DataNode } from '../../api/zod-mods';
 
 export interface NodeInteractionContextInterface {
   hover: number | null;
-  selected: Set<number>;
+  selected: number[];
 }
 
 interface SetHover {
@@ -37,11 +37,11 @@ function interactionReducer(
     case 'setHover':
       return { ...state, hover: action.payload };
     case 'toggleSelect':
-      const newSelected = new Set(state.selected);
-      if (newSelected.has(action.payload)) {
-        newSelected.delete(action.payload);
+      let newSelected = [] as number[];
+      if (state.selected.includes(action.payload)) {
+        newSelected = state.selected.filter((n) => n !== action.payload);
       } else {
-        newSelected.add(action.payload);
+        newSelected = [...state.selected, action.payload];
       }
       return { ...state, selected: newSelected };
     default:
@@ -54,7 +54,7 @@ export default function NodeInteractionProvider({
 }: PropsWithChildren) {
   const [state, dispatch] = useReducer(interactionReducer, {
     hover: null,
-    selected: new Set<number>()
+    selected: []
   });
 
   return (
@@ -75,5 +75,5 @@ export const useNodeInteractionContext = () => {
 
 export function useNodeSelectedListener<T>(node: DataNode<T>) {
   const context = useContext(NodeInteractionContext);
-  return context.selected.has(node.id);
+  return context.selected.includes(node.id);
 }

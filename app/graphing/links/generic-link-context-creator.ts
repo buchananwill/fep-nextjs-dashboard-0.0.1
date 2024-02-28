@@ -9,7 +9,7 @@ import { DataLink, DataNode } from '../../api/zod-mods';
 
 // Define the interface as generic
 export interface GenericLinkContextInterface<T> {
-  links: T[];
+  links: DataLink<T>[];
   uniqueGraphName: string;
 }
 
@@ -19,7 +19,7 @@ export const GenericLinkContext = createContext<
 >(undefined);
 
 export const GenericLinkDispatchContext = createContext<
-  Dispatch<SetStateAction<any[]>> | undefined
+  Dispatch<SetStateAction<DataLink<any>[]>> | undefined
 >(undefined);
 
 // Generic hook to use the context
@@ -31,7 +31,7 @@ export function useGenericLinkContext<T>() {
   );
   const dispatch = useContext(
     GenericLinkDispatchContext as React.Context<
-      Dispatch<SetStateAction<T[]>> | undefined
+      Dispatch<SetStateAction<DataLink<T>[]>> | undefined
     >
   );
 

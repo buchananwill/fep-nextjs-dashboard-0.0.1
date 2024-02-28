@@ -21,5 +21,6 @@ export function updateForceX<T>(
 ) {
   const forceX = currentSim.force('forceX') as d3.ForceX<DataNode<T>>;
   const strength = negativeLogTen(forceXStrength);
-  forceX.strength(strength > 0.001 ? strength : 0);
+  const finalStrength = strength > 0.001 ? strength : 0;
+  forceX.strength(finalStrength);
 }

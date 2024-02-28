@@ -36,7 +36,7 @@ export default function NodeText<T>({
   );
 
   const { id } = updatedData;
-  const show = shiftHeld || hover === id || selected.has(id);
+  const show = shiftHeld || hover === id || selected.includes(id);
 
   function handleOnClick() {
     if (!leftCtrlHeld) {
@@ -75,7 +75,7 @@ export default function NodeText<T>({
             cy={0}
             r={6}
             className={`${
-              selected.has(id)
+              selected.includes(id)
                 ? 'fill-red-500'
                 : hover === id
                 ? 'fill-blue-500'
@@ -86,7 +86,7 @@ export default function NodeText<T>({
           <g>
             {(hover === id ||
               shiftHeld ||
-              (selected.has(id) && pinTextToSelected)) &&
+              (selected.includes(id) && pinTextToSelected)) &&
               children &&
               children}
           </g>

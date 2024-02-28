@@ -21,11 +21,21 @@ export function NodeComponent<T>({
   children?: ReactNode;
 }) {
   const { nodes } = useGenericNodeContext<T>();
-  const updatedNodeData = nodes[nodeIndex] as DataNode<T>;
-  const nodeDragKey = useMemo(
-    () => `node-${updatedNodeData.id}`,
-    [updatedNodeData]
-  );
+  const updatedNodeData = nodes[nodeIndex];
+
+  const nodesRef = useContext(GenericNodeRefContext);
+
+  if (nodeIndex === 12) {
+    // console.log('Data found:', updatedNodeData);
+    // console.log('Full Array:', nodes);
+    // console.log(nodesRef?.current);
+  }
+
+  const nodeDragKey = `node-${updatedNodeData.id}`;
+  // useMemo(
+  //   () => `node-${updatedNodeData.id}`,
+  //   [updatedNodeData]
+  // );
   const { x, y, distanceFromRoot, data } = updatedNodeData; // Only x and y are necessarily relevant
 
   const nodeRef = useContext(GenericNodeRefContext);

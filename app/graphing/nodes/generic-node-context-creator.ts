@@ -5,11 +5,13 @@ import React, {
   SetStateAction,
   useContext
 } from 'react';
-import { DataNode } from '../../api/zod-mods';
+import { DataLink, DataNode } from '../../api/zod-mods';
+import { relativizeURL } from 'next/dist/shared/lib/router/utils/relativize-url';
+import { GenericLinkRefContext } from '../links/generic-link-context-creator';
 
 // Define the interface as generic
 export interface GenericNodeContextInterface<T> {
-  nodes: T[];
+  nodes: DataNode<T>[];
   uniqueGraphName: string;
 }
 
@@ -19,7 +21,7 @@ export const GenericNodeContext = createContext<
 >(undefined);
 
 export const GenericNodeDispatchContext = createContext<
-  Dispatch<SetStateAction<any[]>> | undefined
+  Dispatch<SetStateAction<DataNode<any>[]>> | undefined
 >(undefined);
 
 // Generic hook to use the context
@@ -31,7 +33,7 @@ export function useGenericNodeContext<T>() {
   );
   const dispatch = useContext(
     GenericNodeDispatchContext as React.Context<
-      Dispatch<SetStateAction<T[]>> | undefined
+      Dispatch<SetStateAction<DataNode<T>[]>> | undefined
     >
   );
 
@@ -45,3 +47,17 @@ export function useGenericNodeContext<T>() {
 export const GenericNodeRefContext = createContext<MutableRefObject<
   DataNode<any>[]
 > | null>(null);
+
+export function useGenericGraphRefs<T>() {
+  const nodeListRef = useContext(
+    GenericNodeRefContext as React.Context<React.MutableRefObject<
+      DataNode<T>[]
+    > | null>
+  );
+  const linkListRef = useContext(
+    GenericLinkRefContext as React.Context<React.MutableRefObject<
+      DataLink<T>[]
+    > | null>
+  );
+  return { nodeListRef, linkListRef };
+}

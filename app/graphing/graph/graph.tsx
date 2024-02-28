@@ -3,7 +3,7 @@ import { DataNode, GraphDto } from '../../api/zod-mods';
 import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
 import ForceSimWrapper from '../force-sim-wrapper';
-import React, { PropsWithChildren, useRef } from 'react';
+import React, { PropsWithChildren, useContext, useEffect, useRef } from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 
@@ -13,23 +13,30 @@ import { useSelectiveContextListenerBoolean } from '../../components/selective-c
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
 import GraphViewOptions from '../components/graph-view-options';
 import NodeInteractionProvider from '../nodes/node-interaction-context';
-import { GenericNodeRefContext } from '../nodes/generic-node-context-creator';
-import { GenericLinkRefContext } from '../links/generic-link-context-creator';
+import {
+  GenericNodeRefContext,
+  useGenericGraphRefs,
+  useGenericNodeContext
+} from '../nodes/generic-node-context-creator';
+import {
+  GenericLinkRefContext,
+  useGenericLinkContext
+} from '../links/generic-link-context-creator';
 import {
   DraggablePositionContext,
   IsDraggingContext,
   MouseDownDispatchContext,
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
+import { node } from 'prop-types';
 
 export default function Graph<T>({
-  graphDto,
   titleList,
   textList,
   uniqueGraphName,
   children
 }: {
-  graphDto: GraphDto<T>;
+  // graphDto?: GraphDto<T>;
   textList: string[];
   titleList: string[];
   uniqueGraphName: string;
@@ -37,16 +44,16 @@ export default function Graph<T>({
   const textAccessor = (n: number) => textList[n] || '';
   const titleAccessor = (n: number) => titleList[n] || ''; //auxNodes[n.data.entityId].data.product.name;
 
-  const { dataNodes, nodeElements, linkElements, textElements, filteredLinks } =
-    useGraphElements(
-      graphDto,
-      textAccessor,
-      titleAccessor,
-      (closure) => closure.value == 1
-    );
+  const { nodes } = useGenericNodeContext<T>();
+  const { links } = useGenericLinkContext<T>();
+  const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
 
-  const nodesRef = useRef(dataNodes);
-  const linksRef = useRef(filteredLinks);
+  const { nodeElements, linkElements, textElements } = useGraphElements(
+    nodes,
+    links,
+    textAccessor,
+    titleAccessor
+  );
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: 'draggable'
@@ -64,7 +71,7 @@ export default function Graph<T>({
     isDragging,
     mouseDownDispatch,
     svgScale
-  } = useMouseMoveSvgDraggable(nodesRef, uniqueGraphName);
+  } = useMouseMoveSvgDraggable(nodeListRef!, uniqueGraphName);
 
   const x = currentState / 200;
   const translationContextInterface = useDragToTranslate();
@@ -80,78 +87,62 @@ export default function Graph<T>({
 
   return (
     <MouseDownDispatchContext.Provider value={mouseDownDispatch}>
-      <GenericNodeContextProvider
-        nodes={dataNodes}
-        uniqueGraphName={uniqueGraphName}
-      >
-        <GenericLinkContextProvider
-          links={filteredLinks}
-          uniqueGraphName={uniqueGraphName}
-        >
-          <GenericNodeRefContext.Provider value={nodesRef}>
-            <GenericLinkRefContext.Provider value={linksRef}>
-              <NodeInteractionProvider>
-                <DraggablePositionContext.Provider value={draggablePosition}>
-                  <IsDraggingContext.Provider value={isDragging}>
-                    <div
-                      className={
-                        'relative justify-center m-2 gap-2 h-fit w-fit'
-                      }
+      <NodeInteractionProvider>
+        <DraggablePositionContext.Provider value={draggablePosition}>
+          <IsDraggingContext.Provider value={isDragging}>
+            <div className={'flex'}>
+              <div className={'relative justify-center m-2 gap-2 h-fit w-fit'}>
+                <div ref={setNodeRef}>
+                  <svg
+                    className={'border-2 border-slate-600 rounded-lg'}
+                    viewBox={`0 0 ${width} ${height}`}
+                    style={{ width: '900', height: '600' }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    ref={svgRef}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                  >
+                    <rect
+                      width={'100%'}
+                      height={'100%'}
+                      {...listeners}
+                      className={'fill-transparent'}
+                    />
+                    <g
+                      transform={`translate(${xTranslate * svgScale} ${
+                        yTranslate * svgScale
+                      })`}
                     >
-                      <div ref={setNodeRef}>
-                        <svg
-                          className={'border-2 border-slate-600 rounded-lg'}
-                          viewBox={`0 0 ${width} ${height}`}
-                          style={{ width: '900', height: '600' }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          ref={svgRef}
-                          onMouseMove={handleMouseMove}
-                          onMouseUp={handleMouseUp}
-                        >
-                          <rect
-                            width={'100%'}
-                            height={'100%'}
-                            {...listeners}
-                            className={'fill-transparent'}
-                          />
-                          <g
-                            transform={`translate(${xTranslate * svgScale} ${
-                              yTranslate * svgScale
-                            })`}
-                          >
-                            <ForceSimWrapper
-                              textElements={textElements}
-                              linkElements={linkElements}
-                              nodeElements={nodeElements}
-                              uniqueGraphName={uniqueGraphName}
-                            />
-                          </g>
-                        </svg>
-                      </div>
+                      <ForceSimWrapper
+                        textElements={textElements}
+                        linkElements={linkElements}
+                        nodeElements={nodeElements}
+                        uniqueGraphName={uniqueGraphName}
+                      />
+                    </g>
+                  </svg>
+                </div>
 
-                      <div
-                        className={
-                          'absolute w-fit h-fit top-4 right-4 Z-10 flex flex-col gap-1 items-center'
-                        }
-                      >
-                        <GraphViewOptions />
-                      </div>
-                    </div>
-                    <div
-                      className={
-                        'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg p-2 mt-2'
-                      }
-                      style={{ height: '40em' }}
-                    >
-                      {children}
-                    </div>
-                  </IsDraggingContext.Provider>
-                </DraggablePositionContext.Provider>
-              </NodeInteractionProvider>
-            </GenericLinkRefContext.Provider>
-          </GenericNodeRefContext.Provider>
-        </GenericLinkContextProvider>
-      </GenericNodeContextProvider>
+                <div
+                  className={
+                    'absolute w-fit h-fit top-4 right-4 Z-10 flex flex-col gap-1 items-center'
+                  }
+                >
+                  <GraphViewOptions />
+                </div>
+              </div>
+              <div
+                className={
+                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg p-2 mt-2'
+                }
+                style={{ height: '600px' }}
+              >
+                {children}
+              </div>
+            </div>
+          </IsDraggingContext.Provider>
+        </DraggablePositionContext.Provider>
+      </NodeInteractionProvider>
     </MouseDownDispatchContext.Provider>
   );
 }

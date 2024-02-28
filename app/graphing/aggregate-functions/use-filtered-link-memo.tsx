@@ -4,15 +4,15 @@ import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
 import { useMemo } from 'react';
 
 export function useFilteredLinkMemo<T>(
-  graphDto: GraphDto<T>,
+  closureList: ClosureDto[],
   closurePredicate: Predicate<ClosureDto> = (c) => c.value == 1
 ) {
   const filteredLinks = useMemo(
     () =>
-      graphDto.closureDtos.filter(closurePredicate).map((d) => ({
+      closureList.filter(closurePredicate).map((d) => ({
         ...d
       })),
-    [closurePredicate, graphDto]
+    [closurePredicate, closureList]
   );
 
   return { filteredLinks };

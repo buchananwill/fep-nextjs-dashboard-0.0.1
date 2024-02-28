@@ -32,9 +32,6 @@ function OptionChooserItem({
     []
   );
 
-  useEffect(() => {
-    console.log(listenerKey, 'has: ', currentState);
-  }, [listenerKey, optionKey, currentState]);
   const checked = currentState.includes(optionKey);
 
   return (

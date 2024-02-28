@@ -12,15 +12,19 @@ import {
   getOrganizationGraph
 } from '../api/actions/curriculum-delivery-model';
 import { PartyDto } from '../api/dtos/PartyDtoSchema';
-import { getWorkSeriesBundleNodeElements } from './aggregate-functions/get-node-elements';
 import { WorkSeriesBundleDeliveryDto } from '../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 import NodeComponentSkyHook from './nodes/node-component-sky-hook';
+import { AddNode } from './editing/add-node-button';
+import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
+import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
+import { GenericLinkContextProvider } from './links/generic-link-context-provider';
 
 export interface NodePayload<T> {
   node: DataNode<T>;
   payload: React.JSX.Element;
 }
 
+const uniqueGraphName = 'party-dto-graph';
 export default async function ForceGraphPage() {
   const actionResponse = await getOrganizationGraph();
 
@@ -28,6 +32,7 @@ export default async function ForceGraphPage() {
     return <Card>No graphs!</Card>;
   }
   const organizationGraph: GraphDto<PartyDto> = actionResponse.data;
+  const { nodes, closureDtos } = organizationGraph;
 
   const partyIds = organizationGraph.nodes.map((dateNode) => dateNode.data.id);
   const actionResponse2 = await getCurriculumDeliveries(partyIds);
@@ -38,63 +43,30 @@ export default async function ForceGraphPage() {
     return <Card>No deliveries!</Card>;
   }
 
-  const bundlesInNodeOrder = organizationGraph.nodes.map((node) => {
-    const found = data.find((delivery) => delivery.partyId === node.id);
-    if (found) return found;
-  });
-
-  if (bundlesInNodeOrder.length !== organizationGraph.nodes.length) {
-    return <Card>Bundles not matching nodes!</Card>;
-  }
-
-  const classList: string[] = [];
-  const descriptionList: string[] = [];
-
-  organizationGraph.nodes.forEach((n: DataNode<PartyDto>) => {
-    classList.push(n.data.name);
-    descriptionList.push(n.data.name);
-  });
-
-  const titleList = organizationGraph.nodes.map(
-    (n: DataNode<PartyDto>) => n.data.partyType
-  );
-
-  const nodeDetailElements: NodePayload<PartyDto>[] =
-    organizationGraph.nodes.map((node, index) => {
-      return {
-        node: node,
-        payload: (
-          <CurriculumDeliveryDetails
-            key={`delivery-details-${node.data.id}`}
-            deliveryBundle={bundlesInNodeOrder[index]}
-            node={node}
-          ></CurriculumDeliveryDetails>
-        )
-      };
-    });
-
   return (
     <>
       <div className={'flex'}>
-        <GraphContextProvider uniqueGraphName={'party-dto-graph'}>
-          <NodeComponentSkyHook
-            nodes={organizationGraph.nodes}
-            bundles={bundlesInNodeOrder as WorkSeriesBundleDeliveryDto[]}
+        <GenericNodeContextProvider
+          nodes={nodes}
+          uniqueGraphName={uniqueGraphName}
+        >
+          <GenericLinkContextProvider
+            links={closureDtos}
+            uniqueGraphName={uniqueGraphName}
           >
-            <GraphViewer
-              graphDto={organizationGraph}
-              textList={descriptionList}
-              titleList={titleList}
-              uniqueGraphName={'party-dto-graph'}
-            >
-              <GraphForceAdjuster />
-              <NodeDetails
-                nodeDetailElements={nodeDetailElements}
-                labels={classList}
-              />
-            </GraphViewer>
-          </NodeComponentSkyHook>
-        </GraphContextProvider>
+            <GraphContextProvider uniqueGraphName={uniqueGraphName}>
+              {/*<NodeComponentSkyHook*/}
+              {/*  nodes={organizationGraph.nodes}*/}
+              {/*  bundles={bundlesInNodeOrder as WorkSeriesBundleDeliveryDto[]}*/}
+              {/*>*/}
+              <CurriculumDeliveryGraph
+                graphData={organizationGraph}
+                bundles={data}
+              ></CurriculumDeliveryGraph>
+              {/*</NodeComponentSkyHook>*/}
+            </GraphContextProvider>
+          </GenericLinkContextProvider>
+        </GenericNodeContextProvider>
       </div>
     </>
   );

@@ -6,7 +6,10 @@ import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
 import { NodeInteractionContext } from '../nodes/node-interaction-context-creator';
 import { DataNode } from '../../api/zod-mods';
 import SelectionOutline from './selection-outline';
-import { useNodeInteractionContext } from '../nodes/node-interaction-context';
+import {
+  useNodeInteractionContext,
+  useNodeSelectedListener
+} from '../nodes/node-interaction-context';
 import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 
@@ -16,8 +19,8 @@ export function NodeDetailWrapper<T>({
   node
 }: { label: string; node: DataNode<T> } & PropsWithChildren) {
   const { dispatch, hover, selected } = useNodeInteractionContext();
+  const isSelected = useNodeSelectedListener(node);
 
-  const isSelected = selected.has(node.id);
   const handleDispatch = () => {
     dispatch({ type: 'toggleSelect', payload: node.id });
   };

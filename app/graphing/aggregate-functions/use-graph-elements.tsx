@@ -4,8 +4,16 @@ import { useBasicNodeElements } from './get-node-elements';
 import { useTextElements } from './use-text-elements';
 import { Predicate } from '../../components/filters/filter-types';
 import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFilteredLinkMemo } from './use-filtered-link-memo';
+
+interface GraphElements<T> {
+  dataNodes: DataNode<T>[];
+  dataLinks: DataLink<T>[];
+  nodeElements: React.JSX.Element[];
+  linkElements: React.JSX.Element[];
+  textElements: React.JSX.Element[];
+}
 
 function useSVGElements<T>(
   nodes: DataNode<T>[],
@@ -20,23 +28,23 @@ function useSVGElements<T>(
 }
 
 export function useGraphElements<T>(
-  graphDTO: GraphDto<T>,
+  dataNodes: DataNode<T>[],
+  dataLinks: ClosureDto[],
   textAccessor: (n: number) => string,
-  titleAccessor: (n: number) => string,
-  closurePredicate?: Predicate<ClosureDto>
+  titleAccessor: (n: number) => string
 ): {
   dataNodes: DataNode<T>[];
-  filteredLinks: DataLink<T>[];
+  dataLinks: DataLink<T>[];
   nodeElements: React.JSX.Element[];
   linkElements: React.JSX.Element[];
   textElements: React.JSX.Element[];
 } {
-  const { filteredLinks } = useFilteredLinkMemo(graphDTO, closurePredicate);
+  // const { filteredLinks } = useFilteredLinkMemo(dataLinks, closurePredicate);
   const svgElements = useSVGElements(
-    graphDTO.nodes,
-    filteredLinks,
+    dataNodes,
+    dataLinks,
     textAccessor,
     titleAccessor
   );
-  return { dataNodes: graphDTO.nodes, filteredLinks, ...svgElements };
+  return { dataNodes, dataLinks, ...svgElements };
 }

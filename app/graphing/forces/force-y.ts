@@ -26,6 +26,7 @@ export function updateForceY<T>(
 ) {
   const forceY = currentSim.force('forceY') as d3.ForceY<DataNode<T>>;
   const strength = negativeLogTen(forceYStrength);
+  const finalStrength = strength > 0.001 ? strength : 0;
 
-  forceY.strength(strength > 0.001 ? strength : 0);
+  forceY.strength(finalStrength);
 }

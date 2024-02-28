@@ -4,7 +4,7 @@ import {
   DataNode,
   ProductComponentNode
 } from '../api/zod-mods';
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
 import * as d3 from 'd3';
 import { Simulation, SimulationLinkDatum, SimulationNodeDatum } from 'd3';
 
@@ -25,6 +25,7 @@ import { getForceCollide } from './forces/force-collide';
 import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import { negativeLogTen } from './forces/math-functions';
 import { updateForceRadial } from './forces/force-radial';
+import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
 
 export function useD3ForceSimulation<T>(
   nodesRef: MutableRefObject<DataNode<T>[]>,
@@ -36,14 +37,45 @@ export function useD3ForceSimulation<T>(
   const height = 1200; //inputs?.height || 720;
 
   const forceAttributeListeners = useForceAttributeListeners(uniqueGraphName);
+  const {
+    contextKey,
+    listenerKey,
+    contextAlterKey,
+    listenerAlterKey,
+    mountedListenerKey,
+    mountedKey
+  } = useMemo(() => {
+    const contextAlterKey = `${uniqueGraphName}-version`;
+    const listenerAlterKey = `${uniqueGraphName}-force-sim`;
+    return {
+      contextKey: `${uniqueGraphName}-ready`,
+      listenerKey: `${uniqueGraphName}-force-sim`,
+      listenerAlterKey,
+      contextAlterKey,
+      mountedKey: `${uniqueGraphName}-mounted`,
+      mountedListenerKey: `${uniqueGraphName}-mounted-force-sim`
+    };
+  }, [uniqueGraphName]);
 
-  const contextKey = `${uniqueGraphName}-ready`;
-  const listenerKey = `${uniqueGraphName}-force-sim`;
   const { isTrue: isReady } = useSelectiveContextListenerBoolean(
     contextKey,
     listenerKey,
     false
   );
+
+  const { currentState: simVersion } = useSelectiveContextListenerNumber(
+    contextAlterKey,
+    listenerAlterKey,
+    0
+  );
+
+  const { isTrue: isMounted } = useSelectiveContextListenerBoolean(
+    mountedKey,
+    mountedListenerKey,
+    true
+  );
+
+  const simVersionRef = useRef(simVersion);
 
   const simulationRef: MutableRefObject<Simulation<
     DataNode<T>,
@@ -95,9 +127,9 @@ export function useD3ForceSimulation<T>(
         linkStrength
       );
 
-      const forceCenter = getForceCenter(width, height);
+      const forceCenter = getForceCenter(width, height, centerStrength);
 
-      const forceCollide = getForceCollide(5, collideStrength);
+      const forceCollide = getForceCollide(10, collideStrength);
 
       const forceRadial = d3
         .forceRadial(
@@ -219,16 +251,21 @@ export function useD3ForceSimulation<T>(
       updateForceRadial(currentSim, forceRadialStrength);
     }
 
-    if (!simulationRef.current) {
+    if (!simulationRef.current || simVersionRef.current !== simVersion) {
       if (isReady) {
+        simVersionRef.current = simVersion;
         beginSim();
       }
-    } else {
+    } else if (simulationRef.current) {
+      simulationRef.current.on('tick', ticked);
       updateValues(simulationRef.current!);
-      // console.log('restarting simulation', simulationRef.current?.alpha());
-      // simulationRef.current?.restart();
     }
+    return () => {
+      if (!isMounted && simulationRef.current) simulationRef.current?.stop();
+    };
   }, [
+    isMounted,
+    simVersion,
     forceAttributeListeners,
     nodesRef,
     linksRef,

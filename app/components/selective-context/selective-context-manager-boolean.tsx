@@ -32,8 +32,8 @@ export default function SelectiveContextManagerBoolean({
 
 export function useSelectiveContextDispatchBoolean(
   contextKey: string,
-  initialValue: boolean,
-  listenerKey: string
+  listenerKey: string,
+  initialValue: boolean
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,

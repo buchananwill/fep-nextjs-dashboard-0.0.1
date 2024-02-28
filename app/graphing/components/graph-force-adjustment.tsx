@@ -44,8 +44,8 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
   const showAdjustments = `${uniqueGraphName}-show-adjustments`;
   const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     readyToGraph,
-    false,
-    readyToGraph
+    readyToGraph,
+    false
   );
   const [showSliders, setShowSliders] = useState(false);
 

@@ -21,13 +21,12 @@ import {
 import ZoomScaleContextProvider from '../../components/calendar-view/scale/zoom-scale-context-provider';
 
 export function GraphViewer<T, U>({
-  graphDto,
   textList,
   titleList,
   uniqueGraphName,
   children
 }: {
-  graphDto: GraphDto<T>;
+  graphDto?: GraphDto<T>;
   textList: string[];
   titleList: string[];
   uniqueGraphName: string;
@@ -49,7 +48,7 @@ export function GraphViewer<T, U>({
             >
               <ForceGraphMouseButtonEventsDispatch.Provider value={reducer}>
                 <Graph
-                  graphDto={graphDto}
+                  // graphDto={graphDto}
                   textList={textList}
                   titleList={titleList}
                   uniqueGraphName={uniqueGraphName}

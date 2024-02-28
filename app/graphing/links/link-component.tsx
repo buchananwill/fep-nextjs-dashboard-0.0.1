@@ -50,6 +50,9 @@ export function LinkComponent<T>({
   );
 
   const updatedLink = genericLinks[linkIndex] as DataLink<T>;
+  if (!updatedLink) {
+    console.log(genericLinks, linkIndex, linkData);
+  }
   const sourceSelected = useNodeSelectedListener(
     updatedLink.source as DataNode<T>
   );
