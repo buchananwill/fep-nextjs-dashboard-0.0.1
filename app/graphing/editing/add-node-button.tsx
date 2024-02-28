@@ -1,21 +1,30 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-  GenericNodeRefContext,
   useGenericGraphRefs,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import { GenericLinkRefContext } from '../links/generic-link-context-creator';
-import {
-  createNode,
-  createSiblingLinks,
-  TransientIdOffset
-} from './node-edits';
+import { createNode, createNewLinks, TransientIdOffset } from './node-edits';
 import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
 import { DataNode } from '../../api/zod-mods';
-import next from 'next-auth/src';
+import {
+  useSelectiveContextGraphDispatch,
+  useSelectiveContextGraphNumberDispatch,
+  useSelectiveGraphContextKey
+} from '../graph/graph-context-creator';
+import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 
-export function AddNode<T>({ reference }: { reference: DataNode<T> }) {
+export type Relation = 'sibling' | 'child';
+
+export function AddNode<T>({
+  reference,
+  children,
+  relation
+}: {
+  reference: DataNode<T>;
+  relation: Relation;
+  children: string;
+}) {
   const {
     dispatch: dispatchNodes,
     nodes,
@@ -23,12 +32,55 @@ export function AddNode<T>({ reference }: { reference: DataNode<T> }) {
   } = useGenericNodeContext<T>();
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
 
-  const contextAlterKey = `${uniqueGraphName}-version`;
-  const listenerAlterKey = `${uniqueGraphName}-add-node-button`;
+  const { contextVersionKey, listenerVersionKey } = useMemo(() => {
+    const contextVersionKey = `${uniqueGraphName}-version`;
+    const listenerVersionKey = `${uniqueGraphName}:${relation}:${reference.id}:add-node-button`;
+    return { contextVersionKey, listenerVersionKey };
+  }, [uniqueGraphName]);
+
+  // const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+  //   'nextNodeId',
+  //   `${reference.id}`
+  // );
+  // const { currentState: nextNodeId, dispatchUpdate: setNextNodeId } =
+  //   useSelectiveContextDispatchNumber(contextKeyConcat, listenerKeyConcat, NaN);
+
+  // const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
+  //   useSelectiveContextGraphNumberDispatch(
+  //     'nextLinkId',
+  //     reference.id.toString(),
+  //     NaN
+  //   );
 
   const { currentState: simVersion, dispatchUpdate } =
-    useSelectiveContextDispatchNumber(contextAlterKey, listenerAlterKey, 0);
-  // const { dispatch: dispatchLinks, links } = useGenericLinkContext<T>();
+    useSelectiveContextDispatchNumber(contextVersionKey, listenerVersionKey, 0);
+
+  const { nodesInit, linksInit } = useMemo(() => {
+    const nodesInit = [] as number[];
+    const linksInit = [] as number[];
+    return { nodesInit, linksInit };
+  }, []);
+
+  // const {
+  //   simpleDispatch: setTransientNodeIds,
+  //   currentState: transientNodeIds
+  // } = useSelectiveContextGraphDispatch(
+  //   'transientNodeIds',
+  //   reference.id.toString(),
+  //   nodesInit,
+  //   useSelectiveContextDispatchNumberList
+  // );
+
+  // const {
+  //   simpleDispatch: setTransientLinkIds,
+  //   currentState: transientLinkIds
+  // } = useSelectiveContextGraphDispatch(
+  //   'transientLinkIds',
+  //   reference.id.toString(),
+  //   linksInit,
+  //   useSelectiveContextDispatchNumberList
+  // );
+
   const [transientNodeIds, setTransientNodeIds] = useState([] as number[]);
   const [transientLinkIds, setTransientLinkIds] = useState([] as number[]);
   const [nextNodeId, setNextNodeId] = useState<number | undefined>(undefined);
@@ -48,7 +100,8 @@ export function AddNode<T>({ reference }: { reference: DataNode<T> }) {
     while (nodeIdSet.has(responseId)) {
       responseId++;
     }
-    setNextNodeId(responseId + 1);
+    // setNextNodeId({ contextKey: contextKeyConcat, value: responseId + 1 });
+    setNextNodeId((prev) => responseId + 1);
     return responseId;
   };
   const getNextLinkId = () => {
@@ -72,38 +125,37 @@ export function AddNode<T>({ reference }: { reference: DataNode<T> }) {
       id: nextNodeToSubmit,
       distanceFromRoot,
       template: lastNode,
-      nodes: nodeListRef.current
+      nodes: nodeListRef.current,
+      relation
     });
 
-    setTransientNodeIds((prev) => [...prev, createdNode.id]);
+    setTransientNodeIds([...transientNodeIds, createdNode.id]);
 
     const nextLinkIdToSubmit = getNextLinkId();
 
-    const { allUpdatedLinks, linksAssignedToYoungerSibling } =
-      createSiblingLinks<T>({
-        elderSibling: lastNode,
-        youngerSibling: createdNode,
-        allLinks: linkListRef.current,
-        linkIdSequenceStart: nextLinkIdToSubmit
-      });
+    const { allUpdatedLinks, newLinks } = createNewLinks<T>({
+      reference: lastNode,
+      newNode: createdNode,
+      allLinks: linkListRef.current,
+      linkIdSequenceStart: nextLinkIdToSubmit,
+      relation: relation
+    });
 
-    const numbers = linksAssignedToYoungerSibling.map((l) => l.id);
+    const newLinkIds = newLinks.map((l) => l.id);
 
-    setTransientLinkIds((prev) => [...prev, ...numbers]);
+    setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
 
     setDeBouncing(true);
     setTimeout(() => setDeBouncing(false), 250);
 
-    const updatePendingLinks = [...allUpdatedLinks].map((link, index) => {
+    linkListRef.current = [...allUpdatedLinks].map((link, index) => {
       const source = link.source as DataNode<T>;
       const target = link.target as DataNode<T>;
       return { ...link, source: source.id, target: target.id, index };
     });
-
-    linkListRef.current = updatePendingLinks;
     nodeListRef.current = allNodes;
 
-    dispatchUpdate({ contextKey: contextAlterKey, value: simVersion + 1 });
+    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
   };
 
   return (
@@ -112,7 +164,7 @@ export function AddNode<T>({ reference }: { reference: DataNode<T> }) {
       onClick={handleAddNode}
       disabled={deBouncing}
     >
-      Add Node
+      {children}
     </button>
   );
 }

@@ -11,7 +11,7 @@ export function SelectiveContextDispatcherBoolean({
   initialValue: boolean;
   listenerKey: string;
 }) {
-  const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     uniqueKey,
     listenerKey,
     initialValue
@@ -22,14 +22,14 @@ export function SelectiveContextDispatcherBoolean({
       type={'checkbox'}
       id={uniqueKey}
       onChange={() => {
-        dispatchUpdate({ contextKey: uniqueKey, value: !isTrue });
+        dispatchUpdate({ contextKey: uniqueKey, value: !currentState });
       }}
       className={`toggle ${
-        isTrue
+        currentState
           ? 'bg-emerald-600 hover:bg-emerald-300'
           : 'bg-red-300 hover:bg-red-300'
       } `}
-      checked={isTrue}
+      checked={currentState}
     ></input>
   );
 }

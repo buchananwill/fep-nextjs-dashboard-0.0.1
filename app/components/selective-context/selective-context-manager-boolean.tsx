@@ -44,7 +44,7 @@ export function useSelectiveContextDispatchBoolean(
     ContextRefBoolean
   );
 
-  return { isTrue: currentState, dispatchUpdate };
+  return { currentState, dispatchUpdate };
 }
 
 export function useSelectiveContextListenerBoolean(

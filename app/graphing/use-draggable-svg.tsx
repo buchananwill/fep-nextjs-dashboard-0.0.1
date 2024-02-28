@@ -68,7 +68,7 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
     useSelectiveContextDispatchNumber('drag-x-current', uniqueElementKey, 0);
   const { currentState: dragYCurrent, dispatchUpdate: dispatchCurrentY } =
     useSelectiveContextDispatchNumber('drag-y-current', uniqueElementKey, 0);
-  const { isTrue: mouseDown, dispatchUpdate: setMouseDown } =
+  const { currentState: mouseDown, dispatchUpdate: setMouseDown } =
     useSelectiveContextDispatchBoolean(
       svgMouseDownKey,
       uniqueElementKey,
@@ -82,7 +82,7 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
       ''
     );
 
-  const { isTrue: isDragging, dispatchUpdate: setIsDragging } =
+  const { currentState: isDragging, dispatchUpdate: setIsDragging } =
     useSelectiveContextDispatchBoolean(svgDraggingKey, uniqueElementKey, false);
 
   function updateStartPos(clientX: number, clientY: number) {
@@ -140,13 +140,13 @@ export function useDraggableSvgRoot(uniqueElementKey: string) {
   const svgMouseDownKey = `svg-mouse-down-${rootSvgKey}`;
   const svgCurrentDragTargetKey = `svg-current-drag-target-${rootSvgKey}`;
 
-  const { isTrue: mouseDown, dispatchUpdate: setMouseDown } =
+  const { currentState: mouseDown, dispatchUpdate: setMouseDown } =
     useSelectiveContextDispatchBoolean(
       svgMouseDownKey,
       uniqueElementKey,
       false
     );
-  const { isTrue: isDragging, dispatchUpdate: setIsDragging } =
+  const { currentState: isDragging, dispatchUpdate: setIsDragging } =
     useSelectiveContextDispatchBoolean(svgDraggingKey, uniqueElementKey, false);
 
   const { currentState: startPosX, dispatchUpdate: updateStartPosX } =

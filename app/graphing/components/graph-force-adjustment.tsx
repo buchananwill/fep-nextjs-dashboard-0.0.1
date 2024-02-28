@@ -42,7 +42,7 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
   const { uniqueGraphName } = useContext(GraphContext);
   const readyToGraph = `${uniqueGraphName}-ready`;
   const showAdjustments = `${uniqueGraphName}-show-adjustments`;
-  const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     readyToGraph,
     readyToGraph,
     false
@@ -50,10 +50,10 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
   const [showSliders, setShowSliders] = useState(false);
 
   useEffect(() => {
-    if (!isTrue) {
+    if (!currentState) {
       dispatchUpdate({ contextKey: readyToGraph, value: true });
     }
-  }, [dispatchUpdate, isTrue, readyToGraph]);
+  }, [dispatchUpdate, currentState, readyToGraph]);
 
   const sliders = Object.entries(forceAttributes).map((entry) => {
     if (entry[0] === 'id') {

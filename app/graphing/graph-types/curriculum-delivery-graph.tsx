@@ -48,7 +48,7 @@ export default function CurriculumDeliveryGraph({
     () => `${uniqueGraphName}-mounted`,
     [uniqueGraphName]
   );
-  const { isTrue, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
     mountedKey,
     mountedKey,
     true
@@ -111,7 +111,12 @@ export default function CurriculumDeliveryGraph({
                 labels={classList}
               />
             </GraphViewer>
-            <AddNode reference={nodes[nodes.length - 1]} />
+            <AddNode reference={nodes[nodes.length - 1]} relation={'sibling'}>
+              Add Sibling
+            </AddNode>
+            <AddNode reference={nodes[0]} relation={'child'}>
+              Add Child
+            </AddNode>
           </div>
         </GenericLinkRefContext.Provider>
       </GenericNodeRefContext.Provider>

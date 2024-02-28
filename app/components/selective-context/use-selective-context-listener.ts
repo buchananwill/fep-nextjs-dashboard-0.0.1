@@ -6,8 +6,19 @@ import React, {
 } from 'react';
 import {
   LatestValueRef,
+  UpdateAction,
   UpdateRefInterface
 } from './selective-context-manager';
+
+export interface UseSelectiveContextListenerReturn<T> {
+  currentState: T;
+}
+
+export type UseSelectiveContextListener<T> = (
+  contextKey: string,
+  listenerKey: string,
+  initialValue: T
+) => UseSelectiveContextListenerReturn<T>;
 
 export function useSelectiveContextListener<T>(
   contextKey: string,

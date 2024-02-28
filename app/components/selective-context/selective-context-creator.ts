@@ -37,6 +37,16 @@ export const UpdateRefContextStringList = createContext<
 export const DispatchUpdateContextStringList = createContext<
   Dispatch<UpdateAction<string[]>>
 >(() => {});
+export const ContextRefNumberList = createContext<
+  MutableRefObject<LatestValueRef<number[]>>
+>({} as MutableRefObject<LatestValueRef<number[]>>);
+export const UpdateRefContextNumberList = createContext<
+  MutableRefObject<UpdateRefInterface<number[]>>
+>({} as MutableRefObject<UpdateRefInterface<number[]>>);
+
+export const DispatchUpdateContextNumberList = createContext<
+  Dispatch<UpdateAction<number[]>>
+>(() => {});
 export const ContextRefNumber = createContext<
   MutableRefObject<LatestValueRef<number>>
 >({} as MutableRefObject<LatestValueRef<number>>);

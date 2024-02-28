@@ -1,4 +1,5 @@
 import React, {
+  Dispatch,
   MutableRefObject,
   useContext,
   useEffect,
@@ -10,6 +11,17 @@ import {
   UpdateRefInterface
 } from './selective-context-manager';
 import { useSelectiveContextListener } from './use-selective-context-listener';
+
+export interface UseSelectiveContextDispatchReturn<T> {
+  currentState: T;
+  dispatchUpdate: (action: UpdateAction<T>) => void;
+}
+
+export type UseSelectiveContextDispatch<T> = (
+  contextKey: string,
+  listenerKey: string,
+  initialValue: T
+) => UseSelectiveContextDispatchReturn<T>;
 
 export function useSelectiveContextDispatch<T>(
   contextKey: string,
@@ -31,6 +43,9 @@ export function useSelectiveContextDispatch<T>(
     );
 
   const dispatchUpdate = useContext(dispatchUpdateContext);
+
+  const dispatch = (action: UpdateAction<T>) => dispatchUpdate(action);
+
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -48,5 +63,5 @@ export function useSelectiveContextDispatch<T>(
       }
     }
   }, [currentState, isInitialized, contextKey, initialValue, dispatchUpdate]);
-  return { currentState, dispatchUpdate };
+  return { currentState, dispatchUpdate: dispatch };
 }

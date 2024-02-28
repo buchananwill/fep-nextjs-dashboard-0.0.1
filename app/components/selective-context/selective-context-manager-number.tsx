@@ -9,8 +9,14 @@ import {
   LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
-import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
-import { useSelectiveContextListener } from './use-selective-context-listener';
+import {
+  UseSelectiveContextDispatch,
+  useSelectiveContextDispatch
+} from './use-selective-context-dispatch';
+import {
+  UseSelectiveContextListener,
+  useSelectiveContextListener
+} from './use-selective-context-listener';
 
 export default function SelectiveContextManagerNumber({
   children
@@ -30,11 +36,9 @@ export default function SelectiveContextManagerNumber({
   );
 }
 
-export function useSelectiveContextDispatchNumber(
-  contextKey: string,
-  listenerKey: string,
-  initialValue: number
-) {
+export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
+  number
+> = (contextKey: string, listenerKey: string, initialValue: number) => {
   const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
     contextKey,
     listenerKey,
@@ -45,13 +49,11 @@ export function useSelectiveContextDispatchNumber(
   );
 
   return { currentState, dispatchUpdate };
-}
+};
 
-export function useSelectiveContextListenerNumber(
-  contextKey: string,
-  listenerKey: string,
-  fallbackValue?: number
-) {
+export const useSelectiveContextListenerNumber: UseSelectiveContextListener<
+  number
+> = (contextKey: string, listenerKey: string, fallbackValue?: number) => {
   const { currentState, latestRef } = useSelectiveContextListener(
     contextKey,
     listenerKey,
@@ -61,4 +63,4 @@ export function useSelectiveContextListenerNumber(
   );
 
   return { currentState };
-}
+};
