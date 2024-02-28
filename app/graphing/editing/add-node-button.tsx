@@ -36,21 +36,25 @@ export function AddNode<T>({
     const contextVersionKey = `${uniqueGraphName}-version`;
     const listenerVersionKey = `${uniqueGraphName}:${relation}:${reference.id}:add-node-button`;
     return { contextVersionKey, listenerVersionKey };
-  }, [uniqueGraphName]);
+  }, [uniqueGraphName, relation, reference]);
 
-  // const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
-  //   'nextNodeId',
-  //   `${reference.id}`
-  // );
-  // const { currentState: nextNodeId, dispatchUpdate: setNextNodeId } =
-  //   useSelectiveContextDispatchNumber(contextKeyConcat, listenerKeyConcat, NaN);
+  const buttonListenerKey = useMemo(() => {
+    return `${reference.id}:${relation}`;
+  }, [reference, relation]);
 
-  // const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
-  //   useSelectiveContextGraphNumberDispatch(
-  //     'nextLinkId',
-  //     reference.id.toString(),
-  //     NaN
-  //   );
+  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+    'nextNodeId',
+    buttonListenerKey
+  );
+  const { currentState: nextNodeId, dispatchUpdate: setNextNodeId } =
+    useSelectiveContextDispatchNumber(contextKeyConcat, listenerKeyConcat, NaN);
+
+  const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
+    useSelectiveContextGraphNumberDispatch(
+      'nextLinkId',
+      buttonListenerKey,
+      NaN
+    );
 
   const { currentState: simVersion, dispatchUpdate } =
     useSelectiveContextDispatchNumber(contextVersionKey, listenerVersionKey, 0);
@@ -61,30 +65,30 @@ export function AddNode<T>({
     return { nodesInit, linksInit };
   }, []);
 
-  // const {
-  //   simpleDispatch: setTransientNodeIds,
-  //   currentState: transientNodeIds
-  // } = useSelectiveContextGraphDispatch(
-  //   'transientNodeIds',
-  //   reference.id.toString(),
-  //   nodesInit,
-  //   useSelectiveContextDispatchNumberList
-  // );
+  const {
+    simpleDispatch: setTransientNodeIds,
+    currentState: transientNodeIds
+  } = useSelectiveContextGraphDispatch(
+    'transientNodeIds',
+    buttonListenerKey,
+    nodesInit,
+    useSelectiveContextDispatchNumberList
+  );
 
-  // const {
-  //   simpleDispatch: setTransientLinkIds,
-  //   currentState: transientLinkIds
-  // } = useSelectiveContextGraphDispatch(
-  //   'transientLinkIds',
-  //   reference.id.toString(),
-  //   linksInit,
-  //   useSelectiveContextDispatchNumberList
-  // );
+  const {
+    simpleDispatch: setTransientLinkIds,
+    currentState: transientLinkIds
+  } = useSelectiveContextGraphDispatch(
+    'transientLinkIds',
+    buttonListenerKey,
+    linksInit,
+    useSelectiveContextDispatchNumberList
+  );
 
-  const [transientNodeIds, setTransientNodeIds] = useState([] as number[]);
-  const [transientLinkIds, setTransientLinkIds] = useState([] as number[]);
-  const [nextNodeId, setNextNodeId] = useState<number | undefined>(undefined);
-  const [nextLinkId, setNextLinkId] = useState<number | undefined>(undefined);
+  // const [transientNodeIds, setTransientNodeIds] = useState([] as number[]);
+  // const [transientLinkIds, setTransientLinkIds] = useState([] as number[]);
+  // const [nextNodeId, setNextNodeId] = useState<number | undefined>(undefined);
+  // const [nextLinkId, setNextLinkId] = useState<number | undefined>(undefined);
   const [deBouncing, setDeBouncing] = useState<boolean>(false);
 
   if (nodeListRef === null || linkListRef === null) return <></>;
@@ -95,18 +99,20 @@ export function AddNode<T>({
 
   const getNextNodeId = () => {
     let responseId =
-      nextNodeId === undefined ? TransientIdOffset + 1 : nextNodeId;
+      // nextNodeId === undefined ? TransientIdOffset + 1 : nextNodeId;
+      isNaN(nextNodeId) ? TransientIdOffset + 1 : nextNodeId;
     const nodeIdSet = new Set(transientNodeIds);
     while (nodeIdSet.has(responseId)) {
       responseId++;
     }
-    // setNextNodeId({ contextKey: contextKeyConcat, value: responseId + 1 });
-    setNextNodeId((prev) => responseId + 1);
+    setNextNodeId({ contextKey: contextKeyConcat, value: responseId + 1 });
+    // setNextNodeId((prev) => responseId + 1);
     return responseId;
   };
   const getNextLinkId = () => {
     let responseId =
-      nextLinkId === undefined ? TransientIdOffset + 1 : nextLinkId;
+      // nextLinkId === undefined ? TransientIdOffset + 1 : nextLinkId;
+      isNaN(nextLinkId) ? TransientIdOffset + 1 : nextLinkId;
     const linkIdSet = new Set(transientLinkIds);
     while (linkIdSet.has(responseId)) {
       responseId++;
