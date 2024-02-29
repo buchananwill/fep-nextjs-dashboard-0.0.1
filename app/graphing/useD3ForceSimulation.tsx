@@ -129,8 +129,9 @@ export function useD3ForceSimulation<T>(
         linkStrength
       );
 
-      // const forceCenter = getForceCenter(width, height, centerStrength);
-      // const forceCenter = d3.forceCenter(width / 2, height / 2);
+      const forceCenter = d3
+        .forceCenter(width / 2, height / 2)
+        .strength(centerStrength);
 
       const forceCollide = getForceCollide(10, collideStrength);
 
@@ -224,17 +225,15 @@ export function useD3ForceSimulation<T>(
         );
       }
       simulation.force('center', d3.forceCenter(width / 2, height / 2));
-      // if (forceCenter) {
-      //   simulation.force('center', forceCenter);
-      // }
-      // } else {
-      //   // simulation.force('center', d3.forceCenter(width / 2, height / 2));
-      // }
-      // if (forceRadial) {
-      //   simulation.force('radial', forceRadial);
-      // }
-      // if (forceX) simulation.force('forceX', forceX);
-      // if (forceY) simulation.force('forceY', forceY);
+      if (forceCenter) {
+        simulation.force('center', forceCenter);
+      }
+
+      if (forceRadial) {
+        simulation.force('radial', forceRadial);
+      }
+      if (forceX) simulation.force('forceX', forceX);
+      if (forceY) simulation.force('forceY', forceY);
       simulation.on('tick', ticked);
 
       simulation.alphaDecay(0.0);
