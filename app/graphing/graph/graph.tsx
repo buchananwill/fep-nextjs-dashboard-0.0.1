@@ -74,17 +74,18 @@ export default function Graph<T>({
     svgScale
   } = useMouseMoveSvgDraggable(nodeListRef!, uniqueGraphName);
 
-  const x = currentState / 200;
+  const x = currentState / 2000;
   const translationContextInterface = useDragToTranslate();
   const translationElement = translationContextInterface['draggable'];
   const xTranslate = (transform?.x || 0) + (translationElement?.x || 0);
   const yTranslate = (transform?.y || 0) + (translationElement?.y || 0);
 
-  const baseWidthScale = 1;
-  const xScaleOffset = baseWidthScale / 2;
-  const scaleX = baseWidthScale / (x + xScaleOffset);
-  const width = 1800 * scaleX;
-  const height = 1200 * scaleX;
+  // const baseWidthScale = 1;
+  // const scaleOffset = baseWidthScale / 2;
+  // const scale = baseWidthScale / (x + scaleOffset);
+  const scale = 1000 / currentState;
+  const width = 1800 * scale;
+  const height = 1200 * scale;
 
   return (
     <MouseDownDispatchContext.Provider value={mouseDownDispatch}>

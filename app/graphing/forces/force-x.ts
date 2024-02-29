@@ -19,8 +19,11 @@ export function updateForceX<T>(
   currentSim: Simulation<DataNode<T>, DataLink<T>>,
   forceXStrength: number
 ) {
-  const forceX = currentSim.force('forceX') as d3.ForceX<DataNode<T>>;
-  const strength = negativeLogTen(forceXStrength);
-  const finalStrength = strength > 0.001 ? strength : 0;
-  forceX.strength(finalStrength);
+  let forceX = currentSim.force('forceX');
+  if (forceX !== null && forceX !== undefined) {
+    const forceXDefined = forceX as d3.ForceX<DataNode<T>>;
+    const strength = negativeLogTen(forceXStrength);
+    const finalStrength = strength > 0.001 ? strength : 0;
+    forceXDefined.strength(finalStrength);
+  }
 }

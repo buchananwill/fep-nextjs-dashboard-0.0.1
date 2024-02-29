@@ -19,55 +19,68 @@ export type ForceGraphAttributesDto = z.infer<typeof ForceGraphAttributesDtoSche
 export function useForceAttributeListeners(uniqueGraphName: string){
 const { currentState: manyBodyTheta } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-manyBodyTheta`,
-  `${uniqueGraphName}-manyBodyTheta-listener`
+  `${uniqueGraphName}-manyBodyTheta-listener`,
+  100
 );
 const { currentState: centerStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-centerStrength`,
-  `${uniqueGraphName}-centerStrength-listener`
+  `${uniqueGraphName}-centerStrength-listener`,
+  100
 );
 const { currentState: collideStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-collideStrength`,
-  `${uniqueGraphName}-collideStrength-listener`
+  `${uniqueGraphName}-collideStrength-listener`,
+  100
 );
 const { currentState: linkDistance } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-linkDistance`,
-  `${uniqueGraphName}-linkDistance-listener`
+  `${uniqueGraphName}-linkDistance-listener`,
+  100
 );
 const { currentState: manyBodyMaxDistance } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-manyBodyMaxDistance`,
-  `${uniqueGraphName}-manyBodyMaxDistance-listener`
+  `${uniqueGraphName}-manyBodyMaxDistance-listener`,
+  100
 );
 const { currentState: manyBodyMinDistance } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-manyBodyMinDistance`,
-  `${uniqueGraphName}-manyBodyMinDistance-listener`
+  `${uniqueGraphName}-manyBodyMinDistance-listener`,
+  100
 );
 const { currentState: forceRadialXRelative } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-forceRadialXRelative`,
-  `${uniqueGraphName}-forceRadialXRelative-listener`
+  `${uniqueGraphName}-forceRadialXRelative-listener`,
+  100
 );
 const { currentState: linkStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-linkStrength`,
-  `${uniqueGraphName}-linkStrength-listener`
+  `${uniqueGraphName}-linkStrength-listener`,
+  100
 );
 const { currentState: forceRadialStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-forceRadialStrength`,
-  `${uniqueGraphName}-forceRadialStrength-listener`
+  `${uniqueGraphName}-forceRadialStrength-listener`,
+  100
 );
 const { currentState: forceRadialYRelative } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-forceRadialYRelative`,
-  `${uniqueGraphName}-forceRadialYRelative-listener`
+  `${uniqueGraphName}-forceRadialYRelative-listener`,
+  100
 );
 const { currentState: forceYStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-forceYStrength`,
-  `${uniqueGraphName}-forceYStrength-listener`
+  `${uniqueGraphName}-forceYStrength-listener`,
+  100
 );
 const { currentState: forceXStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-forceXStrength`,
-  `${uniqueGraphName}-forceXStrength-listener`
+  `${uniqueGraphName}-forceXStrength-listener`,
+  100
 );
 const { currentState: manyBodyStrength } = useSelectiveContextListenerNumber(
               `${uniqueGraphName}-manyBodyStrength`,
-  `${uniqueGraphName}-manyBodyStrength-listener`
+  `${uniqueGraphName}-manyBodyStrength-listener`,
+  100
 );
     return { manyBodyTheta, centerStrength, collideStrength, linkDistance, manyBodyMaxDistance, manyBodyMinDistance, forceRadialXRelative, linkStrength, forceRadialStrength, forceRadialYRelative, forceYStrength, forceXStrength, manyBodyStrength,  }
 }

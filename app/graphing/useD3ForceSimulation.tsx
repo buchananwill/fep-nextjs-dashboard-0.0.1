@@ -123,11 +123,14 @@ export function useD3ForceSimulation<T>(
 
       const forceLink = getLinkForceMinCosFallOffBusiestNode(
         linksRef.current,
-        nodesRef.current.length,
+        () => {
+          return nodesRef.current.length;
+        },
         linkStrength
       );
 
-      const forceCenter = getForceCenter(width, height, centerStrength);
+      // const forceCenter = getForceCenter(width, height, centerStrength);
+      // const forceCenter = d3.forceCenter(width / 2, height / 2);
 
       const forceCollide = getForceCollide(10, collideStrength);
 
@@ -220,16 +223,18 @@ export function useD3ForceSimulation<T>(
             .strength(0.1)
         );
       }
-      if (forceCenter) {
-        simulation.force('center', forceCenter);
-      } else {
-        simulation.force('center', d3.forceCenter(width / 2, height / 2));
-      }
-      if (forceRadial) {
-        simulation.force('radial', forceRadial);
-      }
-      if (forceX) simulation.force('forceX', forceX);
-      if (forceY) simulation.force('forceY', forceY);
+      simulation.force('center', d3.forceCenter(width / 2, height / 2));
+      // if (forceCenter) {
+      //   simulation.force('center', forceCenter);
+      // }
+      // } else {
+      //   // simulation.force('center', d3.forceCenter(width / 2, height / 2));
+      // }
+      // if (forceRadial) {
+      //   simulation.force('radial', forceRadial);
+      // }
+      // if (forceX) simulation.force('forceX', forceX);
+      // if (forceY) simulation.force('forceY', forceY);
       simulation.on('tick', ticked);
 
       simulation.alphaDecay(0.0);
@@ -249,14 +254,26 @@ export function useD3ForceSimulation<T>(
       updateForceX(currentSim, forceXStrength);
       updateForceY(currentSim, forceYStrength);
       updateForceRadial(currentSim, forceRadialStrength);
+      currentSim.force(
+        'center',
+        d3.forceCenter(width / 2, height / 2).strength(0.01)
+      );
     }
 
-    if (!simulationRef.current || simVersionRef.current !== simVersion) {
+    if (!simulationRef.current) {
       if (isReady) {
         simVersionRef.current = simVersion;
         beginSim();
       }
     } else if (simulationRef.current) {
+      if (simVersionRef.current !== simVersion) {
+        simulationRef.current?.nodes(nodesMutable);
+        const force = simulationRef.current?.force('link');
+        if (force) {
+          const forceLink = force as d3.ForceLink<DataNode<T>, DataLink<T>>;
+          forceLink.links(linksMutable);
+        }
+      }
       simulationRef.current.on('tick', ticked);
       updateValues(simulationRef.current!);
     }

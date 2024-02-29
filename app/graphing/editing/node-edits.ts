@@ -88,6 +88,7 @@ export function createNewLinks<T>({
           id: linkIdSequenceStart + i
         } as DataLink<T>;
         newLinks.push(newLink);
+        console.log(newLink);
       }
       break;
     }

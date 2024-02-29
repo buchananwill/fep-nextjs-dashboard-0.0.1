@@ -88,13 +88,13 @@ function getBusiestNodeFallOffFunction(
 
 export function getLinkForceMinCosFallOffBusiestNode(
   linksMutable: DataLink<ProductComponentStateDto>[],
-  numberOfNodes: number,
+  numberOfNodes: () => number,
   strengthFactor: number
 ) {
   return D3.forceLink(linksMutable)
     .id((d) => (d as DataNode<ProductComponentStateDto>).id)
     .distance(200)
-    .strength(getBusiestNodeFallOffFunction(numberOfNodes, strengthFactor));
+    .strength(getBusiestNodeFallOffFunction(numberOfNodes(), strengthFactor));
 }
 
 export function updateLinkForce<T>(

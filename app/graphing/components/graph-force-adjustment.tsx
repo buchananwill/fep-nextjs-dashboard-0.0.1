@@ -21,21 +21,53 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import { transform } from 'sucrase';
 import { GraphContext } from '../graph/graph-context-creator';
 
-const forceAttributes: ForceGraphAttributesDto = {
+const forceAttributesInitial: ForceGraphAttributesDto = {
   id: 1,
-  forceXStrength: 1,
-  forceYStrength: 1,
+  forceXStrength: 0,
+  forceYStrength: 0,
   linkStrength: 0,
   linkDistance: 100,
-  centerStrength: 1,
-  collideStrength: 0.3,
+  centerStrength: 10,
+  collideStrength: 3,
   manyBodyStrength: 0,
-  manyBodyMinDistance: 0,
+  manyBodyMinDistance: 5,
   manyBodyMaxDistance: 400,
-  manyBodyTheta: 0.9,
+  manyBodyTheta: 9,
+  forceRadialStrength: 0,
+  forceRadialXRelative: 100,
+  forceRadialYRelative: 100
+};
+const forceAttributesMin: ForceGraphAttributesDto = {
+  id: 1,
+  forceXStrength: 0,
+  forceYStrength: 0,
+  linkStrength: 0,
+  linkDistance: 1,
+  centerStrength: 0,
+  collideStrength: 0,
+  manyBodyStrength: 0,
+  manyBodyMinDistance: 1,
+  manyBodyMaxDistance: 0,
+  manyBodyTheta: 0.1,
   forceRadialStrength: 0,
   forceRadialXRelative: 1,
   forceRadialYRelative: 1
+};
+const forceAttributesMax: ForceGraphAttributesDto = {
+  id: 1,
+  forceXStrength: 100,
+  forceYStrength: 100,
+  linkStrength: 150,
+  linkDistance: 300,
+  centerStrength: 100,
+  collideStrength: 100,
+  manyBodyStrength: 100,
+  manyBodyMinDistance: 1000,
+  manyBodyMaxDistance: 1000,
+  manyBodyTheta: 100,
+  forceRadialStrength: 100,
+  forceRadialXRelative: 100,
+  forceRadialYRelative: 100
 };
 
 export default function GraphForceAdjustment({ children }: PropsWithChildren) {
@@ -55,13 +87,16 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
     }
   }, [dispatchUpdate, currentState, readyToGraph]);
 
-  const sliders = Object.entries(forceAttributes).map((entry) => {
+  const sliders = Object.entries(forceAttributesInitial).map((entry) => {
     if (entry[0] === 'id') {
       return null;
     }
     const stringKey = `${uniqueGraphName}-${entry[0]}`;
-    const initial = entry[1] <= 1 ? entry[1] * 100 : entry[1];
-    const max = initial == 0 ? 200 : initial * 2;
+    const entryKey = entry[0] as keyof ForceGraphAttributesDto;
+    const initial = forceAttributesInitial[entryKey];
+    const min = forceAttributesMin[entryKey];
+    const max = forceAttributesMax[entryKey];
+
     return (
       <li key={stringKey}>
         <div className={'flex items-center w-full justify-between'}>
@@ -69,7 +104,7 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
           <SelectiveContextRangeSlider
             dispatchKey={stringKey}
             listenerKey={stringKey}
-            minValue={0}
+            minValue={min}
             maxValue={max}
             initialValue={initial}
           />
