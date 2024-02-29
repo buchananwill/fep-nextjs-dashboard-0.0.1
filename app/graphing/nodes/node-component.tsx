@@ -68,6 +68,10 @@ export function NodeComponent<T>({
     }
   }
 
+  if (nodeIndex === 0 || nodeIndex === 1) {
+    console.log('location:', updatedNodeData.x);
+  }
+
   return (
     <g
       transform={`translate(${finalX}, ${finalY})`}

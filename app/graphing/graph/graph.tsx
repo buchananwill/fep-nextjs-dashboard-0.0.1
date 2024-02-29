@@ -3,7 +3,13 @@ import { DataNode, GraphDto } from '../../api/zod-mods';
 import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
 import ForceSimWrapper from '../force-sim-wrapper';
-import React, { PropsWithChildren, useContext, useEffect, useRef } from 'react';
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef
+} from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 
@@ -29,6 +35,8 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 import { node } from 'prop-types';
+import { useSelectiveContextGraphDispatch } from './graph-context-creator';
+import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 
 export default function Graph<T>({
   titleList,
@@ -80,12 +88,12 @@ export default function Graph<T>({
   const xTranslate = (transform?.x || 0) + (translationElement?.x || 0);
   const yTranslate = (transform?.y || 0) + (translationElement?.y || 0);
 
-  // const baseWidthScale = 1;
-  // const scaleOffset = baseWidthScale / 2;
-  // const scale = baseWidthScale / (x + scaleOffset);
   const scale = 1000 / currentState;
-  const width = 1800 * scale;
-  const height = 1200 * scale;
+  const dimensionsArray = useMemo(() => {
+    const width = 1800 * scale;
+    const height = 1200 * scale;
+    return [width, height];
+  }, [scale]);
 
   return (
     <MouseDownDispatchContext.Provider value={mouseDownDispatch}>
@@ -97,7 +105,7 @@ export default function Graph<T>({
                 <div ref={setNodeRef}>
                   <svg
                     className={'border-2 border-slate-600 rounded-lg'}
-                    viewBox={`0 0 ${width} ${height}`}
+                    viewBox={`0 0 ${dimensionsArray[0]} ${dimensionsArray[1]}`}
                     style={{ width: '900', height: '600' }}
                     xmlns="http://www.w3.org/2000/svg"
                     ref={svgRef}

@@ -2,7 +2,7 @@ import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import React, { useMemo } from 'react';
 import { GraphEditButton } from './graph-edit-button';
 import { channel } from 'node:diagnostics_channel';
-import { createNewLinks } from './node-edits';
+import { createNewLinks } from './graph-edits';
 import { DataLink } from '../../api/zod-mods';
 const joinNodes = 'join-nodes';
 export default function AddLinksButton<T>({ children }: { children: string }) {

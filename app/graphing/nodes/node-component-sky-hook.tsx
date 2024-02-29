@@ -5,7 +5,7 @@ import React, { PropsWithChildren } from 'react';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import { DataNode } from '../../api/zod-mods';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { getWorkSeriesBundleNodeElements } from '../aggregate-functions/get-node-elements';
+import { useWorkSeriesBundleNodeElements } from '../aggregate-functions/get-node-elements';
 
 export default function NodeComponentSkyHook({
   children,
@@ -15,7 +15,7 @@ export default function NodeComponentSkyHook({
   nodes: DataNode<PartyDto>[];
   bundles: WorkSeriesBundleDeliveryDto[];
 } & PropsWithChildren) {
-  const workSeriesBundleNodeElements = getWorkSeriesBundleNodeElements(
+  const workSeriesBundleNodeElements = useWorkSeriesBundleNodeElements(
     nodes,
     bundles
   );

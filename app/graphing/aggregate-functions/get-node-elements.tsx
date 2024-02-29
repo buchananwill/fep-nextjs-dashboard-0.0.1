@@ -6,6 +6,7 @@ import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeli
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { index } from 'd3';
 import { NodeComponentContext } from '../nodes/node-component-context';
+import { useCurriculumModelContext } from '../../curriculum-models/contexts/curriculum-models-context-creator';
 
 export function useBasicNodeElements<T>(nodes: DataNode<T>[]) {
   const nodeComponentSource = useContext(NodeComponentContext);
@@ -23,25 +24,36 @@ export function useBasicNodeElements<T>(nodes: DataNode<T>[]) {
   ));
 }
 
-export function getWorkSeriesBundleNodeElements<PartyDto>(
+export function useWorkSeriesBundleNodeElements<PartyDto>(
   nodes: DataNode<PartyDto>[],
   bundles: WorkSeriesBundleDeliveryDto[]
 ) {
+  const { curriculumModelsMap } = useCurriculumModelContext();
   return nodes.map((d, index) => {
     const workSeriesBundleDeliveryDto = bundles[index];
     const numberOfSchemas =
-      workSeriesBundleDeliveryDto.workProjectSeriesSchemaDtos.length;
+      workSeriesBundleDeliveryDto.workSeriesSchemaBundle
+        .workProjectSeriesSchemaIds.length;
     const elements =
-      workSeriesBundleDeliveryDto.workProjectSeriesSchemaDtos.map(
-        (schema, index) => (
-          <g
-            key={schema.id}
-            transform={`translate(${0} ${index * 32})`}
-            pointerEvents={'none'}
-          >
-            <WorkSeriesSchemaSvgFragment schema={schema} schemaIndex={index} />
-          </g>
-        )
+      workSeriesBundleDeliveryDto.workSeriesSchemaBundle.workProjectSeriesSchemaIds.map(
+        (schemaId, index) => {
+          const optionalSchema = curriculumModelsMap[schemaId];
+          if (optionalSchema) {
+            const schema = optionalSchema;
+            return (
+              <g
+                key={schema.id}
+                transform={`translate(${0} ${index * 32})`}
+                pointerEvents={'none'}
+              >
+                <WorkSeriesSchemaSvgFragment
+                  schema={schema}
+                  schemaIndex={index}
+                />
+              </g>
+            );
+          }
+        }
       );
 
     return (

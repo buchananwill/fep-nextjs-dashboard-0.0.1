@@ -18,7 +18,10 @@ export function getForceManyBody(
     .distanceMin(minDist);
 }
 
-export function getManyBody<T>(nodesMutable: DataNode<T>[], maxDepth: number) {
+export function getManyBodyStrengthFunction<T>(
+  nodesMutable: DataNode<T>[],
+  maxDepth: number
+) {
   return (
     node: SimulationNodeDatum,
     index: number,
@@ -26,7 +29,8 @@ export function getManyBody<T>(nodesMutable: DataNode<T>[], maxDepth: number) {
   ) => {
     const distanceFromRoot = nodesMutable[index].distanceFromRoot;
 
-    return -50 - 50 * Math.pow((maxDepth - distanceFromRoot) / maxDepth, 2);
+    // return -50 - 50 * Math.pow((maxDepth - distanceFromRoot) / maxDepth, 2);
+    return -50;
   };
 }
 

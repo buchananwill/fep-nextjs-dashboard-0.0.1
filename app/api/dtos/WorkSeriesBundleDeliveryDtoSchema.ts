@@ -1,9 +1,8 @@
-import { WorkProjectSeriesSchemaDtoSchema } from './WorkProjectSeriesSchemaDtoSchema';
+import { WorkSeriesSchemaBundleLeanDtoSchema } from './WorkSeriesSchemaBundleLeanDtoSchema';
 import { z } from 'zod';
 export const WorkSeriesBundleDeliveryDtoSchema = z.object({
   id: z.number(),
   partyId: z.number(),
-  workSeriesSchemaBundleId: z.number(),
-  workProjectSeriesSchemaDtos: z.array(WorkProjectSeriesSchemaDtoSchema),
+  workSeriesSchemaBundle: WorkSeriesSchemaBundleLeanDtoSchema,
 });
 export type WorkSeriesBundleDeliveryDto = z.infer<typeof WorkSeriesBundleDeliveryDtoSchema>;

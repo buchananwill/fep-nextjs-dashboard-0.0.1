@@ -6,7 +6,7 @@ import ForceGraphPage from '../../graphing/force-graph-page';
 import { Pagination } from '../../components/pagination';
 import { normalizeQueryParamToNumber } from '../../api/utils';
 
-export default async function PlaygroundPage({
+export default async function Page({
   params: { yearGroup },
   searchParams
 }: {

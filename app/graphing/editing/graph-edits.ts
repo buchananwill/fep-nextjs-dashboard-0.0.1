@@ -2,6 +2,10 @@
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { Relation } from './add-nodes-button';
 
+export function isNotNull<T>(value: T | null): value is T {
+  return value !== null;
+}
+
 export const TransientIdOffset = Math.pow(2, 50);
 
 export interface InitNode<T> {
@@ -98,4 +102,39 @@ export function createNewLinks<T>({
     index
   }));
   return { allUpdatedLinks, newLinks };
+}
+
+export function deleteLinks<T>(
+  linksListRef: DataLink<T>[],
+  selectedNodeIds: number[]
+) {
+  const set = new Set(selectedNodeIds);
+  const allPredicate = (l: DataLink<T>) => {
+    return (
+      set.has((l.target as DataNode<T>).id) &&
+      set.has((l.source as DataNode<T>).id)
+    );
+  };
+
+  const anyPredicate = (l: DataLink<T>) => {
+    return (
+      set.has((l.target as DataNode<T>).id) ||
+      set.has((l.source as DataNode<T>).id)
+    );
+  };
+  const deletionPredicate =
+    selectedNodeIds.length === 1 ? anyPredicate : allPredicate;
+  const toDelete: number[] = [];
+  const remainingLinks = linksListRef
+    .map((l) => {
+      const deleteThisLink = deletionPredicate(l);
+      if (deleteThisLink) {
+        toDelete.push(l.id);
+        return null;
+      } else {
+        return l;
+      }
+    })
+    .filter(isNotNull);
+  return { toDelete, remainingLinks };
 }

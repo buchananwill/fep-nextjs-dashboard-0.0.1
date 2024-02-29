@@ -13,7 +13,7 @@ import { getGridX, updateForceX } from './forces/force-x';
 import { getModulusGridY, updateForceY } from './forces/force-y';
 import {
   getForceManyBody,
-  getManyBody,
+  getManyBodyStrengthFunction,
   updateManyBodyForce
 } from './forces/force-many-body';
 import {
@@ -26,6 +26,8 @@ import { useSelectiveContextListenerBoolean } from '../components/selective-cont
 import { negativeLogTen } from './forces/math-functions';
 import { updateForceRadial } from './forces/force-radial';
 import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
+import { useSelectionContextGraphListener } from './graph/graph-context-creator';
+import { useSelectiveContextDispatchNumberList } from '../components/selective-context/selective-context-manager-number-list';
 
 export function useD3ForceSimulation<T>(
   nodesRef: MutableRefObject<DataNode<T>[]>,
@@ -33,8 +35,8 @@ export function useD3ForceSimulation<T>(
   ticked: () => void,
   uniqueGraphName: string
 ) {
-  const width = 1800; //inputs?.width || 720;
-  const height = 1200; //inputs?.height || 720;
+  // const width = 1800; //inputs?.width || 720;
+  // const height = 1200; //inputs?.height || 720;
 
   const forceAttributeListeners = useForceAttributeListeners(uniqueGraphName);
   const {
@@ -73,6 +75,19 @@ export function useD3ForceSimulation<T>(
     mountedKey,
     mountedListenerKey,
     true
+  );
+
+  const dimensionArray = useMemo(() => {
+    return [1800, 1200];
+  }, []);
+
+  const {
+    currentState: [width, height]
+  } = useSelectionContextGraphListener(
+    'dimensions',
+    listenerKey,
+    dimensionArray,
+    useSelectiveContextDispatchNumberList
   );
 
   const simVersionRef = useRef(simVersion);
@@ -133,20 +148,17 @@ export function useD3ForceSimulation<T>(
         .forceCenter(width / 2, height / 2)
         .strength(centerStrength);
 
-      const forceCollide = getForceCollide(10, collideStrength);
+      const forceCollide = getForceCollide(20, collideStrength);
 
       const forceRadial = d3
-        .forceRadial(
-          width / 3,
-          width / (forceRadialXRelative / 50),
-          height / (forceRadialYRelative / 50)
-        )
+        .forceRadial(width / 3, width / 2, height / 2)
         .strength((nextNode, i, allNodes) => {
-          const assetNode = nextNode as DataNode<T>;
-          return (
-            forceRadialStrength *
-            ((assetNode.distanceFromRoot + 1) / (maxDepth + 3))
-          );
+          // const assetNode = nextNode as DataNode<T>;
+          // return (
+          //   forceRadialStrength *
+          //   ((assetNode.distanceFromRoot + 1) / (maxDepth + 3))
+          // );
+          return 0.1;
         });
 
       const predicate = (nodeComparison: DataNode<T>) => {
@@ -170,7 +182,7 @@ export function useD3ForceSimulation<T>(
         data: SimulationNodeDatum[]
       ) => {
         const dLink = link as DataLink<T>;
-        const child = link.source as ProductComponentNode;
+        const child = link.source as DataNode<T>;
         const distanceFromRoot = child.distanceFromRoot + 2.8;
         return 100 / Math.log(distanceFromRoot) / dLink.weighting;
       };
@@ -181,12 +193,6 @@ export function useD3ForceSimulation<T>(
       if (forceLink) {
         simulation.force('link', forceLink);
       } else {
-        nodesMutable
-          .map((nextNode) => {
-            return linksMutable.filter(predicate(nextNode)).length;
-          })
-          .reduce((prev, curr) => Math.max(prev, curr), 0.1);
-
         simulation.force(
           'link',
           d3
@@ -206,8 +212,8 @@ export function useD3ForceSimulation<T>(
           'charge',
           d3
             .forceManyBody()
-            .strength(getManyBody(nodesMutable, maxDepth))
-            .distanceMin(0)
+            .strength(getManyBodyStrengthFunction(nodesMutable, maxDepth))
+            .distanceMin(1)
             .distanceMax(400)
         );
       }
@@ -219,19 +225,19 @@ export function useD3ForceSimulation<T>(
           d3
             .forceCollide((d) => {
               const assetNode = d as DataNode<AssetDto>;
-              return (4 - assetNode.distanceFromRoot) * 2 + 12;
+              return Math.max(4 - assetNode.distanceFromRoot, 1) * 2 + 12;
             })
-            .strength(0.1)
+            .strength(0.5)
         );
       }
-      simulation.force('center', d3.forceCenter(width / 2, height / 2));
+
       if (forceCenter) {
         simulation.force('center', forceCenter);
       }
 
-      if (forceRadial) {
-        simulation.force('radial', forceRadial);
-      }
+      // if (forceRadial) {
+      //   simulation.force('radial', forceRadial);
+      // }
       if (forceX) simulation.force('forceX', forceX);
       if (forceY) simulation.force('forceY', forceY);
       simulation.on('tick', ticked);
@@ -255,7 +261,7 @@ export function useD3ForceSimulation<T>(
       updateForceRadial(currentSim, forceRadialStrength);
       currentSim.force(
         'center',
-        d3.forceCenter(width / 2, height / 2).strength(0.01)
+        d3.forceCenter(width / 2, height / 2).strength(0.5)
       );
     }
 

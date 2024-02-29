@@ -3,14 +3,13 @@ import {
   getCurriculumDeliveryModelSchemas
 } from '../../../api/actions/curriculum-delivery-model';
 import { normalizeQueryParamToNumber } from '../../../api/utils';
-import { Card, Grid } from '@tremor/react';
+import { Card } from '@tremor/react';
 import BoxHierarchies from '../../../playground/box-hierarchies';
-import { CurriculumDeliveryModel } from '../../curriculum-delivery-model';
 import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleEditor } from './bundle-editor';
-import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
+import { CurriculumDeliveryModels } from './curriculum-delivery-models';
 
-export default async function BundlesPage({
+export default async function Page({
   params: { yearGroup },
   searchParams
 }: {
@@ -62,14 +61,7 @@ export default async function BundlesPage({
         schemaOptions={schemasIdsAndNames}
       />
 
-      <div className={'w-60'}>
-        {/*<Pagination first={first} last={last} pageNumber={number} />*/}
-        <Grid numItemsSm={1} numItemsLg={1} className="gap-4">
-          {content.map((item) => (
-            <CurriculumDeliveryModel key={item.id} model={item} />
-          ))}
-        </Grid>
-      </div>
+      <CurriculumDeliveryModels workProjectSeriesSchemaDtos={content} />
       <ForceGraphPage></ForceGraphPage>
     </>
   );

@@ -23,19 +23,19 @@ import { GraphContext } from '../graph/graph-context-creator';
 
 const forceAttributesInitial: ForceGraphAttributesDto = {
   id: 1,
-  forceXStrength: 0,
-  forceYStrength: 0,
-  linkStrength: 0,
-  linkDistance: 100,
-  centerStrength: 10,
-  collideStrength: 3,
-  manyBodyStrength: 0,
-  manyBodyMinDistance: 5,
-  manyBodyMaxDistance: 400,
-  manyBodyTheta: 9,
-  forceRadialStrength: 0,
-  forceRadialXRelative: 100,
-  forceRadialYRelative: 100
+  forceXStrength: 100,
+  forceYStrength: 100,
+  linkStrength: 80, // 80
+  linkDistance: 100, // 100
+  centerStrength: 50, // 50
+  collideStrength: 3, // 3
+  manyBodyStrength: 50, // 0
+  manyBodyMinDistance: 10, // 5
+  manyBodyMaxDistance: 400, // 400
+  manyBodyTheta: 100, // 9
+  forceRadialStrength: 1, // Must not be 0
+  forceRadialXRelative: 100, // 100
+  forceRadialYRelative: 100 // 100
 };
 const forceAttributesMin: ForceGraphAttributesDto = {
   id: 1,
@@ -65,7 +65,7 @@ const forceAttributesMax: ForceGraphAttributesDto = {
   manyBodyMinDistance: 1000,
   manyBodyMaxDistance: 1000,
   manyBodyTheta: 100,
-  forceRadialStrength: 100,
+  forceRadialStrength: 200,
   forceRadialXRelative: 100,
   forceRadialYRelative: 100
 };

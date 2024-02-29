@@ -3,6 +3,7 @@ import { useSelectiveContextDispatchNumber } from '../../components/selective-co
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
 import { UseSelectiveContextDispatch } from '../../components/selective-context/use-selective-context-dispatch';
+import { UseSelectiveContextListener } from '../../components/selective-context/use-selective-context-listener';
 
 export type GraphSelectiveContext =
   | 'version'
@@ -11,7 +12,10 @@ export type GraphSelectiveContext =
   | 'nextNodeId'
   | 'nextLinkId'
   | 'debouncing'
-  | 'noNodeSelected';
+  | 'noNodeSelected'
+  | 'deletedLinkIds'
+  | 'deletedNodeIds'
+  | 'dimensions';
 export interface GraphContextInterface {
   uniqueGraphName: string;
 }
@@ -29,7 +33,7 @@ export function useSelectiveGraphContextKey(
     const contextKeyConcat = `${uniqueGraphName}:${contextKey}`;
     const listenerKeyConcat = `${uniqueGraphName}:${listenerKey}`;
     return { contextKeyConcat, listenerKeyConcat };
-  }, [uniqueGraphName, listenerKey]);
+  }, [uniqueGraphName, listenerKey, contextKey]);
 }
 
 export function useSelectiveContextGraphDispatch<T>(
@@ -57,6 +61,24 @@ export function useSelectiveContextGraphDispatch<T>(
     listenerKey,
     dispatchUpdate
   };
+}
+
+export function useSelectionContextGraphListener<T>(
+  contextKey: GraphSelectiveContext,
+  listenerKey: string,
+  initialValue: T,
+  useSelectiveContextListener: UseSelectiveContextListener<T>
+) {
+  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+    contextKey,
+    `${listenerKey}`
+  );
+
+  return useSelectiveContextListener(
+    contextKeyConcat,
+    listenerKeyConcat,
+    initialValue
+  );
 }
 
 export function useSelectiveContextGraphNumberDispatch(

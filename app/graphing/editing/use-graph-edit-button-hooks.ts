@@ -11,7 +11,7 @@ import {
 } from '../graph/graph-context-creator';
 import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
-import { TransientIdOffset } from './node-edits';
+import { TransientIdOffset } from './graph-edits';
 
 export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const { uniqueGraphName } = useGenericNodeContext<T>();
@@ -42,11 +42,14 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const { currentState: simVersion, dispatchUpdate } =
     useSelectiveContextDispatchNumber(contextVersionKey, listenerVersionKey, 0);
 
-  const { nodesInit, linksInit } = useMemo(() => {
-    const nodesInit = [] as number[];
-    const linksInit = [] as number[];
-    return { nodesInit, linksInit };
-  }, []);
+  const { nodesInit, linksInit, deletedLinksInit, deletedNodesInit } =
+    useMemo(() => {
+      const nodesInit = [] as number[];
+      const linksInit = [] as number[];
+      const deletedLinksInit = [] as number[];
+      const deletedNodesInit = [] as number[];
+      return { nodesInit, linksInit, deletedNodesInit, deletedLinksInit };
+    }, []);
 
   const {
     simpleDispatch: setTransientNodeIds,
@@ -67,6 +70,21 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     linksInit,
     useSelectiveContextDispatchNumberList
   );
+
+  const { simpleDispatch: setDeletedLinkIds, currentState: deletedLinkIds } =
+    useSelectiveContextGraphDispatch(
+      'deletedLinkIds',
+      buttonListenerKey,
+      deletedLinksInit,
+      useSelectiveContextDispatchNumberList
+    );
+  const { simpleDispatch: setDeletedNodeIds, currentState: deletedNodeIds } =
+    useSelectiveContextGraphDispatch(
+      'deletedNodeIds',
+      buttonListenerKey,
+      deletedNodesInit,
+      useSelectiveContextDispatchNumberList
+    );
 
   const [noNodeSelected, setNoNodeSelected] = useState(false);
 
@@ -131,6 +149,10 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     deBouncing,
     deBounce,
     getNextLinkId,
-    getNextNodeId
+    getNextNodeId,
+    setDeletedLinkIds,
+    deletedLinkIds,
+    setDeletedNodeIds,
+    deletedNodeIds
   };
 }

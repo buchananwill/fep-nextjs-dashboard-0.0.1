@@ -30,6 +30,8 @@ import {
 import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import AddLinksButton from '../editing/add-links-button';
+import { DeleteLinksButton } from '../editing/delete-links-button';
+import { DeleteNodesButton } from '../editing/delete-nodes-button';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
@@ -108,14 +110,20 @@ export default function CurriculumDeliveryGraph({
             >
               <div
                 className={
-                  'sticky -top-0 w-full flex justify-between bg-slate-50 z-10 py-2 -translate-y-2'
+                  'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 py-2 -translate-y-2 gap-1'
                 }
               >
-                <AddNodesButton relation={'sibling'}>
-                  Add Sibling
-                </AddNodesButton>
-                <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
-                <AddLinksButton>Join Nodes</AddLinksButton>
+                <div className={'w-full grid grid-cols-3 gap-1 relative'}>
+                  <AddNodesButton relation={'sibling'}>
+                    Add Sibling
+                  </AddNodesButton>
+                  <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
+                  <AddLinksButton>Join Nodes</AddLinksButton>
+                </div>
+                <div className={'w-full grid grid-cols-2 gap-1 relative'}>
+                  <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
+                  <DeleteLinksButton>Delete Links</DeleteLinksButton>
+                </div>
               </div>
               <GraphForceAdjuster />
               <NodeDetails

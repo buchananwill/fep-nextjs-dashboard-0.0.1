@@ -1,6 +1,6 @@
 'use client';
 import React, { useMemo } from 'react';
-import { createNewLinks, createNode } from './node-edits';
+import { createNewLinks, createNode } from './graph-edits';
 import { DataNode } from '../../api/zod-mods';
 import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
