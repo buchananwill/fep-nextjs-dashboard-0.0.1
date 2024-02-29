@@ -60,7 +60,8 @@ export default function Graph<T>({
   });
   const { currentState } = useSelectiveContextListenerNumber(
     `zoom-${uniqueGraphName}`,
-    `${uniqueGraphName}`
+    `${uniqueGraphName}`,
+    60
   );
 
   const {
@@ -133,7 +134,7 @@ export default function Graph<T>({
               </div>
               <div
                 className={
-                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg p-2 mt-2'
+                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg p-2 mt-2 relative'
                 }
                 style={{ height: '600px' }}
               >

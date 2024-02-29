@@ -10,7 +10,8 @@ export type GraphSelectiveContext =
   | 'transientLinkIds'
   | 'nextNodeId'
   | 'nextLinkId'
-  | 'debouncing';
+  | 'debouncing'
+  | 'noNodeSelected';
 export interface GraphContextInterface {
   uniqueGraphName: string;
 }

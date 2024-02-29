@@ -105,18 +105,27 @@ export default function CurriculumDeliveryGraph({
               titleList={titleList}
               uniqueGraphName={'party-dto-graph'}
             >
+              <div
+                className={
+                  'sticky -top-0 w-full flex justify-between bg-slate-50 z-10 py-2 -translate-y-2'
+                }
+              >
+                <AddNode
+                  reference={nodes[nodes.length - 1]}
+                  relation={'sibling'}
+                >
+                  Add Sibling
+                </AddNode>
+                <AddNode reference={nodes[0]} relation={'child'}>
+                  Add Child
+                </AddNode>
+              </div>
               <GraphForceAdjuster />
               <NodeDetails
                 nodeDetailElements={nodeDetailElements}
                 labels={classList}
               />
             </GraphViewer>
-            <AddNode reference={nodes[nodes.length - 1]} relation={'sibling'}>
-              Add Sibling
-            </AddNode>
-            <AddNode reference={nodes[0]} relation={'child'}>
-              Add Child
-            </AddNode>
           </div>
         </GenericLinkRefContext.Provider>
       </GenericNodeRefContext.Provider>

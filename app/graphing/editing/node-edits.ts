@@ -5,17 +5,15 @@ import { Relation } from './add-node-button';
 export const TransientIdOffset = Math.pow(2, 50);
 
 export interface InitNode<T> {
-  data: T;
-  id: number;
-  distanceFromRoot: number;
-  template: DataNode<T>;
-  nodes: DataNode<T>[];
+  startIdAt: number;
+  targetNodes: DataNode<T>[];
+  allNodes: DataNode<T>[];
   relation: Relation;
 }
 
 export interface LinkParams<T> {
-  reference: DataNode<T>;
-  newNode: DataNode<T>;
+  references: DataNode<T>[];
+  newNodes: DataNode<T>[];
   allLinks: DataLink<T>[];
   linkIdSequenceStart: number;
   relation: Relation;
@@ -23,72 +21,80 @@ export interface LinkParams<T> {
 
 export function createNode<T>(initNode: InitNode<T>): {
   allNodes: DataNode<T>[];
-  createdNode: DataNode<T>;
+  createdNodes: DataNode<T>[];
 } {
-  const { template, id, distanceFromRoot, data, nodes, relation } = initNode;
-  const newDistance =
-    relation === 'sibling' ? distanceFromRoot : distanceFromRoot + 1;
-  const createdNode = {
-    ...template,
-    id: id,
-    data: data,
-    distanceFromRoot: newDistance,
-    index: nodes.length
-  };
+  const { targetNodes, startIdAt, allNodes: oldNodes, relation } = initNode;
+  let createdNodes: DataNode<T>[] = [];
+  let counter = 0;
+  for (const node of targetNodes) {
+    const { distanceFromRoot, ...otherFields } = node;
+    const newDistance =
+      relation === 'sibling' ? distanceFromRoot : distanceFromRoot + 1;
+    const createdNode = {
+      ...otherFields,
+      id: startIdAt + counter,
+      distanceFromRoot: newDistance
+    };
+    createdNodes.push(createdNode);
+    counter++;
+  }
 
-  const allNodes = [...nodes, createdNode];
-  return { allNodes, createdNode };
+  const allNodes = [...oldNodes, ...createdNodes];
+  return { allNodes, createdNodes };
 }
 
 export function createNewLinks<T>({
-  reference,
-  newNode,
+  references,
+  newNodes,
   allLinks,
   linkIdSequenceStart,
   relation
 }: LinkParams<T>): { allUpdatedLinks: DataLink<T>[]; newLinks: DataLink<T>[] } {
+  const newLinks: DataLink<T>[] = [];
   switch (relation) {
     case 'sibling': {
       console.log('Making sibling');
-      const linksAsChild = allLinks.filter(
-        (l) => (l.source as DataNode<T>).id === reference.id
-      );
-
-      const linksAssignedToYoungerSibling = linksAsChild.map(
-        (l, index) =>
-          ({
-            ...l,
-            source: newNode,
-            id: linkIdSequenceStart + index,
-            index: index
-          }) as DataLink<T>
-      );
-      console.log(linksAssignedToYoungerSibling);
-      const allUpdatedLinks = [
-        ...allLinks,
-        ...linksAssignedToYoungerSibling
-      ].map((l, index) => ({ ...l, index }));
-      return { allUpdatedLinks, newLinks: linksAssignedToYoungerSibling };
+      for (let i = 0; i < newNodes.length; i++) {
+        const referenceNode = references[i];
+        const newNode = newNodes[i];
+        const linksAsChild = allLinks.filter(
+          (l) => (l.source as DataNode<T>).id === referenceNode.id
+        );
+        linksAsChild
+          .map(
+            (l, index) =>
+              ({
+                ...l,
+                source: newNode,
+                id: linkIdSequenceStart + i,
+                index: index
+              }) as DataLink<T>
+          )
+          .forEach((l) => newLinks.push(l));
+      }
+      break;
     }
     case 'child': {
       console.log('making child');
       const templateLink = allLinks[0];
-      const newLink = {
-        ...templateLink,
-        source: newNode,
-        target: reference,
-        index: 0,
-        id: linkIdSequenceStart
-      } as DataLink<T>;
-      const singletonLink: DataLink<T>[] = [];
-      singletonLink.push(newLink);
-      const allUpdatedLinks = [...allLinks, ...singletonLink].map(
-        (l, index) => ({
-          ...l,
-          index
-        })
-      );
-      return { allUpdatedLinks, newLinks: singletonLink };
+      for (let i = 0; i < references.length; i++) {
+        const targetNode = references[i];
+        const sourceNode = newNodes[i];
+        const newLink = {
+          ...templateLink,
+          source: sourceNode,
+          target: targetNode,
+          index: 0,
+          id: linkIdSequenceStart + i
+        } as DataLink<T>;
+        newLinks.push(newLink);
+      }
+      break;
     }
   }
+  const allUpdatedLinks = [...allLinks, ...newLinks].map((l, index) => ({
+    ...l,
+    index
+  }));
+  return { allUpdatedLinks, newLinks };
 }

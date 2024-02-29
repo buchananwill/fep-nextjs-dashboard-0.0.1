@@ -7,8 +7,8 @@ import {
 export const NodeInteractionContext =
   createContext<NodeInteractionContextInterface>({
     hover: null,
-    selected: new Set<number>()
+    selected: []
   });
-export const DispatchContext = createContext<React.Dispatch<NodeInteractionAction>>(
-  () => {}
-);
+export const DispatchContext = createContext<
+  React.Dispatch<NodeInteractionAction>
+>(() => {});

@@ -13,6 +13,8 @@ import {
   useSelectiveGraphContextKey
 } from '../graph/graph-context-creator';
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
+import { useNodeInteractionContext } from '../nodes/node-interaction-context';
+import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 
 export type Relation = 'sibling' | 'child';
 
@@ -25,12 +27,10 @@ export function AddNode<T>({
   relation: Relation;
   children: string;
 }) {
-  const {
-    dispatch: dispatchNodes,
-    nodes,
-    uniqueGraphName
-  } = useGenericNodeContext<T>();
+  const { uniqueGraphName } = useGenericNodeContext<T>();
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
+
+  const { selected } = useNodeInteractionContext();
 
   const { contextVersionKey, listenerVersionKey } = useMemo(() => {
     const contextVersionKey = `${uniqueGraphName}-version`;
@@ -85,6 +85,8 @@ export function AddNode<T>({
     useSelectiveContextDispatchNumberList
   );
 
+  const [noNodeSelected, setNoNodeSelected] = useState(false);
+
   // const [transientNodeIds, setTransientNodeIds] = useState([] as number[]);
   // const [transientLinkIds, setTransientLinkIds] = useState([] as number[]);
   // const [nextNodeId, setNextNodeId] = useState<number | undefined>(undefined);
@@ -121,27 +123,36 @@ export function AddNode<T>({
     return responseId;
   };
   const handleAddNode = () => {
-    // if (nodeListRef === null) return;
-    const lastNode = reference;
-    const { data, distanceFromRoot, x, y, id } = lastNode;
-    const duplicateNodeData = { ...data };
+    if (selected.length == 0) {
+      if (!noNodeSelected) {
+        setNoNodeSelected(true);
+        setTimeout(() => {
+          if (setNoNodeSelected) setNoNodeSelected(false);
+        }, 2000);
+      }
+      return;
+    }
+
+    const refNodes = nodeListRef.current.filter((n) => selected.includes(n.id));
+
     const nextNodeToSubmit = getNextNodeId();
-    const { allNodes, createdNode } = createNode({
-      data: duplicateNodeData,
-      id: nextNodeToSubmit,
-      distanceFromRoot,
-      template: lastNode,
-      nodes: nodeListRef.current,
+    const { allNodes, createdNodes } = createNode({
+      startIdAt: nextNodeToSubmit,
+      targetNodes: refNodes,
+      allNodes: nodeListRef.current,
       relation
     });
 
-    setTransientNodeIds([...transientNodeIds, createdNode.id]);
+    setTransientNodeIds([
+      ...transientNodeIds,
+      ...createdNodes.map((n) => n.id)
+    ]);
 
     const nextLinkIdToSubmit = getNextLinkId();
 
     const { allUpdatedLinks, newLinks } = createNewLinks<T>({
-      reference: lastNode,
-      newNode: createdNode,
+      references: refNodes,
+      newNodes: createdNodes,
       allLinks: linkListRef.current,
       linkIdSequenceStart: nextLinkIdToSubmit,
       relation: relation
@@ -170,6 +181,15 @@ export function AddNode<T>({
       onClick={handleAddNode}
       disabled={deBouncing}
     >
+      {noNodeSelected && (
+        <span
+          className={
+            'badge badge-error absolute -bottom-10 text-xs h-fit animate-pulse'
+          }
+        >
+          No node selected!
+        </span>
+      )}
       {children}
     </button>
   );
