@@ -14,7 +14,7 @@ import {
 import { PartyDto } from '../api/dtos/PartyDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 import NodeComponentSkyHook from './nodes/node-component-sky-hook';
-import { AddNode } from './editing/add-node-button';
+import { AddNodesButton } from './editing/add-nodes-button';
 import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
 import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';

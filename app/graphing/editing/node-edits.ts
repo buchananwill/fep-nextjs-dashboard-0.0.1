@@ -1,6 +1,6 @@
 'use client';
 import { DataLink, DataNode } from '../../api/zod-mods';
-import { Relation } from './add-node-button';
+import { Relation } from './add-nodes-button';
 
 export const TransientIdOffset = Math.pow(2, 50);
 

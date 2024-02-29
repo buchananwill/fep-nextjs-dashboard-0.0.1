@@ -1,32 +1,19 @@
-'use client';
-import React, { useMemo, useState } from 'react';
 import {
   useGenericGraphRefs,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import { createNode, createNewLinks, TransientIdOffset } from './node-edits';
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
-import { DataNode } from '../../api/zod-mods';
+import { useNodeInteractionContext } from '../nodes/node-interaction-context';
+import { useMemo, useState } from 'react';
 import {
   useSelectiveContextGraphDispatch,
   useSelectiveContextGraphNumberDispatch,
   useSelectiveGraphContextKey
 } from '../graph/graph-context-creator';
+import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
-import { useNodeInteractionContext } from '../nodes/node-interaction-context';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { TransientIdOffset } from './node-edits';
 
-export type Relation = 'sibling' | 'child';
-
-export function AddNode<T>({
-  reference,
-  children,
-  relation
-}: {
-  reference: DataNode<T>;
-  relation: Relation;
-  children: string;
-}) {
+export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const { uniqueGraphName } = useGenericNodeContext<T>();
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
 
@@ -34,13 +21,9 @@ export function AddNode<T>({
 
   const { contextVersionKey, listenerVersionKey } = useMemo(() => {
     const contextVersionKey = `${uniqueGraphName}-version`;
-    const listenerVersionKey = `${uniqueGraphName}:${relation}:${reference.id}:add-node-button`;
+    const listenerVersionKey = `${uniqueGraphName}:${buttonListenerKey}`;
     return { contextVersionKey, listenerVersionKey };
-  }, [uniqueGraphName, relation, reference]);
-
-  const buttonListenerKey = useMemo(() => {
-    return `${reference.id}:${relation}`;
-  }, [reference, relation]);
+  }, [buttonListenerKey, uniqueGraphName]);
 
   const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
     'nextNodeId',
@@ -87,17 +70,7 @@ export function AddNode<T>({
 
   const [noNodeSelected, setNoNodeSelected] = useState(false);
 
-  // const [transientNodeIds, setTransientNodeIds] = useState([] as number[]);
-  // const [transientLinkIds, setTransientLinkIds] = useState([] as number[]);
-  // const [nextNodeId, setNextNodeId] = useState<number | undefined>(undefined);
-  // const [nextLinkId, setNextLinkId] = useState<number | undefined>(undefined);
   const [deBouncing, setDeBouncing] = useState<boolean>(false);
-
-  if (nodeListRef === null || linkListRef === null) return <></>;
-
-  const nodesListRefCurrent = nodeListRef.current;
-
-  const nextIndex = nodesListRefCurrent.length;
 
   const getNextNodeId = () => {
     let responseId =
@@ -122,75 +95,42 @@ export function AddNode<T>({
     setNextLinkId(responseId + 1);
     return responseId;
   };
-  const handleAddNode = () => {
-    if (selected.length == 0) {
+
+  const incrementSimVersion = () => {
+    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
+  };
+
+  const checkForSelectedNodes = (minimum: number = 1) => {
+    if (selected.length < minimum) {
       if (!noNodeSelected) {
         setNoNodeSelected(true);
         setTimeout(() => {
           if (setNoNodeSelected) setNoNodeSelected(false);
         }, 2000);
       }
-      return;
-    }
-
-    const refNodes = nodeListRef.current.filter((n) => selected.includes(n.id));
-
-    const nextNodeToSubmit = getNextNodeId();
-    const { allNodes, createdNodes } = createNode({
-      startIdAt: nextNodeToSubmit,
-      targetNodes: refNodes,
-      allNodes: nodeListRef.current,
-      relation
-    });
-
-    setTransientNodeIds([
-      ...transientNodeIds,
-      ...createdNodes.map((n) => n.id)
-    ]);
-
-    const nextLinkIdToSubmit = getNextLinkId();
-
-    const { allUpdatedLinks, newLinks } = createNewLinks<T>({
-      references: refNodes,
-      newNodes: createdNodes,
-      allLinks: linkListRef.current,
-      linkIdSequenceStart: nextLinkIdToSubmit,
-      relation: relation
-    });
-
-    const newLinkIds = newLinks.map((l) => l.id);
-
-    setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
-
-    setDeBouncing(true);
-    setTimeout(() => setDeBouncing(false), 250);
-
-    linkListRef.current = [...allUpdatedLinks].map((link, index) => {
-      const source = link.source as DataNode<T>;
-      const target = link.target as DataNode<T>;
-      return { ...link, source: source.id, target: target.id, index };
-    });
-    nodeListRef.current = allNodes;
-
-    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
+      return false;
+    } else return true;
   };
 
-  return (
-    <button
-      className={'btn btn-primary btn-outline'}
-      onClick={handleAddNode}
-      disabled={deBouncing}
-    >
-      {noNodeSelected && (
-        <span
-          className={
-            'badge badge-error absolute -bottom-10 text-xs h-fit animate-pulse'
-          }
-        >
-          No node selected!
-        </span>
-      )}
-      {children}
-    </button>
-  );
+  const deBounce = () => {
+    setDeBouncing(true);
+    setTimeout(() => setDeBouncing(false), 250);
+  };
+
+  return {
+    nodeListRef,
+    linkListRef,
+    selected,
+    incrementSimVersion,
+    setTransientNodeIds,
+    transientNodeIds,
+    setTransientLinkIds,
+    transientLinkIds,
+    checkForSelectedNodes,
+    noNodeSelected,
+    deBouncing,
+    deBounce,
+    getNextLinkId,
+    getNextNodeId
+  };
 }

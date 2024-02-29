@@ -18,7 +18,7 @@ import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeli
 import { GraphViewer } from '../graph/graph-viewer';
 import GraphForceAdjuster from '../components/graph-force-adjustment';
 import NodeDetails from '../components/node-details';
-import { AddNode } from '../editing/add-node-button';
+import { AddNodesButton } from '../editing/add-nodes-button';
 import {
   GenericLinkRefContext,
   useGenericLinkContext
@@ -29,6 +29,7 @@ import {
 } from '../nodes/generic-node-context-creator';
 import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import AddLinksButton from '../editing/add-links-button';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
@@ -110,15 +111,11 @@ export default function CurriculumDeliveryGraph({
                   'sticky -top-0 w-full flex justify-between bg-slate-50 z-10 py-2 -translate-y-2'
                 }
               >
-                <AddNode
-                  reference={nodes[nodes.length - 1]}
-                  relation={'sibling'}
-                >
+                <AddNodesButton relation={'sibling'}>
                   Add Sibling
-                </AddNode>
-                <AddNode reference={nodes[0]} relation={'child'}>
-                  Add Child
-                </AddNode>
+                </AddNodesButton>
+                <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
+                <AddLinksButton>Join Nodes</AddLinksButton>
               </div>
               <GraphForceAdjuster />
               <NodeDetails
