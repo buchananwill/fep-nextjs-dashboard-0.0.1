@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { updateForce } from './force-link';
+import { useNormaliseForceRange } from '../components/force-attributes-meta-data';
 
 export function getForceManyBody(
   maxDist: number,

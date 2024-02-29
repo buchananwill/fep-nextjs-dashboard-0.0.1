@@ -4,6 +4,7 @@ import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
+import { useNormaliseForceRange } from '../components/force-attributes-meta-data';
 
 export function getModulusGridY<T>(
   spacing: number,
@@ -26,7 +27,7 @@ export function updateForceY<T>(
   forceYStrength: number
 ) {
   function consumer(forceY: d3.ForceY<DataNode<T>>) {
-    const strength = negativeLogTen(forceYStrength);
+    const strength = forceYStrength;
     const finalStrength = strength > 0.001 ? strength : 0;
     forceY.strength(finalStrength);
   }

@@ -4,6 +4,7 @@ import { Simulation } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
+import { useNormaliseForceRange } from '../components/force-attributes-meta-data';
 
 export function getGridX(
   width: number,
@@ -21,7 +22,7 @@ export function updateForceX<T>(
   forceXStrength: number
 ) {
   function consumerForceX(forceXDefined: d3.ForceX<DataNode<T>>) {
-    const strength = negativeLogTen(forceXStrength);
+    const strength = forceXStrength;
     const finalStrength = strength > 0.001 ? strength : 0;
     forceXDefined.strength(finalStrength);
   }

@@ -79,7 +79,7 @@ function getBusiestNodeFallOffFunction(
     links: SimulationLinkDatum<any>[]
   ) => {
     const cosFallOffFunction = getCosFallOffFunction(numberOfNodes);
-    const busiestNodeFunction = getBusiestNodeFunction(0.1);
+    const busiestNodeFunction = getBusiestNodeFunction(baseStrength);
     return Math.min(
       cosFallOffFunction(l, i, links as DataLink<any>[]),
       busiestNodeFunction(l, i, links)
@@ -90,11 +90,12 @@ function getBusiestNodeFallOffFunction(
 export function getLinkForceMinCosFallOffBusiestNode(
   linksMutable: DataLink<ProductComponentStateDto>[],
   numberOfNodes: () => number,
-  strengthFactor: number
+  strengthFactor: number,
+  distance: number
 ) {
   return D3.forceLink(linksMutable)
     .id((d) => (d as DataNode<ProductComponentStateDto>).id)
-    .distance(200)
+    .distance(distance)
     .strength(getBusiestNodeFallOffFunction(numberOfNodes(), strengthFactor));
 }
 
@@ -104,12 +105,14 @@ export function updateLinkForce<T>(
   linkDistance: number
 ) {
   function consumerOfLinkForce(force: d3.ForceLink<DataNode<T>, DataLink<T>>) {
-    const strength = Math.pow(10, -4 + linkStrength / 50) * 2;
-    const distance = linkDistance * 5;
-    force.strength(
-      getBusiestNodeFallOffFunction(current.nodes().length, strength)
+    console.log('distance:', linkDistance);
+
+    const busiestNodeFallOffFunction = getBusiestNodeFallOffFunction(
+      current.nodes().length,
+      linkStrength
     );
-    force.distance(distance);
+    force.strength(busiestNodeFallOffFunction);
+    force.distance(linkDistance);
   }
   updateForce(current, 'link', consumerOfLinkForce);
 }

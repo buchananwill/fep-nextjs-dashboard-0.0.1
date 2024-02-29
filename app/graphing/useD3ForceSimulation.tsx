@@ -1,12 +1,7 @@
-import {
-  AssetDto,
-  DataLink,
-  DataNode,
-  ProductComponentNode
-} from '../api/zod-mods';
+import { DataLink, DataNode } from '../api/zod-mods';
 import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
 import * as d3 from 'd3';
-import { Simulation, SimulationLinkDatum, SimulationNodeDatum } from 'd3';
+import { Simulation } from 'd3';
 
 import { useForceAttributeListeners } from '../api/dtos/ForceGraphAttributesDtoSchema';
 import { getGridX, updateForceX } from './forces/force-x';
@@ -21,8 +16,7 @@ import {
 } from './forces/force-link';
 import { getForceCollide } from './forces/force-collide';
 import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
-import { negativeLogTen } from './forces/math-functions';
-import { updateForceRadial } from './forces/force-radial';
+import { getForceRadial, updateForceRadial } from './forces/force-radial';
 import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
 import { useSelectionContextGraphListener } from './graph/graph-context-creator';
 import { useSelectiveContextDispatchNumberList } from '../components/selective-context/selective-context-manager-number-list';
@@ -110,34 +104,32 @@ export function useD3ForceSimulation<T>(
     const linksMutable = linksRef.current;
 
     const {
-      forceYStrength,
-      forceXStrength,
-      forceRadialStrength,
-      forceRadialXRelative,
-      forceRadialYRelative,
-      manyBodyStrength,
-      centerStrength,
-      collideStrength,
-      linkStrength,
-      manyBodyMinDistance,
-      manyBodyMaxDistance,
-      manyBodyTheta,
-      linkDistance
+      forceYStrengthNormalized,
+      forceXStrengthNormalized,
+      forceRadialStrengthNormalized,
+      manyBodyStrengthNormalized,
+      centerStrengthNormalized,
+      collideStrengthNormalized,
+      linkStrengthNormalized,
+      manyBodyMinDistanceNormalized,
+      manyBodyMaxDistanceNormalized,
+      manyBodyThetaNormalized,
+      linkDistanceNormalized
     } = forceAttributeListeners;
 
     function beginSim() {
-      const forceX = getGridX(width, spacingX, negativeLogTen(forceXStrength));
+      const forceX = getGridX(width, spacingX, forceXStrengthNormalized);
 
       const forceY = getModulusGridY(
         spacingY,
         height,
-        () => forceYStrength / 100
+        () => forceYStrengthNormalized
       );
 
       const forceManyBody = getForceManyBody(
-        manyBodyMaxDistance,
-        manyBodyMinDistance,
-        () => manyBodyStrength / 100
+        manyBodyMaxDistanceNormalized,
+        manyBodyMinDistanceNormalized,
+        () => manyBodyStrengthNormalized
       );
 
       const forceLink = getLinkForceMinCosFallOffBusiestNode(
@@ -145,33 +137,21 @@ export function useD3ForceSimulation<T>(
         () => {
           return nodesRef.current.length;
         },
-        linkStrength
+        linkStrengthNormalized,
+        linkDistanceNormalized
       );
 
       const forceCenter = d3
         .forceCenter(width / 2, height / 2)
-        .strength(centerStrength / 200);
+        .strength(centerStrengthNormalized);
 
-      const forceCollide = getForceCollide(20, collideStrength);
+      const forceCollide = getForceCollide(20, collideStrengthNormalized);
 
-      const forceRadial = d3
-        .forceRadial(width / 3, width / 2, height / 2)
-        .strength((nextNode, i, allNodes) => {
-          return forceRadialStrength;
-        });
-      nodesMutable
-        .map((asset) => asset.distanceFromRoot)
-        .reduce((prev, curr) => Math.max(prev, curr), 0.1);
-      const linkDistance = (
-        link: SimulationLinkDatum<DataNode<T>>,
-        index: number,
-        data: SimulationNodeDatum[]
-      ) => {
-        const dLink = link as DataLink<T>;
-        const child = link.source as DataNode<T>;
-        const distanceFromRoot = child.distanceFromRoot + 2.8;
-        return 100 / Math.log(distanceFromRoot) / dLink.weighting;
-      };
+      const forceRadial = getForceRadial(
+        width,
+        height,
+        forceRadialStrengthNormalized
+      );
 
       const simulation = d3.forceSimulation<DataNode<T>, DataLink<T>>(
         nodesMutable
@@ -192,17 +172,21 @@ export function useD3ForceSimulation<T>(
     }
 
     function updateValues(currentSim: Simulation<DataNode<T>, DataLink<T>>) {
-      updateLinkForce(currentSim, linkStrength, linkDistance);
+      updateLinkForce(
+        currentSim,
+        linkStrengthNormalized,
+        linkDistanceNormalized
+      );
       updateManyBodyForce(
         currentSim,
-        manyBodyStrength,
-        manyBodyTheta,
-        manyBodyMinDistance,
-        manyBodyMaxDistance
+        manyBodyStrengthNormalized,
+        manyBodyThetaNormalized,
+        manyBodyMinDistanceNormalized,
+        manyBodyMaxDistanceNormalized
       );
-      updateForceX(currentSim, forceXStrength);
-      updateForceY(currentSim, forceYStrength);
-      updateForceRadial(currentSim, forceRadialStrength);
+      updateForceX(currentSim, forceXStrengthNormalized);
+      updateForceY(currentSim, forceYStrengthNormalized);
+      updateForceRadial(currentSim, forceRadialStrengthNormalized);
     }
 
     if (!simulationRef.current) {
