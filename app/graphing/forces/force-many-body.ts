@@ -2,6 +2,7 @@ import * as D3 from 'd3';
 import * as d3 from 'd3';
 import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
+import { updateForce } from './force-link';
 
 export function getForceManyBody(
   maxDist: number,
@@ -41,15 +42,15 @@ export function updateManyBodyForce<T>(
   manyBodyMinDistance: number,
   manyBodyMaxDistance: number
 ) {
-  const forceManyBody = currentSim.force('charge') as d3.ForceManyBody<
-    DataNode<T>
-  >;
-  const strength = manyBodyStrength - 100;
-  const theta = manyBodyTheta < 10 ? 0.1 : manyBodyTheta / 100;
+  function consumerCharge(forceManyBody: d3.ForceManyBody<DataNode<T>>) {
+    const strength = manyBodyStrength - 100;
+    const theta = manyBodyTheta < 10 ? 0.1 : manyBodyTheta / 100;
 
-  forceManyBody
-    .strength(strength)
-    .distanceMin(manyBodyMinDistance)
-    .distanceMax(manyBodyMaxDistance)
-    .theta(theta);
+    forceManyBody
+      .strength(strength)
+      .distanceMin(manyBodyMinDistance)
+      .distanceMax(manyBodyMaxDistance)
+      .theta(theta);
+  }
+  updateForce(currentSim, 'charge', consumerCharge);
 }

@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { Simulation, SimulationLinkDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
+import { StandardForceKey } from '../useD3ForceSimulation';
 
 export function getCosFallOffFunction(numberOfNodes: number) {
   return (
@@ -102,9 +103,24 @@ export function updateLinkForce<T>(
   linkStrength: number,
   linkDistance: number
 ) {
-  const force = current.force('link') as d3.ForceLink<DataNode<T>, DataLink<T>>;
-  const strength = Math.pow(10, -4 + linkStrength / 50) * 2;
-  const distance = linkDistance * 5;
-  force.strength(strength);
-  force.distance(distance);
+  function consumerOfLinkForce(force: d3.ForceLink<DataNode<T>, DataLink<T>>) {
+    const strength = Math.pow(10, -4 + linkStrength / 50) * 2;
+    const distance = linkDistance * 5;
+    force.strength(
+      getBusiestNodeFallOffFunction(current.nodes().length, strength)
+    );
+    force.distance(distance);
+  }
+  updateForce(current, 'link', consumerOfLinkForce);
+}
+
+export function updateForce<T, F extends D3.Force<DataNode<T>, DataLink<F>>>(
+  current: Simulation<DataNode<T>, DataLink<T>>,
+  forceKey: StandardForceKey | string,
+  apply: (force: F) => void
+) {
+  const optionalForce = current.force(forceKey);
+  if (!optionalForce) return;
+  const force = optionalForce as F;
+  apply(force);
 }
