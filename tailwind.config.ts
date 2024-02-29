@@ -6,6 +6,23 @@ export default {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@tremor/**/*.{js,ts,jsx,tsx,mdx}'
   ],
+  plugins: [require('@headlessui/tailwindcss'), require('daisyui')],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require('daisyui/src/theming/themes')['light'],
+          primary: '#3247ff',
+          secondary: '#aae47a',
+          accent: '#37cdbe',
+          neutral: '#3d4451',
+          'base-100': '#ffffff'
+        }
+      },
+      'dark',
+      'cupcake'
+    ]
+  },
   theme: {
     transparent: 'transparent',
     current: 'currentColor',
@@ -91,8 +108,5 @@ export default {
       pattern:
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/
     }
-  ],
-  plugins: [require('@headlessui/tailwindcss'), require('daisyui')],
-  
-
+  ]
 } satisfies Config;
