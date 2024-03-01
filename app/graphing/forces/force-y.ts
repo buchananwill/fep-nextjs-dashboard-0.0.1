@@ -4,7 +4,7 @@ import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
-import { useNormaliseForceRange } from '../components/force-attributes-meta-data';
+import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
 
 export function getModulusGridY<T>(
   spacing: number,

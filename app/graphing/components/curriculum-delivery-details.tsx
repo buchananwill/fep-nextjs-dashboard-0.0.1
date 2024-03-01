@@ -3,10 +3,17 @@ import { DataNode } from '../../api/zod-mods';
 import React, { useMemo } from 'react';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { useCurriculumModelContext } from '../../curriculum-models/contexts/curriculum-models-context-creator';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { isNotNull } from '../editing/graph-edits';
+import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
+import {
+  useBundleAssignmentsContext,
+  useSingleBundleAssignment
+} from '../../curriculum-models/contexts/use-bundle-assignments-context';
+import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bundle-Items-context';
+
+const emptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 
 function sumDeliveryAllocations(schema: WorkProjectSeriesSchemaDto): number {
   return schema.deliveryAllocations
@@ -22,33 +29,33 @@ function sumAllSchemas(deliveryBundle: WorkProjectSeriesSchemaDto[]): number {
 
 const cellFormatting = 'px-2 text-xs';
 export default function CurriculumDeliveryDetails({
-  deliveryBundle,
   node
 }: {
-  deliveryBundle?: WorkSeriesBundleDeliveryDto;
   node: DataNode<PartyDto>;
 }) {
+  const { assignmentOptional, deleteAssignment, postAssignment } =
+    useSingleBundleAssignment(node.id.toString());
+  const { bundleItemsMap } = useBundleItemsContext();
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
 
-  const bundleRowSpan = useMemo(() => {
-    return deliveryBundle
-      ? `span ${Math.max(
-          deliveryBundle.workSeriesSchemaBundle.workProjectSeriesSchemaIds
-            .length,
-          1
-        )}`
-      : 1;
-  }, [deliveryBundle]);
-
-  const schemas = useMemo(() => {
-    return deliveryBundle
-      ? deliveryBundle.workSeriesSchemaBundle.workProjectSeriesSchemaIds
+  const { schemas, bundleRowSpan } = useMemo(() => {
+    if (assignmentOptional) {
+      const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
+      if (bundleItemsMapElement) {
+        const schemas = bundleItemsMapElement.workProjectSeriesSchemaIds
           .map((schemaId) => {
             return curriculumModelsMap[schemaId];
           })
-          .filter(isNotNull<WorkProjectSeriesSchemaDto>)
-      : [];
-  }, [curriculumModelsMap, deliveryBundle]);
+          .filter(isNotNull<WorkProjectSeriesSchemaDto>);
+        const bundleRowSpan = `span ${Math.max(
+          bundleItemsMapElement.workProjectSeriesSchemaIds.length,
+          1
+        )}`;
+        if (schemas.length > 0) return { schemas, bundleRowSpan };
+      }
+    }
+    return { schemas: emptySchemasArray, bundleRowSpan: 'span 1' };
+  }, [assignmentOptional, bundleItemsMap, curriculumModelsMap]);
 
   const totalAllocation = useMemo(() => sumAllSchemas(schemas), [schemas]);
 

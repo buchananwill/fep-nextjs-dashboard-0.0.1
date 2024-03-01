@@ -3,7 +3,8 @@ import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesS
 import { Grid } from '@tremor/react';
 import { CurriculumDeliveryModel } from '../../curriculum-delivery-model';
 import { useContext, useEffect } from 'react';
-import { useCurriculumModelContext } from '../../contexts/curriculum-models-context-creator';
+
+import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
 
 export function CurriculumDeliveryModels({
   workProjectSeriesSchemaDtos
@@ -13,9 +14,13 @@ export function CurriculumDeliveryModels({
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
 
   useEffect(() => {
+    const payloadArray = workProjectSeriesSchemaDtos.map((schema) => ({
+      key: schema.id,
+      data: schema
+    }));
     dispatch({
       type: 'updateAll',
-      payload: workProjectSeriesSchemaDtos
+      payload: payloadArray
     });
   }, [workProjectSeriesSchemaDtos, dispatch]);
 

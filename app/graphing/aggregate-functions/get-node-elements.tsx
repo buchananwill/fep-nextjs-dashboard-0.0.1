@@ -6,7 +6,8 @@ import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeli
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { index } from 'd3';
 import { NodeComponentContext } from '../nodes/node-component-context';
-import { useCurriculumModelContext } from '../../curriculum-models/contexts/curriculum-models-context-creator';
+
+import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
 
 export function useBasicNodeElements<T>(nodes: DataNode<T>[]) {
   const nodeComponentSource = useContext(NodeComponentContext);

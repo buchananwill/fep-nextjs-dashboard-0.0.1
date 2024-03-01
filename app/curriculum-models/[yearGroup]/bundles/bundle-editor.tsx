@@ -11,7 +11,7 @@ import React, { Fragment, ReactNode, useEffect, useMemo } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 
-const bundleEditorKey = 'bundles-editor';
+export const BundleEditorKey = 'bundles-editor';
 function OptionChooserItem({
   children,
   checkedStyling,
@@ -155,8 +155,8 @@ export function BundleEditor({
   }, [bundleLeanDtos]);
   const { currentState: currentBundles, dispatchUpdate } =
     useSelectiveContextDispatchStringList(
-      bundleEditorKey,
-      bundleEditorKey,
+      BundleEditorKey,
+      BundleEditorKey,
       bundleIds
     );
 

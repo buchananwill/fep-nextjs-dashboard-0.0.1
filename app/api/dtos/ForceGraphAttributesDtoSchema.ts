@@ -1,5 +1,5 @@
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
-import { useNormaliseForceRange } from '../../graphing/components/force-attributes-meta-data';
+import { useNormalizeForceRange } from '../../graphing/components/force-attributes-meta-data';
 import { z } from 'zod';
 export const ForceGraphAttributesDtoSchema = z.object({
   id: z.number(),
@@ -92,31 +92,31 @@ export function useForceAttributeListeners(uniqueGraphName: string) {
     100
   );
 
-  const manyBodyThetaNormalized = useNormaliseForceRange(manyBodyTheta);
-  const centerStrengthNormalized = useNormaliseForceRange(centerStrength);
-  const collideStrengthNormalized = useNormaliseForceRange(collideStrength);
-  const linkDistanceNormalized = useNormaliseForceRange(
+  const manyBodyThetaNormalized = useNormalizeForceRange(manyBodyTheta);
+  const centerStrengthNormalized = useNormalizeForceRange(centerStrength);
+  const collideStrengthNormalized = useNormalizeForceRange(collideStrength);
+  const linkDistanceNormalized = useNormalizeForceRange(
     linkDistance,
     'linkDistance'
   );
-  const manyBodyMaxDistanceNormalized = useNormaliseForceRange(
+  const manyBodyMaxDistanceNormalized = useNormalizeForceRange(
     manyBodyMaxDistance,
     'manyBodyMaxDistance'
   );
-  const manyBodyMinDistanceNormalized = useNormaliseForceRange(
+  const manyBodyMinDistanceNormalized = useNormalizeForceRange(
     manyBodyMinDistance,
     'manyBodyMinDistance'
   );
   const forceRadialXRelativeNormalized =
-    useNormaliseForceRange(forceRadialXRelative);
-  const linkStrengthNormalized = useNormaliseForceRange(linkStrength);
+    useNormalizeForceRange(forceRadialXRelative);
+  const linkStrengthNormalized = useNormalizeForceRange(linkStrength);
   const forceRadialStrengthNormalized =
-    useNormaliseForceRange(forceRadialStrength);
+    useNormalizeForceRange(forceRadialStrength);
   const forceRadialYRelativeNormalized =
-    useNormaliseForceRange(forceRadialYRelative);
-  const forceYStrengthNormalized = useNormaliseForceRange(forceYStrength);
-  const forceXStrengthNormalized = useNormaliseForceRange(forceXStrength);
-  const manyBodyStrengthNormalized = useNormaliseForceRange(
+    useNormalizeForceRange(forceRadialYRelative);
+  const forceYStrengthNormalized = useNormalizeForceRange(forceYStrength);
+  const forceXStrengthNormalized = useNormalizeForceRange(forceXStrength);
+  const manyBodyStrengthNormalized = useNormalizeForceRange(
     manyBodyStrength,
     'manyBodyStrength'
   );

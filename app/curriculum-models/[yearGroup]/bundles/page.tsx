@@ -8,6 +8,12 @@ import BoxHierarchies from '../../../playground/box-hierarchies';
 import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleEditor } from './bundle-editor';
 import { CurriculumDeliveryModels } from './curriculum-delivery-models';
+import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
+import { useMemo } from 'react';
+import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
+import { StringMap } from '../../contexts/curriculum-models-context-creator';
+
+const emptyBundles = {} as StringMap<string>;
 
 export default async function Page({
   params: { yearGroup },
@@ -54,15 +60,17 @@ export default async function Page({
     return <Card>{message}</Card>;
   }
   return (
-    <>
-      <BoxHierarchies></BoxHierarchies>
-      <BundleEditor
-        bundleLeanDtos={bundleLeanDtos}
-        schemaOptions={schemasIdsAndNames}
-      />
+    <BundleItemsContextProvider bundleItems={bundleLeanDtos}>
+      <BundleAssignmentsProvider bundleAssignments={emptyBundles}>
+        <BoxHierarchies></BoxHierarchies>
+        <BundleEditor
+          bundleLeanDtos={bundleLeanDtos}
+          schemaOptions={schemasIdsAndNames}
+        />
 
-      <CurriculumDeliveryModels workProjectSeriesSchemaDtos={content} />
-      <ForceGraphPage></ForceGraphPage>
-    </>
+        <CurriculumDeliveryModels workProjectSeriesSchemaDtos={content} />
+        <ForceGraphPage></ForceGraphPage>
+      </BundleAssignmentsProvider>
+    </BundleItemsContextProvider>
   );
 }

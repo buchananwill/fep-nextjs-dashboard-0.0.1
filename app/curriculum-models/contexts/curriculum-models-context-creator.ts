@@ -1,59 +1,63 @@
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { createContext, Dispatch, useContext } from 'react';
-import { produce } from 'immer';
+import { Dispatch, useReducer } from 'react';
+import { Draft, produce } from 'immer';
 
-export interface CurriculumModelsMap {
-  [key: string]: WorkProjectSeriesSchemaDto;
+export interface StringMapPayload<D> {
+  key: string;
+  data: D;
 }
 
-export interface CurriculumModelDispatch {
-  type: CurriculumModelAction;
-  payload: WorkProjectSeriesSchemaDto;
+export interface StringMap<D> {
+  [key: string]: D;
 }
 
-export interface CurriculumModelBatchDispatch {
-  type: CurriculumModelBatchAction;
-  payload: WorkProjectSeriesSchemaDto[];
+export interface MapDispatch<D> {
+  type: MapActionSingle;
+  payload: StringMapPayload<D>;
 }
 
-type CurriculumModelAction = 'update' | 'delete';
-type CurriculumModelBatchAction = 'updateAll' | 'deleteAll';
+export interface MapDispatchBatch<D> {
+  type: MapActionBatch;
+  payload: StringMapPayload<D>[];
+}
 
-export const CurriculumModelsContext = createContext<CurriculumModelsMap>(
-  {} as CurriculumModelsMap
-);
+export type StringMapDispatch<D> = Dispatch<
+  MapDispatch<D> | MapDispatchBatch<D>
+>;
 
-export const CurriculumModelsContextDispatch = createContext<
-  Dispatch<CurriculumModelDispatch | CurriculumModelBatchDispatch>
->(() => {});
+type MapActionSingle = 'update' | 'delete';
+type MapActionBatch = 'updateAll' | 'deleteAll';
 
-export function CurriculumModelsMapReducer(
-  state: CurriculumModelsMap,
-  action: CurriculumModelDispatch | CurriculumModelBatchDispatch
-): CurriculumModelsMap {
+export function StringMapReducer<D>(
+  state: StringMap<D>,
+  action: MapDispatch<D> | MapDispatchBatch<D>
+): StringMap<D> {
   const { payload, type } = action;
   switch (type) {
     case 'update': {
       return produce(state, (draft) => {
-        draft[payload.id] = payload;
+        const { key, data } = payload;
+        draft[key] = data as Draft<D>;
       });
     }
     case 'delete': {
       return produce(state, (draft) => {
-        delete draft[payload.id];
-      });
-    }
-    case 'deleteAll': {
-      return produce(state, (draft) => {
-        payload.forEach((model) => {
-          delete draft[model.id];
-        });
+        const { key } = payload;
+        delete draft[key];
       });
     }
     case 'updateAll': {
       return produce(state, (draft) => {
         payload.forEach((model) => {
-          draft[model.id] = model;
+          const { key, data } = model;
+          draft[key] = data as Draft<D>;
+        });
+      });
+    }
+    case 'deleteAll': {
+      return produce(state, (draft) => {
+        payload.forEach((model) => {
+          const { key, data } = model;
+          delete draft[key];
         });
       });
     }
@@ -62,8 +66,7 @@ export function CurriculumModelsMapReducer(
   }
 }
 
-export function useCurriculumModelContext() {
-  const curriculumModelsMap = useContext(CurriculumModelsContext);
-  const dispatch = useContext(CurriculumModelsContextDispatch);
-  return { curriculumModelsMap, dispatch };
+export function useStringMapReducer<T>(initial: StringMap<T>) {
+  const typedReducer = StringMapReducer<T>;
+  return useReducer(typedReducer, initial);
 }

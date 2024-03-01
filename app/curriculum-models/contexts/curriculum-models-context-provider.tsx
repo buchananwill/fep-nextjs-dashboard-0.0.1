@@ -1,21 +1,22 @@
 'use client';
 
 import {
-  CurriculumModelsContext,
-  CurriculumModelsContextDispatch,
-  CurriculumModelsMap,
-  CurriculumModelsMapReducer
+  StringMap,
+  StringMapReducer
 } from './curriculum-models-context-creator';
 import { PropsWithChildren, useReducer } from 'react';
+import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import {
+  CurriculumModelsContext,
+  CurriculumModelsContextDispatch
+} from './use-curriculum-model-context';
 
 export function CurriculumModelsContextProvider({
   models,
   children
-}: { models: CurriculumModelsMap } & PropsWithChildren) {
-  const [currentModels, dispatch] = useReducer(
-    CurriculumModelsMapReducer,
-    models
-  );
+}: { models: StringMap<WorkProjectSeriesSchemaDto> } & PropsWithChildren) {
+  const CurriculumModelsReducer = StringMapReducer<WorkProjectSeriesSchemaDto>;
+  const [currentModels, dispatch] = useReducer(CurriculumModelsReducer, models);
 
   return (
     <CurriculumModelsContext.Provider value={currentModels}>

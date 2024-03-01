@@ -58,7 +58,7 @@ export type ForceNormalizationCategory =
   | 'manyBodyMaxDistance'
   | 'linkDistance';
 
-export function useNormaliseForceRange(
+export function useNormalizeForceRange(
   value: number,
   category?: ForceNormalizationCategory
 ): number {
@@ -75,5 +75,5 @@ export function useNormaliseForceRange(
       default:
         return value / 100;
     }
-  }, [value]);
+  }, [category, value]);
 }

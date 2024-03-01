@@ -32,6 +32,14 @@ import { useSelectiveContextDispatchBoolean } from '../../components/selective-c
 import AddLinksButton from '../editing/add-links-button';
 import { DeleteLinksButton } from '../editing/delete-links-button';
 import { DeleteNodesButton } from '../editing/delete-nodes-button';
+import { BundleAssignmentsProvider } from '../../curriculum-models/contexts/bundle-assignments-provider';
+import {
+  StringMap,
+  StringMapPayload
+} from '../../curriculum-models/contexts/curriculum-models-context-creator';
+import { BundleItemsContextProvider } from '../../curriculum-models/contexts/bundle-items-context-provider';
+import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
@@ -57,6 +65,8 @@ export default function CurriculumDeliveryGraph({
     true
   );
 
+  const { bundleAssignmentsMap, dispatch } = useBundleAssignmentsContext();
+
   useEffect(() => {
     dispatchUpdate({ contextKey: mountedKey, value: true });
     return () => {
@@ -67,6 +77,24 @@ export default function CurriculumDeliveryGraph({
   const bundlesInNodeOrder = nodes.map((node) => {
     const found = bundles.find((delivery) => delivery.partyId === node.id);
     if (found) return found;
+  });
+
+  const { bundleAssignments, initialPayload } = useMemo(() => {
+    const initialPayload = [] as StringMapPayload<string>[];
+    const bundleAssignments = {} as StringMap<string>;
+    bundles.forEach((bundleDeliveryDto) => {
+      const partyIdString = bundleDeliveryDto.partyId.toString();
+      const bundleIdString =
+        bundleDeliveryDto.workSeriesSchemaBundle.id.toString();
+      bundleAssignments[partyIdString] = bundleIdString;
+      initialPayload.push({ key: partyIdString, data: bundleIdString });
+    });
+
+    return { bundleAssignments, initialPayload };
+  }, [bundles]);
+
+  useEffect(() => {
+    dispatch({ type: 'updateAll', payload: initialPayload });
   });
 
   if (bundlesInNodeOrder.length !== nodes.length) {
@@ -90,7 +118,6 @@ export default function CurriculumDeliveryGraph({
         payload: (
           <CurriculumDeliveryDetails
             key={`delivery-details-${node.data.id}`}
-            deliveryBundle={bundlesInNodeOrder[index]}
             node={node}
           ></CurriculumDeliveryDetails>
         )
@@ -99,41 +126,39 @@ export default function CurriculumDeliveryGraph({
   );
 
   return (
-    <>
-      <GenericNodeRefContext.Provider value={nodesRef}>
-        <GenericLinkRefContext.Provider value={linksRef}>
-          <div className={'flex-col'}>
-            <GraphViewer
-              textList={descriptionList}
-              titleList={titleList}
-              uniqueGraphName={'party-dto-graph'}
+    <GenericNodeRefContext.Provider value={nodesRef}>
+      <GenericLinkRefContext.Provider value={linksRef}>
+        <div className={'flex-col'}>
+          <GraphViewer
+            textList={descriptionList}
+            titleList={titleList}
+            uniqueGraphName={'party-dto-graph'}
+          >
+            <div
+              className={
+                'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 py-2 -translate-y-2 gap-1'
+              }
             >
-              <div
-                className={
-                  'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 py-2 -translate-y-2 gap-1'
-                }
-              >
-                <div className={'w-full grid grid-cols-3 gap-1 relative'}>
-                  <AddNodesButton relation={'sibling'}>
-                    Add Sibling
-                  </AddNodesButton>
-                  <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
-                  <AddLinksButton>Join Nodes</AddLinksButton>
-                </div>
-                <div className={'w-full grid grid-cols-2 gap-1 relative'}>
-                  <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
-                  <DeleteLinksButton>Delete Links</DeleteLinksButton>
-                </div>
+              <div className={'w-full grid grid-cols-3 gap-1 relative'}>
+                <AddNodesButton relation={'sibling'}>
+                  Add Sibling
+                </AddNodesButton>
+                <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
+                <AddLinksButton>Join Nodes</AddLinksButton>
               </div>
-              <GraphForceAdjuster />
-              <NodeDetails
-                nodeDetailElements={nodeDetailElements}
-                labels={classList}
-              />
-            </GraphViewer>
-          </div>
-        </GenericLinkRefContext.Provider>
-      </GenericNodeRefContext.Provider>
-    </>
+              <div className={'w-full grid grid-cols-2 gap-1 relative'}>
+                <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
+                <DeleteLinksButton>Delete Links</DeleteLinksButton>
+              </div>
+            </div>
+            <GraphForceAdjuster />
+            <NodeDetails
+              nodeDetailElements={nodeDetailElements}
+              labels={classList}
+            />
+          </GraphViewer>
+        </div>
+      </GenericLinkRefContext.Provider>
+    </GenericNodeRefContext.Provider>
   );
 }
