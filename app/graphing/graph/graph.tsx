@@ -143,7 +143,7 @@ export default function Graph<T>({
               </div>
               <div
                 className={
-                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg p-2 mt-2 relative'
+                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg px-2 pb-2 mt-2 relative'
                 }
                 style={{ height: '600px' }}
               >

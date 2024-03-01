@@ -40,6 +40,7 @@ import {
 import { BundleItemsContextProvider } from '../../curriculum-models/contexts/bundle-items-context-provider';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
+import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
@@ -135,21 +136,26 @@ export default function CurriculumDeliveryGraph({
             uniqueGraphName={'party-dto-graph'}
           >
             <div
-              className={
-                'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 py-2 -translate-y-2 gap-1'
-              }
+              className={'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 '}
             >
-              <div className={'w-full grid grid-cols-3 gap-1 relative'}>
-                <AddNodesButton relation={'sibling'}>
-                  Add Sibling
-                </AddNodesButton>
-                <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
-                <AddLinksButton>Join Nodes</AddLinksButton>
-              </div>
-              <div className={'w-full grid grid-cols-2 gap-1 relative'}>
-                <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
-                <DeleteLinksButton>Delete Links</DeleteLinksButton>
-              </div>
+              <div className={'h-2'}></div>
+              <DisclosureThatGrowsOpen
+                label={'Edit Nodes'}
+                heightWhenOpen={'h-[6.5rem]'}
+              >
+                <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
+                  <AddNodesButton relation={'sibling'}>
+                    Add Sibling
+                  </AddNodesButton>
+                  <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
+                  <AddLinksButton>Join Nodes</AddLinksButton>
+                </div>
+                <div className={'w-full grid grid-cols-2 gap-1 relative'}>
+                  <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
+                  <DeleteLinksButton>Delete Links</DeleteLinksButton>
+                </div>
+              </DisclosureThatGrowsOpen>
+              <div className={'h-2  border-t'}></div>
             </div>
             <GraphForceAdjuster />
             <NodeDetails

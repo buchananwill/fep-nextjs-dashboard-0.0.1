@@ -105,8 +105,6 @@ export function updateLinkForce<T>(
   linkDistance: number
 ) {
   function consumerOfLinkForce(force: d3.ForceLink<DataNode<T>, DataLink<T>>) {
-    console.log('distance:', linkDistance);
-
     const busiestNodeFallOffFunction = getBusiestNodeFallOffFunction(
       current.nodes().length,
       linkStrength

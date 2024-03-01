@@ -3,12 +3,18 @@ import { PropsWithChildren, useState } from 'react';
 
 export function DisclosureThatGrowsOpen({
   children,
-  label
-}: { label: string } & PropsWithChildren) {
+  label,
+  heightWhenOpen,
+  showBorder = false
+}: {
+  label: string;
+  heightWhenOpen: string;
+  showBorder?: boolean;
+} & PropsWithChildren) {
   const [showSliders, setShowSliders] = useState(false);
 
   return (
-    <div className={'flex flex-col w-96 mt-2 '}>
+    <div className={`flex flex-col w-96 `}>
       <button
         className={`btn ${showSliders ? 'btn-primary' : ''}`}
         onClick={() => setShowSliders(!showSliders)}
@@ -22,11 +28,11 @@ export function DisclosureThatGrowsOpen({
       </button>
 
       <div
-        className={`mt-2 border-2 rounded-lg border-slate-300 ${
+        className={`mt-2 rounded-lg border-slate-300 ${
           showSliders
-            ? 'h-60 mb-2 overflow-auto border-opacity-100'
-            : 'h-0 overflow-auto border-opacity-0'
-        }`}
+            ? `${heightWhenOpen} mb-2 overflow-hidden border-opacity-100 `
+            : 'h-0 overflow-hidden border-opacity-0'
+        } ${showBorder && showSliders && 'border-2'}`}
         style={{
           transition: '0.3s ease-in',
           transitionProperty: 'height, opacity '

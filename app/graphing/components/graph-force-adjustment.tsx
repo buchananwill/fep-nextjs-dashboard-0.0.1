@@ -60,8 +60,14 @@ export default function GraphForceAdjustment() {
   });
 
   return (
-    <DisclosureThatGrowsOpen label={'Adjust Forces'}>
-      <ul className={' p-2 '}>{...sliders}</ul>
+    <DisclosureThatGrowsOpen
+      label={'Adjust Forces'}
+      heightWhenOpen={'h-60'}
+      showBorder={true}
+    >
+      <div className={'h-60 overflow-auto border-slate-300 '}>
+        <ul className={' p-2 '}>{...sliders}</ul>
+      </div>
     </DisclosureThatGrowsOpen>
   );
 }
