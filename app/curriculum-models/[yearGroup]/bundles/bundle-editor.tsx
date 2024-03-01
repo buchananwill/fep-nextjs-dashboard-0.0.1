@@ -58,13 +58,18 @@ interface BundlePanelProps {
   schemaOptions: { [key: string]: string };
 }
 
+export const schemaBundleKeyPrefix = 'schema-bundle:';
+
 function BundlePanel({
   bundleId,
   schemaBundleIds,
   schemaOptions
 }: BundlePanelProps) {
-  const schemaBundleKey = `schema-bundle-${bundleId}`;
-  const panelKey = `${schemaBundleKey}-panel`;
+  const { schemaBundleKey, panelKey } = useMemo(() => {
+    const schemaBundleKey = `${schemaBundleKeyPrefix}${bundleId}`;
+    const panelKey = `${schemaBundleKey}-panel`;
+    return { schemaBundleKey, panelKey };
+  }, [bundleId]);
 
   const { currentState, dispatchUpdate } =
     useSelectiveContextDispatchStringList(

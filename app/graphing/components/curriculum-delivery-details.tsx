@@ -13,8 +13,11 @@ import {
 } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bundle-Items-context';
 import { Listbox } from '@headlessui/react';
+import { schemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
+import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
 
-const emptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
+export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
+export const EmptyStringArray = [] as string[];
 
 function sumDeliveryAllocations(schema: WorkProjectSeriesSchemaDto): number {
   return schema.deliveryAllocations
@@ -37,26 +40,35 @@ export default function CurriculumDeliveryDetails({
   const { assignmentOptional, deleteAssignment, postAssignment } =
     useSingleBundleAssignment(node.id.toString());
   const { bundleItemsMap } = useBundleItemsContext();
+  const { selectiveListenerKey, selectiveContextKey } = useMemo(() => {
+    const selectiveContextKey = `${schemaBundleKeyPrefix}${assignmentOptional}`;
+    const selectiveListenerKey = `${selectiveContextKey}:${node.id}`;
+    return { selectiveContextKey, selectiveListenerKey };
+  }, [assignmentOptional, node]);
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+  const { currentState: schemaIdList } = useSelectiveContextListenerStringList(
+    selectiveContextKey,
+    selectiveListenerKey,
+    EmptyStringArray
+  );
 
   const { schemas, bundleRowSpan } = useMemo(() => {
-    if (assignmentOptional) {
-      const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
-      if (bundleItemsMapElement) {
-        const schemas = bundleItemsMapElement.workProjectSeriesSchemaIds
-          .map((schemaId) => {
-            return curriculumModelsMap[schemaId];
-          })
-          .filter(isNotNull<WorkProjectSeriesSchemaDto>);
-        const bundleRowSpan = `span ${Math.max(
-          bundleItemsMapElement.workProjectSeriesSchemaIds.length,
-          1
-        )}`;
-        if (schemas.length > 0) return { schemas, bundleRowSpan };
-      }
-    }
-    return { schemas: emptySchemasArray, bundleRowSpan: 'span 1' };
-  }, [assignmentOptional, bundleItemsMap, curriculumModelsMap]);
+    console.log('refetching schemas');
+    // if (assignmentOptional) {
+    //   const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
+    //   if (bundleItemsMapElement) {
+    //bundleItemsMapElement.workProjectSeriesSchemaIds
+    const schemas = schemaIdList
+      .map((schemaId) => {
+        return curriculumModelsMap[schemaId];
+      })
+      .filter(isNotNull<WorkProjectSeriesSchemaDto>);
+    const bundleRowSpan = `span ${Math.max(schemaIdList.length, 1)}`;
+    if (schemas.length > 0) return { schemas, bundleRowSpan };
+    // }
+    // }
+    return { schemas: EmptySchemasArray, bundleRowSpan: 'span 1' };
+  }, [schemaIdList, curriculumModelsMap]);
 
   const totalAllocation = useMemo(() => sumAllSchemas(schemas), [schemas]);
 
