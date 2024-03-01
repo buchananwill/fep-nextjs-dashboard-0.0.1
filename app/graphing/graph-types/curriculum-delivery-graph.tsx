@@ -95,7 +95,7 @@ export default function CurriculumDeliveryGraph({
 
   useEffect(() => {
     dispatch({ type: 'updateAll', payload: initialPayload });
-  });
+  }, [initialPayload, dispatch]);
 
   if (bundlesInNodeOrder.length !== nodes.length) {
     return <Card>Bundles not matching nodes!</Card>;

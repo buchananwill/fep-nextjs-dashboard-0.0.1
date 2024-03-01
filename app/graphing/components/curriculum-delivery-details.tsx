@@ -3,7 +3,7 @@ import { DataNode } from '../../api/zod-mods';
 import React, { useMemo } from 'react';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { isNotNull } from '../editing/graph-edits';
 import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
@@ -12,6 +12,7 @@ import {
   useSingleBundleAssignment
 } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bundle-Items-context';
+import { Listbox } from '@headlessui/react';
 
 const emptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 
@@ -68,6 +69,11 @@ export default function CurriculumDeliveryDetails({
     );
   });
 
+  const handleAssignmentChange = (assignmentId: string) => {
+    console.log('Expected assigment', assignmentId);
+    postAssignment(assignmentId);
+  };
+
   const leftCol = 'text-xs w-full text-center h-full grid items-center';
   return (
     <div>
@@ -105,9 +111,41 @@ export default function CurriculumDeliveryDetails({
             gridRow: bundleRowSpan
           }}
         >
-          <button className={'btn w-full h-full'}>
-            <div>{...elements}</div>
-          </button>
+          <Listbox value={assignmentOptional} onChange={handleAssignmentChange}>
+            <Listbox.Button className={'btn w-full h-full relative'}>
+              <div>{...elements}</div>
+            </Listbox.Button>
+            <Listbox.Options
+              className={
+                'absolute z-10 w-60 bg-gray-50 translate-y-2 drop-shadow-xl rounded-lg p-1'
+              }
+            >
+              {Object.entries(bundleItemsMap).map((bundle) => (
+                <Listbox.Option
+                  value={bundle[0]}
+                  key={`bundle-${bundle[0]}`}
+                  className={({ active }) =>
+                    `w-full grid grid-cols-6 items-center ${
+                      active ? 'bg-emerald-300' : ''
+                    }`
+                  }
+                >
+                  {({ selected }) => (
+                    <>
+                      <span className={'flex justify-center w-full'}>
+                        {selected ? (
+                          <CheckIcon className={'w-5 h-5 '}></CheckIcon>
+                        ) : null}
+                      </span>
+                      <span className={'col-span-5'}>
+                        Bundle {bundle[1].id}
+                      </span>
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Listbox>
         </div>
       </div>
     </div>

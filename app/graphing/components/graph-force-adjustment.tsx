@@ -14,8 +14,9 @@ import {
   forceAttributesMax,
   forceAttributesMin
 } from './force-attributes-meta-data';
+import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 
-export default function GraphForceAdjustment({ children }: PropsWithChildren) {
+export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
   const readyToGraph = `${uniqueGraphName}-ready`;
   const showAdjustments = `${uniqueGraphName}-show-adjustments`;
@@ -59,34 +60,9 @@ export default function GraphForceAdjustment({ children }: PropsWithChildren) {
   });
 
   return (
-    <div className={'flex flex-col w-96 mt-2 '}>
-      <button
-        className={`btn ${showSliders ? 'btn-primary' : ''}`}
-        onClick={() => setShowSliders(!showSliders)}
-      >
-        Adjust Forces
-        <ChevronDownIcon
-          className={`w-6 h-6 ${
-            !showSliders ? 'rotate-90 transform' : ''
-          } transition-transform duration-500`}
-        ></ChevronDownIcon>
-      </button>
-      {children}
-
-      <div
-        className={`mt-2 border-2 rounded-lg border-slate-300 ${
-          showSliders
-            ? 'h-60 mb-2 overflow-auto border-opacity-100'
-            : 'h-0 overflow-auto border-opacity-0'
-        }`}
-        style={{
-          transition: '0.3s ease-in',
-          transitionProperty: 'height, opacity '
-        }}
-      >
-        <ul className={' p-2 '}>{...sliders}</ul>
-      </div>
-    </div>
+    <DisclosureThatGrowsOpen label={'Adjust Forces'}>
+      <ul className={' p-2 '}>{...sliders}</ul>
+    </DisclosureThatGrowsOpen>
   );
 }
 
