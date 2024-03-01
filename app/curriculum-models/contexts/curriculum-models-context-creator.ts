@@ -34,7 +34,6 @@ export function StringMapReducer<D>(
   const { payload, type } = action;
   switch (type) {
     case 'update': {
-      console.log('Dispatch received: ', state, action);
       return produce(state, (draft) => {
         const { key, data } = payload;
         draft[key] = data as Draft<D>;
@@ -47,7 +46,6 @@ export function StringMapReducer<D>(
       });
     }
     case 'updateAll': {
-      console.log('Updating all', state);
       return produce(state, (draft) => {
         payload.forEach((model) => {
           const { key, data } = model;

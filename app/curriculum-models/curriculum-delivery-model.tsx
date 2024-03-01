@@ -2,12 +2,14 @@
 import { Card, Flex, Text, Title } from '@tremor/react';
 import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { DeliveryAllocationDto } from '../api/dtos/DeliveryAllocationDtoSchema';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import LandscapeStepper from '../components/landscape-stepper';
 import { StepperContext } from '../components/stepper/stepper-context-creator';
 import { TabStyled } from '../components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../components/tab-layouts/tab-panel-styled';
+import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
+import { sumDeliveryAllocations } from '../graphing/components/curriculum-delivery-details';
 
 const allocationSizes = [1, 2];
 
@@ -16,7 +18,7 @@ export function CurriculumDeliveryModel({
 }: {
   model: WorkProjectSeriesSchemaDto;
 }) {
-  const { workTaskType, deliveryAllocations: receivedAllocations } = model;
+  const { workTaskType } = model;
   const workTaskTypeName = workTaskType.name;
   const lastColon = workTaskTypeName.lastIndexOf(':');
   const name = workTaskTypeName.substring(lastColon + 2);
@@ -33,9 +35,7 @@ export function CurriculumDeliveryModel({
         </div>
 
         <TabPanelStyled>
-          <AdjustAllocation
-            receivedAllocations={receivedAllocations}
-          ></AdjustAllocation>
+          <AdjustAllocation modelId={model.id}></AdjustAllocation>
         </TabPanelStyled>
         <TabPanelStyled>
           <Text>{model.workTaskType.knowledgeDomainName}</Text>
@@ -49,22 +49,30 @@ export function CurriculumDeliveryModel({
 }
 
 function AdjustAllocation({
-  receivedAllocations
+  // receivedAllocations,
+  modelId
 }: {
-  receivedAllocations: DeliveryAllocationDto[];
+  // receivedAllocations: DeliveryAllocationDto[];
+  modelId: string;
 }) {
-  const startingAllocations = allocationSizes.map((size: number) => {
-    const found = receivedAllocations.find(
-      (da) => da.deliveryAllocationSize === size
-    );
-    return found || { id: NaN, count: 0, deliveryAllocationSize: size };
-  });
+  const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+  const workProjectSeriesSchemaDto = curriculumModelsMap[modelId];
+  const currentAllocations = useMemo(() => {
+    return allocationSizes.map((size: number) => {
+      const found = workProjectSeriesSchemaDto?.deliveryAllocations.find(
+        (da) => da.deliveryAllocationSize === size
+      );
+      return found || { id: NaN, count: 0, deliveryAllocationSize: size };
+    });
+  }, [workProjectSeriesSchemaDto]);
 
-  const [deliveryAllocations, setDeliveryAllocations] =
-    useState(startingAllocations);
+  const totalAllocations = useMemo(
+    () => sumDeliveryAllocations(workProjectSeriesSchemaDto),
+    [workProjectSeriesSchemaDto]
+  );
 
   const handleModifyAllocation = (size: number, up: boolean) => {
-    const updatedDevAlloc = deliveryAllocations.map((allocation) => {
+    const updatedDevAlloc = currentAllocations.map((allocation) => {
       if (allocation.deliveryAllocationSize === size) {
         const newCount = up
           ? Math.min(allocation.count + 1, 10)
@@ -72,7 +80,14 @@ function AdjustAllocation({
         return { ...allocation, count: newCount };
       } else return allocation;
     });
-    setDeliveryAllocations(updatedDevAlloc);
+    const updatedSchema: WorkProjectSeriesSchemaDto = {
+      ...workProjectSeriesSchemaDto,
+      deliveryAllocations: updatedDevAlloc
+    };
+    dispatch({
+      type: 'update',
+      payload: { key: modelId, data: updatedSchema }
+    });
   };
 
   return (
@@ -82,7 +97,7 @@ function AdjustAllocation({
         alignItems="baseline"
         className="space-x-2 p-2"
       >
-        {deliveryAllocations.map((deliveryAllocation, index) => (
+        {currentAllocations.map((deliveryAllocation, index) => (
           <div key={`del-al-${index}`}>
             <StepperContext.Provider
               value={{
@@ -98,7 +113,7 @@ function AdjustAllocation({
                   ),
                 min: 0,
                 max: 10,
-                current: deliveryAllocations[index].count
+                current: currentAllocations[index].count
               }}
             >
               <LandscapeStepper></LandscapeStepper>
@@ -110,12 +125,7 @@ function AdjustAllocation({
           </div>
         ))}
       </Flex>
-      <Text className={'px-2 pb-2'}>
-        Total:{' '}
-        {deliveryAllocations
-          .map((da) => da.deliveryAllocationSize * da.count)
-          .reduce((prev, curr) => prev + curr, 0)}
-      </Text>
+      <Text className={'px-2 pb-2'}>Total: {totalAllocations}</Text>
     </>
   );
 }

@@ -19,16 +19,24 @@ import { useSelectiveContextListenerStringList } from '../../components/selectiv
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
 
-function sumDeliveryAllocations(schema: WorkProjectSeriesSchemaDto): number {
-  return schema.deliveryAllocations
-    .map((da) => da.count * da.deliveryAllocationSize)
-    .reduce((prev, curr) => prev + curr, 0);
+export function sumDeliveryAllocations(
+  schema: WorkProjectSeriesSchemaDto
+): number {
+  return schema
+    ? schema.deliveryAllocations
+        .map((da) => da.count * da.deliveryAllocationSize)
+        .reduce((prev, curr) => prev + curr, 0)
+    : 0;
 }
 
-function sumAllSchemas(deliveryBundle: WorkProjectSeriesSchemaDto[]): number {
+export function sumAllSchemas(
+  deliveryBundle: WorkProjectSeriesSchemaDto[]
+): number {
   return deliveryBundle
-    .map(sumDeliveryAllocations)
-    .reduce((prev, curr) => prev + curr, 0);
+    ? deliveryBundle
+        .map(sumDeliveryAllocations)
+        .reduce((prev, curr) => prev + curr, 0)
+    : 0;
 }
 
 const cellFormatting = 'px-2 text-xs';
@@ -53,11 +61,6 @@ export default function CurriculumDeliveryDetails({
   );
 
   const { schemas, bundleRowSpan } = useMemo(() => {
-    console.log('refetching schemas');
-    // if (assignmentOptional) {
-    //   const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
-    //   if (bundleItemsMapElement) {
-    //bundleItemsMapElement.workProjectSeriesSchemaIds
     const schemas = schemaIdList
       .map((schemaId) => {
         return curriculumModelsMap[schemaId];

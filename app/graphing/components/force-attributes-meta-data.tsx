@@ -69,7 +69,6 @@ export function useNormalizeForceRange(
       case 'manyBodyMaxDistance':
       case 'manyBodyMinDistance':
       case 'linkDistance': {
-        console.log(category, value);
         return value;
       }
       default:
