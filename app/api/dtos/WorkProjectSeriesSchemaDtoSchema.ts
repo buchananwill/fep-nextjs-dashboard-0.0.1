@@ -9,5 +9,6 @@ export const WorkProjectSeriesSchemaDtoSchema = z.object({
   workProjectBandwidth: z.number(),
   allocationType: z.string(),
   userToProviderRatio: z.number(),
+  shortCode: z.string(),
 });
 export type WorkProjectSeriesSchemaDto = z.infer<typeof WorkProjectSeriesSchemaDtoSchema>;

@@ -15,6 +15,9 @@ import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bund
 import { Listbox } from '@headlessui/react';
 import { schemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
 import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
+import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { UnsavedBundleAssignmentsKey } from '../../curriculum-models/contexts/bundle-assignments-provider';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
@@ -43,9 +46,9 @@ const cellFormatting = 'px-2 text-xs';
 export default function CurriculumDeliveryDetails({
   node
 }: {
-  node: DataNode<PartyDto>;
+  node: DataNode<OrganizationDto>;
 }) {
-  const { assignmentOptional, deleteAssignment, postAssignment } =
+  const { assignmentOptional, removeAssignment, setAssignment } =
     useSingleBundleAssignment(node.id.toString());
   const { bundleItemsMap } = useBundleItemsContext();
   const { selectiveListenerKey, selectiveContextKey } = useMemo(() => {
@@ -54,6 +57,12 @@ export default function CurriculumDeliveryDetails({
     return { selectiveContextKey, selectiveListenerKey };
   }, [assignmentOptional, node]);
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+  const { currentState: unsaved, dispatchWithoutControl } =
+    useSelectiveContextDispatchBoolean(
+      UnsavedBundleAssignmentsKey,
+      selectiveListenerKey,
+      false
+    );
   const { currentState: schemaIdList } = useSelectiveContextListenerStringList(
     selectiveContextKey,
     selectiveListenerKey,
@@ -86,7 +95,8 @@ export default function CurriculumDeliveryDetails({
 
   const handleAssignmentChange = (assignmentId: string) => {
     console.log('Expected assigment', assignmentId);
-    postAssignment(assignmentId);
+    setAssignment(assignmentId);
+    dispatchWithoutControl(true);
   };
 
   const leftCol = 'text-xs w-full text-center h-full grid items-center';

@@ -50,13 +50,6 @@ export function useSelectiveContextController<T>(
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    console.log(
-      'Checking initial value...',
-      contextKey,
-      // latestRef
-      listenerKey,
-      freshRef
-    );
     if (freshRef[contextKey] === undefined) {
       // console.log(contextKey, ' is undefined , setting to ', initialValue);
       freshRef[contextKey] = initialValue;

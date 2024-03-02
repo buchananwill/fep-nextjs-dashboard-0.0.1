@@ -114,10 +114,10 @@ export function AdjustAllocation({
       <Flex
         justifyContent="start"
         alignItems="baseline"
-        className="space-x-2 p-2"
+        className=" py-2 divide-x"
       >
         {currentAllocations.map((deliveryAllocation, index) => (
-          <div key={`del-al-${index}`}>
+          <div key={`del-al-${index}`} className={'px-1'}>
             <StepperContext.Provider
               value={{
                 increment: () =>

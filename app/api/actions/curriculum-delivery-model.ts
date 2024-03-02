@@ -1,6 +1,5 @@
 'use server';
 import {
-  ActionResponse,
   ActionResponsePromise,
   errorResponse,
   successResponse
@@ -8,11 +7,9 @@ import {
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
 import { API_BASE_URL, Page } from '../main';
 import { GraphDto } from '../zod-mods';
-import { PartyDto } from '../dtos/PartyDtoSchema';
-import { WorkProjectSeriesDeliveryDto } from '../dtos/WorkProjectSeriesDeliveryDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { number } from 'zod';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
 
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 
@@ -40,13 +37,13 @@ export async function getCurriculumDeliveryModelSchemas(
 }
 
 export async function getOrganizationGraph(): ActionResponsePromise<
-  GraphDto<PartyDto>
+  GraphDto<OrganizationDto>
 > {
   try {
     const response = await fetch(`${API_BASE_URL}/graphs/organizations`, {
       cache: 'no-cache'
     });
-    const graph: GraphDto<PartyDto> = await response.json();
+    const graph: GraphDto<OrganizationDto> = await response.json();
     return successResponse(graph);
   } catch (error) {
     console.error('Error fetching data: ', error);
@@ -124,6 +121,27 @@ export async function postModels(
       body: JSON.stringify(modelList)
     });
     const deliveries: WorkProjectSeriesSchemaDto[] = await response.json();
+    return successResponse(deliveries);
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return errorResponse(`${error}`);
+  }
+}
+
+export async function postBundleDeliveries(
+  bundleAssignments: { partyId: number; bundleId: number }[]
+): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
+  console.log(API_BASE_URL, SCHEMA_URL);
+  try {
+    const response = await fetch(`${SCHEMA_URL}/deliveries`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(bundleAssignments)
+    });
+    const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
     return successResponse(deliveries);
   } catch (error) {
     console.error('Error fetching data: ', error);

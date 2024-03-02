@@ -22,14 +22,14 @@ export function useSingleBundleAssignment(assignmentKey: string) {
   const { dispatch, bundleAssignmentsMap } = useBundleAssignmentsContext();
   const bundleAssignmentsMapElement = bundleAssignmentsMap[assignmentKey];
 
-  const postAssignment = (newAssignment: string) => {
+  const setAssignment = (newAssignment: string) => {
     dispatch({
       type: 'update',
       payload: { key: assignmentKey, data: newAssignment }
     });
   };
 
-  const deleteAssignment = () => {
+  const removeAssignment = () => {
     dispatch({
       type: 'delete',
       payload: { key: assignmentKey, data: bundleAssignmentsMapElement }
@@ -38,5 +38,5 @@ export function useSingleBundleAssignment(assignmentKey: string) {
 
   const assignmentOptional = bundleAssignmentsMapElement as string | undefined;
 
-  return { assignmentOptional, postAssignment, deleteAssignment };
+  return { assignmentOptional, setAssignment, removeAssignment };
 }

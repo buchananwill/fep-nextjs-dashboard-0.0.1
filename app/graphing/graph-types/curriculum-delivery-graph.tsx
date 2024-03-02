@@ -41,18 +41,35 @@ import { BundleItemsContextProvider } from '../../curriculum-models/contexts/bun
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
+import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
 }
 
+export function mapToPartyIdBundleIdRecords(
+  bundles: WorkSeriesBundleDeliveryDto[]
+) {
+  const bundleAssignments = {} as StringMap<string>;
+  const initialPayload = [] as StringMapPayload<string>[];
+  bundles.forEach((bundleDeliveryDto) => {
+    const partyIdString = bundleDeliveryDto.partyId.toString();
+    const bundleIdString =
+      bundleDeliveryDto.workSeriesSchemaBundle.id.toString();
+    bundleAssignments[partyIdString] = bundleIdString;
+    initialPayload.push({ key: partyIdString, data: bundleIdString });
+  });
+
+  return { bundleAssignments, initialPayload };
+}
+
 export default function CurriculumDeliveryGraph({
   children,
   bundles
-}: GraphTypeProps<PartyDto> &
+}: GraphTypeProps<OrganizationDto> &
   PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
-  const { nodes } = useGenericNodeContext<PartyDto>();
-  const { links } = useGenericLinkContext<PartyDto>();
+  const { nodes } = useGenericNodeContext<OrganizationDto>();
+  const { links } = useGenericLinkContext<OrganizationDto>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
   const { uniqueGraphName } = useContext(GraphContext);
@@ -81,17 +98,7 @@ export default function CurriculumDeliveryGraph({
   });
 
   const { bundleAssignments, initialPayload } = useMemo(() => {
-    const initialPayload = [] as StringMapPayload<string>[];
-    const bundleAssignments = {} as StringMap<string>;
-    bundles.forEach((bundleDeliveryDto) => {
-      const partyIdString = bundleDeliveryDto.partyId.toString();
-      const bundleIdString =
-        bundleDeliveryDto.workSeriesSchemaBundle.id.toString();
-      bundleAssignments[partyIdString] = bundleIdString;
-      initialPayload.push({ key: partyIdString, data: bundleIdString });
-    });
-
-    return { bundleAssignments, initialPayload };
+    return mapToPartyIdBundleIdRecords(bundles);
   }, [bundles]);
 
   useEffect(() => {
@@ -105,14 +112,16 @@ export default function CurriculumDeliveryGraph({
   const classList: string[] = [];
   const descriptionList: string[] = [];
 
-  nodes.forEach((n: DataNode<PartyDto>) => {
+  nodes.forEach((n: DataNode<OrganizationDto>) => {
     classList.push(n.data.name);
     descriptionList.push(n.data.name);
   });
 
-  const titleList = nodes.map((n: DataNode<PartyDto>) => n.data.partyType);
+  const titleList = nodes.map(
+    (n: DataNode<OrganizationDto>) => n.data.organizationType.name
+  );
 
-  const nodeDetailElements: NodePayload<PartyDto>[] = nodes.map(
+  const nodeDetailElements: NodePayload<OrganizationDto>[] = nodes.map(
     (node, index) => {
       return {
         node: node,

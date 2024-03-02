@@ -11,6 +11,7 @@ import { PartyDto } from '../api/dtos/PartyDtoSchema';
 import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
 import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';
+import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
 
 export interface NodePayload<T> {
   node: DataNode<T>;
@@ -24,11 +25,15 @@ export default async function ForceGraphPage() {
   if (!actionResponse.data) {
     return <Card>No graphs!</Card>;
   }
-  const organizationGraph: GraphDto<PartyDto> = actionResponse.data;
+
+  const organizationGraph: GraphDto<OrganizationDto> = actionResponse.data;
+
   const { nodes, closureDtos } = organizationGraph;
 
-  const partyIds = organizationGraph.nodes.map((dateNode) => dateNode.data.id);
-  const actionResponse2 = await getCurriculumDeliveries(partyIds);
+  const organizationIds = organizationGraph.nodes.map(
+    (dateNode) => dateNode.data.id
+  );
+  const actionResponse2 = await getCurriculumDeliveries(organizationIds);
 
   const { data } = actionResponse2;
 
