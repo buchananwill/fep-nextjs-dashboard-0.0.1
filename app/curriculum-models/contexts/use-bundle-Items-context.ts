@@ -3,7 +3,7 @@ import {
   MapDispatch,
   StringMap,
   StringMapDispatch
-} from './curriculum-models-context-creator';
+} from './string-map-context-creator';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 export const BundleItemsContext = createContext<

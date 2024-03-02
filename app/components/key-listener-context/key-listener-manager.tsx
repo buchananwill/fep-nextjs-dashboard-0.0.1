@@ -11,7 +11,7 @@ import {
   useShiftHeldListener,
   useSpaceHeldListener
 } from '../useKeyHeldListener';
-import { useSelectiveContextDispatchBoolean } from '../selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
 
 export default function KeyListenerManager({ children }: PropsWithChildren) {
   const spaceHeld = useSpaceHeldListener(); //useKeyHeldListener(' ', 'Space');

@@ -10,7 +10,7 @@ import {
   useSelectiveContextManager
 } from './selective-context-manager';
 
-import { useSelectiveContextDispatch } from './use-selective-context-dispatch';
+import { useSelectiveContextController } from './use-selective-context-controller';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export default function SelectiveContextManagerStringList({
@@ -36,7 +36,7 @@ export function useSelectiveContextDispatchStringList(
   listenerKey: string,
   initialValue: string[]
 ) {
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
+  const { currentState, dispatchUpdate } = useSelectiveContextController(
     contextKey,
     listenerKey,
     initialValue,

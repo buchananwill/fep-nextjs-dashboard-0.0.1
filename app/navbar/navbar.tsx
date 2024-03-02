@@ -16,6 +16,13 @@ import useSWR, { Fetcher } from 'swr';
 import { getOptionBlocks } from '../api/actions/option-blocks';
 
 import { CarouselGroupDto } from '../api/dtos/CarouselGroupDtoSchema';
+import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
+import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
+
+interface DropdownItem {
+  name: string;
+  href: string;
+}
 
 const electivesLoading = [{ name: 'Loading...', href: '' }];
 
@@ -38,10 +45,14 @@ function classNames(...classes: string[]) {
 
 export default function Navbar({
   user,
-  scheduleId
+  scheduleId,
+  knowledgeLevels,
+  serviceCategory
 }: {
   scheduleId: number;
   user: any;
+  knowledgeLevels: KnowledgeLevelDto[];
+  serviceCategory?: ServiceCategoryDto;
 }) {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
@@ -88,6 +99,13 @@ export default function Navbar({
         { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
       ];
 
+      const curriculumModelsDropdownItems: DropdownItem[] = knowledgeLevels.map(
+        (knowledgeLevel) => ({
+          name: knowledgeLevel.name,
+          href: `/${knowledgeLevel.levelOrdinal}`
+        })
+      );
+
       const navigation = [
         { name: 'Students', href: '/', dropdownItems: studentsDropdown },
         {
@@ -110,11 +128,20 @@ export default function Navbar({
           href: '/contact-time',
           dropdownItems: contactTimeDropdown
         },
-        { name: 'Premises', href: '/premises', dropdownItems: premisesDropdown }
+        {
+          name: 'Premises',
+          href: '/premises',
+          dropdownItems: premisesDropdown
+        },
+        {
+          name: 'Models',
+          href: '/curriculum-models',
+          dropdownItems: curriculumModelsDropdownItems
+        }
       ];
 
       return { timetablesDropdown, buildMetricsDropdown, navigation };
-    }, [electivesDropdown, scheduleId]);
+    }, [electivesDropdown, scheduleId, knowledgeLevels]);
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;
@@ -179,7 +206,6 @@ export default function Navbar({
                                             `${dropdownLabel.href}${dropdown.href}`
                                           }
                                           requestConfirmation={unsaved}
-                                          classNames="group flex w-full items-center rounded-md px-2 py-2 text-sm"
                                         >
                                           <Text>{dropdown.name}</Text>
                                         </ProtectedNavigation>

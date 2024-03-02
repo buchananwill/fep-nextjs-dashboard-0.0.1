@@ -3,7 +3,7 @@ import {
   useSelectiveContextListenerNumber
 } from '../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextDispatchString } from '../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextDispatchBoolean } from '../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useRootSvgContext } from './root-svg-context';
 
@@ -69,7 +69,7 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
   const { currentState: dragYCurrent, dispatchUpdate: dispatchCurrentY } =
     useSelectiveContextDispatchNumber('drag-y-current', uniqueElementKey, 0);
   const { currentState: mouseDown, dispatchUpdate: setMouseDown } =
-    useSelectiveContextDispatchBoolean(
+    useSelectiveContextControllerBoolean(
       svgMouseDownKey,
       uniqueElementKey,
       false
@@ -83,7 +83,11 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
     );
 
   const { currentState: isDragging, dispatchUpdate: setIsDragging } =
-    useSelectiveContextDispatchBoolean(svgDraggingKey, uniqueElementKey, false);
+    useSelectiveContextControllerBoolean(
+      svgDraggingKey,
+      uniqueElementKey,
+      false
+    );
 
   function updateStartPos(clientX: number, clientY: number) {
     updateStartPosX({
@@ -141,13 +145,17 @@ export function useDraggableSvgRoot(uniqueElementKey: string) {
   const svgCurrentDragTargetKey = `svg-current-drag-target-${rootSvgKey}`;
 
   const { currentState: mouseDown, dispatchUpdate: setMouseDown } =
-    useSelectiveContextDispatchBoolean(
+    useSelectiveContextControllerBoolean(
       svgMouseDownKey,
       uniqueElementKey,
       false
     );
   const { currentState: isDragging, dispatchUpdate: setIsDragging } =
-    useSelectiveContextDispatchBoolean(svgDraggingKey, uniqueElementKey, false);
+    useSelectiveContextControllerBoolean(
+      svgDraggingKey,
+      uniqueElementKey,
+      false
+    );
 
   const { currentState: startPosX, dispatchUpdate: updateStartPosX } =
     useSelectiveContextDispatchNumber(svgStartPosXKey, uniqueElementKey, 0);

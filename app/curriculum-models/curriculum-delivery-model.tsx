@@ -10,6 +10,12 @@ import { TabStyled } from '../components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../components/tab-layouts/tab-panel-styled';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { sumDeliveryAllocations } from '../graphing/components/curriculum-delivery-details';
+import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
+import {
+  useSelectiveContextControllerBoolean,
+  useSelectiveContextDispatchBoolean,
+  useSelectiveContextListenerBoolean
+} from '../components/selective-context/selective-context-manager-boolean';
 
 const allocationSizes = [1, 2];
 
@@ -21,14 +27,14 @@ export function CurriculumDeliveryModel({
   const { workTaskType } = model;
   const workTaskTypeName = workTaskType.name;
   const lastColon = workTaskTypeName.lastIndexOf(':');
-  const name = workTaskTypeName.substring(lastColon + 2);
+  const name = workTaskTypeName.substring(lastColon + 1);
 
   return (
     <Card className={'overflow-x-auto p-4'}>
       <Tab.Group>
-        <div className={'flex mb-2 items-center'}>
-          <Title className={'text-left grow'}>{name}</Title>
-          <Tab.List className={'grid grid-cols-2 grow'}>
+        <div className={'grid grid-cols-4 mb-2 items-center'}>
+          <Title className={'text-left grow col-span-2'}>{name}</Title>
+          <Tab.List className={'grid col-span-2 grow grid-cols-2'}>
             <TabStyled>Allocations</TabStyled>
             <TabStyled>Details</TabStyled>
           </Tab.List>
@@ -48,7 +54,7 @@ export function CurriculumDeliveryModel({
   );
 }
 
-function AdjustAllocation({
+export function AdjustAllocation({
   // receivedAllocations,
   modelId
 }: {
@@ -56,6 +62,9 @@ function AdjustAllocation({
   modelId: string;
 }) {
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+  const unsavedChangesListenerId = useMemo(() => {
+    return `${UnsavedCurriculumModelChanges}:${modelId}`;
+  }, [modelId]);
   const workProjectSeriesSchemaDto = curriculumModelsMap[modelId];
   const currentAllocations = useMemo(() => {
     return allocationSizes.map((size: number) => {
@@ -70,6 +79,13 @@ function AdjustAllocation({
     () => sumDeliveryAllocations(workProjectSeriesSchemaDto),
     [workProjectSeriesSchemaDto]
   );
+
+  const { currentState: unsavedChanges, dispatchWithoutControl: setUnsaved } =
+    useSelectiveContextDispatchBoolean(
+      UnsavedCurriculumModelChanges,
+      unsavedChangesListenerId,
+      false
+    );
 
   const handleModifyAllocation = (size: number, up: boolean) => {
     const updatedDevAlloc = currentAllocations.map((allocation) => {
@@ -88,6 +104,7 @@ function AdjustAllocation({
       type: 'update',
       payload: { key: modelId, data: updatedSchema }
     });
+    setUnsaved(true);
   };
 
   return (

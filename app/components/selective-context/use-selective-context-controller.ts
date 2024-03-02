@@ -23,7 +23,7 @@ export type UseSelectiveContextDispatch<T> = (
   initialValue: T
 ) => UseSelectiveContextDispatchReturn<T>;
 
-export function useSelectiveContextDispatch<T>(
+export function useSelectiveContextController<T>(
   contextKey: string,
   listenerKey: string,
   initialValue: T,
@@ -42,17 +42,26 @@ export function useSelectiveContextDispatch<T>(
       latestValueRefContext
     );
 
+  const freshRef = latestRef.current;
+
   const dispatchUpdate = useContext(dispatchUpdateContext);
 
   const dispatch = (action: UpdateAction<T>) => dispatchUpdate(action);
-
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (latestRef.current[contextKey] === undefined) {
-      latestRef.current[contextKey] = initialValue;
+    console.log(
+      'Checking initial value...',
+      contextKey,
+      // latestRef
+      listenerKey,
+      freshRef
+    );
+    if (freshRef[contextKey] === undefined) {
+      // console.log(contextKey, ' is undefined , setting to ', initialValue);
+      freshRef[contextKey] = initialValue;
     }
-  }, [latestRef, initialValue, contextKey]);
+  }, [latestRef, freshRef, initialValue, contextKey]);
 
   useEffect(() => {
     if (!isInitialized) {

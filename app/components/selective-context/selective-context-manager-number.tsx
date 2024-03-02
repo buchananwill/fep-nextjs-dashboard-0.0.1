@@ -11,8 +11,8 @@ import {
 } from './selective-context-manager';
 import {
   UseSelectiveContextDispatch,
-  useSelectiveContextDispatch
-} from './use-selective-context-dispatch';
+  useSelectiveContextController
+} from './use-selective-context-controller';
 import {
   UseSelectiveContextListener,
   useSelectiveContextListener
@@ -39,7 +39,7 @@ export default function SelectiveContextManagerNumber({
 export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
   number
 > = (contextKey: string, listenerKey: string, initialValue: number) => {
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
+  const { currentState, dispatchUpdate } = useSelectiveContextController(
     contextKey,
     listenerKey,
     initialValue,

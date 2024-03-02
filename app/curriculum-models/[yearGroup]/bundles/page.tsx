@@ -11,7 +11,7 @@ import { CurriculumDeliveryModels } from './curriculum-delivery-models';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { useMemo } from 'react';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
-import { StringMap } from '../../contexts/curriculum-models-context-creator';
+import { StringMap } from '../../contexts/string-map-context-creator';
 
 const emptyBundles = {} as StringMap<string>;
 

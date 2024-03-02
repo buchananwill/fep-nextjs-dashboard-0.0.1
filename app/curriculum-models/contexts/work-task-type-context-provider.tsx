@@ -3,69 +3,66 @@
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import {
-  CurriculumModelsContext,
-  CurriculumModelsContextDispatch
-} from './use-curriculum-model-context';
+
 import { ConfirmationModal } from '../../components/confirmation-modal';
 import { putModels } from '../../api/actions/curriculum-delivery-model';
-import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextListenerBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
-import {
-  curriculumDeliveryCommitKey,
-  getPayloadArray
-} from '../[yearGroup]/bundles/curriculum-delivery-models';
+import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { getPayloadArray } from '../[yearGroup]/bundles/curriculum-delivery-models';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import {
+  WorkTaskTypeContext,
+  WorkTaskTypeContextDispatch
+} from './use-work-task-type-context';
+import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
+import { putWorkTaskTypes } from '../../api/actions/work-task-types';
 
-export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
-export const ModelChangesProviderListener = 'unsaved-model-changes:provider';
+export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
+export const WorkTaskTypeChangesProviderListener =
+  'unsaved-workTaskType-changes:provider';
 
-export function CurriculumModelsContextProvider({
+export const workTaskTypeCommitKey = 'commit-model-changes-open';
+
+export function WorkTaskTypeContextProvider({
   models,
   children
-}: { models: StringMap<WorkProjectSeriesSchemaDto> } & PropsWithChildren) {
-  const CurriculumModelsReducer = StringMapReducer<WorkProjectSeriesSchemaDto>;
-  const [currentModels, dispatch] = useReducer(CurriculumModelsReducer, models);
+}: { models: StringMap<WorkTaskTypeDto> } & PropsWithChildren) {
+  const WorkTaskTypeReducer = StringMapReducer<WorkTaskTypeDto>;
+  const [currentModels, dispatch] = useReducer(WorkTaskTypeReducer, models);
   const { currentState: modalOpen, dispatchUpdate } =
     useSelectiveContextControllerBoolean(
-      curriculumDeliveryCommitKey,
-      curriculumDeliveryCommitKey,
+      workTaskTypeCommitKey,
+      workTaskTypeCommitKey,
       false
     );
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
-      UnsavedCurriculumModelChanges,
-      ModelChangesProviderListener,
+      UnsavedWorkTaskTypeChanges,
+      WorkTaskTypeChangesProviderListener,
       false
     );
 
-  // console.log(
-  //   'Re-rendering model changes provider, with unsaved changes?: ',
-  //   unsavedChanges
-  // );
-
   const handleClose = () => {
-    dispatchUpdate({ contextKey: curriculumDeliveryCommitKey, value: false });
+    dispatchUpdate({ contextKey: workTaskTypeCommitKey, value: false });
   };
   const openModal = () =>
-    dispatchUpdate({ contextKey: curriculumDeliveryCommitKey, value: true });
+    dispatchUpdate({ contextKey: workTaskTypeCommitKey, value: true });
 
   async function handleCommit() {
-    const workProjectSeriesSchemaDtosCurrent = Object.values(currentModels);
-    putModels(workProjectSeriesSchemaDtosCurrent).then((r) => {
+    const workTaskTypeDtos = Object.values(
+      currentModels as StringMap<WorkTaskTypeDto>
+    );
+    putWorkTaskTypes(workTaskTypeDtos).then((r) => {
       if (r.data) {
-        const schemas = getPayloadArray((schema) => schema.id, r.data);
+        const schemas = getPayloadArray((r) => r.id.toString(), r.data);
         dispatch({ type: 'updateAll', payload: schemas });
-        setUnsaved({ contextKey: UnsavedCurriculumModelChanges, value: false });
+        setUnsaved({ contextKey: UnsavedWorkTaskTypeChanges, value: false });
       }
     });
   }
 
   return (
-    <CurriculumModelsContext.Provider value={currentModels}>
-      <CurriculumModelsContextDispatch.Provider value={dispatch}>
+    <WorkTaskTypeContext.Provider value={currentModels}>
+      <WorkTaskTypeContextDispatch.Provider value={dispatch}>
         {children}
         {unsavedChanges && (
           <div
@@ -95,7 +92,7 @@ export function CurriculumModelsContextProvider({
         >
           <p>Commit updated models to the database?</p>
         </ConfirmationModal>
-      </CurriculumModelsContextDispatch.Provider>
-    </CurriculumModelsContext.Provider>
+      </WorkTaskTypeContextDispatch.Provider>
+    </WorkTaskTypeContext.Provider>
   );
 }

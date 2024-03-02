@@ -7,20 +7,23 @@ import {
 } from '@heroicons/react/20/solid';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
+import ProtectedNavigation from '../navbar/protected-navigation';
+const buttonClassName = 'btn  relative btn-primary btn-outline';
+const svgClassName = 'h-5 w-5 ';
 
 export function Pagination({
   first,
   pageNumber,
   last,
-  lastPage
+  lastPage,
+  unsavedContextKey
 }: {
   first: boolean;
   last: boolean;
   pageNumber: number;
   lastPage?: number;
+  unsavedContextKey?: string;
 }) {
-  const svgClassName = 'h-5 w-5 ';
-  const buttonClassName = 'btn  relative btn-primary btn-outline';
   const appRouterInstance = useRouter();
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
@@ -63,44 +66,52 @@ export function Pagination({
   return (
     <div className={'my-2 gap-x-1 flex'}>
       {!!lastPage && (
-        <button
+        <ProtectedNavigation
           className={`${buttonClassName}`}
           disabled={first || pending}
-          onClick={toFirstPage}
+          onConfirm={toFirstPage}
+          unsavedContextKey={unsavedContextKey}
+          unsavedListenerKey={'first'}
         >
           {buttonActive === 1 && <span className={loadingSpinner}></span>}
           <ChevronDoubleLeftIcon
             className={svgClassName}
           ></ChevronDoubleLeftIcon>
-        </button>
+        </ProtectedNavigation>
       )}
-      <button
+      <ProtectedNavigation
         className={`${buttonClassName}`}
         disabled={first || pending}
-        onClick={() => handleClick(false)}
+        onConfirm={() => handleClick(false)}
+        unsavedContextKey={unsavedContextKey}
+        unsavedListenerKey={'back'}
       >
         {buttonActive === 2 && <span className={loadingSpinner}></span>}
         <ArrowLeftIcon className={svgClassName}></ArrowLeftIcon>
-      </button>
-      <button
+      </ProtectedNavigation>
+      <ProtectedNavigation
         className={`${buttonClassName}`}
-        onClick={() => handleClick(true)}
+        onConfirm={() => handleClick(true)}
         disabled={last || pending}
+        unsavedContextKey={unsavedContextKey}
+        unsavedListenerKey={'forwards'}
       >
         {buttonActive === 3 && <span className={loadingSpinner}></span>}
         <ArrowRightIcon className={svgClassName}></ArrowRightIcon>
-      </button>
+      </ProtectedNavigation>
       {!!lastPage && (
-        <button
+        <ProtectedNavigation
           className={`${buttonClassName}`}
           disabled={last || pending}
-          onClick={toLastPage}
+          onConfirm={toLastPage}
+          unsavedContextKey={unsavedContextKey}
+          unsavedListenerKey={'first'}
         >
           {buttonActive === 4 && <span className={loadingSpinner}></span>}
           <ChevronDoubleRightIcon
             className={svgClassName}
           ></ChevronDoubleRightIcon>
-        </button>
+        </ProtectedNavigation>
       )}
     </div>
   );

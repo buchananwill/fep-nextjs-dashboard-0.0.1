@@ -54,6 +54,7 @@ export function useSelectiveContextListener<T>(
     currentValue[contextKey] === undefined
       ? fallBackValue
       : latestRef.current[contextKey];
+
   const [currentState, setCurrentState] = useState<T>(initialValue);
 
   let currentListeners = updateTriggers.current[contextKey];
@@ -75,4 +76,34 @@ export function useSelectiveContextListener<T>(
   }, [currentListeners, contextKey, listenerKey, latestRef]);
 
   return { currentState, latestRef, setCurrentState, updateTriggers };
+}
+
+export function useSelectiveContextDispatch<T>(
+  contextKey: string,
+  listenerKey: string,
+  fallBackValue: T,
+  updateRefContext: React.Context<
+    React.MutableRefObject<UpdateRefInterface<T>>
+  >,
+  latestValueRefContext: React.Context<
+    React.MutableRefObject<LatestValueRef<T>>
+  >,
+  dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>
+) {
+  const { currentState, latestRef, updateTriggers } =
+    useSelectiveContextListener(
+      contextKey,
+      listenerKey,
+      fallBackValue,
+      updateRefContext,
+      latestValueRefContext
+    );
+
+  const dispatch = useContext(dispatchUpdateContext);
+
+  const dispatchWithoutControl = (proposedValue: T) => {
+    dispatch({ contextKey, value: proposedValue });
+  };
+
+  return { currentState, dispatchWithoutControl };
 }

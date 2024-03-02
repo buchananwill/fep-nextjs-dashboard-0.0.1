@@ -2,6 +2,11 @@ import Navbar from './navbar';
 import { getServerSession } from 'next-auth/next';
 
 import { fetchScheduleIds } from '../timetables/data-fetching-functions';
+import {
+  getKnowledgeLevels,
+  getServiceCategory
+} from '../api/actions/service-categories';
+import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 
 export default async function Nav() {
   const session = await getServerSession();
@@ -10,5 +15,21 @@ export default async function Nav() {
   const latestSchedule =
     scheduleIds.length > 0 ? scheduleIds[scheduleIds.length - 1] : NaN;
 
-  return <Navbar scheduleId={latestSchedule} user={session?.user} />;
+  const serviceCategoryResponse = await getServiceCategory(2);
+
+  const knowledgeLevelResponse = await getKnowledgeLevels(2);
+
+  const knowledgeLevels: KnowledgeLevelDto[] =
+    knowledgeLevelResponse.data || [];
+
+  const sCategory = serviceCategoryResponse.data;
+
+  return (
+    <Navbar
+      scheduleId={latestSchedule}
+      knowledgeLevels={knowledgeLevels}
+      serviceCategory={sCategory}
+      user={session?.user}
+    />
+  );
 }

@@ -4,7 +4,7 @@ import {
   BundleAssignmentsContext,
   BundleAssignmentsContextDispatch
 } from './use-bundle-assignments-context';
-import { useStringMapReducer } from './curriculum-models-context-creator';
+import { useStringMapReducer } from './string-map-context-creator';
 
 export function BundleAssignmentsProvider({
   bundleAssignments,

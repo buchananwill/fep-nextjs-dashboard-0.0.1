@@ -1,3 +1,4 @@
+'use server';
 import {
   ActionResponse,
   ActionResponsePromise,
@@ -89,6 +90,25 @@ export async function getBundles(
       }
     );
     const deliveries: WorkSeriesSchemaBundleLeanDto[] = await response.json();
+    return successResponse(deliveries);
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return errorResponse(`${error}`);
+  }
+}
+export async function putModels(
+  modelList: WorkProjectSeriesSchemaDto[]
+): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/workProjectSeriesSchemas`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(modelList)
+    });
+    const deliveries: WorkProjectSeriesSchemaDto[] = await response.json();
     return successResponse(deliveries);
   } catch (error) {
     console.error('Error fetching data: ', error);

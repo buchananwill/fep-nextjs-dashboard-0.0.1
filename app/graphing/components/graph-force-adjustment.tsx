@@ -6,7 +6,7 @@ import { SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { ForceGraphAttributesDto } from '../../api/dtos/ForceGraphAttributesDtoSchema';
 import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { GraphContext } from '../graph/graph-context-creator';
 import {
@@ -20,7 +20,7 @@ export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
   const readyToGraph = `${uniqueGraphName}-ready`;
   const showAdjustments = `${uniqueGraphName}-show-adjustments`;
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     readyToGraph,
     readyToGraph,
     false

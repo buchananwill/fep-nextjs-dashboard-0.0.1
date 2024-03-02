@@ -5,10 +5,7 @@ import {
 } from './use-bundle-Items-context';
 import { PropsWithChildren, useMemo } from 'react';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import {
-  StringMap,
-  useStringMapReducer
-} from './curriculum-models-context-creator';
+import { StringMap, useStringMapReducer } from './string-map-context-creator';
 
 export function BundleItemsContextProvider({
   bundleItems,

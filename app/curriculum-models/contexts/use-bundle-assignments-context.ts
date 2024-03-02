@@ -1,8 +1,5 @@
 import { createContext, useContext } from 'react';
-import {
-  StringMap,
-  StringMapDispatch
-} from './curriculum-models-context-creator';
+import { StringMap, StringMapDispatch } from './string-map-context-creator';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 export const BundleAssignmentsContext = createContext<StringMap<string>>({});

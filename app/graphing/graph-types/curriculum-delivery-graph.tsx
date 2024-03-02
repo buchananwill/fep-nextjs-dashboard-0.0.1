@@ -28,7 +28,7 @@ import {
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
 import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import AddLinksButton from '../editing/add-links-button';
 import { DeleteLinksButton } from '../editing/delete-links-button';
 import { DeleteNodesButton } from '../editing/delete-nodes-button';
@@ -36,7 +36,7 @@ import { BundleAssignmentsProvider } from '../../curriculum-models/contexts/bund
 import {
   StringMap,
   StringMapPayload
-} from '../../curriculum-models/contexts/curriculum-models-context-creator';
+} from '../../curriculum-models/contexts/string-map-context-creator';
 import { BundleItemsContextProvider } from '../../curriculum-models/contexts/bundle-items-context-provider';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
@@ -60,7 +60,7 @@ export default function CurriculumDeliveryGraph({
     () => `${uniqueGraphName}-mounted`,
     [uniqueGraphName]
   );
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     mountedKey,
     mountedKey,
     true

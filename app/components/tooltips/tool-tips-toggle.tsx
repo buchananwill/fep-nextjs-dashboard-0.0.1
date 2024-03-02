@@ -2,7 +2,7 @@
 import { Text } from '@tremor/react';
 import React, { useContext } from 'react';
 
-import { useSelectiveContextDispatchBoolean } from '../selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
 import { useTooltipsContext } from './tooltips-context-provider';
 
 const ToolTipsToggle = () => {

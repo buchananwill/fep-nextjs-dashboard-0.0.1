@@ -4,7 +4,7 @@ import {
   MapDispatchBatch,
   StringMap,
   StringMapDispatch
-} from './curriculum-models-context-creator';
+} from './string-map-context-creator';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
 export function useCurriculumModelContext() {

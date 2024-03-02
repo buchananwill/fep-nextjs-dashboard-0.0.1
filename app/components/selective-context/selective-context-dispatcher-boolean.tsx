@@ -1,5 +1,5 @@
 'use client';
-import { useSelectiveContextDispatchBoolean } from './selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from './selective-context-manager-boolean';
 import React from 'react';
 
 export function SelectiveContextDispatcherBoolean({
@@ -11,7 +11,7 @@ export function SelectiveContextDispatcherBoolean({
   initialValue: boolean;
   listenerKey: string;
 }) {
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatchBoolean(
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     uniqueKey,
     listenerKey,
     initialValue

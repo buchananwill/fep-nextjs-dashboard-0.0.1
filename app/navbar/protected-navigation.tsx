@@ -1,16 +1,43 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { forwardRef, Fragment, ReactNode, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  Fragment,
+  ReactNode,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { classNames } from '../utils/class-names';
+import { useSearchParams } from 'next/navigation';
+import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
+import { UnsavedCurriculumModelChanges } from '../curriculum-models/contexts/curriculum-models-context-provider';
+
+const paginationUnsavedListenerKey = ':pagination';
 
 interface Props {
   onConfirm: () => void;
   children: ReactNode;
-  isActive: boolean;
-  requestConfirmation: boolean;
-  classNames: string;
+  isActive?: boolean;
+  requestConfirmation?: boolean;
+  unsavedContextKey?: string;
+  unsavedListenerKey?: string;
 }
+
+function useSelectiveListenerKey(
+  unsavedContextKey: string | undefined,
+  listenerKey: string
+) {
+  return useMemo(() => {
+    return `${unsavedContextKey ? unsavedContextKey : ''}${listenerKey}`;
+  }, [unsavedContextKey, listenerKey]);
+}
+
 const ProtectedNavigation = forwardRef(function ProtectedNavigation(
-  props: Props,
+  props: Props &
+    React.DetailedHTMLProps<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >,
   ref
 ) {
   const {
@@ -18,9 +45,34 @@ const ProtectedNavigation = forwardRef(function ProtectedNavigation(
     children,
     isActive,
     requestConfirmation,
-    classNames: moreClassNames
+    unsavedContextKey,
+    unsavedListenerKey: listenerKeyProp,
+    className,
+    disabled
   } = props;
   let [isOpen, setIsOpen] = useState(false);
+
+  const unsavedListenerKey = useSelectiveListenerKey(
+    unsavedContextKey,
+    `${paginationUnsavedListenerKey}:${listenerKeyProp}`
+  );
+
+  const { isTrue: protectionActive } = useSelectiveContextListenerBoolean(
+    unsavedContextKey || '',
+    unsavedListenerKey,
+    false
+  );
+
+  const finalClassNames = useMemo(() => {
+    return className
+      ? className
+      : classNames(
+          isActive
+            ? 'border-slate-500 text-gray-900'
+            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+          'group inline-flex w-full rounded-md items-center px-2 py-2 border-b-2 text-sm font-medium'
+        );
+  }, [className, isActive]);
 
   let confirmButtonRef = useRef(null);
 
@@ -36,15 +88,14 @@ const ProtectedNavigation = forwardRef(function ProtectedNavigation(
     <>
       <button
         type="button"
-        onClick={requestConfirmation ? openModal : () => onConfirm()}
-        className={classNames(
-          isActive
-            ? 'border-slate-500 text-gray-900'
-            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
-          moreClassNames
-        )}
+        onClick={
+          requestConfirmation || protectionActive
+            ? openModal
+            : () => onConfirm()
+        }
+        className={finalClassNames}
         aria-current={isActive ? 'page' : undefined}
+        disabled={disabled}
       >
         {children}
       </button>
