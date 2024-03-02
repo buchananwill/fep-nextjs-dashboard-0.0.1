@@ -13,7 +13,7 @@ export default function LandscapeStepper() {
   return (
     <div
       className={
-        'w-fit flex border-2 border-slate-400 rounded-lg divide-x mb-2 items-center overflow-hidden'
+        'w-fit flex border-2 border-slate-400 rounded-lg divide-x items-center overflow-hidden'
       }
     >
       <button

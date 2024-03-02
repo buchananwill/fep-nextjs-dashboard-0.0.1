@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
 export interface StepperInterface {
   increment: () => void;
@@ -18,4 +18,19 @@ export const StepperContext = createContext<StepperInterface>({
 
 export function useStepperContext() {
   return useContext(StepperContext);
+}
+
+export function getStepperInterface(
+  dispatch: Dispatch<SetStateAction<number>>,
+  max: number,
+  min: number,
+  current: number
+) {
+  return {
+    increment: () => dispatch((prev) => Math.min(prev + 1, max)),
+    decrement: () => dispatch((prev) => Math.max(prev - 1, min)),
+    max,
+    min,
+    current
+  } as StepperInterface;
 }

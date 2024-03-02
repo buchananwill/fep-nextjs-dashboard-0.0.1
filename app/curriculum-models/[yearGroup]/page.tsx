@@ -9,6 +9,23 @@ import { CurriculumDeliveryModels } from './bundles/curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 
+export function oneIndexToZeroIndex(index: number) {
+  return Math.max(index - 1, 0);
+}
+export function zeroIndexToOneIndex(
+  index: number,
+  array?: [],
+  totalPages?: number
+) {
+  const unsafeValue = index + 1;
+  if (array) {
+    return Math.min(unsafeValue, array.length);
+  } else if (totalPages) {
+    return Math.min(unsafeValue, totalPages);
+  }
+  return unsafeValue;
+}
+
 export default async function Page({
   params: { yearGroup },
   searchParams
@@ -22,7 +39,7 @@ export default async function Page({
   const curriculumDeliveryModelSchemas =
     await getCurriculumDeliveryModelSchemas(
       parseInt(yearGroup),
-      normalizeQueryParamToNumber(page, 0),
+      oneIndexToZeroIndex(normalizeQueryParamToNumber(page, 1)),
       normalizeQueryParamToNumber(size, 7)
     );
 
@@ -39,6 +56,7 @@ export default async function Page({
   }
 
   const { content, last, first, number, totalPages } = data;
+  const pageNumber = zeroIndexToOneIndex(number);
 
   if (status >= 400) {
     return <Card>{message}</Card>;
@@ -49,16 +67,17 @@ export default async function Page({
         <Pagination
           first={first}
           last={last}
-          pageNumber={number}
+          pageNumber={pageNumber}
           unsavedContextKey={UnsavedCurriculumModelChanges}
         />
         <Title>
-          Year {yearGroup} - Page {number + 1} of {totalPages}
+          Year {yearGroup} - Page {pageNumber} of {totalPages}
         </Title>
       </div>
       <CurriculumDeliveryModels
         workProjectSeriesSchemaDtos={content}
         taskTypeList={taskTypeList}
+        yearGroup={parseInt(yearGroup)}
       />
       <BoxHierarchies></BoxHierarchies>
     </>

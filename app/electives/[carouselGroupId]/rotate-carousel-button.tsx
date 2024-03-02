@@ -11,9 +11,9 @@ import {
 } from '../../components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../../components/tooltips/standard-tooltip-content-old';
 import {
-  ConfirmationModal,
+  ConfirmActionModal,
   useModal
-} from '../../components/confirmation-modal';
+} from '../../components/confirm-action-modal';
 import '../../components/custom-component-styles.css';
 import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
 import { UpdateElectivePreference } from '../elective-reducers';
@@ -123,7 +123,7 @@ export function RotateCarouselButton({
           </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
-      <ConfirmationModal
+      <ConfirmActionModal
         show={isOpen}
         onClose={() => closeModal()}
         onConfirm={() => {
@@ -168,7 +168,7 @@ export function RotateCarouselButton({
             <strong>Match All</strong> to bulk rotate students.
           </>
         )}
-      </ConfirmationModal>
+      </ConfirmActionModal>
     </>
   );
 }

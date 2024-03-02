@@ -14,8 +14,8 @@ import { UnsavedCurriculumModelChanges } from '../../contexts/curriculum-models-
 export const curriculumDeliveryCommitKey = 'commit-model-changes-open';
 
 export function getPayloadArray<T>(
-  keyAccessor: (item: T) => string,
-  itemArray: T[]
+  itemArray: T[],
+  keyAccessor: (item: T) => string
 ) {
   return itemArray.map((schema) => ({
     key: keyAccessor(schema),
@@ -25,10 +25,12 @@ export function getPayloadArray<T>(
 
 export function CurriculumDeliveryModels({
   workProjectSeriesSchemaDtos,
-  taskTypeList
+  taskTypeList,
+  yearGroup
 }: {
   workProjectSeriesSchemaDtos: WorkProjectSeriesSchemaDto[];
   taskTypeList: WorkTaskTypeDto[];
+  yearGroup: number;
 }) {
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
   const { dispatch: workTaskTypeDispatch } = useWorkTaskTypeContext();
@@ -40,8 +42,8 @@ export function CurriculumDeliveryModels({
 
   useEffect(() => {
     const payloadArray = getPayloadArray(
-      (schema) => schema.id,
-      workProjectSeriesSchemaDtos
+      workProjectSeriesSchemaDtos,
+      (schema) => schema.id
     );
     dispatch({
       type: 'updateAll',
@@ -49,9 +51,8 @@ export function CurriculumDeliveryModels({
     });
   }, [workProjectSeriesSchemaDtos, dispatch]);
   useEffect(() => {
-    const payloadArray = getPayloadArray(
-      (taskType) => taskType.id.toString(),
-      taskTypeList
+    const payloadArray = getPayloadArray(taskTypeList, (taskType) =>
+      taskType.id.toString()
     );
     workTaskTypeDispatch({
       type: 'updateAll',
@@ -61,8 +62,11 @@ export function CurriculumDeliveryModels({
 
   return (
     <div className={'w-full my-4'}>
-      <Grid numItemsSm={1} numItemsLg={4} className="gap-4">
-        <AddNewCurriculumModelCard alreadyUnsaved={alreadyUnsaved} />
+      <Grid numItemsSm={2} numItemsLg={4} className="gap-4">
+        <AddNewCurriculumModelCard
+          alreadyUnsaved={alreadyUnsaved}
+          yearGroup={yearGroup}
+        />
         {workProjectSeriesSchemaDtos.map((item, index) => (
           <CurriculumDeliveryModel key={item.id} model={item} />
         ))}

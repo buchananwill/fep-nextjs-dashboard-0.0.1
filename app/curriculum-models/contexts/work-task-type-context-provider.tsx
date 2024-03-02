@@ -4,7 +4,7 @@ import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
-import { ConfirmationModal } from '../../components/confirmation-modal';
+import { ConfirmActionModal } from '../../components/confirm-action-modal';
 import { putModels } from '../../api/actions/curriculum-delivery-model';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { getPayloadArray } from '../[yearGroup]/bundles/curriculum-delivery-models';
@@ -53,7 +53,7 @@ export function WorkTaskTypeContextProvider({
     );
     putWorkTaskTypes(workTaskTypeDtos).then((r) => {
       if (r.data) {
-        const schemas = getPayloadArray((r) => r.id.toString(), r.data);
+        const schemas = getPayloadArray(r.data, (r) => r.id.toString());
         dispatch({ type: 'updateAll', payload: schemas });
         setUnsaved({ contextKey: UnsavedWorkTaskTypeChanges, value: false });
       }
@@ -79,7 +79,7 @@ export function WorkTaskTypeContextProvider({
             ></ExclamationTriangleIcon>
           </div>
         )}
-        <ConfirmationModal
+        <ConfirmActionModal
           show={modalOpen}
           onClose={handleClose}
           onConfirm={() => {
@@ -91,7 +91,7 @@ export function WorkTaskTypeContextProvider({
           }}
         >
           <p>Commit updated models to the database?</p>
-        </ConfirmationModal>
+        </ConfirmActionModal>
       </WorkTaskTypeContextDispatch.Provider>
     </WorkTaskTypeContext.Provider>
   );

@@ -15,18 +15,20 @@ export function useModal() {
   return { isOpen, closeModal, openModal };
 }
 
-export function ConfirmationModal({
+export function ConfirmActionModal({
   onCancel,
   onClose,
   onConfirm,
   show,
-  children
+  children,
+  title = 'Confirm'
 }: {
   show: boolean;
   onClose: () => void;
   onConfirm: () => void;
   onCancel: () => void;
   children?: ReactNode;
+  title?: string;
 }) {
   return (
     <Transition appear show={show} as={Fragment}>
@@ -59,7 +61,7 @@ export function ConfirmationModal({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Confirm
+                  {title ? title : 'Confirm'}
                 </Dialog.Title>
                 <div className="mt-2">
                   <div className="text-sm text-gray-500">

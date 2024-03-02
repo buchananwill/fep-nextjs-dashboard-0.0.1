@@ -8,13 +8,17 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import ProtectedNavigation from '../navbar/protected-navigation';
+import { zeroIndexToOneIndex } from '../curriculum-models/[yearGroup]/page';
 const buttonClassName = 'btn  relative btn-primary btn-outline';
 const svgClassName = 'h-5 w-5 ';
 
+/**
+ * Uses one-indexing for human readability!
+ * */
 export function Pagination({
   first,
-  pageNumber,
   last,
+  pageNumber,
   lastPage,
   unsavedContextKey
 }: {
@@ -54,11 +58,11 @@ export function Pagination({
 
   const toFirstPage = () => {
     setButtonActive(1);
-    directToPage(0);
+    directToPage(1);
   };
   const toLastPage = () => {
     setButtonActive(4);
-    if (lastPage) directToPage(lastPage);
+    if (lastPage) directToPage(zeroIndexToOneIndex(lastPage));
   };
 
   const loadingSpinner = 'loading loading-spinner loading-xs absolute';

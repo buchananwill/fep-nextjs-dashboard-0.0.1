@@ -16,6 +16,7 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from '../components/selective-context/selective-context-manager-boolean';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const allocationSizes = [1, 2];
 
@@ -108,7 +109,8 @@ export function AdjustAllocation({
   };
 
   return (
-    <>
+    <div>
+      <Text className={'px-2'}>Total Allocation: {totalAllocations}</Text>
       <Flex
         justifyContent="start"
         alignItems="baseline"
@@ -133,7 +135,14 @@ export function AdjustAllocation({
                 current: currentAllocations[index].count
               }}
             >
-              <LandscapeStepper></LandscapeStepper>
+              <div className={'flex items-center'}>
+                <AllocationUnitGroup
+                  size={deliveryAllocation.deliveryAllocationSize}
+                  indexOfGroup={index}
+                />
+                <LandscapeStepper></LandscapeStepper>
+              </div>
+              <div className={'h-1'}></div>
               <DeliveryAllocation
                 key={deliveryAllocation.id}
                 deliveryAllocation={deliveryAllocation}
@@ -142,8 +151,7 @@ export function AdjustAllocation({
           </div>
         ))}
       </Flex>
-      <Text className={'px-2 pb-2'}>Total: {totalAllocations}</Text>
-    </>
+    </div>
   );
 }
 
@@ -154,21 +162,41 @@ function DeliveryAllocation({
 }) {
   const allocation: React.JSX.Element[] = [];
   for (let i = 0; i < count; i++) {
-    const units: React.JSX.Element[] = [];
-    for (let j = 0; j < deliveryAllocationSize; j++) {
-      allocation.push(<AllocationUnit key={`unit-${j}-${i}`}></AllocationUnit>);
-    }
     allocation.push(
-      <div key={`allocation-${i}`} className={'flex m-0 p-0.5'}>
-        {[...units]}
-      </div>
+      <AllocationUnitGroup
+        key={`unit-${i}`}
+        size={deliveryAllocationSize}
+        indexOfGroup={i}
+      />
     );
   }
 
-  return <div className={'flex'}>{[...allocation]}</div>;
+  return (
+    <div className={'flex h-4 '}>
+      {allocation.length > 0 ? (
+        [...allocation]
+      ) : (
+        <XMarkIcon className={'h-4 w-4'}></XMarkIcon>
+      )}
+    </div>
+  );
 }
 
-function AllocationUnit() {
+function AllocationUnitGroup({
+  size,
+  indexOfGroup
+}: {
+  size: number;
+  indexOfGroup: number;
+}) {
+  const units: React.JSX.Element[] = [];
+  for (let i = 0; i < size; i++) {
+    units.push(<AllocationUnit key={`unit-${indexOfGroup}-${i}`} />);
+  }
+  return <div className={'flex m-0 p-0.5'}>{...units}</div>;
+}
+
+export function AllocationUnit() {
   return (
     <div
       className={

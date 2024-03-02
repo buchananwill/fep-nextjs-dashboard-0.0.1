@@ -7,7 +7,7 @@ import {
   CurriculumModelsContext,
   CurriculumModelsContextDispatch
 } from './use-curriculum-model-context';
-import { ConfirmationModal } from '../../components/confirmation-modal';
+import { ConfirmActionModal } from '../../components/confirm-action-modal';
 import { putModels } from '../../api/actions/curriculum-delivery-model';
 import {
   useSelectiveContextControllerBoolean,
@@ -56,7 +56,7 @@ export function CurriculumModelsContextProvider({
     const workProjectSeriesSchemaDtosCurrent = Object.values(currentModels);
     putModels(workProjectSeriesSchemaDtosCurrent).then((r) => {
       if (r.data) {
-        const schemas = getPayloadArray((schema) => schema.id, r.data);
+        const schemas = getPayloadArray(r.data, (schema) => schema.id);
         dispatch({ type: 'updateAll', payload: schemas });
         setUnsaved({ contextKey: UnsavedCurriculumModelChanges, value: false });
       }
@@ -82,7 +82,7 @@ export function CurriculumModelsContextProvider({
             ></ExclamationTriangleIcon>
           </div>
         )}
-        <ConfirmationModal
+        <ConfirmActionModal
           show={modalOpen}
           onClose={handleClose}
           onConfirm={() => {
@@ -94,7 +94,7 @@ export function CurriculumModelsContextProvider({
           }}
         >
           <p>Commit updated models to the database?</p>
-        </ConfirmationModal>
+        </ConfirmActionModal>
       </CurriculumModelsContextDispatch.Provider>
     </CurriculumModelsContext.Provider>
   );

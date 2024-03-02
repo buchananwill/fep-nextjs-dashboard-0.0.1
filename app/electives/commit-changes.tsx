@@ -16,7 +16,10 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
-import { ConfirmationModal, useModal } from '../components/confirmation-modal';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../components/confirm-action-modal';
 import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import { UpdateElectivePreference } from './elective-reducers';
 
@@ -108,7 +111,7 @@ const CommitChanges = ({ children }: Props) => {
           </StandardTooltipContentOld>
         </TooltipContent>
       </Tooltip>
-      <ConfirmationModal
+      <ConfirmActionModal
         show={isOpen}
         onClose={closeModal}
         onConfirm={() => {
@@ -120,7 +123,7 @@ const CommitChanges = ({ children }: Props) => {
         }}
       >
         <p>Commit changes to the database</p>
-      </ConfirmationModal>
+      </ConfirmActionModal>
     </div>
   );
 };

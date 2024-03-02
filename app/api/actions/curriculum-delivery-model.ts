@@ -14,12 +14,14 @@ import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDto
 import { number } from 'zod';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
+const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
+
 export async function getCurriculumDeliveryModelSchemas(
   yearGroup?: number,
   page: number = 0,
   size: number = 10
 ): ActionResponsePromise<Page<WorkProjectSeriesSchemaDto>> {
-  let url = `${API_BASE_URL}/workProjectSeriesSchemas`;
+  let url = SCHEMA_URL;
   const paging = `?page=${page}&size=${size}&sort=name,asc`;
   if (!!yearGroup) {
     url = `${url}/knowledge-level-ordinal/${yearGroup}`;
@@ -55,17 +57,14 @@ export async function getCurriculumDeliveries(
   idList: number[]
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/workProjectSeriesSchemas/deliveries/by-party-id`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json' // Indicate we're sending JSON data
-        },
-        cache: 'no-cache',
-        body: JSON.stringify(idList)
-      }
-    );
+    const response = await fetch(`${SCHEMA_URL}/deliveries/by-party-id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(idList)
+    });
     const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
     return successResponse(deliveries);
   } catch (error) {
@@ -78,17 +77,14 @@ export async function getBundles(
   idList: string[]
 ): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/workProjectSeriesSchemas/bundles/schema-id-list`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json' // Indicate we're sending JSON data
-        },
-        cache: 'no-cache',
-        body: JSON.stringify(idList)
-      }
-    );
+    const response = await fetch(`${SCHEMA_URL}/bundles/schema-id-list`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(idList)
+    });
     const deliveries: WorkSeriesSchemaBundleLeanDto[] = await response.json();
     return successResponse(deliveries);
   } catch (error) {
@@ -100,8 +96,27 @@ export async function putModels(
   modelList: WorkProjectSeriesSchemaDto[]
 ): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/workProjectSeriesSchemas`, {
+    const response = await fetch(`${SCHEMA_URL}`, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(modelList)
+    });
+    const deliveries: WorkProjectSeriesSchemaDto[] = await response.json();
+    return successResponse(deliveries);
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return errorResponse(`${error}`);
+  }
+}
+export async function postModels(
+  modelList: WorkProjectSeriesSchemaDto[]
+): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
+  try {
+    const response = await fetch(`${SCHEMA_URL}`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json' // Indicate we're sending JSON data
       },

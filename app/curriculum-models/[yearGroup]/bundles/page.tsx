@@ -74,6 +74,7 @@ export default async function Page({
 
         <CurriculumDeliveryModels
           workProjectSeriesSchemaDtos={content}
+          yearGroup={parseInt(yearGroup)}
           taskTypeList={workTaskTypeDtos}
         />
         <ForceGraphPage></ForceGraphPage>
