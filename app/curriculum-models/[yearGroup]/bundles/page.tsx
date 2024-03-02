@@ -12,6 +12,7 @@ import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-
 import { useMemo } from 'react';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../contexts/string-map-context-creator';
+import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -48,7 +49,10 @@ export default async function Page({
 
   const actionResponse = await getBundles(schemaIdList);
 
-  if (actionResponse.data === undefined) {
+  const taskTypesResponse = await getWorkTaskTypes(2, parseInt(yearGroup));
+
+  const workTaskTypeDtos = taskTypesResponse.data;
+  if (actionResponse.data === undefined || workTaskTypeDtos === undefined) {
     return <Card>No bundles found!</Card>;
   }
 
@@ -68,7 +72,10 @@ export default async function Page({
           schemaOptions={schemasIdsAndNames}
         />
 
-        <CurriculumDeliveryModels workProjectSeriesSchemaDtos={content} />
+        <CurriculumDeliveryModels
+          workProjectSeriesSchemaDtos={content}
+          taskTypeList={workTaskTypeDtos}
+        />
         <ForceGraphPage></ForceGraphPage>
       </BundleAssignmentsProvider>
     </BundleItemsContextProvider>
