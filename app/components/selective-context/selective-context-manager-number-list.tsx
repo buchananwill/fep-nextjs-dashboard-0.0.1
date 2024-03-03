@@ -2,11 +2,8 @@
 import { PropsWithChildren } from 'react';
 import {
   ContextRefNumberList,
-  ContextRefStringList,
   DispatchUpdateContextNumberList,
-  DispatchUpdateContextStringList,
-  UpdateRefContextNumberList,
-  UpdateRefContextStringList
+  UpdateRefContextNumberList
 } from './selective-context-creator';
 import {
   LatestValueRef,
@@ -14,8 +11,8 @@ import {
 } from './selective-context-manager';
 
 import {
-  UseSelectiveContextController,
   useSelectiveContextController,
+  UseSelectiveContextController,
   UseSelectiveContextDispatch
 } from './use-selective-context-controller';
 import {
@@ -41,6 +38,19 @@ export default function SelectiveContextManagerNumberList({
     </DispatchUpdateContextNumberList.Provider>
   );
 }
+
+export const useSelectiveContextControllerNumberList: UseSelectiveContextController<
+  number[]
+> = ({ contextKey, initialValue, listenerKey }) => {
+  return useSelectiveContextController(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateRefContextNumberList,
+    DispatchUpdateContextNumberList,
+    ContextRefNumberList
+  );
+};
 
 export const useSelectiveContextDispatchNumberList: UseSelectiveContextDispatch<
   number[]
