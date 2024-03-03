@@ -68,7 +68,9 @@ export function useSelectiveContextListener<T>(
 
   useEffect(() => {
     currentListeners[listenerKey] = setCurrentState;
-    setCurrentState(() => latestRef.current[contextKey]);
+    if (latestRef.current[contextKey] !== undefined) {
+      setCurrentState(() => latestRef.current[contextKey]);
+    }
 
     return () => {
       if (currentListeners) {

@@ -66,7 +66,7 @@ export function useGraphSelectiveContextDispatch<T>(
   };
 }
 
-export function useGraphSelectionContextListener<T>(
+export function useGraphSelectiveContextListener<T>(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
   initialValue: T,
@@ -76,15 +76,6 @@ export function useGraphSelectionContextListener<T>(
     contextKey,
     `${listenerKey}`
   );
-
-  if (contextKey == 'dimensions') {
-    console.log(
-      contextKey,
-      listenerKey,
-      initialValue,
-      useSelectiveContextListener
-    );
-  }
 
   return useSelectiveContextListener(
     contextKeyConcat,
