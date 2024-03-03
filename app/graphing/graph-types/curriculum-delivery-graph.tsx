@@ -1,5 +1,5 @@
 'use client';
-import { DataNode, GraphDto } from '../../api/zod-mods';
+import { DataLink, DataNode, GraphDto } from '../../api/zod-mods';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import React, {
   PropsWithChildren,
@@ -42,6 +42,13 @@ import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBu
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
+import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
+import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
+import { useModal } from '../../components/confirm-action-modal';
+import { putOrganizationGraph } from '../../api/actions/curriculum-delivery-model';
+import { useRouter } from 'next/navigation';
+
+export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 
 export interface GraphTypeProps<T> {
   graphData: GraphDto<T>;
@@ -63,6 +70,12 @@ export function mapToPartyIdBundleIdRecords(
   return { bundleAssignments, initialPayload };
 }
 
+function mapLinksBackToIdRefs<T>(l: DataLink<T>) {
+  const objectRefSource = l.source as DataNode<T>;
+  const objectRefTarget = l.target as DataNode<T>;
+  return { ...l, source: objectRefSource.id, target: objectRefTarget.id };
+}
+
 export default function CurriculumDeliveryGraph({
   children,
   bundles
@@ -77,11 +90,26 @@ export default function CurriculumDeliveryGraph({
     () => `${uniqueGraphName}-mounted`,
     [uniqueGraphName]
   );
+  const appRouterInstance = useRouter();
   const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     mountedKey,
     mountedKey,
     true
   );
+
+  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
+    UnsavedNodeDataContextKey,
+    uniqueGraphName
+  );
+
+  const { currentState: unsavedGraphChanges } =
+    useSelectiveContextControllerBoolean(
+      unsavedGraphContextKey,
+      unsavedGraphContextKey,
+      false
+    );
+
+  const { isOpen, closeModal, openModal } = useModal();
 
   const { bundleAssignmentsMap, dispatch } = useBundleAssignmentsContext();
 
@@ -135,6 +163,26 @@ export default function CurriculumDeliveryGraph({
     }
   );
 
+  const handleSaveGraph = () => {
+    const nodes = nodesRef.current;
+    const links = linksRef.current;
+    if (links && nodes) {
+      const linksWithNumberIdRefs = links.map(mapLinksBackToIdRefs);
+      const updatedGraph: GraphDto<OrganizationDto> = {
+        nodes: nodes,
+        closureDtos: linksWithNumberIdRefs
+      };
+      putOrganizationGraph(updatedGraph).then((r) => {
+        console.log(r);
+        closeModal();
+        dispatchUpdate({ contextKey: unsavedGraphContextKey, value: false });
+        if (r.status == 200) {
+          appRouterInstance.refresh();
+        }
+      });
+    }
+  };
+
   return (
     <GenericNodeRefContext.Provider value={nodesRef}>
       <GenericLinkRefContext.Provider value={linksRef}>
@@ -173,6 +221,16 @@ export default function CurriculumDeliveryGraph({
             />
           </GraphViewer>
         </div>
+        <UnsavedChangesModal
+          unsavedChanges={unsavedGraphChanges}
+          handleOpen={openModal}
+          show={isOpen}
+          onClose={closeModal}
+          onConfirm={handleSaveGraph}
+          onCancel={closeModal}
+        >
+          <p>Save graph changes to database?</p>
+        </UnsavedChangesModal>
       </GenericLinkRefContext.Provider>
     </GenericNodeRefContext.Provider>
   );

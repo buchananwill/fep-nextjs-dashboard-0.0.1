@@ -2,19 +2,15 @@
 
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-
-import { ConfirmActionModal } from '../../components/confirm-action-modal';
-import { putModels } from '../../api/actions/curriculum-delivery-model';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { getPayloadArray } from '../[yearGroup]/bundles/curriculum-delivery-models';
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import {
   WorkTaskTypeContext,
   WorkTaskTypeContextDispatch
 } from './use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { putWorkTaskTypes } from '../../api/actions/work-task-types';
+import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
 export const WorkTaskTypeChangesProviderListener =
@@ -64,22 +60,9 @@ export function WorkTaskTypeContextProvider({
     <WorkTaskTypeContext.Provider value={currentModels}>
       <WorkTaskTypeContextDispatch.Provider value={dispatch}>
         {children}
-        {unsavedChanges && (
-          <div
-            className={
-              'z-40 flex items-center border-gray-200 shadow-lg border-2 bg-gray-100 fixed top-16 right-16 p-2 rounded-md hover:bg-gray-50 group cursor-pointer'
-            }
-            onClick={() => openModal()}
-          >
-            Unsaved Ch-Ch-Changes{' '}
-            <ExclamationTriangleIcon
-              className={
-                'p-1 h-8 w-8 text-red-500 group-hover:opacity-100 opacity-50 '
-              }
-            ></ExclamationTriangleIcon>
-          </div>
-        )}
-        <ConfirmActionModal
+        <UnsavedChangesModal
+          unsavedChanges={unsavedChanges}
+          handleOpen={() => openModal()}
           show={modalOpen}
           onClose={handleClose}
           onConfirm={() => {
@@ -91,7 +74,7 @@ export function WorkTaskTypeContextProvider({
           }}
         >
           <p>Commit updated models to the database?</p>
-        </ConfirmActionModal>
+        </UnsavedChangesModal>
       </WorkTaskTypeContextDispatch.Provider>
     </WorkTaskTypeContext.Provider>
   );

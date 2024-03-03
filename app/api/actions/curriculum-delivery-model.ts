@@ -50,6 +50,29 @@ export async function getOrganizationGraph(): ActionResponsePromise<
     return errorResponse(`${error}`);
   }
 }
+
+export async function putOrganizationGraph(
+  updatedGraph: GraphDto<OrganizationDto>
+): ActionResponsePromise<GraphDto<OrganizationDto>> {
+  try {
+    console.log(updatedGraph);
+    const response = await fetch(`${API_BASE_URL}/graphs/organizations`, {
+      cache: 'no-cache',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      body: JSON.stringify(updatedGraph)
+    });
+    const responseGraph: GraphDto<OrganizationDto> = await response.json();
+    console.log(responseGraph);
+    return successResponse(responseGraph);
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return errorResponse(`${error}`);
+  }
+}
+
 export async function getCurriculumDeliveries(
   idList: number[]
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {

@@ -1,6 +1,6 @@
 'use client';
 import { DataNode } from '../../api/zod-mods';
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
@@ -26,6 +26,8 @@ import { useModal } from '../../components/confirm-action-modal';
 import { useSelectiveContextControllerString } from '../../components/selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
 import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-hooks';
+import { GraphContext } from '../graph/graph-context-creator';
+import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
@@ -88,15 +90,32 @@ export default function CurriculumDeliveryDetails({
     node.data.name
   );
 
+  const { uniqueGraphName } = useContext(GraphContext);
+  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
+    UnsavedNodeDataContextKey,
+    uniqueGraphName
+  );
+
   const { nodeListRef, incrementSimVersion } =
     useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
+
+  const {
+    currentState: unsavedGraph,
+    dispatchWithoutControl: dispatchUnsavedGraph
+  } = useSelectiveContextDispatchBoolean(
+    unsavedGraphContextKey,
+    CurriculumDetailsListenerKey,
+    false
+  );
 
   const handleConfirmRename = () => {
     const currentElement = nodeListRef?.current[node.index!];
     if (currentElement) {
       currentElement.data.name = currentState;
       incrementSimVersion();
+      dispatchUnsavedGraph(true);
     }
+
     closeModal();
   };
 
