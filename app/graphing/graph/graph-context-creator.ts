@@ -77,6 +77,15 @@ export function useGraphSelectionContextListener<T>(
     `${listenerKey}`
   );
 
+  if (contextKey == 'dimensions') {
+    console.log(
+      contextKey,
+      listenerKey,
+      initialValue,
+      useSelectiveContextListener
+    );
+  }
+
   return useSelectiveContextListener(
     contextKeyConcat,
     listenerKeyConcat,

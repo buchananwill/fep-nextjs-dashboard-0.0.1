@@ -15,9 +15,11 @@ import {
 
 import {
   UseSelectiveContextController,
-  useSelectiveContextController
+  useSelectiveContextController,
+  UseSelectiveContextDispatch
 } from './use-selective-context-controller';
 import {
+  useSelectiveContextDispatch,
   UseSelectiveContextListener,
   useSelectiveContextListener
 } from './use-selective-context-listener';
@@ -40,19 +42,19 @@ export default function SelectiveContextManagerNumberList({
   );
 }
 
-export const useSelectiveContextDispatchNumberList: UseSelectiveContextController<
+export const useSelectiveContextDispatchNumberList: UseSelectiveContextDispatch<
   number[]
-> = (contextKey: string, listenerKey: string, initialValue: number[]) => {
-  const { currentState, dispatchUpdate } = useSelectiveContextController(
+> = ({ contextKey, listenerKey, initialValue }) => {
+  const { currentState, dispatchWithoutControl } = useSelectiveContextDispatch(
     contextKey,
     listenerKey,
     initialValue,
     UpdateRefContextNumberList,
-    DispatchUpdateContextNumberList,
-    ContextRefNumberList
+    ContextRefNumberList,
+    DispatchUpdateContextNumberList
   );
 
-  return { currentState, dispatchUpdate };
+  return { currentState, dispatchWithoutControl };
 };
 
 export const useSelectiveContextListenerNumberList: UseSelectiveContextListener<
