@@ -5,9 +5,9 @@ import {
 import { useNodeInteractionContext } from '../nodes/node-interaction-context';
 import { useMemo, useState } from 'react';
 import {
-  useSelectiveContextGraphDispatch,
-  useSelectiveContextGraphNumberDispatch,
-  useSelectiveGraphContextKey
+  useGraphSelectiveContextDispatch,
+  useGraphSelectiveContextNumberDispatch,
+  useGraphSelectiveContextKey
 } from '../graph/graph-context-creator';
 import {
   useSelectiveContextControllerNumber,
@@ -68,7 +68,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const { incrementSimVersion, nodeListRef, linkListRef } =
     useDirectSimRefEditsController<T>(buttonListenerKey);
 
-  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+  const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
     'nextNodeId',
     buttonListenerKey
   );
@@ -80,7 +80,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     });
 
   const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
-    useSelectiveContextGraphNumberDispatch(
+    useGraphSelectiveContextNumberDispatch(
       'nextLinkId',
       buttonListenerKey,
       NaN
@@ -98,7 +98,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const {
     simpleDispatch: setTransientNodeIds,
     currentState: transientNodeIds
-  } = useSelectiveContextGraphDispatch(
+  } = useGraphSelectiveContextDispatch(
     'transientNodeIds',
     buttonListenerKey,
     nodesInit,
@@ -108,7 +108,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const {
     simpleDispatch: setTransientLinkIds,
     currentState: transientLinkIds
-  } = useSelectiveContextGraphDispatch(
+  } = useGraphSelectiveContextDispatch(
     'transientLinkIds',
     buttonListenerKey,
     linksInit,
@@ -116,14 +116,14 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   );
 
   const { simpleDispatch: setDeletedLinkIds, currentState: deletedLinkIds } =
-    useSelectiveContextGraphDispatch(
+    useGraphSelectiveContextDispatch(
       'deletedLinkIds',
       buttonListenerKey,
       deletedLinksInit,
       useSelectiveContextDispatchNumberList
     );
   const { simpleDispatch: setDeletedNodeIds, currentState: deletedNodeIds } =
-    useSelectiveContextGraphDispatch(
+    useGraphSelectiveContextDispatch(
       'deletedNodeIds',
       buttonListenerKey,
       deletedNodesInit,

@@ -35,7 +35,7 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 import { node } from 'prop-types';
-import { useSelectiveContextGraphDispatch } from './graph-context-creator';
+import { useGraphSelectiveContextDispatch } from './graph-context-creator';
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 
 export default function Graph<T>({

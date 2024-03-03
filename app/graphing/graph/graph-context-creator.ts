@@ -1,8 +1,14 @@
 import { createContext, useContext, useMemo } from 'react';
-import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
+import {
+  useSelectiveContextControllerNumber,
+  useSelectiveContextDispatchNumber
+} from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
-import { UseSelectiveContextController } from '../../components/selective-context/use-selective-context-controller';
+import {
+  UseSelectiveContextController,
+  UseSelectiveContextDispatch
+} from '../../components/selective-context/use-selective-context-controller';
 import { UseSelectiveContextListener } from '../../components/selective-context/use-selective-context-listener';
 
 export type GraphSelectiveContext =
@@ -24,7 +30,7 @@ export const GraphContext = createContext<GraphContextInterface>({
   uniqueGraphName: 'default'
 });
 
-export function useSelectiveGraphContextKey(
+export function useGraphSelectiveContextKey(
   contextKey: GraphSelectiveContext,
   listenerKey: string
 ) {
@@ -36,40 +42,37 @@ export function useSelectiveGraphContextKey(
   }, [uniqueGraphName, listenerKey, contextKey]);
 }
 
-export function useSelectiveContextGraphDispatch<T>(
+export function useGraphSelectiveContextDispatch<T>(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
   initialValue: T,
-  useSelectiveContextDispatch: UseSelectiveContextController<T>
+  useSelectiveContextDispatch: UseSelectiveContextDispatch<T>
 ) {
-  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+  const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
     contextKey,
     `${listenerKey}`
   );
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatch(
-    contextKeyConcat,
-    listenerKeyConcat,
+  const { currentState, dispatchWithoutControl } = useSelectiveContextDispatch({
+    contextKey: contextKeyConcat,
+    listenerKey: listenerKeyConcat,
     initialValue
-  );
-  const simpleDispatch = (value: T) => {
-    dispatchUpdate({ contextKey: contextKeyConcat, value: value });
-  };
+  });
+
   return {
     currentState,
-    simpleDispatch,
+    dispatchWithoutControl,
     contextKey,
-    listenerKey,
-    dispatchUpdate
+    listenerKey
   };
 }
 
-export function useSelectionContextGraphListener<T>(
+export function useGraphSelectionContextListener<T>(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
   initialValue: T,
   useSelectiveContextListener: UseSelectiveContextListener<T>
 ) {
-  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+  const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
     contextKey,
     `${listenerKey}`
   );
@@ -81,28 +84,26 @@ export function useSelectionContextGraphListener<T>(
   );
 }
 
-export function useSelectiveContextGraphNumberDispatch(
+export function useGraphSelectiveContextNumberDispatch(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
   initialValue: number
 ) {
-  const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
+  const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
     contextKey,
     `${listenerKey}`
   );
-  const { currentState, dispatchUpdate } = useSelectiveContextControllerNumber(
-    contextKeyConcat,
-    listenerKeyConcat,
-    initialValue
-  );
-  const simpleDispatch = (value: number) => {
-    dispatchUpdate({ contextKey: contextKeyConcat, value: value });
-  };
+  const { currentState, dispatchWithoutControl } =
+    useSelectiveContextDispatchNumber({
+      contextKey: contextKeyConcat,
+      listenerKey: listenerKeyConcat,
+      initialValue
+    });
+
   return {
     currentState,
-    simpleDispatch,
+    dispatchWithoutControl,
     contextKey,
-    listenerKey,
-    dispatchUpdate
+    listenerKey
   };
 }

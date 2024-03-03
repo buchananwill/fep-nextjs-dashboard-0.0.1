@@ -18,8 +18,11 @@ import { getForceCollide } from './forces/force-collide';
 import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import { getForceRadial, updateForceRadial } from './forces/force-radial';
 import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
-import { useSelectionContextGraphListener } from './graph/graph-context-creator';
-import { useSelectiveContextDispatchNumberList } from '../components/selective-context/selective-context-manager-number-list';
+import { useGraphSelectionContextListener } from './graph/graph-context-creator';
+import {
+  useSelectiveContextDispatchNumberList,
+  useSelectiveContextListenerNumberList
+} from '../components/selective-context/selective-context-manager-number-list';
 
 export type StandardForceKey =
   | 'link'
@@ -81,11 +84,11 @@ export function useD3ForceSimulation<T>(
 
   const {
     currentState: [width, height]
-  } = useSelectionContextGraphListener(
+  } = useGraphSelectionContextListener(
     'dimensions',
     listenerKey,
     dimensionArray,
-    useSelectiveContextDispatchNumberList
+    useSelectiveContextListenerNumberList
   );
 
   const simVersionRef = useRef(simVersion);
