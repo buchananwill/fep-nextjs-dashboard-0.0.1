@@ -3,9 +3,13 @@ import { useMemo } from 'react';
 import { GraphEditButton } from './graph-edit-button';
 import { DataNode } from '../../api/zod-mods';
 import { deleteLinks, isNotNull } from './graph-edits';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 const deleteNodesKey = 'delete-nodes';
 
-export function deleteNodes<T>(selected: number[], current: DataNode<T>[]) {
+export function deleteNodes<T extends HasNumberIdDto>(
+  selected: number[],
+  current: DataNode<T>[]
+) {
   const selectedNodeIdSet = new Set(selected);
   const nodesForDeletion: number[] = [];
   const remainingNodes = current
@@ -21,7 +25,11 @@ export function deleteNodes<T>(selected: number[], current: DataNode<T>[]) {
   return { nodesForDeletion, remainingNodes };
 }
 
-export function DeleteNodesButton<T>({ children }: { children: string }) {
+export function DeleteNodesButton<T extends HasNumberIdDto>({
+  children
+}: {
+  children: string;
+}) {
   const deleteNodesMemoKey = useMemo(() => {
     return deleteNodesKey;
   }, []);

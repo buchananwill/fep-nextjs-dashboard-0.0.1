@@ -3,16 +3,17 @@ import { createNewLinks, createNode } from './graph-edits';
 import { DataNode } from '../../api/zod-mods';
 import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export type Relation = 'sibling' | 'child';
 
 const addNodesButton = `add-nodes-button`;
 
-export interface CloneFunction<T> {
+export interface CloneFunction<T extends HasNumberIdDto> {
   (object: T): T;
 }
 
-export function AddNodesButton<T>({
+export function AddNodesButton<T extends HasNumberIdDto>({
   children,
   relation,
   cloneFunction
@@ -77,7 +78,6 @@ export function AddNodesButton<T>({
     setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
 
     deBounce();
-    console.log('Before updating the links:', linkListRef);
 
     linkListRef.current = [...allUpdatedLinks].map((link, index) => {
       const source = link.source as DataNode<T>;
@@ -85,7 +85,6 @@ export function AddNodesButton<T>({
       return { ...link, source: source.id, target: target.id, index };
     });
     nodeListRef.current = allNodes;
-    console.log('After updating the links:', linkListRef);
 
     incrementSimVersion();
   };

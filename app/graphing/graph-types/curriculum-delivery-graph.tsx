@@ -48,10 +48,17 @@ import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
 import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 import { useModal } from '../../components/confirm-action-modal';
-import { putOrganizationGraph } from '../../api/actions/curriculum-delivery-model';
+import {
+  deleteNodes,
+  putOrganizationGraph
+} from '../../api/actions/curriculum-delivery-model';
 import { useRouter } from 'next/navigation';
-import { useDirectSimRefEditsController } from '../editing/use-graph-edit-button-hooks';
+import {
+  useDirectSimRefEditsController,
+  useGraphEditButtonHooks
+} from '../editing/use-graph-edit-button-hooks';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { TransientIdOffset } from '../editing/graph-edits';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 
@@ -98,6 +105,10 @@ function mapLinksBackToIdRefs<T extends HasNumberIdDto>(l: DataLink<T>) {
   return { ...l, source: objectRefSource.id, target: objectRefTarget.id };
 }
 
+function removeTransientIds(id: number) {
+  return id <= TransientIdOffset;
+}
+
 export default function CurriculumDeliveryGraph({
   children,
   bundles
@@ -119,12 +130,16 @@ export default function CurriculumDeliveryGraph({
     true
   );
 
+  const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
+    'curriculum-delivery-graph-page'
+  );
+
   const unsavedGraphContextKey = useSelectiveContextKeyMemo(
     UnsavedNodeDataContextKey,
     uniqueGraphName
   );
 
-  const { currentState: unsavedGraphChanges } =
+  const { currentState: unsavedGraphChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
       unsavedGraphContextKey,
       unsavedGraphContextKey,
@@ -195,14 +210,27 @@ export default function CurriculumDeliveryGraph({
         nodes: nodes,
         closureDtos: linksWithNumberIdRefs
       };
-      putOrganizationGraph(updatedGraph).then((r) => {
-        console.log(r);
-        closeModal();
-        dispatchUpdate({ contextKey: unsavedGraphContextKey, value: false });
-        if (r.status == 200) {
-          appRouterInstance.refresh();
-        }
-      });
+      const deletedLinkNonTransientIds =
+        deletedLinkIds.filter(removeTransientIds);
+      const deletedNodeNonTransientIds =
+        deletedNodeIds.filter(removeTransientIds);
+      if (deletedNodeNonTransientIds.length > 0) {
+        deleteNodes(deletedNodeNonTransientIds);
+      }
+      const unsavedNodes = nodes.filter((n) => !removeTransientIds(n.id));
+      const unsavedLinks = links.filter((l) => !removeTransientIds(l.id));
+
+      if (unsavedLinks.length > 0 || unsavedNodes.length > 0) {
+        putOrganizationGraph(updatedGraph).then((r) => {
+          console.log(r);
+          if (r.status == 200) {
+          }
+        });
+      }
+
+      dispatchUpdate({ contextKey: unsavedGraphContextKey, value: false });
+      appRouterInstance.refresh();
+      closeModal();
     }
   };
 

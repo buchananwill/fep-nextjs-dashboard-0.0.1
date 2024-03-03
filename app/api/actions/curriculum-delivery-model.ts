@@ -36,11 +36,13 @@ export async function getCurriculumDeliveryModelSchemas(
   }
 }
 
+const organizationGraphEndpoint = `${API_BASE_URL}/graphs/organizations`;
+
 export async function getOrganizationGraph(): ActionResponsePromise<
   GraphDto<OrganizationDto>
 > {
   try {
-    const response = await fetch(`${API_BASE_URL}/graphs/organizations`, {
+    const response = await fetch(organizationGraphEndpoint, {
       cache: 'no-cache'
     });
     const graph: GraphDto<OrganizationDto> = await response.json();
@@ -56,7 +58,7 @@ export async function putOrganizationGraph(
 ): ActionResponsePromise<GraphDto<OrganizationDto>> {
   try {
     console.log(updatedGraph);
-    const response = await fetch(`${API_BASE_URL}/graphs/organizations`, {
+    const response = await fetch(organizationGraphEndpoint, {
       cache: 'no-cache',
       method: 'PUT',
       headers: {
@@ -70,6 +72,25 @@ export async function putOrganizationGraph(
   } catch (error) {
     console.error('Error fetching data: ', error);
     return errorResponse(`${error}`);
+  }
+}
+
+export async function deleteNodes(idList: number[]): Promise<string> {
+  console.log(organizationGraphEndpoint);
+  try {
+    const response = await fetch(organizationGraphEndpoint, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(idList)
+    });
+    console.log(response);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return 'Error';
   }
 }
 

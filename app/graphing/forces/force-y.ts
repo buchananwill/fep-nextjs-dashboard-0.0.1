@@ -1,10 +1,7 @@
-import * as D3 from 'd3';
 import * as d3 from 'd3';
 import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
-import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
-import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getModulusGridY<T extends HasNumberIdDto>(
@@ -17,10 +14,12 @@ export function getModulusGridY<T extends HasNumberIdDto>(
     data: SimulationNodeDatum[]
   ) => number
 ) {
-  return D3.forceY((d: DataNode<T>, i) => {
-    if (i == undefined || isNaN(i)) return height / 2;
-    else return (i * spacing) % height;
-  }).strength(strength || 0.05);
+  return d3
+    .forceY((d: DataNode<T>, i) => {
+      if (i == undefined || isNaN(i)) return height / 2;
+      else return (i * spacing) % height;
+    })
+    .strength(strength || 0.05);
 }
 
 export function updateForceY<T extends HasNumberIdDto>(

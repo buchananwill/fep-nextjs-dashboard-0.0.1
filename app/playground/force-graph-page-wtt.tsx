@@ -11,8 +11,9 @@ import NodeDetails from '../graphing/components/node-details';
 import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
 import WorkTaskTypeDtoDetails from '../graphing/components/work-task-type-dto-details';
+import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 
-export interface NodePayload<T> {
+export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
   payload: React.JSX.Element;
 }
