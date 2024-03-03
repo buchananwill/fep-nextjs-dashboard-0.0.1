@@ -18,6 +18,14 @@ import { useSelectiveContextListenerStringList } from '../../components/selectiv
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleAssignmentsKey } from '../../curriculum-models/contexts/bundle-assignments-provider';
+import {
+  RenameModal,
+  RenameModalWrapperContextKey
+} from '../../components/rename-modal/rename-modal';
+import { useModal } from '../../components/confirm-action-modal';
+import { useSelectiveContextControllerString } from '../../components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
+import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-hooks';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
@@ -43,6 +51,7 @@ export function sumAllSchemas(
 }
 
 const cellFormatting = 'px-2 text-xs';
+export const CurriculumDetailsListenerKey = 'curriculum-details';
 export default function CurriculumDeliveryDetails({
   node
 }: {
@@ -68,6 +77,36 @@ export default function CurriculumDeliveryDetails({
     selectiveListenerKey,
     EmptyStringArray
   );
+  const { isOpen, closeModal, openModal } = useModal();
+  const renameModalContextKey = useSelectiveContextKeyMemo(
+    `${RenameModalWrapperContextKey}:${selectiveContextKey}`,
+    CurriculumDetailsListenerKey
+  );
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
+    renameModalContextKey,
+    CurriculumDetailsListenerKey,
+    node.data.name
+  );
+
+  const { nodeListRef, incrementSimVersion } =
+    useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
+
+  const handleConfirmRename = () => {
+    const currentElement = nodeListRef?.current[node.index!];
+    if (currentElement) {
+      currentElement.data.name = currentState;
+      incrementSimVersion();
+    }
+    closeModal();
+  };
+
+  const handleCancelRename = () => {
+    dispatchUpdate({
+      contextKey: renameModalContextKey,
+      value: node.data.name
+    });
+    closeModal();
+  };
 
   const { schemas, bundleRowSpan } = useMemo(() => {
     const schemas = schemaIdList
@@ -105,9 +144,9 @@ export default function CurriculumDeliveryDetails({
       <div className={'grid grid-cols-6 gap-1 mb-1'}>
         <div className={leftCol}>Block:</div>
         <div className={'col-start-2 col-span-5'}>
-          <button className={'btn btn-xs w-full'}>
-            {node.data.name} - Total Periods: {totalAllocation}
+          <button className={'btn btn-xs w-full'} onClick={openModal}>
             <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
+            {node.data.name} - Total Periods: {totalAllocation}
           </button>
         </div>
       </div>
@@ -173,6 +212,13 @@ export default function CurriculumDeliveryDetails({
           </Listbox>
         </div>
       </div>
+      <RenameModal
+        contextKey={renameModalContextKey}
+        show={isOpen}
+        onClose={closeModal}
+        onConfirm={handleConfirmRename}
+        onCancel={handleCancelRename}
+      />
     </div>
   );
 }

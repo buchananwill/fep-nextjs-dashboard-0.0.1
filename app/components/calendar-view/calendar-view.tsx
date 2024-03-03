@@ -4,9 +4,7 @@ import { MONTHS } from './range/calendar-range-reducers';
 import { DaySubColumnLabel } from './day-sub-column-label';
 import { HourLabelsColumn } from '../hour-labels-column';
 import React, { ReactNode, useContext, useEffect, useRef } from 'react';
-import { ZoomScaleContext } from './scale/zoom-scale-context';
-import { NameIdNumberTuple } from '../../api/zod-mods';
-import { DndContext } from '@dnd-kit/core';
+import { LongIdStringNameTuple } from '../../api/dtos/LongIdStringNameTupleSchema';
 
 export function makeMondayZero(day: number) {
   return (day + 6) % 7;
@@ -20,7 +18,7 @@ export default function CalendarView({
 }: {
   totalDayWidth: number;
   dates: Date[];
-  daySubLabels: NameIdNumberTuple[];
+  daySubLabels: LongIdStringNameTuple[];
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);

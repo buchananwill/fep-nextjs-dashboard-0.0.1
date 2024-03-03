@@ -1,8 +1,8 @@
 import {
-  useSelectiveContextDispatchNumber,
+  useSelectiveContextControllerNumber,
   useSelectiveContextListenerNumber
 } from '../components/selective-context/selective-context-manager-number';
-import { useSelectiveContextDispatchString } from '../components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerString } from '../components/selective-context/selective-context-manager-string';
 import { useSelectiveContextControllerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useRootSvgContext } from './root-svg-context';
@@ -10,7 +10,8 @@ import { useRootSvgContext } from './root-svg-context';
 export function useSvgZoom(uniqueElementKey: string, rootSvgKey: string) {
   const { currentState: zoomScale } = useSelectiveContextListenerNumber(
     `zoom-${rootSvgKey}`,
-    `${uniqueElementKey}-drag-scale`
+    `${uniqueElementKey}-drag-scale`,
+    1
   );
   return zoomScale;
 }
@@ -22,7 +23,11 @@ export function useSvgScale(uniqueElementKey: string) {
   const zoomScale = useSvgZoom(uniqueElementKey, rootSvgKey);
 
   const { currentState: svgScale, dispatchUpdate: setSvgScale } =
-    useSelectiveContextDispatchNumber(svgScaleKey, uniqueElementKey, 1);
+    useSelectiveContextControllerNumber({
+      contextKey: svgScaleKey,
+      listenerKey: uniqueElementKey,
+      initialValue: 1
+    });
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -49,25 +54,41 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
   const svgCurrentDragTargetKey = `svg-current-drag-target-${rootSvgKey}`;
 
   const { currentState: draggableX, dispatchUpdate: updateX } =
-    useSelectiveContextDispatchNumber(
-      `drag-x-${uniqueElementKey}`,
-      uniqueElementKey,
-      0
-    );
+    useSelectiveContextControllerNumber({
+      contextKey: `drag-x-${uniqueElementKey}`,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: draggableY, dispatchUpdate: updateY } =
-    useSelectiveContextDispatchNumber(
-      `drag-y-${uniqueElementKey}`,
-      uniqueElementKey,
-      0
-    );
+    useSelectiveContextControllerNumber({
+      contextKey: `drag-y-${uniqueElementKey}`,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: startPosX, dispatchUpdate: updateStartPosX } =
-    useSelectiveContextDispatchNumber(svgStartPosXKey, uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: svgStartPosXKey,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: startPosY, dispatchUpdate: updateStartPosY } =
-    useSelectiveContextDispatchNumber(svgStartPosYKey, uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: svgStartPosYKey,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: dragXCurrent, dispatchUpdate: dispatchCurrentX } =
-    useSelectiveContextDispatchNumber('drag-x-current', uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: 'drag-x-current',
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: dragYCurrent, dispatchUpdate: dispatchCurrentY } =
-    useSelectiveContextDispatchNumber('drag-y-current', uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: 'drag-y-current',
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: mouseDown, dispatchUpdate: setMouseDown } =
     useSelectiveContextControllerBoolean(
       svgMouseDownKey,
@@ -76,7 +97,7 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
     );
 
   const { currentState: currentDragTarget, dispatchUpdate } =
-    useSelectiveContextDispatchString(
+    useSelectiveContextControllerString(
       svgCurrentDragTargetKey,
       uniqueElementKey,
       ''
@@ -158,32 +179,48 @@ export function useDraggableSvgRoot(uniqueElementKey: string) {
     );
 
   const { currentState: startPosX, dispatchUpdate: updateStartPosX } =
-    useSelectiveContextDispatchNumber(svgStartPosXKey, uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: svgStartPosXKey,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: startPosY, dispatchUpdate: updateStartPosY } =
-    useSelectiveContextDispatchNumber(svgStartPosYKey, uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: svgStartPosYKey,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
 
   const { currentState: dragXCurrent, dispatchUpdate: dispatchCurrentX } =
-    useSelectiveContextDispatchNumber('drag-x-current', uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: 'drag-x-current',
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: dragYCurrent, dispatchUpdate: dispatchCurrentY } =
-    useSelectiveContextDispatchNumber('drag-y-current', uniqueElementKey, 0);
+    useSelectiveContextControllerNumber({
+      contextKey: 'drag-y-current',
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: currentDragTarget, dispatchUpdate } =
-    useSelectiveContextDispatchString(
+    useSelectiveContextControllerString(
       svgCurrentDragTargetKey,
       uniqueElementKey,
       ''
     );
   const { currentState: draggableX, dispatchUpdate: updateX } =
-    useSelectiveContextDispatchNumber(
-      `drag-x-${uniqueElementKey}`,
-      uniqueElementKey,
-      0
-    );
+    useSelectiveContextControllerNumber({
+      contextKey: `drag-x-${uniqueElementKey}`,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
   const { currentState: draggableY, dispatchUpdate: updateY } =
-    useSelectiveContextDispatchNumber(
-      `drag-y-${uniqueElementKey}`,
-      uniqueElementKey,
-      0
-    );
+    useSelectiveContextControllerNumber({
+      contextKey: `drag-y-${uniqueElementKey}`,
+      listenerKey: uniqueElementKey,
+      initialValue: 0
+    });
 
   const { svgRef, svgScale } = useSvgScale(uniqueElementKey);
 

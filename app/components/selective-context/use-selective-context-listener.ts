@@ -2,6 +2,7 @@ import React, {
   MutableRefObject,
   useContext,
   useEffect,
+  useMemo,
   useState
 } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   UpdateAction,
   UpdateRefInterface
 } from './selective-context-manager';
+import { schemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
 
 export interface UseSelectiveContextListenerReturn<T> {
   currentState: T;
@@ -106,4 +108,13 @@ export function useSelectiveContextDispatch<T>(
   };
 
   return { currentState, dispatchWithoutControl };
+}
+
+export function useSelectiveContextKeyMemo(
+  contextKey: string,
+  listenerKey: string
+) {
+  return useMemo(() => {
+    return `${contextKey}:${listenerKey}`;
+  }, [contextKey, listenerKey]);
 }

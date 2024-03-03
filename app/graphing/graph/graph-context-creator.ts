@@ -1,8 +1,8 @@
 import { createContext, useContext, useMemo } from 'react';
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
-import { UseSelectiveContextDispatch } from '../../components/selective-context/use-selective-context-controller';
+import { UseSelectiveContextController } from '../../components/selective-context/use-selective-context-controller';
 import { UseSelectiveContextListener } from '../../components/selective-context/use-selective-context-listener';
 
 export type GraphSelectiveContext =
@@ -40,7 +40,7 @@ export function useSelectiveContextGraphDispatch<T>(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
   initialValue: T,
-  useSelectiveContextDispatch: UseSelectiveContextDispatch<T>
+  useSelectiveContextDispatch: UseSelectiveContextController<T>
 ) {
   const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
     contextKey,
@@ -90,7 +90,7 @@ export function useSelectiveContextGraphNumberDispatch(
     contextKey,
     `${listenerKey}`
   );
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatchNumber(
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerNumber(
     contextKeyConcat,
     listenerKeyConcat,
     initialValue

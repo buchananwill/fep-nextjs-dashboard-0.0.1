@@ -1,6 +1,6 @@
-import { WorkTaskDto } from '../../api/zod-mods';
 import { createContext, Dispatch, DispatchWithoutAction } from 'react';
-import { AddEditedTask, TaskDispatch } from './workshop-task-context-provider';
+import { TaskDispatch } from './workshop-task-context-provider';
+import { WorkTaskDto } from '../../api/dtos/WorkTaskDtoSchema';
 
 export interface IWorkshopTaskContext {
   editedTasks: WorkTaskDto[];

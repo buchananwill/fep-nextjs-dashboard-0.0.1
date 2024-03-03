@@ -35,7 +35,7 @@ export function useKeyHeldListener(key?: string, code?: string) {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, []); // The empty dependency array means this effect runs only once after the initial render
+  }, [code, key]); // The empty dependency array means this effect runs only once after the initial render
   return keyHeld;
 }
 

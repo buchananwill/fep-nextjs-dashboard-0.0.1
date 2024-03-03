@@ -9,28 +9,75 @@ import {
   useSelectiveContextGraphNumberDispatch,
   useSelectiveGraphContextKey
 } from '../graph/graph-context-creator';
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
+import {
+  useSelectiveContextControllerNumber,
+  useSelectiveContextDispatchNumber
+} from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { TransientIdOffset } from './graph-edits';
+import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
+
+export function useGraphVersionKeys<T>(listenerKey: string) {
+  const { uniqueGraphName } = useGenericNodeContext<T>();
+  const { contextVersionKey, listenerVersionKey } = useMemo(() => {
+    const contextVersionKey = `${uniqueGraphName}:version`;
+    const listenerVersionKey = `${uniqueGraphName}:${listenerKey}`;
+    return { contextVersionKey, listenerVersionKey };
+  }, [listenerKey, uniqueGraphName]);
+  return { contextVersionKey, listenerVersionKey };
+}
+
+export function useDirectSimRefEditsController<T>(buttonListenerKey: string) {
+  const { contextVersionKey, listenerVersionKey } =
+    useGraphVersionKeys(buttonListenerKey);
+
+  const { currentState: simVersion, dispatchUpdate } =
+    useSelectiveContextControllerNumber({
+      contextKey: contextVersionKey,
+      listenerKey: listenerVersionKey,
+      initialValue: 0
+    });
+
+  const incrementSimVersion = () => {
+    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
+  };
+  const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
+  return { incrementSimVersion, nodeListRef, linkListRef };
+}
+export function useDirectSimRefEditsDispatch<T>(buttonListenerKey: string) {
+  const { contextVersionKey, listenerVersionKey } =
+    useGraphVersionKeys(buttonListenerKey);
+
+  const { currentState: simVersion, dispatchWithoutControl } =
+    useSelectiveContextDispatchNumber({
+      contextKey: contextVersionKey,
+      listenerKey: listenerVersionKey,
+      initialValue: 0
+    });
+
+  const incrementSimVersion = () => {
+    dispatchWithoutControl(simVersion + 1);
+  };
+  const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
+  return { incrementSimVersion, nodeListRef, linkListRef };
+}
 
 export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
-  const { uniqueGraphName } = useGenericNodeContext<T>();
-  const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
-
   const { selected } = useNodeInteractionContext();
 
-  const { contextVersionKey, listenerVersionKey } = useMemo(() => {
-    const contextVersionKey = `${uniqueGraphName}-version`;
-    const listenerVersionKey = `${uniqueGraphName}:${buttonListenerKey}`;
-    return { contextVersionKey, listenerVersionKey };
-  }, [buttonListenerKey, uniqueGraphName]);
+  const { incrementSimVersion, nodeListRef, linkListRef } =
+    useDirectSimRefEditsController<T>(buttonListenerKey);
 
   const { contextKeyConcat, listenerKeyConcat } = useSelectiveGraphContextKey(
     'nextNodeId',
     buttonListenerKey
   );
   const { currentState: nextNodeId, dispatchUpdate: setNextNodeId } =
-    useSelectiveContextDispatchNumber(contextKeyConcat, listenerKeyConcat, NaN);
+    useSelectiveContextControllerNumber({
+      contextKey: contextKeyConcat,
+      listenerKey: listenerKeyConcat,
+      initialValue: NaN
+    });
 
   const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
     useSelectiveContextGraphNumberDispatch(
@@ -38,9 +85,6 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
       buttonListenerKey,
       NaN
     );
-
-  const { currentState: simVersion, dispatchUpdate } =
-    useSelectiveContextDispatchNumber(contextVersionKey, listenerVersionKey, 0);
 
   const { nodesInit, linksInit, deletedLinksInit, deletedNodesInit } =
     useMemo(() => {
@@ -112,10 +156,6 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     }
     setNextLinkId(responseId + 1);
     return responseId;
-  };
-
-  const incrementSimVersion = () => {
-    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
   };
 
   const checkForSelectedNodes = (minimum: number = 1) => {

@@ -2,19 +2,20 @@ import WorkshopJobModal from '../../workshop-job-modal/workshop-job-modal';
 import { Text } from '@tremor/react';
 import React, { useContext, useEffect } from 'react';
 import { ColorCoding } from '../../../color-coding/context';
-import { CalendarEvent, MechanicDto } from '../../../api/zod-mods';
+
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { EventsDispatch } from '../../contexts/events/event-context';
 import { TimeDeltaMonitor } from '../../page';
 import { Z_ContextDispatch } from '../../../contexts/z-context/z-context';
+import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 
 export function WorkshopJobBlock({
   workshopJob,
   mechanic
 }: {
   workshopJob: CalendarEvent;
-  mechanic: MechanicDto;
+  mechanic: ProviderRoleDto;
 }) {
   const { description, normalizedEventOutcome, id, eventStart } = workshopJob;
   const colorCodingState = useContext(ColorCoding);

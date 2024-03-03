@@ -1,5 +1,6 @@
 import React, { Fragment, ReactNode, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useEnterPressListener } from './useKeyPressListener';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
@@ -15,24 +16,35 @@ export function useModal() {
   return { isOpen, closeModal, openModal };
 }
 
-export function ConfirmActionModal({
-  onCancel,
-  onClose,
-  onConfirm,
-  show,
-  children,
-  title = 'Confirm'
-}: {
+export interface ConfirmActionModalProps {
   show: boolean;
   onClose: () => void;
   onConfirm: () => void;
   onCancel: () => void;
   children?: ReactNode;
   title?: string;
-}) {
+  enterToConfirm?: boolean;
+}
+
+export function ConfirmActionModal({
+  onCancel,
+  onClose,
+  onConfirm,
+  show,
+  children,
+  title = 'Confirm',
+  enterToConfirm
+}: ConfirmActionModalProps) {
+  const enterAction = enterToConfirm ? onConfirm : () => {};
+  useEnterPressListener(enterAction);
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={onClose}
+        role={'dialog'}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

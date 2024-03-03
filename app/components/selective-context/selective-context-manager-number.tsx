@@ -10,10 +10,13 @@ import {
   useSelectiveContextManager
 } from './selective-context-manager';
 import {
+  UseSelectiveContextController,
+  useSelectiveContextController,
   UseSelectiveContextDispatch,
-  useSelectiveContextController
+  UseSelectiveContextParams
 } from './use-selective-context-controller';
 import {
+  useSelectiveContextDispatch,
   UseSelectiveContextListener,
   useSelectiveContextListener
 } from './use-selective-context-listener';
@@ -36,9 +39,13 @@ export default function SelectiveContextManagerNumber({
   );
 }
 
-export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
+export const useSelectiveContextControllerNumber: UseSelectiveContextController<
   number
-> = (contextKey: string, listenerKey: string, initialValue: number) => {
+> = ({
+  contextKey,
+  initialValue,
+  listenerKey
+}: UseSelectiveContextParams<number>) => {
   const { currentState, dispatchUpdate } = useSelectiveContextController(
     contextKey,
     listenerKey,
@@ -49,6 +56,24 @@ export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
   );
 
   return { currentState, dispatchUpdate };
+};
+export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
+  number
+> = ({
+  contextKey,
+  initialValue,
+  listenerKey
+}: UseSelectiveContextParams<number>) => {
+  const { currentState, dispatchWithoutControl } = useSelectiveContextDispatch(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateRefContextNumber,
+    ContextRefNumber,
+    DispatchUpdateContextNumber
+  );
+
+  return { currentState, dispatchWithoutControl };
 };
 
 export const useSelectiveContextListenerNumber: UseSelectiveContextListener<

@@ -1,37 +1,37 @@
 'use client';
 import React from 'react';
-import { useSelectiveContextDispatchNumber } from './selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from './selective-context-manager-number';
 
 export function SelectiveContextRangeSlider({
-  dispatchKey,
+  contextKey,
   initialValue,
   listenerKey,
   maxValue = 200,
   minValue = 0
 }: {
-  dispatchKey: string;
+  contextKey: string;
   initialValue: number;
   listenerKey: string;
   maxValue?: number;
   minValue?: number;
 }) {
-  const { currentState, dispatchUpdate } = useSelectiveContextDispatchNumber(
-    dispatchKey,
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerNumber({
+    contextKey,
     listenerKey,
     initialValue
-  );
+  });
 
   return (
     <input
-      name={dispatchKey}
-      id={dispatchKey}
+      name={contextKey}
+      id={contextKey}
       type={'range'}
       min={minValue}
       max={maxValue}
       value={currentState}
       onChange={(event) => {
         dispatchUpdate({
-          contextKey: dispatchKey,
+          contextKey: contextKey,
           value: parseInt(event.target.value)
         });
       }}

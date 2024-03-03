@@ -12,16 +12,31 @@ import {
 } from './selective-context-manager';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
-export interface UseSelectiveContextDispatchReturn<T> {
+export interface UseSelectiveContextParams<T> {
+  contextKey: string;
+  listenerKey: string;
+  initialValue: T;
+}
+
+export interface UseSelectiveContextControllerReturn<T> {
   currentState: T;
   dispatchUpdate: (action: UpdateAction<T>) => void;
 }
+export interface UseSelectiveContextDispatchReturn<T> {
+  currentState: T;
+  dispatchWithoutControl: (value: T) => void;
+}
 
 export type UseSelectiveContextDispatch<T> = (
-  contextKey: string,
-  listenerKey: string,
-  initialValue: T
+  params: UseSelectiveContextParams<T>
 ) => UseSelectiveContextDispatchReturn<T>;
+
+export type UseSelectiveContextController<T> = (
+  params: UseSelectiveContextParams<T>
+  // contextKey: string,
+  // listenerKey: string,
+  // initialValue: T
+) => UseSelectiveContextControllerReturn<T>;
 
 export function useSelectiveContextController<T>(
   contextKey: string,

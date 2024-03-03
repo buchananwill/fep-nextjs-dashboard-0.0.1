@@ -15,10 +15,6 @@ import {
   FloatingPortal
 } from '@floating-ui/react';
 import type { Placement } from '@floating-ui/react';
-import { useContext } from 'react';
-import TooltipsContext from './tooltips-context';
-import { useBooleanContext } from '../boolean-context/boolean-context-creator';
-import { useSelectiveContextListenerBoolean } from '../selective-context/selective-context-manager-boolean';
 import { useTooltipsContext } from './tooltips-context-provider';
 
 interface TooltipOptions {

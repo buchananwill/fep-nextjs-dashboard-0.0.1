@@ -5,7 +5,6 @@ import { ZoomScaleContext } from '../scale/zoom-scale-context';
 
 import { NormalizedInterval } from 'date-fns/types';
 
-import { HasNumberId } from '../../../api/zod-mods';
 import DepthContextProvider from '../../../contexts/z-context/z-context-provider';
 import { Z_INDEX } from '../../../contexts/z-context/z-context';
 

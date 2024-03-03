@@ -17,7 +17,10 @@ import {
   useSelectiveContextListenerBoolean
 } from './selective-context-manager-boolean';
 import { useSelectiveContextController } from './use-selective-context-controller';
-import { useSelectiveContextListener } from './use-selective-context-listener';
+import {
+  useSelectiveContextDispatch,
+  useSelectiveContextListener
+} from './use-selective-context-listener';
 
 export default function SelectiveContextManagerString({
   children
@@ -37,21 +40,36 @@ export default function SelectiveContextManagerString({
   );
 }
 
-export function useSelectiveContextDispatchString(
+export function useSelectiveContextControllerString(
   contextKey: string,
   listenerKey: string,
   initialValue: string = ''
 ) {
   const { currentState, dispatchUpdate } = useSelectiveContextController(
     contextKey,
-    initialValue,
     listenerKey,
+    initialValue,
     UpdateRefContextString,
     DispatchUpdateContextString,
     ContextRefString
   );
 
   return { currentState, dispatchUpdate };
+}
+
+export function useSelectiveContextDispatchString(
+  contextKey: string,
+  listenerKey: string,
+  initialValue: string = ''
+) {
+  return useSelectiveContextDispatch(
+    contextKey,
+    initialValue,
+    listenerKey,
+    UpdateRefContextString,
+    ContextRefString,
+    DispatchUpdateContextString
+  );
 }
 
 export function useSelectiveContextListenerString(

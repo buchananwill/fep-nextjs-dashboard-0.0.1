@@ -48,7 +48,7 @@ export default function GraphForceAdjustment() {
         <div className={'flex items-center w-full justify-between'}>
           <label htmlFor={stringKey}>{entry[0]}</label>
           <SelectiveContextRangeSlider
-            dispatchKey={stringKey}
+            contextKey={stringKey}
             listenerKey={stringKey}
             minValue={min}
             maxValue={max}
