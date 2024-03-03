@@ -63,10 +63,11 @@ export function useD3ForceSimulation<T>(
     false
   );
 
-  const { currentState: simVersion } = useSelectiveContextListenerNumber(
-    contextAlterKey,
-    listenerAlterKey,
-    0
+  const { currentState: simVersion } = useGraphSelectiveContextListener(
+    'version',
+    listenerKey,
+    0,
+    useSelectiveContextListenerNumber
   );
 
   const { isTrue: isMounted } = useSelectiveContextListenerBoolean(

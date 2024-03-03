@@ -10,7 +10,10 @@ import React, {
 } from 'react';
 import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
-import { GraphContext } from '../graph/graph-context-creator';
+import {
+  GraphContext,
+  useGraphSelectiveContextDispatch
+} from '../graph/graph-context-creator';
 import { Card } from '@tremor/react';
 import CurriculumDeliveryDetails from '../components/curriculum-delivery-details';
 import { NodePayload } from '../force-graph-page';
@@ -18,7 +21,7 @@ import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeli
 import { GraphViewer } from '../graph/graph-viewer';
 import GraphForceAdjuster from '../components/graph-force-adjustment';
 import NodeDetails from '../components/node-details';
-import { AddNodesButton } from '../editing/add-nodes-button';
+import { AddNodesButton, CloneFunction } from '../editing/add-nodes-button';
 import {
   GenericLinkRefContext,
   useGenericLinkContext
@@ -47,12 +50,31 @@ import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 import { useModal } from '../../components/confirm-action-modal';
 import { putOrganizationGraph } from '../../api/actions/curriculum-delivery-model';
 import { useRouter } from 'next/navigation';
+import { useDirectSimRefEditsController } from '../editing/use-graph-edit-button-hooks';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 
-export interface GraphTypeProps<T> {
+export interface GraphTypeProps<T extends HasNumberIdDto> {
   graphData: GraphDto<T>;
 }
+
+const nameCharLimit = 255;
+export const cloneOrganizationNode: CloneFunction<DataNode<OrganizationDto>> = (
+  templateNode
+) => {
+  const {
+    data: { name }
+  } = templateNode;
+  let cloneName = `${name}${templateNode.data.name.substring(name.length - 1)}`;
+  cloneName.length > nameCharLimit
+    ? cloneName.substring(cloneName.length - nameCharLimit)
+    : cloneName;
+  return {
+    ...templateNode,
+    data: { ...templateNode.data, name: cloneName }
+  };
+};
 
 export function mapToPartyIdBundleIdRecords(
   bundles: WorkSeriesBundleDeliveryDto[]
@@ -70,7 +92,7 @@ export function mapToPartyIdBundleIdRecords(
   return { bundleAssignments, initialPayload };
 }
 
-function mapLinksBackToIdRefs<T>(l: DataLink<T>) {
+function mapLinksBackToIdRefs<T extends HasNumberIdDto>(l: DataLink<T>) {
   const objectRefSource = l.source as DataNode<T>;
   const objectRefTarget = l.target as DataNode<T>;
   return { ...l, source: objectRefSource.id, target: objectRefTarget.id };
@@ -146,7 +168,7 @@ export default function CurriculumDeliveryGraph({
   });
 
   const titleList = nodes.map(
-    (n: DataNode<OrganizationDto>) => n.data.organizationType.name
+    (n: DataNode<OrganizationDto>) => n.data?.organizationType?.name || ''
   );
 
   const nodeDetailElements: NodePayload<OrganizationDto>[] = nodes.map(
@@ -167,6 +189,7 @@ export default function CurriculumDeliveryGraph({
     const nodes = nodesRef.current;
     const links = linksRef.current;
     if (links && nodes) {
+      console.log('on their way to the database', nodes);
       const linksWithNumberIdRefs = links.map(mapLinksBackToIdRefs);
       const updatedGraph: GraphDto<OrganizationDto> = {
         nodes: nodes,
@@ -201,10 +224,18 @@ export default function CurriculumDeliveryGraph({
                 heightWhenOpen={'h-[6.5rem]'}
               >
                 <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
-                  <AddNodesButton relation={'sibling'}>
+                  <AddNodesButton
+                    relation={'sibling'}
+                    cloneFunction={cloneOrganizationNode}
+                  >
                     Add Sibling
                   </AddNodesButton>
-                  <AddNodesButton relation={'child'}>Add Child</AddNodesButton>
+                  <AddNodesButton
+                    relation={'child'}
+                    cloneFunction={cloneOrganizationNode}
+                  >
+                    Add Child
+                  </AddNodesButton>
                   <AddLinksButton>Join Nodes</AddLinksButton>
                 </div>
                 <div className={'w-full grid grid-cols-2 gap-1 relative'}>

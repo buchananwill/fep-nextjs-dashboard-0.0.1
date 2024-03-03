@@ -37,21 +37,15 @@ export default function ForceSimWrapper<T>({
 
   const nodesRef = useContext(GenericNodeRefContext);
   const linksRef = useContext(GenericLinkRefContext);
-  const contextAlterKey = `${uniqueGraphName}-ready`;
-  const listenerAlterKey = `${uniqueGraphName}-force-sim-wrapper`;
-
-  const { currentState: simVersion } = useSelectiveContextListenerNumber(
-    contextAlterKey,
-    listenerAlterKey,
-    0
-  );
+  // const contextAlterKey = `${uniqueGraphName}-ready`;
+  // const listenerAlterKey = `${uniqueGraphName}-force-sim-wrapper`;
+  //
 
   const [simDisplaying, setSimDisplaying] = useState(false);
 
   const ticked = useMemo(() => {
     return () => {
       if (nodesRef) {
-        // console.log('Nodes count: ', nodesRef.current.length);
         genericNodeDispatch(nodesRef.current.map((d) => ({ ...d })));
       }
       if (linksRef)

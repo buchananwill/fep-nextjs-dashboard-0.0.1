@@ -96,9 +96,6 @@ export default function CurriculumDeliveryDetails({
     uniqueGraphName
   );
 
-  const { nodeListRef, incrementSimVersion } =
-    useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
-
   const {
     currentState: unsavedGraph,
     dispatchWithoutControl: dispatchUnsavedGraph
@@ -108,6 +105,8 @@ export default function CurriculumDeliveryDetails({
     false
   );
 
+  const { nodeListRef, incrementSimVersion } =
+    useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
   const handleConfirmRename = () => {
     const currentElement = nodeListRef?.current[node.index!];
     if (currentElement) {

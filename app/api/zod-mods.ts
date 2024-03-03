@@ -8,6 +8,7 @@ import { ProductComponentStateDtoSchema } from './dtos/ProductComponentStateDtoS
 import { AssetDtoSchema } from './dtos/AssetDtoSchema';
 import { HasUuidDtoSchema } from './dtos/HasUuidDtoSchema';
 import { HasNameDtoSchema } from './dtos/HasNameDtoSchema';
+import { HasNumberIdDto } from './dtos/HasNumberIdDtoSchema';
 
 const days = DayOfWeek;
 
@@ -39,7 +40,7 @@ function makeGraphDtoSchema<T extends z.ZodTypeAny>(schema: T) {
   });
 }
 
-export interface GraphDto<T> {
+export interface GraphDto<T extends HasNumberIdDto> {
   nodes: DataNode<T>[];
   closureDtos: ClosureDto[];
 }
@@ -52,12 +53,15 @@ function makeDataNodeSchema<T extends z.ZodSchema>(schema: T) {
   });
 }
 
-export type DataNode<T> = SimulationNodeDatum & {
+export type DataNode<T extends HasNumberIdDto> = SimulationNodeDatum & {
   id: number;
   distanceFromRoot: number;
   data: T;
 };
-export type DataLink<T> = SimulationLinkDatum<DataNode<T>> & ClosureDto;
+export type DataLink<T extends HasNumberIdDto> = SimulationLinkDatum<
+  DataNode<T>
+> &
+  ClosureDto;
 
 export const ProductComponentNodeSchema = makeDataNodeSchema(
   ProductComponentDtoSchema

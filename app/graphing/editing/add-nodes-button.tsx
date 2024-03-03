@@ -1,4 +1,3 @@
-'use client';
 import React, { useMemo } from 'react';
 import { createNewLinks, createNode } from './graph-edits';
 import { DataNode } from '../../api/zod-mods';
@@ -9,12 +8,18 @@ export type Relation = 'sibling' | 'child';
 
 const addNodesButton = `add-nodes-button`;
 
+export interface CloneFunction<T> {
+  (object: T): T;
+}
+
 export function AddNodesButton<T>({
   children,
-  relation
+  relation,
+  cloneFunction
 }: {
   relation: Relation;
   children: string;
+  cloneFunction: CloneFunction<DataNode<T>>;
 }) {
   const buttonListenerKey = useMemo(() => {
     return `${addNodesButton}:${relation}`;
@@ -48,7 +53,8 @@ export function AddNodesButton<T>({
       startIdAt: nextNodeToSubmit,
       targetNodes: refNodes,
       allNodes: nodeListRef.current,
-      relation
+      relation,
+      cloneFunction
     });
 
     setTransientNodeIds([
@@ -71,6 +77,7 @@ export function AddNodesButton<T>({
     setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
 
     deBounce();
+    console.log('Before updating the links:', linkListRef);
 
     linkListRef.current = [...allUpdatedLinks].map((link, index) => {
       const source = link.source as DataNode<T>;
@@ -78,6 +85,7 @@ export function AddNodesButton<T>({
       return { ...link, source: source.id, target: target.id, index };
     });
     nodeListRef.current = allNodes;
+    console.log('After updating the links:', linkListRef);
 
     incrementSimVersion();
   };

@@ -1,6 +1,7 @@
 'use client';
 import { DataLink, DataNode } from '../../api/zod-mods';
-import { Relation } from './add-nodes-button';
+import { CloneFunction, Relation } from './add-nodes-button';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function isNotNull<T>(value: T | null): value is T {
   return value !== null;
@@ -8,14 +9,15 @@ export function isNotNull<T>(value: T | null): value is T {
 
 export const TransientIdOffset = Math.pow(2, 50);
 
-export interface InitNode<T> {
+export interface CreateNodeParams<T extends HasNumberIdDto> {
   startIdAt: number;
   targetNodes: DataNode<T>[];
   allNodes: DataNode<T>[];
   relation: Relation;
+  cloneFunction: CloneFunction<DataNode<T>>;
 }
 
-export interface LinkParams<T> {
+export interface LinkParams<T extends HasNumberIdDto> {
   references: DataNode<T>[];
   newNodes: DataNode<T>[];
   allLinks: DataLink<T>[];
@@ -23,21 +25,32 @@ export interface LinkParams<T> {
   relation: Relation;
 }
 
-export function createNode<T>(initNode: InitNode<T>): {
+export function createNode<T extends HasNumberIdDto>(
+  createNodeParams: CreateNodeParams<T>
+): {
   allNodes: DataNode<T>[];
   createdNodes: DataNode<T>[];
 } {
-  const { targetNodes, startIdAt, allNodes: oldNodes, relation } = initNode;
+  const {
+    targetNodes,
+    startIdAt,
+    allNodes: oldNodes,
+    relation,
+    cloneFunction
+  } = createNodeParams;
   let createdNodes: DataNode<T>[] = [];
   let counter = 0;
   for (const node of targetNodes) {
-    const { distanceFromRoot, ...otherFields } = node;
+    const { distanceFromRoot, data, ...otherFields } = cloneFunction(node);
+    const nextId = startIdAt + counter;
+    data.id = nextId;
     const newDistance =
       relation === 'sibling' ? distanceFromRoot : distanceFromRoot + 1;
     const createdNode = {
       ...otherFields,
-      id: startIdAt + counter,
-      distanceFromRoot: newDistance
+      id: nextId,
+      distanceFromRoot: newDistance,
+      data: data
     };
     createdNodes.push(createdNode);
     counter++;
@@ -47,7 +60,7 @@ export function createNode<T>(initNode: InitNode<T>): {
   return { allNodes, createdNodes };
 }
 
-export function createNewLinks<T>({
+export function createNewLinks<T extends HasNumberIdDto>({
   references,
   newNodes,
   allLinks,
@@ -104,7 +117,7 @@ export function createNewLinks<T>({
   return { allUpdatedLinks, newLinks };
 }
 
-export function deleteLinks<T>(
+export function deleteLinks<T extends HasNumberIdDto>(
   linksListRef: DataLink<T>[],
   selectedNodeIds: number[]
 ) {

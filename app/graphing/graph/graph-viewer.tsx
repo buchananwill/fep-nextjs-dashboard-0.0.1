@@ -19,6 +19,9 @@ import {
   ForceGraphMouseButtonEventsDispatch
 } from '../force-graph-dnd/mouse-event-context-creator';
 import ZoomScaleContextProvider from '../../components/calendar-view/scale/zoom-scale-context-provider';
+import { useGraphEditRootContext } from '../editing/use-graph-edit-root-context';
+import { useDirectSimRefEditsController } from '../editing/use-graph-edit-button-hooks';
+import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 
 export function GraphViewer<T, U>({
   textList,
@@ -37,6 +40,8 @@ export function GraphViewer<T, U>({
   );
   const [forceGraphDraggable, setForceGraphDraggable] =
     useState<ForceGraphDraggable>({});
+
+  useGraphEditRootContext();
 
   return (
     <DraggableToTranslate>

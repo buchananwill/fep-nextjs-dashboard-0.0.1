@@ -3,11 +3,12 @@ import {
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
 import { useNodeInteractionContext } from '../nodes/node-interaction-context';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import {
   useGraphSelectiveContextDispatch,
   useGraphSelectiveContextNumberDispatch,
-  useGraphSelectiveContextKey
+  useGraphSelectiveContextKey,
+  GraphContext
 } from '../graph/graph-context-creator';
 import {
   useSelectiveContextControllerNumber,
@@ -16,6 +17,9 @@ import {
 import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { TransientIdOffset } from './graph-edits';
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
+import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
+import { CurriculumDetailsListenerKey } from '../components/curriculum-delivery-details';
 
 export function useGraphVersionKeys<T>(listenerKey: string) {
   const { uniqueGraphName } = useGenericNodeContext<T>();
@@ -27,9 +31,9 @@ export function useGraphVersionKeys<T>(listenerKey: string) {
   return { contextVersionKey, listenerVersionKey };
 }
 
-export function useDirectSimRefEditsController<T>(buttonListenerKey: string) {
+export function useDirectSimRefEditsController<T>(listenerKey: string) {
   const { contextVersionKey, listenerVersionKey } =
-    useGraphVersionKeys(buttonListenerKey);
+    useGraphVersionKeys(listenerKey);
 
   const { currentState: simVersion, dispatchUpdate } =
     useSelectiveContextControllerNumber({
@@ -48,6 +52,21 @@ export function useDirectSimRefEditsDispatch<T>(buttonListenerKey: string) {
   const { contextVersionKey, listenerVersionKey } =
     useGraphVersionKeys(buttonListenerKey);
 
+  const { uniqueGraphName } = useContext(GraphContext);
+  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
+    UnsavedNodeDataContextKey,
+    uniqueGraphName
+  );
+
+  const {
+    currentState: unsavedGraph,
+    dispatchWithoutControl: dispatchUnsavedGraph
+  } = useSelectiveContextDispatchBoolean(
+    unsavedGraphContextKey,
+    buttonListenerKey,
+    false
+  );
+
   const { currentState: simVersion, dispatchWithoutControl } =
     useSelectiveContextDispatchNumber({
       contextKey: contextVersionKey,
@@ -56,7 +75,15 @@ export function useDirectSimRefEditsDispatch<T>(buttonListenerKey: string) {
     });
 
   const incrementSimVersion = () => {
+    console.log(
+      'Current version: ',
+      simVersion,
+      contextVersionKey,
+      listenerVersionKey
+    );
     dispatchWithoutControl(simVersion + 1);
+    dispatchUnsavedGraph(true);
+    console.log('Current version: ', simVersion);
   };
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
   return { incrementSimVersion, nodeListRef, linkListRef };
@@ -66,14 +93,14 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   const { selected } = useNodeInteractionContext();
 
   const { incrementSimVersion, nodeListRef, linkListRef } =
-    useDirectSimRefEditsController<T>(buttonListenerKey);
+    useDirectSimRefEditsDispatch<T>(buttonListenerKey);
 
   const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
     'nextNodeId',
     buttonListenerKey
   );
-  const { currentState: nextNodeId, dispatchUpdate: setNextNodeId } =
-    useSelectiveContextControllerNumber({
+  const { currentState: nextNodeId, dispatchWithoutControl: setNextNodeId } =
+    useSelectiveContextDispatchNumber({
       contextKey: contextKeyConcat,
       listenerKey: listenerKeyConcat,
       initialValue: NaN
@@ -146,7 +173,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     while (nodeIdSet.has(responseId)) {
       responseId++;
     }
-    setNextNodeId({ contextKey: contextKeyConcat, value: responseId + 1 });
+    setNextNodeId(responseId + 1);
     // setNextNodeId((prev) => responseId + 1);
     return responseId;
   };

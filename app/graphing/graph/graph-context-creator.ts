@@ -66,6 +66,30 @@ export function useGraphSelectiveContextDispatch<T>(
   };
 }
 
+export function useGraphSelectiveContextController<T>(
+  contextKey: GraphSelectiveContext,
+  listenerKey: string,
+  initialValue: T,
+  useSelectiveContextController: UseSelectiveContextController<T>
+) {
+  const { contextKeyConcat, listenerKeyConcat } = useGraphSelectiveContextKey(
+    contextKey,
+    `${listenerKey}`
+  );
+  const { currentState, dispatchUpdate } = useSelectiveContextController({
+    contextKey: contextKeyConcat,
+    listenerKey: listenerKeyConcat,
+    initialValue
+  });
+
+  return {
+    currentState,
+    dispatchUpdate,
+    contextKey,
+    listenerKey
+  };
+}
+
 export function useGraphSelectiveContextListener<T>(
   contextKey: GraphSelectiveContext,
   listenerKey: string,
