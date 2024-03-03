@@ -93,6 +93,23 @@ export async function deleteNodes(idList: number[]): Promise<string> {
     return 'Error';
   }
 }
+export async function deleteLinks(idList: number[]): Promise<string> {
+  try {
+    const response = await fetch(`${organizationGraphEndpoint}/relationships`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' // Indicate we're sending JSON data
+      },
+      cache: 'no-cache',
+      body: JSON.stringify(idList)
+    });
+    console.log(response);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+    return 'Error';
+  }
+}
 
 export async function getCurriculumDeliveries(
   idList: number[]

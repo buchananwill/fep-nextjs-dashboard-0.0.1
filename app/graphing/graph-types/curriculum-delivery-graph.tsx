@@ -49,6 +49,7 @@ import { useSelectiveContextKeyMemo } from '../../components/selective-context/u
 import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 import { useModal } from '../../components/confirm-action-modal';
 import {
+  deleteLinks,
   deleteNodes,
   putOrganizationGraph
 } from '../../api/actions/curriculum-delivery-model';
@@ -216,6 +217,9 @@ export default function CurriculumDeliveryGraph({
         deletedNodeIds.filter(removeTransientIds);
       if (deletedNodeNonTransientIds.length > 0) {
         deleteNodes(deletedNodeNonTransientIds);
+      }
+      if (deletedLinkNonTransientIds.length > 0) {
+        deleteLinks(deletedLinkNonTransientIds);
       }
       const unsavedNodes = nodes.filter((n) => !removeTransientIds(n.id));
       const unsavedLinks = links.filter((l) => !removeTransientIds(l.id));
