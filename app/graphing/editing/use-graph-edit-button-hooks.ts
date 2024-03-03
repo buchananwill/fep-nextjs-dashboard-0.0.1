@@ -79,7 +79,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
       initialValue: NaN
     });
 
-  const { currentState: nextLinkId, simpleDispatch: setNextLinkId } =
+  const { currentState: nextLinkId, dispatchWithoutControl: setNextLinkId } =
     useGraphSelectiveContextNumberDispatch(
       'nextLinkId',
       buttonListenerKey,
@@ -96,7 +96,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     }, []);
 
   const {
-    simpleDispatch: setTransientNodeIds,
+    dispatchWithoutControl: setTransientNodeIds,
     currentState: transientNodeIds
   } = useGraphSelectiveContextDispatch(
     'transientNodeIds',
@@ -106,7 +106,7 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
   );
 
   const {
-    simpleDispatch: setTransientLinkIds,
+    dispatchWithoutControl: setTransientLinkIds,
     currentState: transientLinkIds
   } = useGraphSelectiveContextDispatch(
     'transientLinkIds',
@@ -115,20 +115,24 @@ export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
     useSelectiveContextDispatchNumberList
   );
 
-  const { simpleDispatch: setDeletedLinkIds, currentState: deletedLinkIds } =
-    useGraphSelectiveContextDispatch(
-      'deletedLinkIds',
-      buttonListenerKey,
-      deletedLinksInit,
-      useSelectiveContextDispatchNumberList
-    );
-  const { simpleDispatch: setDeletedNodeIds, currentState: deletedNodeIds } =
-    useGraphSelectiveContextDispatch(
-      'deletedNodeIds',
-      buttonListenerKey,
-      deletedNodesInit,
-      useSelectiveContextDispatchNumberList
-    );
+  const {
+    dispatchWithoutControl: setDeletedLinkIds,
+    currentState: deletedLinkIds
+  } = useGraphSelectiveContextDispatch(
+    'deletedLinkIds',
+    buttonListenerKey,
+    deletedLinksInit,
+    useSelectiveContextDispatchNumberList
+  );
+  const {
+    dispatchWithoutControl: setDeletedNodeIds,
+    currentState: deletedNodeIds
+  } = useGraphSelectiveContextDispatch(
+    'deletedNodeIds',
+    buttonListenerKey,
+    deletedNodesInit,
+    useSelectiveContextDispatchNumberList
+  );
 
   const [noNodeSelected, setNoNodeSelected] = useState(false);
 
