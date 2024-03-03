@@ -144,7 +144,7 @@ export async function getBundles(
       body: JSON.stringify(idList)
     });
     const deliveries: WorkSeriesSchemaBundleLeanDto[] = await response.json();
-    return successResponse(deliveries);
+    return successResponse(deliveries.sort((bun1, bun2) => bun1.id - bun2.id));
   } catch (error) {
     console.error('Error fetching data: ', error);
     return errorResponse(`${error}`);

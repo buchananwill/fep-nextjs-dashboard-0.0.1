@@ -1,6 +1,6 @@
 'use client';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { Card } from '@tremor/react';
+import { Card, Title } from '@tremor/react';
 import {
   useSelectiveContextDispatchStringList,
   useSelectiveContextListenerStringList
@@ -10,6 +10,12 @@ import { TabStyled } from '../../../components/tab-layouts/tab-styled';
 import React, { Fragment, ReactNode, useEffect, useMemo } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
+import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
+import {
+  sumAllSchemas,
+  sumDeliveryAllocations
+} from '../../../graphing/components/curriculum-delivery-details';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export const BundleEditorKey = 'bundles-editor';
 function OptionChooserItem({
@@ -164,6 +170,13 @@ export function BundleEditor({
       BundleEditorKey,
       bundleIds
     );
+  const { curriculumModelsMap } = useCurriculumModelContext();
+  const pathname = usePathname();
+  const lastIndexOf = pathname?.lastIndexOf('/');
+  const yearGroup =
+    pathname && lastIndexOf
+      ? pathname.substring(lastIndexOf - 1, lastIndexOf)
+      : '';
 
   if (
     currentBundles === undefined ||
@@ -176,6 +189,7 @@ export function BundleEditor({
 
   return (
     <Card>
+      <Title>Curriculum Bundles - Year {yearGroup}</Title>
       <Tab.Group>
         <div className={'w-full flex items-center mb-2'}>
           <Tab.List as={Fragment}>
@@ -187,9 +201,19 @@ export function BundleEditor({
                 flexGrow: 1
               }}
             >
-              {currentBundles.map((id) => (
-                <TabStyled key={id}>{id}</TabStyled>
-              ))}
+              {currentBundles.map((id, index) => {
+                const workProjectSeriesSchemaDtos = bundleLeanDtos[
+                  index
+                ].workProjectSeriesSchemaIds.map(
+                  (schemaId) => curriculumModelsMap[schemaId]
+                );
+                const totalPeriods = sumAllSchemas(workProjectSeriesSchemaDtos);
+                return (
+                  <TabStyled key={id}>
+                    {`${id} - Total Periods: ${totalPeriods.toString()}`}
+                  </TabStyled>
+                );
+              })}
             </div>
           </Tab.List>
 

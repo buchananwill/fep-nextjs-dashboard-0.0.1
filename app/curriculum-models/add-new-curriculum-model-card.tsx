@@ -26,12 +26,12 @@ import {
   postModels,
   putModels
 } from '../api/actions/curriculum-delivery-model';
-import { getPayloadArray } from './[yearGroup]/bundles/curriculum-delivery-models';
 import {
   getStepperInterface,
   StepperContext
 } from '../components/stepper/stepper-context-creator';
 import LandscapeStepper from '../components/landscape-stepper';
+import { getPayloadArray } from './use-curriculum-delivery-model-editing';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
 

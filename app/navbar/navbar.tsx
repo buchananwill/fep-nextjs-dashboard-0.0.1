@@ -61,87 +61,117 @@ export default function Navbar({
   let cacheSetting: string | null;
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
-  // const { data, error, isLoading } = useSWR<CarouselGroupDto[]>(fetcher, {
-  //   refreshInterval: 100000,
-  //   revalidateOnFocus: false,
-  //   revalidateOnReconnect: false
-  // });
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<CarouselGroupDto[] | undefined>(undefined);
 
   const [electivesDropdown, setElectivesDropdown] = useState(electivesLoading);
 
   useEffect(() => {
-    if (!isLoading && data != undefined) {
-      try {
-        const receivedDropdownData = data.map((carouselGroupDto) => ({
-          name: carouselGroupDto.name,
-          href: `/${carouselGroupDto.id}`
-        }));
-        setElectivesDropdown(receivedDropdownData);
-      } catch (e) {
-        console.error('Data incorrect structure:', e, data);
-      }
+    if (isLoading) {
+      getOptionBlocks().then((r) => {
+        if (r.data) {
+          setData(r.data);
+          setIsLoading(false);
+          const receivedDropdownData = r.data.map((carouselGroupDto) => ({
+            name: carouselGroupDto.name,
+            href: `/${carouselGroupDto.id}`
+          }));
+          setElectivesDropdown(receivedDropdownData);
+        }
+      });
     }
+
+    // if (!isLoading && data != undefined) {
+    //   try {
+    //     const receivedDropdownData = data.map((carouselGroupDto) => ({
+    //       name: carouselGroupDto.name,
+    //       href: `/${carouselGroupDto.id}`
+    //     }));
+    //     setElectivesDropdown(receivedDropdownData);
+    //   } catch (e) {
+    //     console.error('Data incorrect structure:', e, data);
+    //   }
+    // }
   }, [isLoading, data]);
 
   console.log(data);
 
-  const { timetablesDropdown, buildMetricsDropdown, navigation } =
-    useMemo(() => {
-      const timetablesDropdown = [
-        { name: 'Overview', href: `/${scheduleId}` },
-        { name: 'Students', href: `/students/${scheduleId}` }
-      ];
+  const { navigation } = useMemo(() => {
+    const timetablesDropdown = [
+      { name: 'Overview', href: `/${scheduleId}` },
+      { name: 'Students', href: `/students/${scheduleId}` }
+    ];
 
-      const buildMetricsDropdown = [
-        { name: 'Overview', href: `/${scheduleId}` },
-        { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
-      ];
+    const buildMetricsDropdown = [
+      { name: 'Overview', href: `/${scheduleId}` },
+      { name: 'Lesson Cycles', href: `/lesson-cycles/${scheduleId}` }
+    ];
 
-      const curriculumModelsDropdownItems: DropdownItem[] = knowledgeLevels.map(
-        (knowledgeLevel) => ({
-          name: knowledgeLevel.name,
-          href: `/${knowledgeLevel.levelOrdinal}`
-        })
-      );
+    const curriculumModelsDropdownItems: DropdownItem[] = knowledgeLevels.map(
+      (knowledgeLevel) => ({
+        name: knowledgeLevel.name,
+        href: `/${knowledgeLevel.levelOrdinal}`
+      })
+    );
+    const classHierarchyDropdownItems: DropdownItem[] = knowledgeLevels.map(
+      (knowledgeLevel) => ({
+        name: knowledgeLevel.name,
+        href: `/${knowledgeLevel.levelOrdinal}/class-hierarchy`
+      })
+    );
+    const bundlesDropdownItems: DropdownItem[] = knowledgeLevels.map(
+      (knowledgeLevel) => ({
+        name: knowledgeLevel.name,
+        href: `/${knowledgeLevel.levelOrdinal}/bundles`
+      })
+    );
 
-      const navigation = [
-        { name: 'Students', href: '/', dropdownItems: studentsDropdown },
-        {
-          name: 'Timetables',
-          href: '/timetables',
-          dropdownItems: timetablesDropdown
-        },
-        {
-          name: 'Build Metrics',
-          href: `/build-metrics`,
-          dropdownItems: buildMetricsDropdown
-        },
-        {
-          name: 'Electives',
-          href: '/electives',
-          dropdownItems: electivesDropdown
-        },
-        {
-          name: 'Contact Time',
-          href: '/contact-time',
-          dropdownItems: contactTimeDropdown
-        },
-        {
-          name: 'Premises',
-          href: '/premises',
-          dropdownItems: premisesDropdown
-        },
-        {
-          name: 'Models',
-          href: '/curriculum-models',
-          dropdownItems: curriculumModelsDropdownItems
-        }
-      ];
+    const navigation = [
+      { name: 'Students', href: '/', dropdownItems: studentsDropdown },
+      {
+        name: 'Timetables',
+        href: '/timetables',
+        dropdownItems: timetablesDropdown
+      },
+      {
+        name: 'Build Metrics',
+        href: `/build-metrics`,
+        dropdownItems: buildMetricsDropdown
+      },
+      {
+        name: 'Models',
+        href: '/curriculum-models',
+        dropdownItems: curriculumModelsDropdownItems
+      },
+      {
+        name: 'Bundles',
+        href: '/curriculum-models',
+        dropdownItems: bundlesDropdownItems
+      },
+      {
+        name: 'Classes',
+        href: '/curriculum-models',
+        dropdownItems: classHierarchyDropdownItems
+      },
+      {
+        name: 'Electives',
+        href: '/electives',
+        dropdownItems: electivesDropdown
+      }
+      // {
+      //   name: 'Contact Time',
+      //   href: '/contact-time',
+      //   dropdownItems: contactTimeDropdown
+      // },
+      // {
+      //   name: 'Premises',
+      //   href: '/premises',
+      //   dropdownItems: premisesDropdown
+      // }
+    ];
 
-      return { timetablesDropdown, buildMetricsDropdown, navigation };
-    }, [electivesDropdown, scheduleId, knowledgeLevels]);
+    return { timetablesDropdown, buildMetricsDropdown, navigation };
+  }, [electivesDropdown, scheduleId, knowledgeLevels]);
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;

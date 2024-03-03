@@ -5,7 +5,7 @@ import { CurriculumDeliveryModel } from '../curriculum-delivery-model';
 import ForceGraphPage from '../../graphing/force-graph-page';
 import { Pagination } from '../../components/pagination';
 import { normalizeQueryParamToNumber } from '../../api/utils';
-import { CurriculumDeliveryModels } from './bundles/curriculum-delivery-models';
+import { CurriculumDeliveryModels } from '../curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 
@@ -40,7 +40,7 @@ export default async function Page({
     await getCurriculumDeliveryModelSchemas(
       parseInt(yearGroup),
       oneIndexToZeroIndex(normalizeQueryParamToNumber(page, 1)),
-      normalizeQueryParamToNumber(size, 7)
+      normalizeQueryParamToNumber(size, 11)
     );
 
   const taskTypesResponse = await getWorkTaskTypes(2, parseInt(yearGroup));
@@ -79,7 +79,6 @@ export default async function Page({
         taskTypeList={taskTypeList}
         yearGroup={parseInt(yearGroup)}
       />
-      <BoxHierarchies></BoxHierarchies>
     </>
   );
 }

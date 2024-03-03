@@ -3,6 +3,7 @@ import NodeText from '../nodes/node-text';
 import React, { useContext } from 'react';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
 import { GraphContext } from '../graph/graph-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 const log5 = Math.log(5);
 
@@ -40,7 +41,7 @@ const textPositions = {
   }
 };
 
-export function useTextElements<T>(
+export function useTextElements<T extends HasNumberIdDto>(
   nodes: DataNode<T>[],
   textAccessor: (n: number) => string,
   titleAccessor: (n: number) => string,
@@ -60,7 +61,7 @@ export function useTextElements<T>(
   ));
 }
 
-function TextElement<T>({
+function TextElement<T extends HasNumberIdDto>({
   n,
   index,
   text,
@@ -77,7 +78,8 @@ function TextElement<T>({
   const { currentState: textSizeMultiplier } =
     useSelectiveContextListenerNumber(
       `text-size-${uniqueGraphName}`,
-      `${n.id}-${text}`
+      `${n.id}-${text}`,
+      1
     );
 
   const textScale = textSizeMultiplier

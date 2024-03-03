@@ -12,8 +12,9 @@ import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
 import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';
 import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
+import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 
-export interface NodePayload<T> {
+export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
   payload: React.JSX.Element;
 }

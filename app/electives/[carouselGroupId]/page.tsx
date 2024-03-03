@@ -21,7 +21,6 @@ import DynamicDimensionTimetable, {
 } from '../../components/dynamic-dimension-timetable';
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import { RotateCarouselButton } from './rotate-carousel-button';
 
 interface Props {
