@@ -22,8 +22,9 @@ import ZoomScaleContextProvider from '../../components/calendar-view/scale/zoom-
 import { useGraphEditRootContext } from '../editing/use-graph-edit-root-context';
 import { useDirectSimRefEditsController } from '../editing/use-graph-edit-button-hooks';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function GraphViewer<T, U>({
+export function GraphViewer<T extends HasNumberIdDto, U>({
   textList,
   titleList,
   uniqueGraphName,

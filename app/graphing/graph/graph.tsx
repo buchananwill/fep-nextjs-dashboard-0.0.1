@@ -35,6 +35,7 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 
+const DefaultGraphZoom = 100;
 export default function Graph<T>({
   titleList,
   textList,
@@ -66,7 +67,7 @@ export default function Graph<T>({
   const { currentState } = useSelectiveContextListenerNumber(
     `zoom-${uniqueGraphName}`,
     `${uniqueGraphName}`,
-    60
+    DefaultGraphZoom
   );
 
   const {
@@ -79,13 +80,13 @@ export default function Graph<T>({
     svgScale
   } = useMouseMoveSvgDraggable(nodeListRef!, uniqueGraphName);
 
-  const x = currentState / 2000;
+  const x = currentState / 200;
   const translationContextInterface = useDragToTranslate();
   const translationElement = translationContextInterface['draggable'];
   const xTranslate = (transform?.x || 0) + (translationElement?.x || 0);
   const yTranslate = (transform?.y || 0) + (translationElement?.y || 0);
 
-  const scale = 1000 / currentState;
+  const scale = 100 / currentState;
   const dimensionsArray = useMemo(() => {
     const width = 1800 * scale;
     const height = 1200 * scale;
