@@ -214,6 +214,7 @@ export function BundleEditor({
       type: 'update',
       payload: { key: nextId.toString(), data: newBundle }
     });
+    setActiveTab(sortedBundleList.length);
     dispatchWithoutControl(true);
   };
 
