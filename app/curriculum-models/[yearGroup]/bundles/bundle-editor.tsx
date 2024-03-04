@@ -90,21 +90,27 @@ export function BundleEditor({
   const { currentState, dispatchUpdate: dispatchRenameLocally } =
     useSelectiveContextControllerString(contextKeyMemo, BundleEditorKey);
 
-  const { dispatchUpdate: dispatchBundleToSchemaList } =
-    useSelectiveContextControllerStringList(
-      `${BundleEditorKey}:schemalists`,
-      BundleEditorKey,
-      StaticSchemaIdList
-    );
+  const {
+    dispatchUpdate: dispatchBundleToSchemaList,
+    currentState: updatedBundleLists
+  } = useSelectiveContextControllerStringList(
+    `${BundleEditorKey}:schemalists`,
+    BundleEditorKey,
+    StaticSchemaIdList
+  );
 
   useEffect(() => {
-    sortedBundleList.forEach((bundle) => {
-      dispatchBundleToSchemaList({
-        contextKey: `${SchemaBundleKeyPrefix}:${bundle.id}`,
-        value: bundle.workProjectSeriesSchemaIds
+    console.log('Setting up lists...');
+    if (!unsaved) {
+      console.log('No saved changes yet...');
+      sortedBundleList.forEach((bundle) => {
+        dispatchBundleToSchemaList({
+          contextKey: `${SchemaBundleKeyPrefix}:${bundle.id}`,
+          value: bundle.workProjectSeriesSchemaIds
+        });
       });
-    });
-  }, [sortedBundleList, dispatchBundleToSchemaList]);
+    }
+  }, [sortedBundleList, dispatchBundleToSchemaList, unsaved]);
 
   const [activeTab, setActiveTab] = useState(0);
 

@@ -84,51 +84,49 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     <TabPanelStyled>
       <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
         <div className={'w-full'}>
-          {updatedIds.map((schema) => {
-            const name = schemaOptions[schema];
+          {updatedIds.map((schemaId) => {
+            const name = schemaOptions[schemaId];
             return (
               <OptionChooserItem
-                key={`${bundleId}-${schema}`}
+                key={`${bundleId}:${schemaId}`}
                 bundleKey={schemaBundleKey}
-                optionKey={schema}
-                listenerKey={`${schemaBundleKey}-summary`}
+                optionKey={schemaId}
+                listenerKey={`${schemaId}:summary`}
                 onChange={() => {
-                  dispatchUpdate(updatedIds.filter((id) => id !== schema));
+                  dispatchUpdate(updatedIds.filter((id) => id !== schemaId));
                   dispatchWithoutControl(true);
                 }}
                 checkedStyling={'bg-emerald-100'}
               >
-                {schemaOptions[schema]}
+                {schemaOptions[schemaId]}
               </OptionChooserItem>
             );
           })}
         </div>
         <div className={'w-full'}>
-          {Object.keys(schemaOptions)
-            // .filter((schemaOption) => !currentState.includes(schemaOption))
-            .map((option) => {
-              const schemaName = schemaOptions[option];
-              return (
-                <OptionChooserItem
-                  key={`${bundleId}-${option}-optional`}
-                  bundleKey={schemaBundleKey}
-                  optionKey={option}
-                  listenerKey={`${schemaBundleKey}-${option}-optional`}
-                  onChange={(event) => {
-                    const include = event.currentTarget.checked;
-                    if (include) {
-                      dispatchUpdate([...updatedIds, option]);
-                    } else {
-                      dispatchUpdate(updatedIds.filter((id) => id !== option));
-                    }
-                    dispatchWithoutControl(true);
-                  }}
-                  checkedStyling={'opacity-25'}
-                >
-                  {schemaName}
-                </OptionChooserItem>
-              );
-            })}
+          {Object.keys(schemaOptions).map((schemaId) => {
+            const schemaName = schemaOptions[schemaId];
+            return (
+              <OptionChooserItem
+                key={`${bundleId}:${schemaId}:optional`}
+                bundleKey={schemaBundleKey}
+                optionKey={schemaId}
+                listenerKey={`${schemaId}:optional`}
+                onChange={(event) => {
+                  const include = event.currentTarget.checked;
+                  if (include) {
+                    dispatchUpdate([...updatedIds, schemaId]);
+                  } else {
+                    dispatchUpdate(updatedIds.filter((id) => id !== schemaId));
+                  }
+                  dispatchWithoutControl(true);
+                }}
+                checkedStyling={'opacity-25'}
+              >
+                {schemaName}
+              </OptionChooserItem>
+            );
+          })}
         </div>
       </div>
     </TabPanelStyled>
