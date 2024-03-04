@@ -1,6 +1,6 @@
 'use client';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { Card, Title } from '@tremor/react';
+import { Badge, Card, Color, Title } from '@tremor/react';
 import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
@@ -40,6 +40,16 @@ function bundleSort(
 ) {
   return bun1.id - bun2.id;
 }
+
+type BadgeRange = 'belowMin' | 'low' | 'good' | 'high' | 'aboveMax';
+
+const TotalPeriodBadgeColors: { [key in BadgeRange]: Color } = {
+  belowMin: 'purple',
+  low: 'yellow',
+  good: 'emerald',
+  high: 'amber',
+  aboveMax: 'red'
+};
 
 export function BundleEditor({
   schemaOptions
@@ -116,15 +126,43 @@ export function BundleEditor({
 
   const { isOpen, closeModal, openModal } = useModal();
 
-  function getActiveBundleAndId() {
-    const activeLeanDto = sortedBundleList[activeTab];
-    const { id } = activeLeanDto;
-    const stateBundle = bundleItemsMap[activeLeanDto.id.toString()];
-    return { id, stateBundle };
+  const activeBundleAndId = useMemo(() => {
+    function getActiveBundleAndId() {
+      const activeLeanDto = sortedBundleList[activeTab];
+      const { id } = activeLeanDto;
+      const stateBundle = bundleItemsMap[activeLeanDto.id.toString()];
+      return { id, stateBundle };
+    }
+    return getActiveBundleAndId();
+  }, [activeTab, bundleItemsMap, sortedBundleList]);
+
+  const sumOfAllBundles = useMemo(() => {
+    const flatList = sortedBundleList
+      .map((bundle) =>
+        bundle.workProjectSeriesSchemaIds.map(
+          (schemaId) => curriculumModelsMap[schemaId]
+        )
+      )
+      .reduce((prev, curr) => [...prev, ...curr], []);
+    return sumAllSchemas(flatList);
+  }, [sortedBundleList, curriculumModelsMap]);
+
+  const badgeColor =
+    sumOfAllBundles > 60
+      ? TotalPeriodBadgeColors.aboveMax
+      : sumOfAllBundles < 45
+      ? TotalPeriodBadgeColors.belowMin
+      : TotalPeriodBadgeColors.good;
+
+  if (
+    currentBundles === undefined ||
+    (currentBundles && currentBundles.length == 0)
+  ) {
+    return <Card>No bundles!</Card>;
   }
 
   const handleRenameBundle = () => {
-    const { id, stateBundle } = getActiveBundleAndId();
+    const { id, stateBundle } = activeBundleAndId;
     const immerBundle = produce(stateBundle, (draft) => {
       draft.name = currentState;
     });
@@ -136,7 +174,7 @@ export function BundleEditor({
     closeModal();
   };
   const handleCancel = () => {
-    const { stateBundle } = getActiveBundleAndId();
+    const { stateBundle } = activeBundleAndId;
     dispatchRenameLocally({
       contextKey: contextKeyMemo,
       value: stateBundle.name
@@ -147,31 +185,29 @@ export function BundleEditor({
   const handleOpen = () => {
     const {
       stateBundle: { name }
-    } = getActiveBundleAndId();
+    } = activeBundleAndId;
     dispatchRenameLocally({ contextKey: contextKeyMemo, value: name });
     openModal();
   };
-
-  if (
-    currentBundles === undefined ||
-    (currentBundles && currentBundles.length == 0)
-  ) {
-    return <Card>No bundles!</Card>;
-  }
 
   const gridColumns = currentBundles.length;
 
   return (
     <Card>
-      <Title>
-        Curriculum Bundles - Year {yearGroup} -{' '}
+      <Title className={'w-full flex items-center pb-2'}>
+        Current Tab:{' '}
         <button
-          className={'btn btn-primary btn-outline btn-sm'}
+          className={'btn btn-primary btn-outline btn-sm grow-0 mx-2'}
           onClick={handleOpen}
         >
           {sortedBundleList[activeTab].name}
           <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
         </button>
+        <span className={'grow'}></span>
+        <span className={'grow-0'}>
+          Curriculum Bundles - Year {yearGroup} - Total All Bundles:{' '}
+          <Badge color={badgeColor}>{sumOfAllBundles}</Badge>
+        </span>
       </Title>
       <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
         <div className={'w-full flex items-center mb-2'}>

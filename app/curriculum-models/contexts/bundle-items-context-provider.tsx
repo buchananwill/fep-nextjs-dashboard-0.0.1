@@ -43,6 +43,8 @@ export function BundleItemsContextProvider({
           bundle.id.toString()
         );
         dispatch({ type: 'updateAll', payload: payloadArray });
+        setUnsavedBundles({ contextKey: UnsavedBundleEdits, value: false });
+        closeModal();
       }
     });
   };

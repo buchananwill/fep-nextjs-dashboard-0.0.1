@@ -33,7 +33,10 @@ function OptionChooserItem({
     StaticSchemaIdList
   );
 
-  const checked = currentState.includes(optionKey);
+  const { bundleItemsMap } = useBundleItemsContext();
+
+  const checked =
+    bundleItemsMap[bundleKey].workProjectSeriesSchemaIds.includes(optionKey);
 
   return (
     <label
@@ -73,10 +76,41 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
       initialValue: StaticSchemaIdList
     });
 
+  const { bundleItemsMap, dispatch } = useBundleItemsContext();
+  const bundleItemsMapElement = bundleItemsMap[bundleId];
+
+  const removeItem = (schemaId: string) => {
+    const remainingItems =
+      bundleItemsMapElement.workProjectSeriesSchemaIds.filter(
+        (id) => id !== schemaId
+      );
+    itemDispatch(remainingItems);
+  };
+
+  const addItem = (schemaId: string) => {
+    itemDispatch([
+      ...bundleItemsMapElement.workProjectSeriesSchemaIds,
+      schemaId
+    ]);
+  };
+
+  const itemDispatch = (updatedItems: string[]) => {
+    dispatch({
+      type: 'update',
+      payload: {
+        key: bundleId,
+        data: {
+          ...bundleItemsMapElement,
+          workProjectSeriesSchemaIds: updatedItems
+        }
+      }
+    });
+  };
+
   const { currentState: unsaved, dispatchWithoutControl } =
     useSelectiveContextDispatchBoolean(UnsavedBundleEdits, panelKey, false);
 
-  if (updatedIds === undefined) {
+  if (bundleItemsMapElement === undefined) {
     return <div>No state to render!</div>;
   }
 
@@ -84,16 +118,16 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     <TabPanelStyled>
       <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
         <div className={'w-full'}>
-          {updatedIds.map((schemaId) => {
+          {bundleItemsMapElement.workProjectSeriesSchemaIds.map((schemaId) => {
             const name = schemaOptions[schemaId];
             return (
               <OptionChooserItem
                 key={`${bundleId}:${schemaId}`}
-                bundleKey={schemaBundleKey}
+                bundleKey={bundleId}
                 optionKey={schemaId}
                 listenerKey={`${schemaId}:summary`}
                 onChange={() => {
-                  dispatchUpdate(updatedIds.filter((id) => id !== schemaId));
+                  removeItem(schemaId);
                   dispatchWithoutControl(true);
                 }}
                 checkedStyling={'bg-emerald-100'}
@@ -109,15 +143,15 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
             return (
               <OptionChooserItem
                 key={`${bundleId}:${schemaId}:optional`}
-                bundleKey={schemaBundleKey}
+                bundleKey={bundleId}
                 optionKey={schemaId}
                 listenerKey={`${schemaId}:optional`}
                 onChange={(event) => {
                   const include = event.currentTarget.checked;
                   if (include) {
-                    dispatchUpdate([...updatedIds, schemaId]);
+                    addItem(schemaId);
                   } else {
-                    dispatchUpdate(updatedIds.filter((id) => id !== schemaId));
+                    removeItem(schemaId);
                   }
                   dispatchWithoutControl(true);
                 }}
