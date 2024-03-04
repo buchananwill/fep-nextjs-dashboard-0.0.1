@@ -71,10 +71,7 @@ export default async function Page({
           workProjectSeriesSchemaDtos={content}
           taskTypeList={workTaskTypeDtos}
         />
-        <BundleEditor
-          bundleLeanDtos={bundleLeanDtos}
-          schemaOptions={schemasIdsAndNames}
-        />
+        <BundleEditor schemaOptions={schemasIdsAndNames} />
       </BundleAssignmentsProvider>
     </BundleItemsContextProvider>
   );

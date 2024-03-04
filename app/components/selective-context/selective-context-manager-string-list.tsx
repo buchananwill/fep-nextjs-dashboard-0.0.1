@@ -10,8 +10,14 @@ import {
   useSelectiveContextManager
 } from './selective-context-manager';
 
-import { useSelectiveContextController } from './use-selective-context-controller';
-import { useSelectiveContextListener } from './use-selective-context-listener';
+import {
+  useSelectiveContextController,
+  UseSelectiveContextDispatch
+} from './use-selective-context-controller';
+import {
+  useSelectiveContextDispatch,
+  useSelectiveContextListener
+} from './use-selective-context-listener';
 
 export default function SelectiveContextManagerStringList({
   children
@@ -31,7 +37,7 @@ export default function SelectiveContextManagerStringList({
   );
 }
 
-export function useSelectiveContextDispatchStringList(
+export function useSelectiveContextControllerStringList(
   contextKey: string,
   listenerKey: string,
   initialValue: string[]
@@ -41,12 +47,25 @@ export function useSelectiveContextDispatchStringList(
     listenerKey,
     initialValue,
     UpdateRefContextStringList,
-    DispatchUpdateContextStringList,
-    ContextRefStringList
+    ContextRefStringList,
+    DispatchUpdateContextStringList
   );
 
   return { currentState, dispatchUpdate };
 }
+
+export const useSelectiveContextDispatchStringList: UseSelectiveContextDispatch<
+  string[]
+> = ({ contextKey, initialValue, listenerKey }) => {
+  return useSelectiveContextDispatch<string[]>(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateRefContextStringList,
+    ContextRefStringList,
+    DispatchUpdateContextStringList
+  );
+};
 
 export function useSelectiveContextListenerStringList(
   contextKey: string,

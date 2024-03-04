@@ -43,8 +43,8 @@ export function useSelectiveContextControllerBoolean(
     listenerKey,
     initialValue,
     UpdateRefContextBoolean,
-    DispatchUpdateContextBoolean,
-    ContextRefBoolean
+    ContextRefBoolean,
+    DispatchUpdateContextBoolean
   );
 
   return { currentState, dispatchUpdate };

@@ -106,8 +106,8 @@ function mapLinksBackToIdRefs<T extends HasNumberIdDto>(l: DataLink<T>) {
   return { ...l, source: objectRefSource.id, target: objectRefTarget.id };
 }
 
-function removeTransientIds(id: number) {
-  return id <= TransientIdOffset;
+function removeTransientId(id: number) {
+  return id < TransientIdOffset;
 }
 
 export default function CurriculumDeliveryGraph({
@@ -212,18 +212,18 @@ export default function CurriculumDeliveryGraph({
         closureDtos: linksWithNumberIdRefs
       };
       const deletedLinkNonTransientIds =
-        deletedLinkIds.filter(removeTransientIds);
+        deletedLinkIds.filter(removeTransientId);
       const deletedNodeNonTransientIds =
-        deletedNodeIds.filter(removeTransientIds);
+        deletedNodeIds.filter(removeTransientId);
       if (deletedNodeNonTransientIds.length > 0) {
         deleteNodes(deletedNodeNonTransientIds);
       }
       if (deletedLinkNonTransientIds.length > 0) {
         deleteLinks(deletedLinkNonTransientIds);
       }
-      const unsavedNodes = nodes.filter((n) => !removeTransientIds(n.id));
-      const unsavedLinks = links.filter((l) => !removeTransientIds(l.id));
-
+      const unsavedNodes = nodes.filter((n) => !removeTransientId(n.id));
+      const unsavedLinks = links.filter((l) => !removeTransientId(l.id));
+      console.log('unsaved links: ', unsavedLinks);
       if (unsavedLinks.length > 0 || unsavedNodes.length > 0) {
         putOrganizationGraph(updatedGraph).then((r) => {
           console.log(r);

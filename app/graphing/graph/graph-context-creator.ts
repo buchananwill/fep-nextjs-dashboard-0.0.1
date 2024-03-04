@@ -4,7 +4,7 @@ import {
   useSelectiveContextDispatchNumber
 } from '../../components/selective-context/selective-context-manager-number';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../components/selective-context/selective-context-manager-string-list';
 import {
   UseSelectiveContextController,
   UseSelectiveContextDispatch

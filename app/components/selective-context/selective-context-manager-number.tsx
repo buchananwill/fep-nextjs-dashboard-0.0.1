@@ -51,8 +51,8 @@ export const useSelectiveContextControllerNumber: UseSelectiveContextController<
     listenerKey,
     initialValue,
     UpdateRefContextNumber,
-    DispatchUpdateContextNumber,
-    ContextRefNumber
+    ContextRefNumber,
+    DispatchUpdateContextNumber
   );
 
   return { currentState, dispatchUpdate };

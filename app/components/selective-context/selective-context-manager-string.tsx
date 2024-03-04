@@ -50,8 +50,8 @@ export function useSelectiveContextControllerString(
     listenerKey,
     initialValue,
     UpdateRefContextString,
-    DispatchUpdateContextString,
-    ContextRefString
+    ContextRefString,
+    DispatchUpdateContextString
   );
 
   return { currentState, dispatchUpdate };

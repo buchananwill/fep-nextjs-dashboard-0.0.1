@@ -47,8 +47,8 @@ export const useSelectiveContextControllerNumberList: UseSelectiveContextControl
     listenerKey,
     initialValue,
     UpdateRefContextNumberList,
-    DispatchUpdateContextNumberList,
-    ContextRefNumberList
+    ContextRefNumberList,
+    DispatchUpdateContextNumberList
   );
 };
 

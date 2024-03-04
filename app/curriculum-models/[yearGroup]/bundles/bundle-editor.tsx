@@ -1,171 +1,68 @@
 'use client';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { Card, Title } from '@tremor/react';
-import {
-  useSelectiveContextDispatchStringList,
-  useSelectiveContextListenerStringList
-} from '../../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, { Fragment, ReactNode, useEffect, useMemo } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { TabPanelStyled } from '../../../components/tab-layouts/tab-panel-styled';
 import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
+import { sumAllSchemas } from '../../../graphing/components/curriculum-delivery-details';
+import { usePathname } from 'next/navigation';
+import { BundlePanel } from './bundle-panel';
 import {
-  sumAllSchemas,
-  sumDeliveryAllocations
-} from '../../../graphing/components/curriculum-delivery-details';
-import { usePathname, useSearchParams } from 'next/navigation';
+  RenameModal,
+  RenameModalWrapperContextKey
+} from '../../../components/rename-modal/rename-modal';
+import { useModal } from '../../../components/confirm-action-modal';
+import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
+import { useSelectiveContextControllerString } from '../../../components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
+import { produce } from 'immer';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import {
+  useSelectiveContextControllerBoolean,
+  useSelectiveContextDispatchBoolean
+} from '../../../components/selective-context/selective-context-manager-boolean';
+import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
 
 export const BundleEditorKey = 'bundles-editor';
-function OptionChooserItem({
-  children,
-  checkedStyling,
-  bundleKey,
-  optionKey,
-  listenerKey,
-  ...props
-}: {
-  children: ReactNode;
-  checkedStyling: string;
-  bundleKey: string;
-  optionKey: string;
-  listenerKey: string;
-} & React.HTMLAttributes<HTMLInputElement>) {
-  const { currentState } = useSelectiveContextListenerStringList(
-    bundleKey,
-    listenerKey,
-    []
-  );
 
-  const checked = currentState.includes(optionKey);
+export const UnsavedBundleEdits = `Unsaved-${BundleEditorKey}`;
 
-  return (
-    <label
-      className={`inline-block relative w-full select-none cursor-pointer text-sm hover:bg-blue-200 p-1 ${
-        checked ? checkedStyling : ''
-      } focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-blue-500 focus-within:z-20 `}
-    >
-      <input
-        type={'checkbox'}
-        checked={checked}
-        {...props}
-        className={'pointer-events-none absolute opacity-0  '}
-        aria-labelledby={`label-${optionKey}`}
-      />
-      {children}
-    </label>
-  );
-}
+export const SchemaBundleKeyPrefix = 'schema-bundle';
 
-interface BundlePanelProps {
-  bundleId: string;
-  schemaBundleIds: string[];
-  schemaOptions: { [key: string]: string };
-}
+export const StaticSchemaIdList: string[] = [];
 
-export const schemaBundleKeyPrefix = 'schema-bundle:';
-
-function BundlePanel({
-  bundleId,
-  schemaBundleIds,
-  schemaOptions
-}: BundlePanelProps) {
-  const { schemaBundleKey, panelKey } = useMemo(() => {
-    const schemaBundleKey = `${schemaBundleKeyPrefix}${bundleId}`;
-    const panelKey = `${schemaBundleKey}-panel`;
-    return { schemaBundleKey, panelKey };
-  }, [bundleId]);
-
-  const { currentState, dispatchUpdate } =
-    useSelectiveContextDispatchStringList(
-      schemaBundleKey,
-      panelKey,
-      schemaBundleIds
-    );
-
-  if (currentState === undefined) {
-    return <div>No state to render!</div>;
-  }
-
-  return (
-    <TabPanelStyled>
-      <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
-        <div className={'w-full'}>
-          {currentState.map((schema) => {
-            const name = schemaOptions[schema];
-            return (
-              <OptionChooserItem
-                key={`${bundleId}-${schema}`}
-                bundleKey={schemaBundleKey}
-                optionKey={schema}
-                listenerKey={`${schemaBundleKey}-summary`}
-                onChange={() => {
-                  dispatchUpdate({
-                    contextKey: schemaBundleKey,
-                    value: currentState.filter((id) => id !== schema)
-                  });
-                }}
-                checkedStyling={'bg-emerald-100'}
-              >
-                {schemaOptions[schema]}
-              </OptionChooserItem>
-            );
-          })}
-        </div>
-        <div className={'w-full'}>
-          {Object.keys(schemaOptions)
-            // .filter((schemaOption) => !currentState.includes(schemaOption))
-            .map((option) => {
-              const schemaName = schemaOptions[option];
-              return (
-                <OptionChooserItem
-                  key={`${bundleId}-${option}-optional`}
-                  bundleKey={schemaBundleKey}
-                  optionKey={option}
-                  listenerKey={`${schemaBundleKey}-${option}-optional`}
-                  onChange={(event) => {
-                    const include = event.currentTarget.checked;
-                    if (include) {
-                      dispatchUpdate({
-                        contextKey: schemaBundleKey,
-                        value: [...currentState, option]
-                      });
-                    } else {
-                      dispatchUpdate({
-                        contextKey: schemaBundleKey,
-                        value: currentState.filter((id) => id !== option)
-                      });
-                    }
-                  }}
-                  checkedStyling={'opacity-25'}
-                >
-                  {schemaName}
-                </OptionChooserItem>
-              );
-            })}
-        </div>
-      </div>
-    </TabPanelStyled>
-  );
+function bundleSort(
+  bun1: WorkSeriesSchemaBundleLeanDto,
+  bun2: WorkSeriesSchemaBundleLeanDto
+) {
+  return bun1.id - bun2.id;
 }
 
 export function BundleEditor({
-  bundleLeanDtos,
   schemaOptions
 }: {
-  bundleLeanDtos: WorkSeriesSchemaBundleLeanDto[];
   schemaOptions: { [key: string]: string };
 }) {
+  const { bundleItemsMap, dispatch } = useBundleItemsContext();
+
+  const sortedBundleList = useMemo(() => {
+    return Object.entries(bundleItemsMap)
+      .sort((entry1, entry2) => bundleSort(entry1[1], entry2[1]))
+      .map((entry) => entry[1]);
+  }, [bundleItemsMap]);
+
   const bundleIds = useMemo(
-    () => bundleLeanDtos.map(({ id }) => id.toString()),
-    [bundleLeanDtos]
+    () => sortedBundleList.map(({ id }) => id.toString()),
+    [sortedBundleList]
   );
   const schemaBundles = useMemo(() => {
-    return bundleLeanDtos.map((dto) => dto.workProjectSeriesSchemaIds);
-  }, [bundleLeanDtos]);
+    return sortedBundleList.map((dto) => dto.workProjectSeriesSchemaIds);
+  }, [sortedBundleList]);
   const { currentState: currentBundles, dispatchUpdate } =
-    useSelectiveContextDispatchStringList(
+    useSelectiveContextControllerStringList(
       BundleEditorKey,
       BundleEditorKey,
       bundleIds
@@ -178,6 +75,77 @@ export function BundleEditor({
       ? pathname.substring(lastIndexOf - 1, lastIndexOf)
       : '';
 
+  const contextKeyMemo = useSelectiveContextKeyMemo(
+    RenameModalWrapperContextKey,
+    BundleEditorKey
+  );
+
+  const { currentState: unsaved, dispatchWithoutControl } =
+    useSelectiveContextDispatchBoolean(
+      UnsavedBundleEdits,
+      BundleEditorKey,
+      false
+    );
+
+  const { currentState, dispatchUpdate: dispatchRenameLocally } =
+    useSelectiveContextControllerString(contextKeyMemo, BundleEditorKey);
+
+  const { dispatchUpdate: dispatchBundleToSchemaList } =
+    useSelectiveContextControllerStringList(
+      `${BundleEditorKey}:schemalists`,
+      BundleEditorKey,
+      StaticSchemaIdList
+    );
+
+  useEffect(() => {
+    sortedBundleList.forEach((bundle) => {
+      dispatchBundleToSchemaList({
+        contextKey: `${SchemaBundleKeyPrefix}:${bundle.id}`,
+        value: bundle.workProjectSeriesSchemaIds
+      });
+    });
+  }, [sortedBundleList, dispatchBundleToSchemaList]);
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const { isOpen, closeModal, openModal } = useModal();
+
+  function getActiveBundleAndId() {
+    const activeLeanDto = sortedBundleList[activeTab];
+    const { id } = activeLeanDto;
+    const stateBundle = bundleItemsMap[activeLeanDto.id.toString()];
+    return { id, stateBundle };
+  }
+
+  const handleRenameBundle = () => {
+    const { id, stateBundle } = getActiveBundleAndId();
+    const immerBundle = produce(stateBundle, (draft) => {
+      draft.name = currentState;
+    });
+    dispatch({
+      type: 'update',
+      payload: { key: id.toString(), data: immerBundle }
+    });
+    dispatchWithoutControl(true);
+    closeModal();
+  };
+  const handleCancel = () => {
+    const { stateBundle } = getActiveBundleAndId();
+    dispatchRenameLocally({
+      contextKey: contextKeyMemo,
+      value: stateBundle.name
+    });
+    closeModal();
+  };
+
+  const handleOpen = () => {
+    const {
+      stateBundle: { name }
+    } = getActiveBundleAndId();
+    dispatchRenameLocally({ contextKey: contextKeyMemo, value: name });
+    openModal();
+  };
+
   if (
     currentBundles === undefined ||
     (currentBundles && currentBundles.length == 0)
@@ -189,8 +157,17 @@ export function BundleEditor({
 
   return (
     <Card>
-      <Title>Curriculum Bundles - Year {yearGroup}</Title>
-      <Tab.Group>
+      <Title>
+        Curriculum Bundles - Year {yearGroup} -{' '}
+        <button
+          className={'btn btn-primary btn-outline btn-sm'}
+          onClick={handleOpen}
+        >
+          {sortedBundleList[activeTab].name}
+          <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
+        </button>
+      </Title>
+      <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
         <div className={'w-full flex items-center mb-2'}>
           <Tab.List as={Fragment}>
             <div
@@ -202,15 +179,20 @@ export function BundleEditor({
               }}
             >
               {currentBundles.map((id, index) => {
-                const workProjectSeriesSchemaDtos = bundleLeanDtos[
-                  index
-                ].workProjectSeriesSchemaIds.map(
-                  (schemaId) => curriculumModelsMap[schemaId]
-                );
+                const workSeriesSchemaBundleLeanDto = sortedBundleList[index];
+                const { name, workProjectSeriesSchemaIds } =
+                  workSeriesSchemaBundleLeanDto;
+                const workProjectSeriesSchemaDtos =
+                  workProjectSeriesSchemaIds.map(
+                    (schemaId) => curriculumModelsMap[schemaId]
+                  );
                 const totalPeriods = sumAllSchemas(workProjectSeriesSchemaDtos);
+
                 return (
                   <TabStyled key={id}>
-                    {`${id} - Total Periods: ${totalPeriods.toString()}`}
+                    {`${
+                      name ? name : id
+                    } - Total Periods: ${totalPeriods.toString()}`}
                   </TabStyled>
                 );
               })}
@@ -232,6 +214,14 @@ export function BundleEditor({
           ))}
         </Tab.Panels>
       </Tab.Group>
+      <RenameModal
+        contextKey={contextKeyMemo}
+        show={isOpen}
+        onClose={closeModal}
+        onConfirm={handleRenameBundle}
+        onCancel={handleCancel}
+        enterToConfirm={true}
+      />
     </Card>
   );
 }

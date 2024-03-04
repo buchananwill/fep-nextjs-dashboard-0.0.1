@@ -13,7 +13,7 @@ import {
 } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bundle-Items-context';
 import { Listbox } from '@headlessui/react';
-import { schemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
+import { SchemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
 import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
@@ -63,7 +63,7 @@ export default function CurriculumDeliveryDetails({
     useSingleBundleAssignment(node.id.toString());
   const { bundleItemsMap } = useBundleItemsContext();
   const { selectiveListenerKey, selectiveContextKey } = useMemo(() => {
-    const selectiveContextKey = `${schemaBundleKeyPrefix}${assignmentOptional}`;
+    const selectiveContextKey = `${SchemaBundleKeyPrefix}${assignmentOptional}`;
     const selectiveListenerKey = `${selectiveContextKey}:${node.id}`;
     return { selectiveContextKey, selectiveListenerKey };
   }, [assignmentOptional, node]);

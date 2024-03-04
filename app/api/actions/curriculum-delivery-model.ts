@@ -10,6 +10,11 @@ import { GraphDto } from '../zod-mods';
 import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
+import {
+  deleteEntities,
+  getWithoutBody,
+  putEntities
+} from './template-actions';
 
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 
@@ -24,16 +29,7 @@ export async function getCurriculumDeliveryModelSchemas(
     url = `${url}/knowledge-level-ordinal/${yearGroup}`;
   }
   url = url + paging;
-  try {
-    const response = await fetch(url, {
-      cache: 'no-cache'
-    });
-    const schemas: Page<WorkProjectSeriesSchemaDto> = await response.json();
-    return successResponse(schemas);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  return await getWithoutBody<Page<WorkProjectSeriesSchemaDto>>(url);
 }
 
 const organizationGraphEndpoint = `${API_BASE_URL}/graphs/organizations`;
@@ -41,74 +37,25 @@ const organizationGraphEndpoint = `${API_BASE_URL}/graphs/organizations`;
 export async function getOrganizationGraph(): ActionResponsePromise<
   GraphDto<OrganizationDto>
 > {
-  try {
-    const response = await fetch(organizationGraphEndpoint, {
-      cache: 'no-cache'
-    });
-    const graph: GraphDto<OrganizationDto> = await response.json();
-    return successResponse(graph);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  return getWithoutBody(organizationGraphEndpoint);
 }
 
 export async function putOrganizationGraph(
   updatedGraph: GraphDto<OrganizationDto>
 ): ActionResponsePromise<GraphDto<OrganizationDto>> {
-  try {
-    console.log(updatedGraph);
-    const response = await fetch(organizationGraphEndpoint, {
-      cache: 'no-cache',
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      body: JSON.stringify(updatedGraph)
-    });
-    const responseGraph: GraphDto<OrganizationDto> = await response.json();
-    console.log(responseGraph);
-    return successResponse(responseGraph);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  return putEntities(updatedGraph, organizationGraphEndpoint);
 }
 
-export async function deleteNodes(idList: number[]): Promise<string> {
-  console.log(organizationGraphEndpoint);
-  try {
-    const response = await fetch(organizationGraphEndpoint, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(idList)
-    });
-    console.log(response);
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return 'Error';
-  }
+export async function deleteNodes(
+  idList: number[]
+): ActionResponsePromise<number[]> {
+  return deleteEntities(idList, organizationGraphEndpoint);
 }
-export async function deleteLinks(idList: number[]): Promise<string> {
-  try {
-    const response = await fetch(`${organizationGraphEndpoint}/relationships`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(idList)
-    });
-    console.log(response);
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return 'Error';
-  }
+export async function deleteLinks(
+  idList: number[]
+): ActionResponsePromise<number[]> {
+  const linkDeletionEndpoint = `${organizationGraphEndpoint}/relationships`;
+  return deleteEntities(idList, linkDeletionEndpoint);
 }
 
 export async function getCurriculumDeliveries(
@@ -150,6 +97,14 @@ export async function getBundles(
     return errorResponse(`${error}`);
   }
 }
+
+export async function putBundles(
+  bundleList: WorkSeriesSchemaBundleLeanDto[]
+): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
+  const url = `${SCHEMA_URL}/bundles`;
+  return putEntities(bundleList, url);
+}
+
 export async function putModels(
   modelList: WorkProjectSeriesSchemaDto[]
 ): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {

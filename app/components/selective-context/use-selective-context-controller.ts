@@ -43,10 +43,12 @@ export function useSelectiveContextController<T>(
   listenerKey: string,
   initialValue: T,
   UpdateTriggerRefContext: React.Context<
-    MutableRefObject<UpdateRefInterface<T>>
+    React.MutableRefObject<UpdateRefInterface<T>>
   >,
-  dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>,
-  latestValueRefContext: React.Context<MutableRefObject<LatestValueRef<T>>>
+  latestValueRefContext: React.Context<
+    React.MutableRefObject<LatestValueRef<T>>
+  >,
+  dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>
 ) {
   const { currentState, latestRef, updateTriggers } =
     useSelectiveContextListener(
