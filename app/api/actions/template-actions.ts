@@ -28,7 +28,7 @@ function createRequestInit<T>({
   return init;
 }
 
-export async function postEntityList<T>(
+export async function postEntities<T>(
   dtoList: T[],
   url: string
 ): ActionResponsePromise<T[]> {

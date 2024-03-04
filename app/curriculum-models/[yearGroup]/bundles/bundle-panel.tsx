@@ -27,12 +27,6 @@ function OptionChooserItem({
   optionKey: string;
   listenerKey: string;
 } & React.HTMLAttributes<HTMLInputElement>) {
-  const { currentState } = useSelectiveContextListenerStringList(
-    bundleKey,
-    listenerKey,
-    StaticSchemaIdList
-  );
-
   const { bundleItemsMap } = useBundleItemsContext();
 
   const checked =
@@ -48,7 +42,7 @@ function OptionChooserItem({
         type={'checkbox'}
         checked={checked}
         {...props}
-        className={'pointer-events-none absolute opacity-100  '}
+        className={'pointer-events-none absolute opacity-0  '}
         aria-labelledby={`label-${optionKey}`}
       />
       {children}
@@ -63,18 +57,11 @@ interface BundlePanelProps {
 }
 
 export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
-  const { schemaBundleKey, panelKey } = useMemo(() => {
+  const { panelKey } = useMemo(() => {
     const schemaBundleKey = `${SchemaBundleKeyPrefix}:${bundleId}`;
     const panelKey = `${schemaBundleKey}-panel`;
     return { schemaBundleKey, panelKey };
   }, [bundleId]);
-
-  const { currentState: updatedIds, dispatchWithoutControl: dispatchUpdate } =
-    useSelectiveContextDispatchStringList({
-      contextKey: schemaBundleKey,
-      listenerKey: panelKey,
-      initialValue: StaticSchemaIdList
-    });
 
   const { bundleItemsMap, dispatch } = useBundleItemsContext();
   const bundleItemsMapElement = bundleItemsMap[bundleId];

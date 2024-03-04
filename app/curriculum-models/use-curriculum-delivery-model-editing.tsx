@@ -5,6 +5,7 @@ import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useEffect } from 'react';
+import { StringMapPayload } from './contexts/string-map-context-creator';
 
 export interface CurriculumDeliveryModelEditingProps {
   workProjectSeriesSchemaDtos: WorkProjectSeriesSchemaDto[];
@@ -14,10 +15,10 @@ export interface CurriculumDeliveryModelEditingProps {
 export function getPayloadArray<T>(
   itemArray: T[],
   keyAccessor: (item: T) => string
-) {
-  return itemArray.map((schema) => ({
-    key: keyAccessor(schema),
-    data: schema
+): StringMapPayload<T>[] {
+  return itemArray.map((item) => ({
+    key: keyAccessor(item),
+    data: item
   }));
 }
 

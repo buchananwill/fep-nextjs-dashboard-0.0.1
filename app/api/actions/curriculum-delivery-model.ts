@@ -13,6 +13,7 @@ import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
 import {
   deleteEntities,
   getWithoutBody,
+  postEntities,
   putEntities
 } from './template-actions';
 
@@ -98,11 +99,22 @@ export async function getBundles(
   }
 }
 
+const bundleApiEndpoint = `${SCHEMA_URL}/bundles`;
+
 export async function putBundles(
   bundleList: WorkSeriesSchemaBundleLeanDto[]
 ): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
-  const url = `${SCHEMA_URL}/bundles`;
-  return putEntities(bundleList, url);
+  return putEntities(bundleList, bundleApiEndpoint);
+}
+export async function postBundles(
+  bundleList: WorkSeriesSchemaBundleLeanDto[]
+): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
+  return postEntities(bundleList, bundleApiEndpoint);
+}
+export async function deleteBundles(
+  deleteBundleIds: number[]
+): ActionResponsePromise<number[]> {
+  return deleteEntities(deleteBundleIds, bundleApiEndpoint);
 }
 
 export async function putModels(

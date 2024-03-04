@@ -3,18 +3,31 @@ import {
   BundleItemsContext,
   BundleItemsContextDispatch
 } from './use-bundle-Items-context';
-import { PropsWithChildren, useMemo } from 'react';
+import { PropsWithChildren, useMemo, useTransition } from 'react';
 import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { StringMap, useStringMapReducer } from './string-map-context-creator';
+import {
+  StringMap,
+  StringMapPayload,
+  useStringMapReducer
+} from './string-map-context-creator';
 import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import {
-  BundleEditorKey,
-  UnsavedBundleEdits
-} from '../[yearGroup]/bundles/bundle-editor';
+import { UnsavedBundleEdits } from '../[yearGroup]/bundles/bundle-editor';
 import { useModal } from '../../components/confirm-action-modal';
-import { putBundles } from '../../api/actions/curriculum-delivery-model';
+import {
+  deleteBundles,
+  postBundles,
+  putBundles
+} from '../../api/actions/curriculum-delivery-model';
 import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
+import { TransientIdOffset } from '../../graphing/editing/graph-edits';
+import { ActionResponse } from '../../api/actions/actionResponse';
+import { Card, Title } from '@tremor/react';
+import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
+
+export const StaticDeletedBundleList: number[] = [];
+
+export const DeletedBundlesList = 'deleted-bundle-list';
 
 export function BundleItemsContextProvider({
   bundleItems,
@@ -27,25 +40,65 @@ export function BundleItemsContextProvider({
     });
     return bundlesMap;
   }, [bundleItems]);
+  const [pending, startTransition] = useTransition();
+
   const [bundleItemState, dispatch] =
     useStringMapReducer<WorkSeriesSchemaBundleLeanDto>(bundlesMap);
 
   const { currentState: unsaved, dispatchUpdate: setUnsavedBundles } =
     useSelectiveContextControllerBoolean(UnsavedBundleEdits, 'provider', false);
 
+  const {
+    currentState: deleteBundleIds,
+    dispatchUpdate: dispatchDeleteBundles
+  } = useSelectiveContextControllerNumberList({
+    contextKey: DeletedBundlesList,
+    listenerKey: 'provider',
+    initialValue: StaticDeletedBundleList
+  });
+
   const { isOpen, closeModal, openModal } = useModal();
 
   const handleConfirm = () => {
-    const bundleLeanDtos = Object.values(bundleItemState);
-    putBundles(bundleLeanDtos).then((r) => {
-      if (r.status >= 200 && r.status < 300 && r.data) {
-        const payloadArray = getPayloadArray(r.data, (bundle) =>
-          bundle.id.toString()
-        );
-        dispatch({ type: 'updateAll', payload: payloadArray });
-        setUnsavedBundles({ contextKey: UnsavedBundleEdits, value: false });
-        closeModal();
-      }
+    startTransition(() => {
+      const bundleLeanDtos = Object.values(bundleItemState);
+      const existingBundles: WorkSeriesSchemaBundleLeanDto[] = [];
+      const newBundles: WorkSeriesSchemaBundleLeanDto[] = [];
+      bundleLeanDtos.forEach((bundle) => {
+        if (bundle.id >= TransientIdOffset) {
+          newBundles.push(bundle);
+        } else {
+          existingBundles.push(bundle);
+        }
+      });
+      const updatedBundles: StringMapPayload<WorkSeriesSchemaBundleLeanDto>[] =
+        [];
+      const responses: ActionResponse<WorkSeriesSchemaBundleLeanDto[]>[] = [];
+      deleteBundles(deleteBundleIds);
+      postBundles(newBundles)
+        .then((r) => {
+          if (r.status >= 200 && r.status < 300 && r.data) {
+            getPayloadArray(r.data, (bundle) => bundle.id.toString()).forEach(
+              (payload) => updatedBundles.push(payload)
+            );
+            responses.push(r);
+            return;
+          }
+        })
+        .then((r) => putBundles(existingBundles))
+        .then((r) => {
+          if (r.status >= 200 && r.status < 300 && r.data) {
+            const payloadArray = getPayloadArray(r.data, (bundle) =>
+              bundle.id.toString()
+            );
+            payloadArray.forEach((payload) => updatedBundles.push(payload));
+          }
+        })
+        .then((r) => {
+          dispatch({ type: 'updateAll', payload: updatedBundles });
+          setUnsavedBundles({ contextKey: UnsavedBundleEdits, value: false });
+          closeModal();
+        });
     });
   };
 
@@ -68,6 +121,12 @@ export function BundleItemsContextProvider({
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
+        {pending && (
+          <Card className={'fixed top-4 left-1/2'}>
+            <Title>Saving to database</Title>{' '}
+            <span className="loading loading-spinner loading-lg"></span>
+          </Card>
+        )}
       </BundleItemsContextDispatch.Provider>{' '}
     </BundleItemsContext.Provider>
   );

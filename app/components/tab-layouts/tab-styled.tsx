@@ -3,14 +3,14 @@ import { Tab } from '@headlessui/react';
 
 export function TabStyled({ children }: { children: string }) {
   return (
-    <Tab as={'div'} className={'w-full p-0.5 rounded-lg'}>
+    <Tab as={'div'} className={'w-full p-0.5 rounded-lg overflow-hidden'}>
       {({ selected }) => (
         <button
-          className={`w-full btn btn-sm btn-outline px-0 ${
+          className={`w-full btn btn-sm btn-outline px-2 py-0 text-xs   ${
             selected ? '' : 'opacity-25'
           }`}
         >
-          <span className={'text-xs'}>{children}</span>
+          <span className={'truncate ...'}>{children}</span>
         </button>
       )}
     </Tab>

@@ -4,7 +4,7 @@ import { Badge, Card, Color, Title } from '@tremor/react';
 import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
 import { TabStyled } from '../../../components/tab-layouts/tab-styled';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
 import { sumAllSchemas } from '../../../graphing/components/curriculum-delivery-details';
@@ -19,12 +19,18 @@ import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { useSelectiveContextControllerString } from '../../../components/selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
 import { produce } from 'immer';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
 import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextDispatchBoolean
-} from '../../../components/selective-context/selective-context-manager-boolean';
-import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
+  useSelectiveContextControllerNumberList,
+  useSelectiveContextDispatchNumberList
+} from '../../../components/selective-context/selective-context-manager-number-list';
+import { TransientIdOffset } from '../../../graphing/editing/graph-edits';
+import { TwoStageClick } from '../../../components/buttons/two-stage-click';
+import {
+  DeletedBundlesList,
+  StaticDeletedBundleList
+} from '../../contexts/bundle-items-context-provider';
 
 export const BundleEditorKey = 'bundles-editor';
 
@@ -33,6 +39,8 @@ export const UnsavedBundleEdits = `Unsaved-${BundleEditorKey}`;
 export const SchemaBundleKeyPrefix = 'schema-bundle';
 
 export const StaticSchemaIdList: string[] = [];
+
+export const StaticTransientBundleIdList: number[] = [];
 
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,
@@ -56,7 +64,7 @@ export function BundleEditor({
 }: {
   schemaOptions: { [key: string]: string };
 }) {
-  const { bundleItemsMap, dispatch } = useBundleItemsContext();
+  const { bundleItemsMap, dispatch: updateBundles } = useBundleItemsContext();
 
   const sortedBundleList = useMemo(() => {
     return Object.entries(bundleItemsMap)
@@ -71,12 +79,6 @@ export function BundleEditor({
   const schemaBundles = useMemo(() => {
     return sortedBundleList.map((dto) => dto.workProjectSeriesSchemaIds);
   }, [sortedBundleList]);
-  const { currentState: currentBundles, dispatchUpdate } =
-    useSelectiveContextControllerStringList(
-      BundleEditorKey,
-      BundleEditorKey,
-      bundleIds
-    );
   const { curriculumModelsMap } = useCurriculumModelContext();
   const pathname = usePathname();
   const lastIndexOf = pathname?.lastIndexOf('/');
@@ -101,26 +103,22 @@ export function BundleEditor({
     useSelectiveContextControllerString(contextKeyMemo, BundleEditorKey);
 
   const {
-    dispatchUpdate: dispatchBundleToSchemaList,
-    currentState: updatedBundleLists
-  } = useSelectiveContextControllerStringList(
-    `${BundleEditorKey}:schemalists`,
-    BundleEditorKey,
-    StaticSchemaIdList
-  );
+    dispatchUpdate: updateTransientBundleIds,
+    currentState: transientBundleIds
+  } = useSelectiveContextControllerNumberList({
+    contextKey: `${BundleEditorKey}:unsaved-bundles`,
+    initialValue: StaticTransientBundleIdList,
+    listenerKey: BundleEditorKey
+  });
 
-  useEffect(() => {
-    console.log('Setting up lists...');
-    if (!unsaved) {
-      console.log('No saved changes yet...');
-      sortedBundleList.forEach((bundle) => {
-        dispatchBundleToSchemaList({
-          contextKey: `${SchemaBundleKeyPrefix}:${bundle.id}`,
-          value: bundle.workProjectSeriesSchemaIds
-        });
-      });
-    }
-  }, [sortedBundleList, dispatchBundleToSchemaList, unsaved]);
+  const {
+    currentState: deleteBundles,
+    dispatchWithoutControl: setDeleteBundles
+  } = useSelectiveContextDispatchNumberList({
+    contextKey: DeletedBundlesList,
+    listenerKey: BundleEditorKey,
+    initialValue: StaticDeletedBundleList
+  });
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -154,9 +152,19 @@ export function BundleEditor({
       ? TotalPeriodBadgeColors.belowMin
       : TotalPeriodBadgeColors.good;
 
+  const deleteBundle = (id: number) => {
+    setActiveTab((prev) => Math.max(0, prev - 1));
+    setDeleteBundles([...deleteBundles, id]);
+    updateBundles({
+      type: 'delete',
+      payload: { key: id.toString(), data: bundleItemsMap[id.toString()] }
+    });
+    dispatchWithoutControl(true);
+  };
+
   if (
-    currentBundles === undefined ||
-    (currentBundles && currentBundles.length == 0)
+    sortedBundleList === undefined ||
+    (sortedBundleList && sortedBundleList.length == 0)
   ) {
     return <Card>No bundles!</Card>;
   }
@@ -166,7 +174,7 @@ export function BundleEditor({
     const immerBundle = produce(stateBundle, (draft) => {
       draft.name = currentState;
     });
-    dispatch({
+    updateBundles({
       type: 'update',
       payload: { key: id.toString(), data: immerBundle }
     });
@@ -190,7 +198,24 @@ export function BundleEditor({
     openModal();
   };
 
-  const gridColumns = currentBundles.length;
+  const gridColumns = sortedBundleList.length;
+
+  const handleNewBundle = () => {
+    let nextId = TransientIdOffset;
+    while (transientBundleIds.includes(nextId)) {
+      nextId = nextId + transientBundleIds.length;
+    }
+    const newBundle: WorkSeriesSchemaBundleLeanDto = {
+      id: nextId,
+      name: `Unnamed Bundle ${nextId}`,
+      workProjectSeriesSchemaIds: []
+    };
+    updateBundles({
+      type: 'update',
+      payload: { key: nextId.toString(), data: newBundle }
+    });
+    dispatchWithoutControl(true);
+  };
 
   return (
     <Card>
@@ -203,6 +228,9 @@ export function BundleEditor({
           {sortedBundleList[activeTab].name}
           <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
         </button>
+        <TwoStageClick onClick={() => deleteBundle(activeBundleAndId.id)}>
+          <TrashIcon className={'h-4 w-4'}></TrashIcon>
+        </TwoStageClick>
         <span className={'grow'}></span>
         <span className={'grow-0'}>
           Curriculum Bundles - Year {yearGroup} - Total All Bundles:{' '}
@@ -220,10 +248,8 @@ export function BundleEditor({
                 flexGrow: 1
               }}
             >
-              {currentBundles.map((id, index) => {
-                const workSeriesSchemaBundleLeanDto = sortedBundleList[index];
-                const { name, workProjectSeriesSchemaIds } =
-                  workSeriesSchemaBundleLeanDto;
+              {sortedBundleList.map((bundleFromList, index) => {
+                const { name, workProjectSeriesSchemaIds } = bundleFromList;
                 const workProjectSeriesSchemaDtos =
                   workProjectSeriesSchemaIds.map(
                     (schemaId) => curriculumModelsMap[schemaId]
@@ -231,9 +257,9 @@ export function BundleEditor({
                 const totalPeriods = sumAllSchemas(workProjectSeriesSchemaDtos);
 
                 return (
-                  <TabStyled key={id}>
+                  <TabStyled key={bundleFromList.id}>
                     {`${
-                      name ? name : id
+                      name ? name : bundleFromList
                     } - Total Periods: ${totalPeriods.toString()}`}
                   </TabStyled>
                 );
@@ -241,21 +267,25 @@ export function BundleEditor({
             </div>
           </Tab.List>
 
-          <button className={` btn btn-sm btn-outline px-0 w-[50px] `}>
+          <button
+            className={` btn btn-sm btn-outline px-0 w-[50px] `}
+            onClick={handleNewBundle}
+          >
             <PlusCircleIcon className={'h-5 w-5'}></PlusCircleIcon>
           </button>
         </div>
         <Tab.Panels>
-          {currentBundles.map((bundleId, index) => (
+          {sortedBundleList.map(({ id }, index) => (
             <BundlePanel
-              key={bundleId}
-              bundleId={bundleId}
+              key={id}
+              bundleId={id.toString()}
               schemaBundleIds={schemaBundles[index]}
               schemaOptions={schemaOptions}
             ></BundlePanel>
           ))}
         </Tab.Panels>
       </Tab.Group>
+
       <RenameModal
         contextKey={contextKeyMemo}
         show={isOpen}
