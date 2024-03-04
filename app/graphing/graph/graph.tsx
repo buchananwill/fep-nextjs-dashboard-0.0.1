@@ -1,33 +1,18 @@
 'use client';
-import { DataNode, GraphDto } from '../../api/zod-mods';
-import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
-import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
 import ForceSimWrapper from '../force-sim-wrapper';
-import React, {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef
-} from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
-import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 
 import { useDraggable } from '@dnd-kit/core';
 import { useDragToTranslate } from '../../components/draggable-to-translate/draggable-to-translate';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
 import GraphViewOptions from '../components/graph-view-options';
 import NodeInteractionProvider from '../nodes/node-interaction-context';
 import {
-  GenericNodeRefContext,
   useGenericGraphRefs,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import {
-  GenericLinkRefContext,
-  useGenericLinkContext
-} from '../links/generic-link-context-creator';
+import { useGenericLinkContext } from '../links/generic-link-context-creator';
 import {
   DraggablePositionContext,
   IsDraggingContext,
@@ -35,7 +20,11 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 
-const DefaultGraphZoom = 100;
+export const DefaultGraphZoom = 100;
+export const MaxGraphZoom = 200;
+export const ConstantGraphZoomFactor = 2;
+const DefaultGraphWidth = 900;
+const DefaultGraphHeight = 600;
 export default function Graph<T>({
   titleList,
   textList,
@@ -80,18 +69,19 @@ export default function Graph<T>({
     svgScale
   } = useMouseMoveSvgDraggable(nodeListRef!, uniqueGraphName);
 
-  const x = currentState / 200;
   const translationContextInterface = useDragToTranslate();
   const translationElement = translationContextInterface['draggable'];
   const xTranslate = (transform?.x || 0) + (translationElement?.x || 0);
   const yTranslate = (transform?.y || 0) + (translationElement?.y || 0);
 
-  const scale = 100 / currentState;
-  const dimensionsArray = useMemo(() => {
-    const width = 1800 * scale;
-    const height = 1200 * scale;
-    return [width, height];
-  }, [scale]);
+  const scale = DefaultGraphZoom / currentState;
+
+  const initialWidth = DefaultGraphWidth * scale;
+  const initialHeight = DefaultGraphHeight * scale;
+  const width = initialWidth * ConstantGraphZoomFactor;
+  const height = initialHeight * ConstantGraphZoomFactor;
+  const centerOffsetX = initialWidth - DefaultGraphWidth;
+  const centerOffsetY = initialHeight - DefaultGraphHeight;
 
   return (
     <MouseDownDispatchContext.Provider value={mouseDownDispatch}>
@@ -103,8 +93,11 @@ export default function Graph<T>({
                 <div ref={setNodeRef}>
                   <svg
                     className={'border-2 border-slate-600 rounded-lg'}
-                    viewBox={`0 0 ${dimensionsArray[0]} ${dimensionsArray[1]}`}
-                    style={{ width: '900', height: '600' }}
+                    viewBox={`0 0 ${width} ${height}`}
+                    style={{
+                      width: DefaultGraphWidth,
+                      height: DefaultGraphHeight
+                    }}
                     xmlns="http://www.w3.org/2000/svg"
                     ref={svgRef}
                     onMouseMove={handleMouseMove}
@@ -117,9 +110,9 @@ export default function Graph<T>({
                       className={'fill-transparent'}
                     />
                     <g
-                      transform={`translate(${xTranslate * svgScale} ${
-                        yTranslate * svgScale
-                      })`}
+                      transform={`translate(${
+                        xTranslate * svgScale + centerOffsetX
+                      } ${yTranslate * svgScale + centerOffsetY})`}
                     >
                       <ForceSimWrapper
                         textElements={textElements}

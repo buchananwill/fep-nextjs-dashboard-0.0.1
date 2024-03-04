@@ -2,11 +2,11 @@
 import { GraphToggle, GraphToggleProps } from './graph-toggle';
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
-import { StandardTooltipContentOld } from '../../components/tooltips/standard-tooltip-content-old';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GraphContext } from '../graph/graph-context-creator';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import { DefaultGraphZoom, MaxGraphZoom } from '../graph/graph';
 
 const graphToggles: GraphToggleProps[] = [
   {
@@ -73,9 +73,9 @@ export default function GraphViewOptions() {
             <SelectiveContextRangeSlider
               contextKey={`zoom-${uniqueGraphName}`}
               listenerKey={`zoom-${uniqueGraphName}-slider`}
-              maxValue={200}
+              maxValue={MaxGraphZoom}
               minValue={10}
-              initialValue={100}
+              initialValue={DefaultGraphZoom}
             ></SelectiveContextRangeSlider>
           </TooltipTrigger>
           <StandardTooltipContent>Zoom in/out</StandardTooltipContent>
