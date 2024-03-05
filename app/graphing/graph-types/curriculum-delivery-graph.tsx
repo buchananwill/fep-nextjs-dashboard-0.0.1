@@ -30,18 +30,14 @@ import {
   GenericNodeRefContext,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import AddLinksButton from '../editing/add-links-button';
 import { DeleteLinksButton } from '../editing/delete-links-button';
 import { DeleteNodesButton } from '../editing/delete-nodes-button';
-import { BundleAssignmentsProvider } from '../../curriculum-models/contexts/bundle-assignments-provider';
 import {
   StringMap,
   StringMapPayload
 } from '../../curriculum-models/contexts/string-map-context-creator';
-import { BundleItemsContextProvider } from '../../curriculum-models/contexts/bundle-items-context-provider';
-import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
@@ -60,8 +56,13 @@ import {
 } from '../editing/use-graph-edit-button-hooks';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { TransientIdOffset } from '../editing/graph-edits';
+import {
+  useSelectiveContextControllerNumber,
+  useSelectiveContextListenerNumber
+} from '../../components/selective-context/selective-context-manager-number';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
+export const NodeVersionKey = 'node-version-key';
 
 export interface GraphTypeProps<T extends HasNumberIdDto> {
   graphData: GraphDto<T>;
@@ -119,6 +120,17 @@ export default function CurriculumDeliveryGraph({
   const { links } = useGenericLinkContext<OrganizationDto>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
+  const { currentState: nodeVersion } = useSelectiveContextControllerNumber({
+    contextKey: NodeVersionKey,
+    listenerKey: 'curriculum-delivery-graph',
+    initialValue: 0
+  });
+
+  useEffect(() => {
+    nodesRef.current = nodes;
+    linksRef.current = links;
+  }, [nodes, links]);
+
   const { uniqueGraphName } = useContext(GraphContext);
   const mountedKey = useMemo(
     () => `${uniqueGraphName}-mounted`,

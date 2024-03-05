@@ -8,9 +8,10 @@ import React, {
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { relativizeURL } from 'next/dist/shared/lib/router/utils/relativize-url';
 import { GenericLinkRefContext } from '../links/generic-link-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 // Define the interface as generic
-export interface GenericNodeContextInterface<T> {
+export interface GenericNodeContextInterface<T extends HasNumberIdDto> {
   nodes: DataNode<T>[];
   uniqueGraphName: string;
 }
@@ -25,7 +26,7 @@ export const GenericNodeDispatchContext = createContext<
 >(undefined);
 
 // Generic hook to use the context
-export function useGenericNodeContext<T>() {
+export function useGenericNodeContext<T extends HasNumberIdDto>() {
   const context = useContext(
     GenericNodeContext as React.Context<
       GenericNodeContextInterface<T> | undefined
@@ -48,7 +49,7 @@ export const GenericNodeRefContext = createContext<MutableRefObject<
   DataNode<any>[]
 > | null>(null);
 
-export function useGenericGraphRefs<T>() {
+export function useGenericGraphRefs<T extends HasNumberIdDto>() {
   const nodeListRef = useContext(
     GenericNodeRefContext as React.Context<React.MutableRefObject<
       DataNode<T>[]

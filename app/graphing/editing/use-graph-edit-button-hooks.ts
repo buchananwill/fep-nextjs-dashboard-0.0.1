@@ -20,8 +20,11 @@ import { useSelectiveContextKeyMemo } from '../../components/selective-context/u
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
 import { CurriculumDetailsListenerKey } from '../components/curriculum-delivery-details';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function useGraphVersionKeys<T>(listenerKey: string) {
+export function useGraphVersionKeys<T extends HasNumberIdDto>(
+  listenerKey: string
+) {
   const { uniqueGraphName } = useGenericNodeContext<T>();
   const { contextVersionKey, listenerVersionKey } = useMemo(() => {
     const contextVersionKey = `${uniqueGraphName}:version`;
@@ -31,7 +34,9 @@ export function useGraphVersionKeys<T>(listenerKey: string) {
   return { contextVersionKey, listenerVersionKey };
 }
 
-export function useDirectSimRefEditsController<T>(listenerKey: string) {
+export function useDirectSimRefEditsController<T extends HasNumberIdDto>(
+  listenerKey: string
+) {
   const { contextVersionKey, listenerVersionKey } =
     useGraphVersionKeys(listenerKey);
 
@@ -48,7 +53,9 @@ export function useDirectSimRefEditsController<T>(listenerKey: string) {
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
   return { incrementSimVersion, nodeListRef, linkListRef };
 }
-export function useDirectSimRefEditsDispatch<T>(buttonListenerKey: string) {
+export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
+  buttonListenerKey: string
+) {
   const { contextVersionKey, listenerVersionKey } =
     useGraphVersionKeys(buttonListenerKey);
 
@@ -89,7 +96,9 @@ export function useDirectSimRefEditsDispatch<T>(buttonListenerKey: string) {
   return { incrementSimVersion, nodeListRef, linkListRef };
 }
 
-export function useGraphEditButtonHooks<T>(buttonListenerKey: string) {
+export function useGraphEditButtonHooks<T extends HasNumberIdDto>(
+  buttonListenerKey: string
+) {
   const { selected } = useNodeInteractionContext();
 
   const { incrementSimVersion, nodeListRef, linkListRef } =

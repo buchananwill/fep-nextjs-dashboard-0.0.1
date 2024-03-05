@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  CSSProperties,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState
-} from 'react';
+import React, { ReactNode, useContext, useMemo, useState } from 'react';
 import { DataLink, DataNode } from '../api/zod-mods';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
 import {
@@ -17,9 +11,14 @@ import {
   GenericNodeRefContext,
   useGenericNodeContext
 } from './nodes/generic-node-context-creator';
-import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
+import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
+import {
+  useSelectiveContextDispatchNumber,
+  useSelectiveContextListenerNumber
+} from '../components/selective-context/selective-context-manager-number';
+import { NodeVersionKey } from './graph-types/curriculum-delivery-graph';
 
-export default function ForceSimWrapper<T>({
+export default function ForceSimWrapper<T extends HasNumberIdDto>({
   linkElements,
   nodeElements,
   textElements,
@@ -30,9 +29,9 @@ export default function ForceSimWrapper<T>({
   linkElements: ReactNode[];
   uniqueGraphName: string;
 }) {
-  const { dispatch: genericNodeDispatch, nodes } =
+  const { dispatch: genericNodeDispatch } =
     useGenericNodeContext<DataNode<T>>();
-  const { dispatch: genericLinkDispatch, links } =
+  const { dispatch: genericLinkDispatch } =
     useGenericLinkContext<DataLink<T>>();
 
   const nodesRef = useContext(GenericNodeRefContext);
@@ -41,18 +40,33 @@ export default function ForceSimWrapper<T>({
   // const listenerAlterKey = `${uniqueGraphName}-force-sim-wrapper`;
   //
 
+  const { currentState, dispatchWithoutControl } =
+    useSelectiveContextDispatchNumber({
+      contextKey: NodeVersionKey,
+      listenerKey: 'wrapper',
+      initialValue: 0
+    });
+
   const [simDisplaying, setSimDisplaying] = useState(false);
 
   const ticked = useMemo(() => {
     return () => {
-      if (nodesRef) {
-        genericNodeDispatch(nodesRef.current.map((d) => ({ ...d })));
-      }
-      if (linksRef)
-        genericLinkDispatch(linksRef.current.map((d) => ({ ...d })));
+      // if (nodesRef) {
+      //   genericNodeDispatch(nodesRef.current.map((d) => ({ ...d })));
+      // }
+      // if (linksRef)
+      //   genericLinkDispatch(linksRef.current.map((d) => ({ ...d })));
+      dispatchWithoutControl(currentState + 1);
       setSimDisplaying(true);
     };
-  }, [linksRef, nodesRef, genericNodeDispatch, genericLinkDispatch]);
+  }, [
+    currentState,
+    dispatchWithoutControl
+    // linksRef,
+    // nodesRef,
+    // genericNodeDispatch,
+    // genericLinkDispatch
+  ]);
 
   useD3ForceSimulation(nodesRef!, linksRef!, ticked, uniqueGraphName);
 

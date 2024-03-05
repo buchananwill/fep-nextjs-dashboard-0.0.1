@@ -3,14 +3,18 @@ import { TransitionWrapper } from '../../components/transition-wrapper';
 import React, { ReactElement, useContext, useMemo } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
 import { DataNode } from '../../api/zod-mods';
-import { useGenericNodeContext } from './generic-node-context-creator';
+import {
+  useGenericGraphRefs,
+  useGenericNodeContext
+} from './generic-node-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import {
   LeftCtrlListener,
   LeftShiftListener
 } from '../../components/key-listener-context/key-listener-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export default function NodeText<T>({
+export default function NodeText<T extends HasNumberIdDto>({
   textIndex,
   children
 }: {
@@ -19,14 +23,12 @@ export default function NodeText<T>({
 }) {
   const shiftHeld = useContext(LeftShiftListener);
   const leftCtrlHeld = useContext(LeftCtrlListener);
-  const { nodes, uniqueGraphName } = useGenericNodeContext<DataNode<T>>();
+  const { uniqueGraphName } = useGenericNodeContext<DataNode<T>>();
+  const { nodeListRef } = useGenericGraphRefs();
   const listenerKey = useMemo(
     () => `node-text-${textIndex}-${uniqueGraphName}`,
     [textIndex, uniqueGraphName]
   );
-
-  const updatedData = nodes[textIndex];
-
   const { selected, hover, dispatch } = useNodeInteractionContext();
 
   const { isTrue: pinTextToSelected } = useSelectiveContextListenerBoolean(
@@ -34,6 +36,12 @@ export default function NodeText<T>({
     listenerKey,
     false
   );
+
+  if (nodeListRef?.current === undefined) {
+    return null;
+  }
+
+  const updatedData = nodeListRef.current[textIndex];
 
   const { id } = updatedData;
   const show = shiftHeld || hover === id || selected.includes(id);

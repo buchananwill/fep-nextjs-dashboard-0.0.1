@@ -7,46 +7,40 @@ import {
   useGenericNodeContext
 } from './generic-node-context-creator';
 import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 // Good start - clear name and type generic
-export function NodeComponent<T>({
+export function NodeComponent<T extends HasNumberIdDto>({
   gProps,
   enableRunnable,
   nodeIndex,
-  children
+  children,
+  nodeId
 }: {
   gProps?: React.SVGProps<SVGGElement>;
   nodeIndex: number;
   enableRunnable?: boolean;
   children?: ReactNode;
+  nodeId: number;
 }) {
   const { nodes } = useGenericNodeContext<T>();
-  const updatedNodeData = nodes[nodeIndex];
-
-  const nodesRef = useContext(GenericNodeRefContext);
-
-  if (nodeIndex === 12) {
-    // console.log('Data found:', updatedNodeData);
-    // console.log('Full Array:', nodes);
-    // console.log(nodesRef?.current);
-  }
-
-  const nodeDragKey = `node-${updatedNodeData.id}`;
-  // useMemo(
-  //   () => `node-${updatedNodeData.id}`,
-  //   [updatedNodeData]
-  // );
-  const { x, y, distanceFromRoot, data } = updatedNodeData; // Only x and y are necessarily relevant
-
-  const nodeRef = useContext(GenericNodeRefContext);
-
+  // const updatedNodeData = nodes[nodeIndex];
   const { dispatch, hover, selected } = useNodeInteractionContext();
+
+  const nodeDragKey = `node-${nodeId}`;
 
   const { mouseDown, mouseUp, doDrag, draggablePosition } =
     useForceGraphDndElement({
       draggingNodeIndex: nodeIndex,
       draggingNodeKey: nodeDragKey
     });
+
+  const nodesRef = useContext(GenericNodeRefContext);
+  if (nodesRef?.current === undefined || nodeIndex > nodesRef.current.length)
+    return null;
+  const updatedNodeData = nodesRef?.current[nodeIndex];
+
+  const { x, y, distanceFromRoot, data } = updatedNodeData; // Only x and y are necessarily relevant
 
   const handleClick = enableRunnable
     ? () => {
@@ -59,7 +53,7 @@ export function NodeComponent<T>({
   let finalY = y || 0;
 
   if (doDrag) {
-    const currentElement = nodeRef?.current[nodeIndex];
+    const currentElement = nodesRef.current[nodeIndex];
     if (!!currentElement) {
       currentElement.x = draggablePosition.x;
       currentElement.y = draggablePosition.y;

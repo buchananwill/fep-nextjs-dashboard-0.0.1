@@ -20,6 +20,7 @@ import { getForceRadial, updateForceRadial } from './forces/force-radial';
 import { useSelectiveContextListenerNumber } from '../components/selective-context/selective-context-manager-number';
 import { useGraphSelectiveContextListener } from './graph/graph-context-creator';
 import { useSelectiveContextListenerNumberList } from '../components/selective-context/selective-context-manager-number-list';
+import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 
 export type StandardForceKey =
   | 'link'
@@ -30,7 +31,7 @@ export type StandardForceKey =
   | 'forceX'
   | 'forceY';
 
-export function useD3ForceSimulation<T>(
+export function useD3ForceSimulation<T extends HasNumberIdDto>(
   nodesRef: MutableRefObject<DataNode<T>[]>,
   linksRef: MutableRefObject<DataLink<T>[]>,
   ticked: () => void,

@@ -8,8 +8,11 @@ import { index } from 'd3';
 import { NodeComponentContext } from '../nodes/node-component-context';
 
 import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function useBasicNodeElements<T>(nodes: DataNode<T>[]) {
+export function useBasicNodeElements<T extends HasNumberIdDto>(
+  nodes: DataNode<T>[]
+) {
   const nodeComponentSource = useContext(NodeComponentContext);
   let getter = nodeComponentSource.getNodeElements;
   if (getter) {
@@ -21,11 +24,12 @@ export function useBasicNodeElements<T>(nodes: DataNode<T>[]) {
       key={`node-${d.id}`}
       enableRunnable={true}
       nodeIndex={index}
+      nodeId={d.id}
     />
   ));
 }
 
-export function useWorkSeriesBundleNodeElements<PartyDto>(
+export function useWorkSeriesBundleNodeElements<T extends HasNumberIdDto>(
   nodes: DataNode<PartyDto>[],
   bundles: WorkSeriesBundleDeliveryDto[]
 ) {
@@ -62,6 +66,7 @@ export function useWorkSeriesBundleNodeElements<PartyDto>(
         key={`node-${d.id}`}
         enableRunnable={true}
         nodeIndex={index}
+        nodeId={d.id}
       >
         <g transform={`translate(0 ${-numberOfSchemas * 16})`}>{...elements}</g>
       </NodeComponent>

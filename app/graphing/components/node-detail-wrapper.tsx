@@ -2,8 +2,6 @@
 import React, { PropsWithChildren, useContext } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
-import { NodeInteractionContext } from '../nodes/node-interaction-context-creator';
 import { DataNode } from '../../api/zod-mods';
 import SelectionOutline from './selection-outline';
 import {
@@ -12,8 +10,9 @@ import {
 } from '../nodes/node-interaction-context';
 import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function NodeDetailWrapper<T>({
+export function NodeDetailWrapper<T extends HasNumberIdDto>({
   label,
   children,
   node

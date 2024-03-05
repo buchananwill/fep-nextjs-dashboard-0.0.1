@@ -12,7 +12,7 @@ export const forceAttributesInitial: ForceGraphAttributesDto = {
   manyBodyStrength: 50, // 0
   manyBodyMinDistance: 10, // 5
   manyBodyMaxDistance: 400, // 400
-  manyBodyTheta: 100, // 9
+  manyBodyTheta: 50, // 9
   forceRadialStrength: 1, // Must not be 0
   forceRadialXRelative: 100, // 100
   forceRadialYRelative: 100 // 100

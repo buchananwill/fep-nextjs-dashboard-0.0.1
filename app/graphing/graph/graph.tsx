@@ -19,13 +19,14 @@ import {
   MouseDownDispatchContext,
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export const DefaultGraphZoom = 100;
 export const MaxGraphZoom = 200;
 export const ConstantGraphZoomFactor = 2;
 const DefaultGraphWidth = 900;
 const DefaultGraphHeight = 600;
-export default function Graph<T>({
+export default function Graph<T extends HasNumberIdDto>({
   titleList,
   textList,
   uniqueGraphName,
@@ -38,14 +39,11 @@ export default function Graph<T>({
 } & PropsWithChildren) {
   const textAccessor = (n: number) => textList[n] || '';
   const titleAccessor = (n: number) => titleList[n] || ''; //auxNodes[n.data.entityId].data.product.name;
-
-  const { nodes } = useGenericNodeContext<T>();
-  const { links } = useGenericLinkContext<T>();
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
 
   const { nodeElements, linkElements, textElements } = useGraphElements(
-    nodes,
-    links,
+    nodeListRef?.current || [],
+    linkListRef?.current || [],
     textAccessor,
     titleAccessor
   );
