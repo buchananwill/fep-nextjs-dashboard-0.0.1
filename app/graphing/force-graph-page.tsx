@@ -13,6 +13,7 @@ import { GenericNodeContextProvider } from './nodes/generic-node-context-provide
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';
 import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
+import { usePathname } from 'next/navigation';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
@@ -20,15 +21,11 @@ export interface NodePayload<T extends HasNumberIdDto> {
 }
 
 const uniqueGraphName = 'party-dto-graph';
-export default async function ForceGraphPage() {
-  const actionResponse = await getOrganizationGraph();
-
-  if (!actionResponse.data) {
-    return <Card>No graphs!</Card>;
-  }
-
-  const organizationGraph: GraphDto<OrganizationDto> = actionResponse.data;
-
+export default async function ForceGraphPage({
+  dataGraph: organizationGraph
+}: {
+  dataGraph: GraphDto<OrganizationDto>;
+}) {
   const { nodes, closureDtos } = organizationGraph;
 
   const organizationIds = organizationGraph.nodes.map(

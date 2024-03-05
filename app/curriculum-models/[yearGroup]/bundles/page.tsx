@@ -1,6 +1,6 @@
 import {
   getBundles,
-  getCurriculumDeliveryModelSchemas
+  getCurriculumDeliveryModelSchemasByKnowledgeLevel
 } from '../../../api/actions/curriculum-delivery-model';
 import { normalizeQueryParamToNumber } from '../../../api/utils';
 import { Card } from '@tremor/react';
@@ -28,7 +28,7 @@ export default async function Page({
 }) {
   const { page, size } = searchParams;
   const curriculumDeliveryModelSchemas =
-    await getCurriculumDeliveryModelSchemas(
+    await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
       parseInt(yearGroup),
       normalizeQueryParamToNumber(page, 0),
       normalizeQueryParamToNumber(size, 20)

@@ -34,6 +34,8 @@ export function useCurriculumDeliveryModelEditing(
     false
   );
 
+  console.log(workProjectSeriesSchemaDtos, taskTypeList);
+
   useEffect(() => {
     const payloadArray = getPayloadArray(
       workProjectSeriesSchemaDtos,

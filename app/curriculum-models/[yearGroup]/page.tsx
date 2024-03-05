@@ -1,4 +1,4 @@
-import { getCurriculumDeliveryModelSchemas } from '../../api/actions/curriculum-delivery-model';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../api/actions/curriculum-delivery-model';
 import { Card, Grid, Title } from '@tremor/react';
 import BoxHierarchies from '../../playground/box-hierarchies';
 import { CurriculumDeliveryModel } from '../curriculum-delivery-model';
@@ -37,7 +37,7 @@ export default async function Page({
 }) {
   const { page, size } = searchParams;
   const curriculumDeliveryModelSchemas =
-    await getCurriculumDeliveryModelSchemas(
+    await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
       parseInt(yearGroup),
       oneIndexToZeroIndex(normalizeQueryParamToNumber(page, 1)),
       normalizeQueryParamToNumber(size, 11)

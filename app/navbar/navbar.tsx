@@ -18,6 +18,8 @@ import { getOptionBlocks } from '../api/actions/option-blocks';
 import { CarouselGroupDto } from '../api/dtos/CarouselGroupDtoSchema';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
+import { OrganizationTypeDto } from '../api/dtos/OrganizationTypeDtoSchema';
+import { getOrganizationTypes } from '../api/actions/curriculum-delivery-model';
 
 interface DropdownItem {
   name: string;
@@ -62,16 +64,18 @@ export default function Navbar({
   if (useCache) cacheSetting = '?cacheSetting=' + useCache;
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<CarouselGroupDto[] | undefined>(undefined);
 
   const [electivesDropdown, setElectivesDropdown] = useState(electivesLoading);
+
+  const [organizationTypes, setOrganizationTypes] = useState<
+    DropdownItem[] | undefined
+  >();
 
   useEffect(() => {
     if (isLoading) {
       getOptionBlocks().then((r) => {
         if (r.data) {
-          setData(r.data);
-          setIsLoading(false);
+          if (organizationTypes !== undefined) setIsLoading(false);
           const receivedDropdownData = r.data.map((carouselGroupDto) => ({
             name: carouselGroupDto.name,
             href: `/${carouselGroupDto.id}`
@@ -80,21 +84,21 @@ export default function Navbar({
         }
       });
     }
-
-    // if (!isLoading && data != undefined) {
-    //   try {
-    //     const receivedDropdownData = data.map((carouselGroupDto) => ({
-    //       name: carouselGroupDto.name,
-    //       href: `/${carouselGroupDto.id}`
-    //     }));
-    //     setElectivesDropdown(receivedDropdownData);
-    //   } catch (e) {
-    //     console.error('Data incorrect structure:', e, data);
-    //   }
-    // }
-  }, [isLoading, data]);
-
-  console.log(data);
+  }, [isLoading, organizationTypes]);
+  useEffect(() => {
+    if (isLoading) {
+      getOrganizationTypes().then((r) => {
+        if (r.data) {
+          if (electivesDropdown !== undefined) setIsLoading(false);
+          const receivedOrganizationTypes = r.data.map((orgType) => ({
+            name: orgType.name,
+            href: `/${orgType.name}`
+          }));
+          setOrganizationTypes(receivedOrganizationTypes);
+        }
+      });
+    }
+  }, [isLoading, electivesDropdown]);
 
   const { navigation } = useMemo(() => {
     const timetablesDropdown = [
@@ -113,12 +117,7 @@ export default function Navbar({
         href: `/${knowledgeLevel.levelOrdinal}`
       })
     );
-    const classHierarchyDropdownItems: DropdownItem[] = knowledgeLevels.map(
-      (knowledgeLevel) => ({
-        name: knowledgeLevel.name,
-        href: `/${knowledgeLevel.levelOrdinal}/class-hierarchy`
-      })
-    );
+
     const bundlesDropdownItems: DropdownItem[] = knowledgeLevels.map(
       (knowledgeLevel) => ({
         name: knowledgeLevel.name,
@@ -150,8 +149,8 @@ export default function Navbar({
       },
       {
         name: 'Classes',
-        href: '/curriculum-models',
-        dropdownItems: classHierarchyDropdownItems
+        href: '/class-hierarchy',
+        dropdownItems: organizationTypes || []
       },
       {
         name: 'Electives',
@@ -171,7 +170,7 @@ export default function Navbar({
     ];
 
     return { timetablesDropdown, buildMetricsDropdown, navigation };
-  }, [electivesDropdown, scheduleId, knowledgeLevels]);
+  }, [electivesDropdown, scheduleId, knowledgeLevels, organizationTypes]);
 
   const handleNavigation = (href: string) => {
     const fullNavigation = useCache ? href + cacheSetting : href;

@@ -12,14 +12,16 @@ import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLea
 import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
 import {
   deleteEntities,
+  getDtoListByIds,
   getWithoutBody,
   postEntities,
   putEntities
 } from './template-actions';
+import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
 
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 
-export async function getCurriculumDeliveryModelSchemas(
+export async function getCurriculumDeliveryModelSchemasByKnowledgeLevel(
   yearGroup?: number,
   page: number = 0,
   size: number = 10
@@ -32,6 +34,19 @@ export async function getCurriculumDeliveryModelSchemas(
   url = url + paging;
   return await getWithoutBody<Page<WorkProjectSeriesSchemaDto>>(url);
 }
+export async function getBundleDeliveriesByOrgType(
+  orgType: string
+): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
+  let url = SCHEMA_URL;
+  url = `${url}/deliveries/organizationType/${orgType.replaceAll(' ', '%20')}`;
+
+  return await getWithoutBody<WorkSeriesBundleDeliveryDto[]>(url);
+}
+
+export async function getSchemasByIdList(idList: string[]) {
+  const url = `${SCHEMA_URL}/byIdList`;
+  return await getDtoListByIds<string, WorkProjectSeriesSchemaDto>(idList, url);
+}
 
 const organizationGraphEndpoint = `${API_BASE_URL}/graphs/organizations`;
 
@@ -39,6 +54,22 @@ export async function getOrganizationGraph(): ActionResponsePromise<
   GraphDto<OrganizationDto>
 > {
   return getWithoutBody(organizationGraphEndpoint);
+}
+
+export async function getOrganizationGraphByOrganizationType(
+  yearGroup: string
+) {
+  return getWithoutBody<GraphDto<OrganizationDto>>(
+    `${organizationGraphEndpoint}/${yearGroup}`
+  );
+}
+
+export async function getOrganizationTypes(): ActionResponsePromise<
+  OrganizationTypeDto[]
+> {
+  const url = `${organizationGraphEndpoint}/types?parentTypeId=7&depth=1&depthOp=%3D
+`;
+  return getWithoutBody(url);
 }
 
 export async function putOrganizationGraph(
