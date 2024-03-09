@@ -1,21 +1,11 @@
-import { DataLink, DataNode, GraphDto } from '../../api/zod-mods';
+import { DataLink, DataNode } from '../../api/zod-mods';
 import { getLinkElements } from './get-link-elements';
 import { useBasicNodeElements } from './get-node-elements';
 import { useTextElements } from './use-text-elements';
-import { Predicate } from '../../components/filters/filter-types';
 import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
-import React, { useEffect, useState } from 'react';
-import { useFilteredLinkMemo } from './use-filtered-link-memo';
-
-interface GraphElements<T> {
-  dataNodes: DataNode<T>[];
-  dataLinks: DataLink<T>[];
-  nodeElements: React.JSX.Element[];
-  linkElements: React.JSX.Element[];
-  textElements: React.JSX.Element[];
-}
-
-function useSVGElements<T>(
+import React from 'react';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+function useSVGElements<T extends HasNumberIdDto>(
   nodes: DataNode<T>[],
   links: DataLink<T>[],
   textAccessor: (n: number) => string,
@@ -27,7 +17,7 @@ function useSVGElements<T>(
   return { nodeElements, linkElements, textElements };
 }
 
-export function useGraphElements<T>(
+export function useGraphElements<T extends HasNumberIdDto>(
   dataNodes: DataNode<T>[],
   dataLinks: ClosureDto[],
   textAccessor: (n: number) => string,

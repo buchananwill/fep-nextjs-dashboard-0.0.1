@@ -8,7 +8,8 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import ProtectedNavigation from '../navbar/protected-navigation';
-import { zeroIndexToOneIndex } from '../curriculum-models/[yearGroup]/page';
+
+import { zeroIndexToOneIndex } from '../api/utils';
 const buttonClassName = 'btn  relative btn-primary btn-outline';
 const svgClassName = 'h-5 w-5 ';
 

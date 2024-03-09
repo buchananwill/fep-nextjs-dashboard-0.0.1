@@ -7,9 +7,10 @@ import {
 } from './generic-link-context-creator';
 import { DataLink } from '../../api/zod-mods';
 import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 // Example of a generic Provider component that can be used to wrap parts of your app
-export const GenericLinkContextProvider = <T,>({
+export const GenericLinkContextProvider = <T extends HasNumberIdDto>({
   children,
   links,
   uniqueGraphName

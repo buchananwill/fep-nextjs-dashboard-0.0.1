@@ -50,16 +50,10 @@ import {
   putOrganizationGraph
 } from '../../api/actions/curriculum-delivery-model';
 import { useRouter } from 'next/navigation';
-import {
-  useDirectSimRefEditsController,
-  useGraphEditButtonHooks
-} from '../editing/use-graph-edit-button-hooks';
+import { useGraphEditButtonHooks } from '../editing/use-graph-edit-button-hooks';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { TransientIdOffset } from '../editing/graph-edits';
-import {
-  useSelectiveContextControllerNumber,
-  useSelectiveContextListenerNumber
-} from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodeVersionKey = 'node-version-key';
@@ -120,11 +114,12 @@ export default function CurriculumDeliveryGraph({
   const { links } = useGenericLinkContext<OrganizationDto>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
-  const { currentState: nodeVersion } = useSelectiveContextControllerNumber({
+  let nodeVersion: number;
+  ({ currentState: nodeVersion } = useSelectiveContextControllerNumber({
     contextKey: NodeVersionKey,
     listenerKey: 'curriculum-delivery-graph',
     initialValue: 0
-  });
+  }));
 
   useEffect(() => {
     nodesRef.current = nodes;

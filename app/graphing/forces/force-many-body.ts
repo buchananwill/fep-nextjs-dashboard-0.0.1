@@ -4,6 +4,7 @@ import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { updateForce } from './force-link';
 import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getForceManyBody(
   maxDist: number,
@@ -20,7 +21,7 @@ export function getForceManyBody(
     .distanceMin(minDist);
 }
 
-export function getManyBodyStrengthFunction<T>(
+export function getManyBodyStrengthFunction<T extends HasNumberIdDto>(
   nodesMutable: DataNode<T>[],
   maxDepth: number
 ) {
@@ -36,7 +37,7 @@ export function getManyBodyStrengthFunction<T>(
   };
 }
 
-export function updateManyBodyForce<T>(
+export function updateManyBodyForce<T extends HasNumberIdDto>(
   currentSim: Simulation<DataNode<T>, DataLink<T>>,
   manyBodyStrength: number,
   manyBodyTheta: number,

@@ -4,8 +4,13 @@ import { GraphEditButton } from './graph-edit-button';
 import { channel } from 'node:diagnostics_channel';
 import { createNewLinks } from './graph-edits';
 import { DataLink } from '../../api/zod-mods';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 const joinNodes = 'join-nodes';
-export default function AddLinksButton<T>({ children }: { children: string }) {
+export default function AddLinksButton<T extends HasNumberIdDto>({
+  children
+}: {
+  children: string;
+}) {
   const buttonListenerKey = useMemo(() => {
     return joinNodes;
   }, []);

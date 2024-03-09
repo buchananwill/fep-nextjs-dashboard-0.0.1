@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
 import { SimulationNodeDatum } from 'd3';
-import { AssetDto, DataNode } from '../../api/zod-mods';
+import { DataNode } from '../../api/zod-mods';
 import { useMemo } from 'react';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function useClockForce<T>(
+export function useClockForce<T extends HasNumberIdDto>(
   nodesMutable: DataNode<T>[],
   width: number = 720,
   height: number = 720,
@@ -30,7 +31,7 @@ export function useClockForce<T>(
     });
 
     const xForcePos = (nodeElement: SimulationNodeDatum, index: number) => {
-      const completeNode = nodeElement as DataNode<AssetDto>;
+      const completeNode = nodeElement as DataNode<T>;
       const find = childClockPositions.find(
         (child) => child.id == completeNode.id
       );
@@ -38,7 +39,7 @@ export function useClockForce<T>(
     };
 
     const yForcePos = (nodeElement: SimulationNodeDatum, index: number) => {
-      const completeNode = nodeElement as DataNode<AssetDto>;
+      const completeNode = nodeElement as DataNode<T>;
       const find = childClockPositions.find(
         (child) => child.id == completeNode.id
       );
@@ -50,7 +51,7 @@ export function useClockForce<T>(
       index: number,
       data: SimulationNodeDatum[]
     ) => {
-      const completeNode = nodeElement as DataNode<AssetDto>;
+      const completeNode = nodeElement as DataNode<T>;
       return childClockPositions.some((child) => child.id == completeNode.id)
         ? centreStrength
         : 0;

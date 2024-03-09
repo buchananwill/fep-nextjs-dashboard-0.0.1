@@ -5,6 +5,7 @@ import { DataLink, DataNode } from '../../api/zod-mods';
 import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
 import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getGridX(
   width: number,
@@ -17,7 +18,7 @@ export function getGridX(
   }).strength(strength);
 }
 
-export function updateForceX<T>(
+export function updateForceX<T extends HasNumberIdDto>(
   currentSim: Simulation<DataNode<T>, DataLink<T>>,
   forceXStrength: number
 ) {

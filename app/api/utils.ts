@@ -11,3 +11,21 @@ export function normalizeQueryParamToNumber(
   }
   return defaultValue; // If undefined, return the default value
 }
+
+export function oneIndexToZeroIndex(index: number) {
+  return Math.max(index - 1, 0);
+}
+
+export function zeroIndexToOneIndex(
+  index: number,
+  array?: [],
+  totalPages?: number
+) {
+  const unsafeValue = index + 1;
+  if (array) {
+    return Math.min(unsafeValue, array.length);
+  } else if (totalPages) {
+    return Math.min(unsafeValue, totalPages);
+  }
+  return unsafeValue;
+}

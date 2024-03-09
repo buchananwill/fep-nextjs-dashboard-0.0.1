@@ -4,6 +4,7 @@ import { Simulation, SimulationLinkDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { ProductComponentStateDto } from '../../api/dtos/ProductComponentStateDtoSchema';
 import { StandardForceKey } from '../useD3ForceSimulation';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getCosFallOffFunction(numberOfNodes: number) {
   return (
@@ -99,7 +100,7 @@ export function getLinkForceMinCosFallOffBusiestNode(
     .strength(getBusiestNodeFallOffFunction(numberOfNodes(), strengthFactor));
 }
 
-export function updateLinkForce<T>(
+export function updateLinkForce<T extends HasNumberIdDto>(
   current: Simulation<DataNode<T>, DataLink<T>>,
   linkStrength: number,
   linkDistance: number
@@ -115,7 +116,10 @@ export function updateLinkForce<T>(
   updateForce(current, 'link', consumerOfLinkForce);
 }
 
-export function updateForce<T, F extends D3.Force<DataNode<T>, DataLink<F>>>(
+export function updateForce<
+  T extends HasNumberIdDto,
+  F extends D3.Force<DataNode<T>, DataLink<T>>
+>(
   current: Simulation<DataNode<T>, DataLink<T>>,
   forceKey: StandardForceKey | string,
   apply: (force: F) => void

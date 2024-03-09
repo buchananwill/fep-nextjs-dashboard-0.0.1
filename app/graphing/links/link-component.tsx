@@ -9,8 +9,9 @@ import {
 import { BASE_HSL } from '../../contexts/color/color-context';
 import * as d3 from 'd3';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function LinkComponent<T>({
+export function LinkComponent<T extends HasNumberIdDto>({
   children,
   linkIndex,
   linkData

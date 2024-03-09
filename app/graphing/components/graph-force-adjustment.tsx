@@ -1,13 +1,9 @@
 'use client';
 
-import { PropsWithChildren, useContext, useEffect, useState } from 'react';
-import * as d3 from 'd3';
-import { SimulationNodeDatum } from 'd3';
-import { DataLink, DataNode } from '../../api/zod-mods';
+import { useContext, useEffect } from 'react';
 import { ForceGraphAttributesDto } from '../../api/dtos/ForceGraphAttributesDtoSchema';
 import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
 import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { GraphContext } from '../graph/graph-context-creator';
 import {
   forceAttributesInitial,
@@ -19,13 +15,11 @@ import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure
 export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
   const readyToGraph = `${uniqueGraphName}-ready`;
-  const showAdjustments = `${uniqueGraphName}-show-adjustments`;
   const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     readyToGraph,
     readyToGraph,
     false
   );
-  const [showSliders, setShowSliders] = useState(false);
 
   useEffect(() => {
     if (!currentState) {
@@ -70,25 +64,4 @@ export default function GraphForceAdjustment() {
       </div>
     </DisclosureThatGrowsOpen>
   );
-}
-
-export interface GridForceProps {
-  width: number;
-  spacing: number;
-  strength: number;
-}
-
-export interface ForceSimSettings<T> {
-  radialStrength?: number;
-  centreStrength?: number;
-  width?: number;
-  height?: number;
-  viewportXRatio?: number;
-  viewportYRatio?: number;
-  forceX?: d3.ForceX<DataNode<T>>;
-  forceY?: d3.ForceY<DataNode<T>>;
-  forceManyBody?: d3.ForceManyBody<DataNode<T>>;
-  forceLink?: d3.ForceLink<SimulationNodeDatum, DataLink<T>>;
-  forceCollide?: d3.ForceCollide<DataNode<T>>;
-  forceCenter?: d3.ForceCenter<SimulationNodeDatum>;
 }

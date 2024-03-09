@@ -22,9 +22,9 @@ import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 
 export async function getCurriculumDeliveryModelSchemasByKnowledgeLevel(
-  yearGroup?: number,
   page: number = 0,
-  size: number = 10
+  size: number = 10,
+  yearGroup?: number
 ): ActionResponsePromise<Page<WorkProjectSeriesSchemaDto>> {
   let url = SCHEMA_URL;
   const paging = `?page=${page}&size=${size}&sort=name,asc`;

@@ -12,6 +12,8 @@ import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypeGraph } from '../api/actions/work-task-types';
 import WorkTaskTypeDtoDetails from '../graphing/components/work-task-type-dto-details';
 import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
+import { GenericNodeContextProvider } from '../graphing/nodes/generic-node-context-provider';
+import { GenericLinkContextProvider } from '../graphing/links/generic-link-context-provider';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
@@ -50,23 +52,34 @@ export default async function ForceGraphPageWtt() {
       )
     }));
 
+  const uniqueGraphName = 'work-task-type-graph';
   return (
     <>
       <div className={'flex'}>
-        <GraphContextProvider uniqueGraphName={'party-dto-graph'}>
-          <GraphViewer
-            graphDto={workTaskTypeGraph}
-            textList={descriptionList}
-            titleList={titleList}
-            uniqueGraphName={'party-dto-graph'}
+        <GenericNodeContextProvider
+          nodes={workTaskTypeGraph.nodes}
+          uniqueGraphName={uniqueGraphName}
+        >
+          <GenericLinkContextProvider
+            links={workTaskTypeGraph.closureDtos}
+            uniqueGraphName={uniqueGraphName}
           >
-            <GraphForceAdjuster />
-            <NodeDetails
-              nodeDetailElements={nodeDetailElements}
-              labels={componentList}
-            />
-          </GraphViewer>
-        </GraphContextProvider>
+            <GraphContextProvider uniqueGraphName={uniqueGraphName}>
+              <GraphViewer
+                graphDto={workTaskTypeGraph}
+                textList={descriptionList}
+                titleList={titleList}
+                uniqueGraphName={'party-dto-graph'}
+              >
+                <GraphForceAdjuster />
+                <NodeDetails
+                  nodeDetailElements={nodeDetailElements}
+                  labels={componentList}
+                />
+              </GraphViewer>
+            </GraphContextProvider>
+          </GenericLinkContextProvider>
+        </GenericNodeContextProvider>
       </div>
     </>
   );

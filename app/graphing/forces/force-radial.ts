@@ -2,8 +2,9 @@ import * as d3 from 'd3';
 import { Simulation } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { updateForce } from './force-link';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-export function updateForceRadial<T>(
+export function updateForceRadial<T extends HasNumberIdDto>(
   currentSim: Simulation<DataNode<T>, DataLink<T>>,
   forceRadialStrength: number
 ) {

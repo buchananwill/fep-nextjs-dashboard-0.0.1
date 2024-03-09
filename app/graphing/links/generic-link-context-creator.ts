@@ -6,9 +6,10 @@ import React, {
   useContext
 } from 'react';
 import { DataLink, DataNode } from '../../api/zod-mods';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 // Define the interface as generic
-export interface GenericLinkContextInterface<T> {
+export interface GenericLinkContextInterface<T extends HasNumberIdDto> {
   links: DataLink<T>[];
   uniqueGraphName: string;
 }
@@ -23,7 +24,7 @@ export const GenericLinkDispatchContext = createContext<
 >(undefined);
 
 // Generic hook to use the context
-export function useGenericLinkContext<T>() {
+export function useGenericLinkContext<T extends HasNumberIdDto>() {
   const context = useContext(
     GenericLinkContext as React.Context<
       GenericLinkContextInterface<T> | undefined

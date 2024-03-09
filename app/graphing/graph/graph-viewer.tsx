@@ -1,15 +1,9 @@
 'use client';
 import { GraphDto } from '../../api/zod-mods';
 import DraggableToTranslate from '../../components/draggable-to-translate/draggable-to-translate';
-import KeyListenerManager from '../../components/key-listener-context/key-listener-manager';
 
 import Graph from './graph';
-import React, {
-  PropsWithChildren,
-  useContext,
-  useReducer,
-  useState
-} from 'react';
+import React, { PropsWithChildren, useReducer, useState } from 'react';
 import {
   ForceGraphDraggable,
   ForceGraphDraggableContext,
@@ -18,10 +12,7 @@ import {
   ForceGraphMouseButtonEventsContext,
   ForceGraphMouseButtonEventsDispatch
 } from '../force-graph-dnd/mouse-event-context-creator';
-import ZoomScaleContextProvider from '../../components/calendar-view/scale/zoom-scale-context-provider';
 import { useGraphEditRootContext } from '../editing/use-graph-edit-root-context';
-import { useDirectSimRefEditsController } from '../editing/use-graph-edit-button-hooks';
-import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function GraphViewer<T extends HasNumberIdDto, U>({
@@ -46,26 +37,24 @@ export function GraphViewer<T extends HasNumberIdDto, U>({
 
   return (
     <DraggableToTranslate>
-      <ZoomScaleContextProvider>
-        <ForceGraphDraggableContext.Provider value={forceGraphDraggable}>
-          <ForceGraphDraggableDispatch.Provider value={setForceGraphDraggable}>
-            <ForceGraphMouseButtonEventsContext.Provider
-              value={mouseActionContext}
-            >
-              <ForceGraphMouseButtonEventsDispatch.Provider value={reducer}>
-                <Graph
-                  // graphDto={graphDto}
-                  textList={textList}
-                  titleList={titleList}
-                  uniqueGraphName={uniqueGraphName}
-                >
-                  {children}
-                </Graph>
-              </ForceGraphMouseButtonEventsDispatch.Provider>
-            </ForceGraphMouseButtonEventsContext.Provider>
-          </ForceGraphDraggableDispatch.Provider>
-        </ForceGraphDraggableContext.Provider>
-      </ZoomScaleContextProvider>
+      <ForceGraphDraggableContext.Provider value={forceGraphDraggable}>
+        <ForceGraphDraggableDispatch.Provider value={setForceGraphDraggable}>
+          <ForceGraphMouseButtonEventsContext.Provider
+            value={mouseActionContext}
+          >
+            <ForceGraphMouseButtonEventsDispatch.Provider value={reducer}>
+              <Graph
+                // graphDto={graphDto}
+                textList={textList}
+                titleList={titleList}
+                uniqueGraphName={uniqueGraphName}
+              >
+                {children}
+              </Graph>
+            </ForceGraphMouseButtonEventsDispatch.Provider>
+          </ForceGraphMouseButtonEventsContext.Provider>
+        </ForceGraphDraggableDispatch.Provider>
+      </ForceGraphDraggableContext.Provider>
     </DraggableToTranslate>
   );
 }

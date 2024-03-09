@@ -4,12 +4,8 @@ import {
 } from '../../../api/actions/curriculum-delivery-model';
 import { normalizeQueryParamToNumber } from '../../../api/utils';
 import { Card } from '@tremor/react';
-import BoxHierarchies from '../../../playground/box-hierarchies';
-import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleEditor } from './bundle-editor';
-import { CurriculumDeliveryModels } from '../../curriculum-delivery-models';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
-import { useMemo } from 'react';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../contexts/string-map-context-creator';
 import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
@@ -29,9 +25,9 @@ export default async function Page({
   const { page, size } = searchParams;
   const curriculumDeliveryModelSchemas =
     await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
-      parseInt(yearGroup),
       normalizeQueryParamToNumber(page, 0),
-      normalizeQueryParamToNumber(size, 40)
+      normalizeQueryParamToNumber(size, 40),
+      parseInt(yearGroup)
     );
 
   const { status, data, message } = curriculumDeliveryModelSchemas;

@@ -11,6 +11,7 @@ import {
   NodeInteractionContext
 } from './node-interaction-context-creator';
 import { DataNode } from '../../api/zod-mods';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export interface NodeInteractionContextInterface {
   hover: number | null;
@@ -73,7 +74,9 @@ export const useNodeInteractionContext = () => {
   return { dispatch, ...context };
 };
 
-export function useNodeSelectedListener<T>(node: DataNode<T>) {
+export function useNodeSelectedListener<T extends HasNumberIdDto>(
+  node: DataNode<T>
+) {
   const context = useContext(NodeInteractionContext);
   return context.selected.includes(node.id);
 }

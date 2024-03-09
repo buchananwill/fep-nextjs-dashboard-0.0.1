@@ -112,7 +112,6 @@ export function AddNewCurriculumModelCard({
       workTaskType: workTaskTypeMap[newModelTaskType.id],
       workProjectBandwidth: 1,
       name: 'New model',
-      allocationType: 'INDEPENDENT',
       userToProviderRatio: 30
     };
     console.log('Next new model: ', curriculumModelsMap[nextModelId]);
