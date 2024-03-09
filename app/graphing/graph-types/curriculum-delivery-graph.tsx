@@ -105,6 +105,86 @@ function removeTransientId(id: number) {
   return id < TransientIdOffset;
 }
 
+function NodeEditorDisclosure<T extends HasNumberIdDto>({
+  cloneFunction
+}: {
+  cloneFunction: CloneFunction<DataNode<T>>;
+}) {
+  return (
+    <div className={'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 '}>
+      <div className={'h-2'}></div>
+      <DisclosureThatGrowsOpen
+        label={'Edit Nodes'}
+        heightWhenOpen={'h-[6.5rem]'}
+      >
+        <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
+          <AddNodesButton relation={'sibling'} cloneFunction={cloneFunction}>
+            Add Sibling
+          </AddNodesButton>
+          <AddNodesButton relation={'child'} cloneFunction={cloneFunction}>
+            Add Child
+          </AddNodesButton>
+          <AddLinksButton>Join Nodes</AddLinksButton>
+        </div>
+        <div className={'w-full grid grid-cols-2 gap-1 relative'}>
+          <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
+          <DeleteLinksButton>Delete Links</DeleteLinksButton>
+        </div>
+      </DisclosureThatGrowsOpen>
+      <div className={'h-2  border-t'}></div>
+    </div>
+  );
+}
+
+function NodeLinkRefWrapper({
+  handleOpen,
+  onClose,
+  onConfirm,
+  show,
+  textList,
+  titleList,
+  unsavedChanges,
+  nodeListRef,
+  linkListRef,
+  children
+}: {
+  nodeListRef: React.MutableRefObject<DataNode<OrganizationDto>[]>;
+  linkListRef: React.MutableRefObject<DataLink<OrganizationDto>[]>;
+  textList: string[];
+  titleList: string[];
+  unsavedChanges: boolean;
+  handleOpen: () => void;
+  show: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+} & PropsWithChildren) {
+  return (
+    <GenericNodeRefContext.Provider value={nodeListRef}>
+      <GenericLinkRefContext.Provider value={linkListRef}>
+        <div className={'flex-col'}>
+          <GraphViewer
+            textList={textList}
+            titleList={titleList}
+            uniqueGraphName={'party-dto-graph'}
+          >
+            {children}
+          </GraphViewer>
+        </div>
+        <UnsavedChangesModal
+          unsavedChanges={unsavedChanges}
+          handleOpen={handleOpen}
+          show={show}
+          onClose={onClose}
+          onConfirm={onConfirm}
+          onCancel={onClose}
+        >
+          <p>Save graph changes to database?</p>
+        </UnsavedChangesModal>
+      </GenericLinkRefContext.Provider>
+    </GenericNodeRefContext.Provider>
+  );
+}
+
 export default function CurriculumDeliveryGraph({
   children,
   bundles
@@ -246,62 +326,16 @@ export default function CurriculumDeliveryGraph({
   };
 
   return (
-    <GenericNodeRefContext.Provider value={nodesRef}>
-      <GenericLinkRefContext.Provider value={linksRef}>
-        <div className={'flex-col'}>
-          <GraphViewer
-            textList={descriptionList}
-            titleList={titleList}
-            uniqueGraphName={'party-dto-graph'}
-          >
-            <div
-              className={'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 '}
-            >
-              <div className={'h-2'}></div>
-              <DisclosureThatGrowsOpen
-                label={'Edit Nodes'}
-                heightWhenOpen={'h-[6.5rem]'}
-              >
-                <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
-                  <AddNodesButton
-                    relation={'sibling'}
-                    cloneFunction={cloneOrganizationNode}
-                  >
-                    Add Sibling
-                  </AddNodesButton>
-                  <AddNodesButton
-                    relation={'child'}
-                    cloneFunction={cloneOrganizationNode}
-                  >
-                    Add Child
-                  </AddNodesButton>
-                  <AddLinksButton>Join Nodes</AddLinksButton>
-                </div>
-                <div className={'w-full grid grid-cols-2 gap-1 relative'}>
-                  <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
-                  <DeleteLinksButton>Delete Links</DeleteLinksButton>
-                </div>
-              </DisclosureThatGrowsOpen>
-              <div className={'h-2  border-t'}></div>
-            </div>
-            <GraphForceAdjuster />
-            <NodeDetails
-              nodeDetailElements={nodeDetailElements}
-              labels={classList}
-            />
-          </GraphViewer>
-        </div>
-        <UnsavedChangesModal
-          unsavedChanges={unsavedGraphChanges}
-          handleOpen={openModal}
-          show={isOpen}
-          onClose={closeModal}
-          onConfirm={handleSaveGraph}
-          onCancel={closeModal}
-        >
-          <p>Save graph changes to database?</p>
-        </UnsavedChangesModal>
-      </GenericLinkRefContext.Provider>
-    </GenericNodeRefContext.Provider>
+    <NodeLinkRefWrapper
+      nodeListRef={nodesRef}
+      linkListRef={linksRef}
+      textList={descriptionList}
+      titleList={titleList}
+      unsavedChanges={unsavedGraphChanges}
+      handleOpen={openModal}
+      show={isOpen}
+      onClose={closeModal}
+      onConfirm={handleSaveGraph}
+    />
   );
 }
