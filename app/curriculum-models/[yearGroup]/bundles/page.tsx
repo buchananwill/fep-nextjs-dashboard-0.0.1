@@ -31,7 +31,7 @@ export default async function Page({
     await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
       parseInt(yearGroup),
       normalizeQueryParamToNumber(page, 0),
-      normalizeQueryParamToNumber(size, 20)
+      normalizeQueryParamToNumber(size, 40)
     );
 
   const { status, data, message } = curriculumDeliveryModelSchemas;

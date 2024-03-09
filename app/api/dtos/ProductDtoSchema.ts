@@ -5,7 +5,7 @@ export const ProductDtoSchema = z.object({
   productCode: z.string(),
   name: z.string(),
   physicalAttributesLength: z.number(),
-  physicalAttributesWidth: z.number(),
+  physicalAttributesHeight: z.number(),
   physicalAttributesDepth: z.number(),
   physicalAttributesWeight: z.number(),
   productTypeId: z.number(),

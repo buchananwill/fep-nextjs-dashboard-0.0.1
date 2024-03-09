@@ -7,7 +7,6 @@ export const WorkProjectSeriesSchemaDtoSchema = z.object({
   workTaskType: WorkTaskTypeDtoSchema,
   deliveryAllocations: z.array(DeliveryAllocationDtoSchema),
   workProjectBandwidth: z.number(),
-  allocationType: z.string(),
   userToProviderRatio: z.number(),
   shortCode: z.string(),
 });
