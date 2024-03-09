@@ -1,12 +1,10 @@
 import {
   getBundles,
-  getCurriculumDeliveryModelSchemasByKnowledgeLevel,
   getBundleDeliveriesByOrgType,
   getSchemasByIdList,
   getOrganizationGraph,
   getOrganizationGraphByOrganizationType
 } from '../../api/actions/curriculum-delivery-model';
-import { normalizeQueryParamToNumber } from '../../api/utils';
 import { Card } from '@tremor/react';
 
 import ForceGraphPage from '../../graphing/force-graph-page';
@@ -34,8 +32,8 @@ export default async function Page({
     await getBundleDeliveriesByOrgType(yearGroup);
 
   const actionResponseOrganizationGraph =
-    // await getOrganizationGraphByOrganizationType(yearGroup);
-    await getOrganizationGraph();
+    await getOrganizationGraphByOrganizationType(yearGroup);
+  // await getOrganizationGraph();
   const {
     status: statusGraph,
     data: dataGraph,

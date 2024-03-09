@@ -75,8 +75,17 @@ export const useNodeInteractionContext = () => {
 };
 
 export function useNodeSelectedListener<T extends HasNumberIdDto>(
-  node: DataNode<T>
+  node: DataNode<T> | number | undefined
 ) {
   const context = useContext(NodeInteractionContext);
-  return context.selected.includes(node.id);
+  if (node !== undefined) return context.selected.includes(getNodeId(node));
+  else return false;
+}
+
+// Assuming 'link.source' can either be a number or an object with an 'id' property
+export function getNodeId<T extends HasNumberIdDto>(
+  node: number | DataNode<T>
+) {
+  // Check if 'source' is a number directly, if not, access 'source.id'
+  return typeof node === 'number' ? node : node.id;
 }

@@ -10,6 +10,7 @@ import { BASE_HSL } from '../../contexts/color/color-context';
 import * as d3 from 'd3';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
 
 export function LinkComponent<T extends HasNumberIdDto>({
   children,
@@ -20,12 +21,11 @@ export function LinkComponent<T extends HasNumberIdDto>({
   linkIndex: number;
   children?: React.ReactSVGElement;
 }) {
-  const { links: genericLinks, uniqueGraphName } = useGenericLinkContext<T>();
+  const { uniqueGraphName } = useGenericLinkContext<T>();
+  const { linkListRef } = useGenericGraphRefs();
   const { selected } = useNodeInteractionContext();
-  // const { currentContext: showArrowsToParents } = useBooleanContext(
-  //   'showArrowsToParents',
-  //   true
-  // );
+
+  const genericLinks = linkListRef?.current;
 
   const listenerKey = `link-${linkData.closureType}-${linkData.id}`;
 
@@ -50,18 +50,24 @@ export function LinkComponent<T extends HasNumberIdDto>({
     true
   );
 
-  const updatedLink = genericLinks[linkIndex] as DataLink<T>;
-  if (!updatedLink) {
-    console.log(genericLinks, linkIndex, linkData);
-  }
-  const sourceSelected = useNodeSelectedListener(
-    updatedLink.source as DataNode<T>
-  );
-  const targetSelected = useNodeSelectedListener(
-    updatedLink.target as DataNode<T>
-  );
+  const updatedLinkOptional =
+    genericLinks === undefined || genericLinks.length < linkIndex
+      ? undefined
+      : genericLinks[linkIndex];
+  let updatedLink: DataLink<T> | undefined;
 
-  if (!updatedLink || !updatedLink.source || !updatedLink.target) {
+  const sourceSelected = useNodeSelectedListener(updatedLinkOptional?.source);
+  const targetSelected = useNodeSelectedListener(updatedLinkOptional?.target);
+
+  if (updatedLinkOptional !== undefined) {
+    updatedLink = updatedLinkOptional as DataLink<T>;
+  }
+
+  if (
+    updatedLink === undefined ||
+    updatedLink.source === undefined ||
+    !updatedLink.target === undefined
+  ) {
     return null;
   }
   const source = updatedLink.source as DataNode<T>;

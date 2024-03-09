@@ -51,15 +51,10 @@ export default async function ForceGraphPage({
             uniqueGraphName={uniqueGraphName}
           >
             <GraphContextProvider uniqueGraphName={uniqueGraphName}>
-              {/*<NodeComponentSkyHook*/}
-              {/*  nodes={organizationGraph.nodes}*/}
-              {/*  bundles={bundlesInNodeOrder as WorkSeriesBundleDeliveryDto[]}*/}
-              {/*>*/}
               <CurriculumDeliveryGraph
                 graphData={organizationGraph}
                 bundles={data}
               ></CurriculumDeliveryGraph>
-              {/*</NodeComponentSkyHook>*/}
             </GraphContextProvider>
           </GenericLinkContextProvider>
         </GenericNodeContextProvider>

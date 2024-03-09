@@ -2,7 +2,10 @@ import {
   useGenericGraphRefs,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import { useNodeInteractionContext } from '../nodes/node-interaction-context';
+import {
+  getNodeId,
+  useNodeInteractionContext
+} from '../nodes/node-interaction-context';
 import { useContext, useMemo, useState } from 'react';
 import {
   useGraphSelectiveContextDispatch,
@@ -21,6 +24,8 @@ import { useSelectiveContextDispatchBoolean } from '../../components/selective-c
 import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
 import { CurriculumDetailsListenerKey } from '../components/curriculum-delivery-details';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useGenericLinkContext } from '../links/generic-link-context-creator';
+import { DataLink, DataNode } from '../../api/zod-mods';
 
 export function useGraphVersionKeys<T extends HasNumberIdDto>(
   listenerKey: string
@@ -59,6 +64,9 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
   const { contextVersionKey, listenerVersionKey } =
     useGraphVersionKeys(buttonListenerKey);
 
+  const { dispatch: updateNodes } = useGenericNodeContext();
+  const { dispatch: updateLinks } = useGenericLinkContext();
+
   const { uniqueGraphName } = useContext(GraphContext);
   const unsavedGraphContextKey = useSelectiveContextKeyMemo(
     UnsavedNodeDataContextKey,
@@ -81,18 +89,25 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
       initialValue: 0
     });
 
-  const incrementSimVersion = () => {
-    console.log(
-      'Current version: ',
-      simVersion,
-      contextVersionKey,
-      listenerVersionKey
-    );
-    dispatchWithoutControl(simVersion + 1);
-    dispatchUnsavedGraph(true);
-    console.log('Current version: ', simVersion);
-  };
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
+  const incrementSimVersion = () => {
+    dispatchUnsavedGraph(true);
+    if (nodeListRef && linkListRef) {
+      const safeCopyOfNodes = nodeListRef.current.map(
+        (n) => ({ ...n }) as DataNode<T>
+      );
+      const safeCopyOfLinks = linkListRef.current.map(
+        (l) =>
+          ({
+            ...l
+          }) as DataLink<T>
+      );
+      console.log(safeCopyOfLinks, safeCopyOfNodes);
+      updateNodes(safeCopyOfNodes);
+      updateLinks(safeCopyOfLinks);
+      dispatchWithoutControl(simVersion + 1);
+    }
+  };
   return { incrementSimVersion, nodeListRef, linkListRef };
 }
 

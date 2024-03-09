@@ -28,6 +28,7 @@ import { useSelectiveContextKeyMemo } from '../../components/selective-context/u
 import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-hooks';
 import { GraphContext } from '../graph/graph-context-creator';
 import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
+import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
@@ -74,6 +75,9 @@ export default function CurriculumDeliveryDetails({
       selectiveListenerKey,
       false
     );
+
+  const { dispatch: dispatchNodes } = useGenericNodeContext();
+
   const { currentState: schemaIdList } = useSelectiveContextListenerStringList(
     selectiveContextKey,
     selectiveListenerKey,

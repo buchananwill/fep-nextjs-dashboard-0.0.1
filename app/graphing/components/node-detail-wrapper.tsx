@@ -18,7 +18,7 @@ export function NodeDetailWrapper<T extends HasNumberIdDto>({
   node
 }: { label: string; node: DataNode<T> } & PropsWithChildren) {
   const { dispatch, hover, selected } = useNodeInteractionContext();
-  const isSelected = useNodeSelectedListener(node);
+  const isSelected = useNodeSelectedListener(node.id);
 
   const handleDispatch = () => {
     dispatch({ type: 'toggleSelect', payload: node.id });

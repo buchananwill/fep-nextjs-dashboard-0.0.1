@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useContext, useMemo, useState } from 'react';
+import React, { ReactNode, useContext, useMemo, useRef, useState } from 'react';
 import { DataLink, DataNode } from '../api/zod-mods';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
 import {
@@ -47,26 +47,19 @@ export default function ForceSimWrapper<T extends HasNumberIdDto>({
       initialValue: 0
     });
 
+  const lastRenderTimer = useRef(Date.now());
+
   const [simDisplaying, setSimDisplaying] = useState(false);
 
-  const ticked = useMemo(() => {
-    return () => {
-      // if (nodesRef) {
-      //   genericNodeDispatch(nodesRef.current.map((d) => ({ ...d })));
-      // }
-      // if (linksRef)
-      //   genericLinkDispatch(linksRef.current.map((d) => ({ ...d })));
+  const ticked = () => {
+    const elapsed = Date.now() - lastRenderTimer.current;
+    if (elapsed >= 25) {
+      // console.log('Since last render:', elapsed);
+      lastRenderTimer.current = Date.now();
       dispatchWithoutControl(currentState + 1);
-      setSimDisplaying(true);
-    };
-  }, [
-    currentState,
-    dispatchWithoutControl
-    // linksRef,
-    // nodesRef,
-    // genericNodeDispatch,
-    // genericLinkDispatch
-  ]);
+    }
+    if (!simDisplaying) setSimDisplaying(true);
+  };
 
   useD3ForceSimulation(nodesRef!, linksRef!, ticked, uniqueGraphName);
 
