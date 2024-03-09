@@ -5,6 +5,7 @@ import { channel } from 'node:diagnostics_channel';
 import { createNewLinks } from './graph-edits';
 import { DataLink } from '../../api/zod-mods';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { resetLinks } from './add-nodes-button';
 const joinNodes = 'join-nodes';
 export default function AddLinksButton<T extends HasNumberIdDto>({
   children
@@ -63,13 +64,9 @@ export default function AddLinksButton<T extends HasNumberIdDto>({
     const newLinkIds = allNewLinks.map((l) => l.id);
 
     setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
-
-    linkListRef.current = [...allLinks];
+    nodeListRef.current = [...nodeListRef.current];
+    linkListRef.current = resetLinks([...allLinks]);
     incrementSimVersion();
-
-    console.log(allLinks);
-    console.log(parent);
-    console.log(children);
 
     deBounce();
   };

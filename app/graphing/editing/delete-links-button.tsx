@@ -3,6 +3,7 @@ import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import React, { useMemo } from 'react';
 import { deleteLinks } from './graph-edits';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { resetLinks } from './add-nodes-button';
 
 const deleteLinksKey = 'delete-links';
 
@@ -15,6 +16,7 @@ export function DeleteLinksButton<T extends HasNumberIdDto>({
     return deleteLinksKey;
   }, []);
   const {
+    nodeListRef,
     linkListRef,
     incrementSimVersion,
     deBounce,
@@ -29,14 +31,18 @@ export function DeleteLinksButton<T extends HasNumberIdDto>({
   if (linkListRef === null) return <></>;
 
   const handleDeleteLinks = () => {
+    if (nodeListRef === undefined || nodeListRef === null) return;
     if (!checkForSelectedNodes(1)) return;
+    const mode = selected.length === 1 ? 'any' : 'all';
     const { toDelete, remainingLinks } = deleteLinks(
       linkListRef.current,
-      selected
+      selected,
+      mode
     );
     setDeletedLinkIds([...deletedLinkIds, ...toDelete]);
     deBounce();
-    linkListRef.current = remainingLinks;
+    nodeListRef.current = [...nodeListRef.current];
+    linkListRef.current = resetLinks(remainingLinks);
     incrementSimVersion();
   };
   return (

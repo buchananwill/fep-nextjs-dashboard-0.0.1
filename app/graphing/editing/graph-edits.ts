@@ -119,12 +119,13 @@ export function createNewLinks<T extends HasNumberIdDto>({
 
 export function deleteLinks<T extends HasNumberIdDto>(
   linksListRef: DataLink<T>[],
-  selectedNodeIds: number[]
+  selectedNodeIds: number[],
+  mode: 'any' | 'all'
 ) {
   const set = new Set(selectedNodeIds);
   const allPredicate = (l: DataLink<T>) => {
     return (
-      set.has((l.target as DataNode<T>).id) &&
+      set.has((l.target as DataNode<T>).id) ||
       set.has((l.source as DataNode<T>).id)
     );
   };
@@ -135,8 +136,7 @@ export function deleteLinks<T extends HasNumberIdDto>(
       set.has((l.source as DataNode<T>).id)
     );
   };
-  const deletionPredicate =
-    selectedNodeIds.length === 1 ? anyPredicate : allPredicate;
+  const deletionPredicate = mode === 'any' ? anyPredicate : allPredicate;
   const toDelete: number[] = [];
   const remainingLinks = linksListRef
     .map((l) => {

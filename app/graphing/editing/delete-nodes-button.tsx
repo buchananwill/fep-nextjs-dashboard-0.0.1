@@ -4,6 +4,7 @@ import { GraphEditButton } from './graph-edit-button';
 import { DataNode } from '../../api/zod-mods';
 import { deleteLinks, isNotNull } from './graph-edits';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { resetLinks } from './add-nodes-button';
 const deleteNodesKey = 'delete-nodes';
 
 export function deleteNodes<T extends HasNumberIdDto>(
@@ -58,16 +59,20 @@ export function DeleteNodesButton<T extends HasNumberIdDto>({
       nodeListRef.current
     );
     let linksToDelete: number[] = [];
-    let linkCache = linkListRef.current;
+    let linkCache = [...linkListRef.current];
     for (let number of nodesForDeletion) {
-      const { remainingLinks, toDelete } = deleteLinks<T>(linkCache, [number]);
+      const { remainingLinks, toDelete } = deleteLinks<T>(
+        linkCache,
+        [number],
+        'any'
+      );
       linksToDelete = [...linksToDelete, ...toDelete];
       linkCache = remainingLinks;
     }
     setDeletedNodeIds([...deletedNodeIds, ...nodesForDeletion]);
     setDeletedLinkIds([...deletedLinkIds, ...linksToDelete]);
     deBounce();
-    linkListRef.current = linkCache;
+    linkListRef.current = resetLinks(linkCache);
     nodeListRef.current = remainingNodes;
     incrementSimVersion();
   };
