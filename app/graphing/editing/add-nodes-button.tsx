@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { createNewLinks, createNode } from './graph-edits';
-import { DataNode } from '../../api/zod-mods';
+import { DataLink, DataNode } from '../../api/zod-mods';
 import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
@@ -11,6 +11,16 @@ const addNodesButton = `add-nodes-button`;
 
 export interface CloneFunction<T extends HasNumberIdDto> {
   (object: T): T;
+}
+
+export function resetLinks<T extends HasNumberIdDto>(
+  allUpdatedLinks: DataLink<T>[]
+) {
+  return [...allUpdatedLinks].map((link, index) => {
+    const source = link.source as DataNode<T>;
+    const target = link.target as DataNode<T>;
+    return { ...link, source: source.id, target: target.id, index };
+  });
 }
 
 export function AddNodesButton<T extends HasNumberIdDto>({
@@ -79,11 +89,7 @@ export function AddNodesButton<T extends HasNumberIdDto>({
 
     deBounce();
 
-    linkListRef.current = [...allUpdatedLinks].map((link, index) => {
-      const source = link.source as DataNode<T>;
-      const target = link.target as DataNode<T>;
-      return { ...link, source: source.id, target: target.id, index };
-    });
+    linkListRef.current = resetLinks(allUpdatedLinks);
     nodeListRef.current = allNodes;
 
     incrementSimVersion();

@@ -29,6 +29,7 @@ import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-h
 import { GraphContext } from '../graph/graph-context-creator';
 import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
 import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
+import { resetLinks } from '../editing/add-nodes-button';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const EmptyStringArray = [] as string[];
@@ -109,12 +110,17 @@ export default function CurriculumDeliveryDetails({
     false
   );
 
-  const { nodeListRef, incrementSimVersion } =
+  const { nodeListRef, incrementSimVersion, linkListRef } =
     useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
   const handleConfirmRename = () => {
-    const currentElement = nodeListRef?.current[node.index!];
-    if (currentElement) {
+    if (nodeListRef && linkListRef) {
+      const copiedElements = [...nodeListRef.current];
+      const currentElement = copiedElements[node.index!];
       currentElement.data.name = currentState;
+      const resetLinks1 = resetLinks([...linkListRef.current]);
+      console.log(resetLinks1);
+      linkListRef.current = resetLinks1;
+      nodeListRef.current = copiedElements;
       incrementSimVersion();
       dispatchUnsavedGraph(true);
     }
