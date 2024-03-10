@@ -4,6 +4,7 @@ import {
   UpdateAction,
   UpdateRefInterface
 } from './selective-context-manager';
+import { GenericFunctionWrapper } from './selective-context-manager-function';
 
 export const ContextRefBoolean = createContext<
   MutableRefObject<LatestValueRef<boolean>>
@@ -57,4 +58,18 @@ export const UpdateRefContextNumber = createContext<
 
 export const DispatchUpdateContextNumber = createContext<
   Dispatch<UpdateAction<number>>
+>(() => {});
+
+export type GenericFunction<T, U> = (arg: T) => U;
+
+export const ContextRefFunction = createContext<
+  MutableRefObject<LatestValueRef<GenericFunctionWrapper<any, any>>>
+>({} as MutableRefObject<LatestValueRef<GenericFunctionWrapper<any, any>>>);
+
+export const UpdateRefContextFunction = createContext<
+  MutableRefObject<UpdateRefInterface<GenericFunctionWrapper<any, any>>>
+>({} as MutableRefObject<UpdateRefInterface<GenericFunctionWrapper<any, any>>>);
+
+export const DispatchUpdateContextFunction = createContext<
+  Dispatch<UpdateAction<GenericFunctionWrapper<any, any>>>
 >(() => {});

@@ -13,6 +13,8 @@ import {
   LeftShiftListener
 } from '../../components/key-listener-context/key-listener-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
 
 export default function NodeText<T extends HasNumberIdDto>({
   textIndex,
@@ -30,6 +32,8 @@ export default function NodeText<T extends HasNumberIdDto>({
     [textIndex, uniqueGraphName]
   );
   const { selected, hover, dispatch } = useNodeInteractionContext();
+
+  useSelectiveContextListenerNumber(NodePositionsKey, listenerKey, 0);
 
   const { isTrue: pinTextToSelected } = useSelectiveContextListenerBoolean(
     `lock-text-with-select-${uniqueGraphName}`,

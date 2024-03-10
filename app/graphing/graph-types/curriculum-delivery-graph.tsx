@@ -36,9 +36,13 @@ import { TransientIdOffset } from '../editing/graph-edits';
 import { cloneOrganizationNode } from './organization/clone-organization-node';
 import { mapToPartyIdBundleIdRecords } from './organization/map-to-party-id-bundle-id-records';
 import { mapLinksBackToIdRefs } from '../links/map-links-back-to-id-refs';
-import { NodeEditorDisclosure } from '../nodes/node-editor-disclosure';
+import {
+  NodeCloneFunctionKey,
+  NodeEditorDisclosure
+} from '../nodes/node-editor-disclosure';
 import { NodeLinkRefWrapper } from '../graph/node-link-ref-wrapper';
 import { useForceAdjustments } from '../graph/show-force-adjustments';
+import { useSelectiveContextControllerFunction } from '../../components/selective-context/selective-context-manager-function';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -50,6 +54,8 @@ export interface GraphTypeProps<T extends HasNumberIdDto> {
 function removeTransientId(id: number) {
   return id < TransientIdOffset;
 }
+
+const cloneFunction = { function: cloneOrganizationNode };
 
 export default function CurriculumDeliveryGraph({
   children,
@@ -104,6 +110,11 @@ export default function CurriculumDeliveryGraph({
   useEffect(() => {
     dispatch({ type: 'updateAll', payload: initialPayload });
   }, [initialPayload, dispatch]);
+
+  // useSelectiveContextControllerFunction<
+  //   DataNode<OrganizationDto>,
+  //   DataNode<OrganizationDto>
+  // >(NodeCloneFunctionKey, uniqueGraphName, cloneFunction);
 
   if (bundlesInNodeOrder.length !== nodes.length) {
     return <Card>Bundles not matching nodes!</Card>;
@@ -184,7 +195,7 @@ export default function CurriculumDeliveryGraph({
       onConfirm={handleSaveGraph}
     >
       {' '}
-      <NodeEditorDisclosure cloneFunction={cloneOrganizationNode} />
+      <NodeEditorDisclosure propCloneFunction={cloneFunction.function} />
       {/*<NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />*/}
     </NodeLinkRefWrapper>
   );

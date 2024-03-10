@@ -1,0 +1,92 @@
+'use client';
+import { PropsWithChildren } from 'react';
+import {
+  ContextRefFunction,
+  DispatchUpdateContextFunction,
+  GenericFunction,
+  UpdateRefContextFunction
+} from './selective-context-creator';
+import {
+  LatestValueRef,
+  useSelectiveContextManager
+} from './selective-context-manager';
+import { useSelectiveContextController } from './use-selective-context-controller';
+import {
+  useSelectiveContextDispatch,
+  useSelectiveContextListener
+} from './use-selective-context-listener';
+import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
+
+export interface GenericFunctionWrapper<T, U> {
+  function: GenericFunction<T, U>;
+}
+
+export default function SelectiveContextManagerFunction({
+  children
+}: PropsWithChildren) {
+  const { dispatch, triggerUpdateRef, contextRef } = useSelectiveContextManager(
+    {} as LatestValueRef<GenericFunctionWrapper<any, any>>
+  );
+
+  return (
+    <DispatchUpdateContextFunction.Provider value={dispatch}>
+      <UpdateRefContextFunction.Provider value={triggerUpdateRef}>
+        <ContextRefFunction.Provider value={contextRef}>
+          {children}
+        </ContextRefFunction.Provider>
+      </UpdateRefContextFunction.Provider>
+    </DispatchUpdateContextFunction.Provider>
+  );
+}
+
+export function useSelectiveContextControllerFunction<T, U>(
+  contextKey: string,
+  listenerKey: string,
+  initialValue: GenericFunctionWrapper<T, U>
+) {
+  const { currentState, dispatchUpdate } = useSelectiveContextController<
+    GenericFunctionWrapper<T, U>
+  >(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateRefContextFunction,
+    ContextRefFunction,
+    DispatchUpdateContextFunction
+  );
+
+  return { currentState, dispatchUpdate };
+}
+
+export function useSelectiveContextDispatchFunction<T, U>(
+  contextKey: string,
+  listenerKey: string,
+  initialValue: GenericFunctionWrapper<T, U>
+) {
+  return useSelectiveContextDispatch<GenericFunctionWrapper<T, U>>(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateRefContextFunction,
+    ContextRefFunction,
+    DispatchUpdateContextFunction
+  );
+}
+
+export function useSelectiveContextListenerFunction<T, U>(
+  contextKey: string,
+  listenerKey: string,
+  fallBackValue: GenericFunctionWrapper<T, U>
+) {
+  const { currentState, latestRef } = useSelectiveContextListener<
+    GenericFunctionWrapper<T, U>
+  >(
+    contextKey,
+    listenerKey,
+    fallBackValue,
+    UpdateRefContextFunction,
+    ContextRefFunction
+  );
+
+  return { currentFunction: currentState };
+}

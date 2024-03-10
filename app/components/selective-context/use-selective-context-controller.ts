@@ -33,9 +33,6 @@ export type UseSelectiveContextDispatch<T> = (
 
 export type UseSelectiveContextController<T> = (
   params: UseSelectiveContextParams<T>
-  // contextKey: string,
-  // listenerKey: string,
-  // initialValue: T
 ) => UseSelectiveContextControllerReturn<T>;
 
 export function useSelectiveContextController<T>(

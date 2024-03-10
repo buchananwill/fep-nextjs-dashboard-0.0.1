@@ -3,9 +3,13 @@ import { DataNode } from '../../../api/zod-mods';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 
 const nameCharLimit = 255;
-export const cloneOrganizationNode: CloneFunction<DataNode<OrganizationDto>> = (
-  templateNode
-) => {
+export function cloneOrganizationNode(
+  templateNode: DataNode<OrganizationDto>
+): DataNode<OrganizationDto> {
+  console.log('Attempting to clone...', templateNode);
+
+  // if (templateNode === undefined) return undefined
+
   const {
     data: { name }
   } = templateNode;
@@ -17,4 +21,4 @@ export const cloneOrganizationNode: CloneFunction<DataNode<OrganizationDto>> = (
     ...templateNode,
     data: { ...templateNode.data, name: cloneName }
   };
-};
+}

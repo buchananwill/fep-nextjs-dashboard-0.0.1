@@ -68,6 +68,7 @@ export function createNewLinks<T extends HasNumberIdDto>({
   relation
 }: LinkParams<T>): { allUpdatedLinks: DataLink<T>[]; newLinks: DataLink<T>[] } {
   const newLinks: DataLink<T>[] = [];
+  let nextLinkId = linkIdSequenceStart;
   switch (relation) {
     case 'sibling': {
       console.log('Making sibling');
@@ -78,15 +79,16 @@ export function createNewLinks<T extends HasNumberIdDto>({
           (l) => (l.source as DataNode<T>).id === referenceNode.id
         );
         linksAsChild
-          .map(
-            (l, index) =>
-              ({
-                ...l,
-                source: newNode,
-                id: linkIdSequenceStart + i,
-                index: index
-              }) as DataLink<T>
-          )
+          .map((l, index) => {
+            const currentLinkId = nextLinkId;
+            nextLinkId++;
+            return {
+              ...l,
+              source: newNode,
+              id: nextLinkId,
+              index: index
+            } as DataLink<T>;
+          })
           .forEach((l) => newLinks.push(l));
       }
       break;
@@ -97,12 +99,14 @@ export function createNewLinks<T extends HasNumberIdDto>({
       for (let i = 0; i < references.length; i++) {
         const targetNode = references[i];
         const sourceNode = newNodes[i];
+        const currentLinkId = nextLinkId;
+        nextLinkId++;
         const newLink = {
           ...templateLink,
           source: sourceNode,
           target: targetNode,
           index: 0,
-          id: linkIdSequenceStart + i
+          id: currentLinkId
         } as DataLink<T>;
         newLinks.push(newLink);
         console.log(newLink);
