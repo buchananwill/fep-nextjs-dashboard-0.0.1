@@ -164,11 +164,13 @@ export function useMouseMoveSvgDraggable(
   const [readyToDrag, setReadyToDrag] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
+  const lastRenderTimer = useRef(Date.now());
+
   useEffect(() => {
     const trackMouseMove = (event: MouseEvent) => {
       mousePositionRef.current = { x: event.clientX, y: event.clientY };
     };
-
+    console.log('Re-triggering this effect');
     window.addEventListener('mousemove', trackMouseMove);
 
     return () => {
@@ -214,10 +216,15 @@ export function useMouseMoveSvgDraggable(
     )
       return;
 
-    const { x, y } = displacementRef;
-    const newX = x + e.clientX * svgScale;
-    const newY = y + e.clientY * svgScale;
-    setDraggablePosition({ x: newX, y: newY });
+    const elapsed = Date.now() - lastRenderTimer.current;
+    if (elapsed >= 25) {
+      // console.log('Since last render:', elapsed);
+      lastRenderTimer.current = Date.now();
+      const { x, y } = displacementRef;
+      const newX = x + e.clientX * svgScale;
+      const newY = y + e.clientY * svgScale;
+      setDraggablePosition({ x: newX, y: newY });
+    }
   }
 
   return {

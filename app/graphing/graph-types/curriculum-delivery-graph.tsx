@@ -218,6 +218,13 @@ export default function CurriculumDeliveryGraph({
     true
   );
 
+  useEffect(() => {
+    dispatchUpdate({ contextKey: mountedKey, value: true });
+    return () => {
+      dispatchUpdate({ contextKey: mountedKey, value: false });
+    };
+  }, [dispatchUpdate, mountedKey]);
+
   const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
     'curriculum-delivery-graph-page'
   );
@@ -237,13 +244,6 @@ export default function CurriculumDeliveryGraph({
   const { isOpen, closeModal, openModal } = useModal();
 
   const { bundleAssignmentsMap, dispatch } = useBundleAssignmentsContext();
-
-  useEffect(() => {
-    dispatchUpdate({ contextKey: mountedKey, value: true });
-    return () => {
-      dispatchUpdate({ contextKey: mountedKey, value: false });
-    };
-  }, [dispatchUpdate, mountedKey]);
 
   const bundlesInNodeOrder = nodes.map((node) => {
     const found = bundles.find((delivery) => delivery.partyId === node.id);
@@ -336,6 +336,11 @@ export default function CurriculumDeliveryGraph({
       show={isOpen}
       onClose={closeModal}
       onConfirm={handleSaveGraph}
-    />
+    >
+      {' '}
+      <NodeEditorDisclosure cloneFunction={cloneOrganizationNode} />
+      <GraphForceAdjuster />
+      <NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />
+    </NodeLinkRefWrapper>
   );
 }

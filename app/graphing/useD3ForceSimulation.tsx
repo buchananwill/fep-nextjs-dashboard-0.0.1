@@ -116,7 +116,22 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
       manyBodyMinDistanceNormalized,
       manyBodyMaxDistanceNormalized,
       manyBodyThetaNormalized,
-      linkDistanceNormalized
+      linkDistanceNormalized,
+      forceRadialStrengthRef,
+      centerStrengthRef,
+      collideStrengthRef,
+      forceRadialXRelativeNormalized,
+      forceRadialXRelativeRef,
+      forceRadialYRelativeNormalized,
+      forceRadialYRelativeRef,
+      forceXStrengthRef,
+      forceYStrengthRef,
+      linkDistanceRef,
+      linkStrengthRef,
+      manyBodyMaxDistanceRef,
+      manyBodyMinDistanceRef,
+      manyBodyStrengthRef,
+      manyBodyThetaRef
     } = forceAttributeListeners;
 
     function beginSim() {
@@ -174,21 +189,53 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
     }
 
     function updateValues(currentSim: Simulation<DataNode<T>, DataLink<T>>) {
-      updateLinkForce(
-        currentSim,
-        linkStrengthNormalized,
-        linkDistanceNormalized
-      );
-      updateManyBodyForce(
-        currentSim,
-        manyBodyStrengthNormalized,
-        manyBodyThetaNormalized,
-        manyBodyMinDistanceNormalized,
-        manyBodyMaxDistanceNormalized
-      );
-      updateForceX(currentSim, forceXStrengthNormalized);
-      updateForceY(currentSim, forceYStrengthNormalized);
-      updateForceRadial(currentSim, forceRadialStrengthNormalized);
+      if (
+        linkStrengthRef.current != linkStrengthNormalized ||
+        linkDistanceRef.current != linkDistanceNormalized
+      ) {
+        console.log('Updating link values');
+        updateLinkForce(
+          currentSim,
+          linkStrengthNormalized,
+          linkDistanceNormalized
+        );
+        linkStrengthRef.current = linkStrengthNormalized;
+        linkDistanceRef.current = linkDistanceNormalized;
+      }
+      if (
+        manyBodyThetaRef.current != manyBodyThetaNormalized ||
+        manyBodyStrengthRef.current != manyBodyStrengthNormalized ||
+        manyBodyMinDistanceRef.current != manyBodyMinDistanceNormalized ||
+        manyBodyMaxDistanceRef.current != manyBodyMaxDistanceNormalized
+      ) {
+        console.log('Updating manyBody values');
+        updateManyBodyForce(
+          currentSim,
+          manyBodyStrengthNormalized,
+          manyBodyThetaNormalized,
+          manyBodyMinDistanceNormalized,
+          manyBodyMaxDistanceNormalized
+        );
+        manyBodyThetaRef.current = manyBodyThetaNormalized;
+        manyBodyStrengthRef.current = manyBodyStrengthNormalized;
+        manyBodyMinDistanceRef.current = manyBodyMinDistanceNormalized;
+        manyBodyMaxDistanceRef.current = manyBodyMaxDistanceNormalized;
+      }
+      if (forceXStrengthRef.current != forceXStrengthNormalized) {
+        console.log('Updating forceX values');
+        updateForceX(currentSim, forceXStrengthNormalized);
+        forceXStrengthRef.current = forceXStrengthNormalized;
+      }
+      if (forceYStrengthRef.current != forceYStrengthNormalized) {
+        console.log('Updating forceY values');
+        updateForceY(currentSim, forceYStrengthNormalized);
+        forceYStrengthRef.current = forceYStrengthNormalized;
+      }
+      if (forceRadialStrengthRef.current != forceRadialStrengthNormalized) {
+        console.log('Updating radial values');
+        updateForceRadial(currentSim, forceRadialStrengthNormalized);
+        forceRadialStrengthRef.current = forceRadialStrengthNormalized;
+      }
     }
 
     if (!simulationRef.current) {

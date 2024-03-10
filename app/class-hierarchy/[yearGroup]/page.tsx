@@ -32,8 +32,8 @@ export default async function Page({
     await getBundleDeliveriesByOrgType(yearGroup);
 
   const actionResponseOrganizationGraph =
-    await getOrganizationGraphByOrganizationType(yearGroup);
-  // await getOrganizationGraph();
+    // await getOrganizationGraphByOrganizationType(yearGroup);
+    await getOrganizationGraph();
   const {
     status: statusGraph,
     data: dataGraph,
