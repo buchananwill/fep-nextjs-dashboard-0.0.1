@@ -86,7 +86,7 @@ export default function CurriculumDeliveryGraph({
 }: PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
   useForceAdjustments(true);
 
-  useNodeEditing(false);
+  useNodeEditing(true);
 
   useNodeCloneFunction(cloneFunction);
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();

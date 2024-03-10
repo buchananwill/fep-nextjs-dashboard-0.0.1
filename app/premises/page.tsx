@@ -1,9 +1,5 @@
-import { Title, Text, Grid, Card } from '@tremor/react';
-import ClassRoomCard from './class-room-card';
+import { Title, Card } from '@tremor/react';
 
-import { Suspense } from 'react';
-import Loading from '../loading';
-import { ClassRoomDTO } from '../api/dto-interfaces';
 import { fetchPremises } from '../api/actions/request-class-rooms';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
@@ -12,8 +8,6 @@ import ForceGraphPage from '../graphing/force-graph-page';
 import { PremisesHierarchyGraph } from './premises-hierarchy-graph';
 
 export const dynamic = 'force-dynamic';
-
-type ClassRoomsData = ClassRoomDTO[];
 
 export default async function PremisesPage({}: {
   searchParams: { q: string };

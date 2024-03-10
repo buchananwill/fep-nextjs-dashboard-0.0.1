@@ -9,7 +9,7 @@ import { useForceAdjustments } from '../graphing/graph/show-force-adjustments';
 export function PremisesHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<AssetDto>();
 
-  useForceAdjustments(false);
+  // useForceAdjustments(false);
 
   const classList: string[] = [];
 
