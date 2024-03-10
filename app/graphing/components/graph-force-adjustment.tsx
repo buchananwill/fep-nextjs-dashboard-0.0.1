@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ForceGraphAttributesDto } from '../../api/dtos/ForceGraphAttributesDtoSchema';
 import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
 import {
@@ -15,6 +15,7 @@ import {
 } from './force-attributes-meta-data';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 import { ShowForceAdjustmentsKey } from '../graph/show-force-adjustments';
+import { ShowNodeEditingKey } from '../nodes/node-editor-disclosure';
 
 export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
@@ -27,6 +28,11 @@ export default function GraphForceAdjustment() {
 
   const { isTrue: show } = useSelectiveContextListenerBoolean(
     ShowForceAdjustmentsKey,
+    'graph-adjuster',
+    false
+  );
+  const { isTrue: showEditNodes } = useSelectiveContextListenerBoolean(
+    ShowNodeEditingKey,
     'graph-adjuster',
     false
   );

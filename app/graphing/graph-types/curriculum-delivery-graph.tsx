@@ -12,8 +12,6 @@ import { Card } from '@tremor/react';
 import CurriculumDeliveryDetails from '../components/curriculum-delivery-details';
 import { NodePayload } from '../force-graph-page';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import GraphForceAdjuster from '../components/graph-force-adjustment';
-import NodeDetails from '../components/node-details';
 import { useGenericLinkContext } from '../links/generic-link-context-creator';
 import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
 import {
@@ -38,11 +36,12 @@ import { mapToPartyIdBundleIdRecords } from './organization/map-to-party-id-bund
 import { mapLinksBackToIdRefs } from '../links/map-links-back-to-id-refs';
 import {
   NodeCloneFunctionKey,
-  NodeEditorDisclosure
+  ShowNodeEditingKey
 } from '../nodes/node-editor-disclosure';
 import { NodeLinkRefWrapper } from '../graph/node-link-ref-wrapper';
 import { useForceAdjustments } from '../graph/show-force-adjustments';
 import { useSelectiveContextControllerFunction } from '../../components/selective-context/selective-context-manager-function';
+import { useNodeEditing } from '../show-node-editing';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -57,6 +56,7 @@ function removeTransientId(id: number) {
 
 const cloneFunction = { function: cloneOrganizationNode };
 
+const CurriculumDeliveryGraphPageKey = 'curriculum-delivery-graph-page';
 export default function CurriculumDeliveryGraph({
   children,
   bundles
@@ -66,20 +66,26 @@ export default function CurriculumDeliveryGraph({
   const { links } = useGenericLinkContext<OrganizationDto>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
+  const { uniqueGraphName } = useContext(GraphContext);
 
-  useForceAdjustments(false);
+  useForceAdjustments(true);
+
+  useNodeEditing(false);
+
+  useSelectiveContextControllerFunction<
+    DataNode<OrganizationDto>,
+    DataNode<OrganizationDto>
+  >(NodeCloneFunctionKey, uniqueGraphName, cloneFunction);
 
   useEffect(() => {
     nodesRef.current = nodes;
     linksRef.current = links;
   }, [nodes, links]);
 
-  const { uniqueGraphName } = useContext(GraphContext);
-
   const appRouterInstance = useRouter();
 
   const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
-    'curriculum-delivery-graph-page'
+    CurriculumDeliveryGraphPageKey
   );
 
   const unsavedGraphContextKey = useSelectiveContextKeyMemo(
@@ -110,11 +116,6 @@ export default function CurriculumDeliveryGraph({
   useEffect(() => {
     dispatch({ type: 'updateAll', payload: initialPayload });
   }, [initialPayload, dispatch]);
-
-  // useSelectiveContextControllerFunction<
-  //   DataNode<OrganizationDto>,
-  //   DataNode<OrganizationDto>
-  // >(NodeCloneFunctionKey, uniqueGraphName, cloneFunction);
 
   if (bundlesInNodeOrder.length !== nodes.length) {
     return <Card>Bundles not matching nodes!</Card>;
@@ -195,7 +196,6 @@ export default function CurriculumDeliveryGraph({
       onConfirm={handleSaveGraph}
     >
       {' '}
-      <NodeEditorDisclosure propCloneFunction={cloneFunction.function} />
       {/*<NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />*/}
     </NodeLinkRefWrapper>
   );

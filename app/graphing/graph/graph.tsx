@@ -1,6 +1,6 @@
 'use client';
 import ForceSimWrapper from '../force-sim-wrapper';
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { PropsWithChildren, ReactNode, useMemo } from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 
 import { useDraggable } from '@dnd-kit/core';
@@ -22,6 +22,13 @@ import {
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGraphName } from './graph-context-creator';
 import GraphForceAdjuster from '../components/graph-force-adjustment';
+import {
+  ListenerKey,
+  NodeEditorDisclosure,
+  ShowNodeEditingKey
+} from '../nodes/node-editor-disclosure';
+import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { ShowForceAdjustmentsKey } from './show-force-adjustments';
 
 export const DefaultGraphZoom = 100;
 export const MaxGraphZoom = 200;
@@ -56,6 +63,18 @@ export default function Graph<T extends HasNumberIdDto>({
     `zoom-${uniqueGraphName}`,
     `${uniqueGraphName}`,
     DefaultGraphZoom
+  );
+
+  const { isTrue: showNodeEditing } = useSelectiveContextListenerBoolean(
+    ShowNodeEditingKey,
+    ListenerKey,
+    false
+  );
+
+  const { isTrue: showForceEditing } = useSelectiveContextListenerBoolean(
+    ShowForceAdjustmentsKey,
+    'graph.tsx',
+    false
   );
 
   const {
@@ -131,17 +150,24 @@ export default function Graph<T extends HasNumberIdDto>({
                   <GraphViewOptions />
                 </div>
               </div>
-              {
+              {showForceEditing || showNodeEditing ? (
                 <div
                   className={
                     'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg px-2 pb-2 mt-2 relative'
                   }
                   style={{ height: '600px' }}
                 >
+                  {showNodeEditing ? (
+                    <NodeEditorDisclosure />
+                  ) : (
+                    <div className={'h-2'}></div>
+                  )}
                   <GraphForceAdjuster />
                   {children}
                 </div>
-              }
+              ) : (
+                <GraphForceAdjuster />
+              )}
             </div>
           </IsDraggingContext.Provider>
         </DraggablePositionContext.Provider>

@@ -3,20 +3,16 @@ import { Card } from '@tremor/react';
 import React from 'react';
 import { DataNode, GraphDto } from '../api/zod-mods';
 import GraphContextProvider from './graph/graph-context-provider';
-import {
-  getCurriculumDeliveries,
-  getOrganizationGraph
-} from '../api/actions/curriculum-delivery-model';
-import { PartyDto } from '../api/dtos/PartyDtoSchema';
+import { getCurriculumDeliveries } from '../api/actions/curriculum-delivery-model';
 import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
 import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';
 import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
-import { usePathname } from 'next/navigation';
 import MountedTracker from './graph/mounted-tracker';
 import NodePositionsTracker from './graph/node-positions-tracker';
 import { ShowForceAdjustments } from './graph/show-force-adjustments';
+import { ShowNodeEditing } from './show-node-editing';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
@@ -24,6 +20,7 @@ export interface NodePayload<T extends HasNumberIdDto> {
 }
 
 const uniqueGraphName = 'party-dto-graph';
+
 export default async function ForceGraphPage({
   dataGraph: organizationGraph
 }: {
@@ -57,6 +54,7 @@ export default async function ForceGraphPage({
               <MountedTracker />
               <NodePositionsTracker />
               <ShowForceAdjustments />
+              <ShowNodeEditing />
               <CurriculumDeliveryGraph
                 graphData={organizationGraph}
                 bundles={data}
