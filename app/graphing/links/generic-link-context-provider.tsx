@@ -8,21 +8,21 @@ import {
 import { DataLink } from '../../api/zod-mods';
 import { useFilteredLinkMemo } from '../aggregate-functions/use-filtered-link-memo';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useGraphName } from '../graph/graph-context-creator';
 
 // Example of a generic Provider component that can be used to wrap parts of your app
 export const GenericLinkContextProvider = <T extends HasNumberIdDto>({
   children,
-  links,
-  uniqueGraphName
+  links
 }: {
   children: React.ReactNode;
   links: DataLink<T>[];
-  uniqueGraphName: string;
 }) => {
   const { filteredLinks } = useFilteredLinkMemo(
     links,
     (closure) => closure.value == 1
   );
+  const uniqueGraphName = useGraphName();
 
   const [linkState, setLinkState] =
     React.useState<DataLink<T>[]>(filteredLinks);

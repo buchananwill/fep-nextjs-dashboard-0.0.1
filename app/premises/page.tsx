@@ -8,6 +8,8 @@ import { fetchPremises } from '../api/actions/request-class-rooms';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { ActionResponsePromise } from '../api/actions/actionResponse';
+import ForceGraphPage from '../graphing/force-graph-page';
+import { PremisesHierarchyGraph } from './premises-hierarchy-graph';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,14 +28,14 @@ export default async function PremisesPage({}: {
     return <Card>No premises!</Card>;
   }
 
+  const { data: graphDto } = actionResponse;
+
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <>
       <Title>Premises</Title>
-      <Text>
-        A list of all the rooms in the school. Total class rooms:{' '}
-        <b>{actionResponse.data.nodes.length}</b>
-      </Text>
-      <Suspense fallback={<Loading />}></Suspense>
-    </main>
+      <ForceGraphPage dataGraph={graphDto} graphName={'premises-graph'}>
+        <PremisesHierarchyGraph />
+      </ForceGraphPage>
+    </>
   );
 }

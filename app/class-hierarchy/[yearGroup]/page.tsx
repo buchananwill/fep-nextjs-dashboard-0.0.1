@@ -83,10 +83,12 @@ export default async function Page({
           taskTypeList={workTaskTypeDtos}
         />
 
-        <ForceGraphPage dataGraph={dataGraph}>
+        <ForceGraphPage
+          dataGraph={dataGraph}
+          graphName={'curriculum-delivery-graph'}
+        >
           {' '}
           <CurriculumDeliveryGraph
-            graphData={dataGraph}
             bundles={bundleDeliveryData}
           ></CurriculumDeliveryGraph>
         </ForceGraphPage>

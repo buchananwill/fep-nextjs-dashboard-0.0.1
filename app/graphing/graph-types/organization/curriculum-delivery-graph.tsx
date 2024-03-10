@@ -68,20 +68,9 @@ function useUnsavedGraphChangesController() {
   return { unsavedGraphContextKey, unsavedGraphChanges, setUnsaved };
 }
 
-export default function CurriculumDeliveryGraph({
-  children,
-  bundles
-}: GraphTypeProps<OrganizationDto> &
-  PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
-  const { uniqueGraphName } = useContext(GraphContext);
-
-  useForceAdjustments(true);
-
-  useNodeEditing(false);
-
-  useNodeCloneFunction(cloneFunction);
-  const { nodes } = useGenericNodeContext<OrganizationDto>();
-  const { links } = useGenericLinkContext<OrganizationDto>();
+export function useNodeAndLinkRefs<T extends HasNumberIdDto>() {
+  const { nodes } = useGenericNodeContext<T>();
+  const { links } = useGenericLinkContext<T>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
 
@@ -89,6 +78,18 @@ export default function CurriculumDeliveryGraph({
     nodesRef.current = nodes;
     linksRef.current = links;
   }, [nodes, links]);
+  return { nodes, nodesRef, linksRef };
+}
+
+export default function CurriculumDeliveryGraph({
+  bundles
+}: PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
+  useForceAdjustments(true);
+
+  useNodeEditing(false);
+
+  useNodeCloneFunction(cloneFunction);
+  const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();
 
   const appRouterInstance = useRouter();
 
@@ -187,11 +188,14 @@ export default function CurriculumDeliveryGraph({
       linkListRef={linksRef}
       textList={descriptionList}
       titleList={titleList}
-      unsavedChanges={unsavedGraphChanges}
-      handleOpen={openModal}
-      show={isOpen}
-      onClose={closeModal}
-      onConfirm={handleSaveGraph}
+      unsavedNodeChangesProps={{
+        show: isOpen,
+        unsavedChanges: unsavedGraphChanges,
+        onCancel: closeModal,
+        onClose: closeModal,
+        handleOpen: openModal,
+        onConfirm: handleSaveGraph
+      }}
     >
       {' '}
       <NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />
