@@ -2,7 +2,6 @@ import {
   getBundles,
   getBundleDeliveriesByOrgType,
   getSchemasByIdList,
-  getOrganizationGraph,
   getOrganizationGraphByOrganizationType
 } from '../../api/actions/curriculum-delivery-model';
 import { Card } from '@tremor/react';
@@ -15,6 +14,8 @@ import { BundleAssignmentsProvider } from '../../curriculum-models/contexts/bund
 import { StringMap } from '../../curriculum-models/contexts/string-map-context-creator';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-models/curriculum-delivery-models-init';
+import CurriculumDeliveryGraph from '../../graphing/graph-types/organization/curriculum-delivery-graph';
+import React from 'react';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -28,8 +29,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const { page, size } = searchParams;
-  const curriculumDeliveryModelSchemas =
-    await getBundleDeliveriesByOrgType(yearGroup);
+  const bundleDeliveries = await getBundleDeliveriesByOrgType(yearGroup);
 
   const actionResponseOrganizationGraph =
     await getOrganizationGraphByOrganizationType(yearGroup);
@@ -40,26 +40,17 @@ export default async function Page({
     message: messageGraph
   } = actionResponseOrganizationGraph;
 
-  const { status, data, message } = curriculumDeliveryModelSchemas;
-  if (data === undefined || dataGraph === undefined) {
+  const { status, data: bundleDeliveryData, message } = bundleDeliveries;
+  if (bundleDeliveryData === undefined || dataGraph === undefined) {
     return <Card>No deliveries found!</Card>;
   }
 
-  const schemaIdList = data
+  const schemaIdList = bundleDeliveryData
     .map((delivery) => delivery.workSeriesSchemaBundle)
     .map((bundle) => bundle.workProjectSeriesSchemaIds)
     .reduce((prev, curr) => [...prev, ...curr], []);
 
   const actionResponseSchemas = await getSchemasByIdList(schemaIdList);
-
-  const schemasIdsAndNames = actionResponseSchemas.data
-    ? actionResponseSchemas.data.reduce(
-        (prev, curr, currentIndex) => {
-          return { ...prev, [curr.id]: curr.name };
-        },
-        {} as { [key: string]: string }
-      )
-    : ({} as { [key: string]: string });
 
   const actionResponse = await getBundles(schemaIdList);
 
@@ -92,7 +83,13 @@ export default async function Page({
           taskTypeList={workTaskTypeDtos}
         />
 
-        <ForceGraphPage dataGraph={dataGraph}></ForceGraphPage>
+        <ForceGraphPage dataGraph={dataGraph}>
+          {' '}
+          <CurriculumDeliveryGraph
+            graphData={dataGraph}
+            bundles={bundleDeliveryData}
+          ></CurriculumDeliveryGraph>
+        </ForceGraphPage>
       </BundleAssignmentsProvider>
     </BundleItemsContextProvider>
   );

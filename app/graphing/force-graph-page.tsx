@@ -1,6 +1,6 @@
 import { Card } from '@tremor/react';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { DataNode, GraphDto } from '../api/zod-mods';
 import GraphContextProvider from './graph/graph-context-provider';
 import { getCurriculumDeliveries } from '../api/actions/curriculum-delivery-model';
@@ -22,22 +22,12 @@ export interface NodePayload<T extends HasNumberIdDto> {
 const uniqueGraphName = 'party-dto-graph';
 
 export default async function ForceGraphPage({
-  dataGraph: organizationGraph
+  dataGraph: organizationGraph,
+  children
 }: {
   dataGraph: GraphDto<OrganizationDto>;
-}) {
+} & PropsWithChildren) {
   const { nodes, closureDtos } = organizationGraph;
-
-  const organizationIds = organizationGraph.nodes.map(
-    (dateNode) => dateNode.data.id
-  );
-  const actionResponse2 = await getCurriculumDeliveries(organizationIds);
-
-  const { data } = actionResponse2;
-
-  if (data === undefined) {
-    return <Card>No deliveries!</Card>;
-  }
 
   return (
     <>
@@ -55,10 +45,7 @@ export default async function ForceGraphPage({
               <NodePositionsTracker />
               <ShowForceAdjustments />
               <ShowNodeEditing />
-              <CurriculumDeliveryGraph
-                graphData={organizationGraph}
-                bundles={data}
-              ></CurriculumDeliveryGraph>
+              {children}
             </GraphContextProvider>
           </GenericLinkContextProvider>
         </GenericNodeContextProvider>
