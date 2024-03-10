@@ -12,7 +12,7 @@ import { useSelectiveContextListenerBoolean } from '../../components/selective-c
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
-import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
+import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 export function LinkComponent<T extends HasNumberIdDto>({
   children,

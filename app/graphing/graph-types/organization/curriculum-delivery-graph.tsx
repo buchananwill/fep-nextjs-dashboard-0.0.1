@@ -1,5 +1,5 @@
 'use client';
-import { DataNode, GraphDto } from '../../api/zod-mods';
+import { DataNode, GraphDto } from '../../../api/zod-mods';
 import React, {
   PropsWithChildren,
   useContext,
@@ -7,41 +7,35 @@ import React, {
   useMemo,
   useRef
 } from 'react';
-import { GraphContext } from '../graph/graph-context-creator';
+import { GraphContext } from '../../graph/graph-context-creator';
 import { Card } from '@tremor/react';
-import CurriculumDeliveryDetails from '../components/curriculum-delivery-details';
-import { NodePayload } from '../force-graph-page';
-import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { useGenericLinkContext } from '../links/generic-link-context-creator';
-import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
-import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextDispatchBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
-import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
-import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
-import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
-import { useModal } from '../../components/confirm-action-modal';
+import CurriculumDeliveryDetails from '../../components/curriculum-delivery-details';
+import { NodePayload } from '../../force-graph-page';
+import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { useGenericLinkContext } from '../../links/generic-link-context-creator';
+import { useGenericNodeContext } from '../../nodes/generic-node-context-creator';
+import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { useBundleAssignmentsContext } from '../../../curriculum-models/contexts/use-bundle-assignments-context';
+import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
+import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
+import { useModal } from '../../../components/confirm-action-modal';
 import {
   deleteLinks,
   deleteNodes,
   putOrganizationGraph
-} from '../../api/actions/curriculum-delivery-model';
+} from '../../../api/actions/curriculum-delivery-model';
 import { useRouter } from 'next/navigation';
-import { useGraphEditButtonHooks } from '../editing/use-graph-edit-button-hooks';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { TransientIdOffset } from '../editing/graph-edits';
-import { cloneOrganizationNode } from './organization/clone-organization-node';
-import { mapToPartyIdBundleIdRecords } from './organization/map-to-party-id-bundle-id-records';
-import { mapLinksBackToIdRefs } from '../links/map-links-back-to-id-refs';
-import {
-  NodeCloneFunctionKey,
-  ShowNodeEditingKey
-} from '../nodes/node-editor-disclosure';
-import { NodeLinkRefWrapper } from '../graph/node-link-ref-wrapper';
-import { useForceAdjustments } from '../graph/show-force-adjustments';
-import { useSelectiveContextControllerFunction } from '../../components/selective-context/selective-context-manager-function';
-import { useNodeEditing } from '../show-node-editing';
+import { useGraphEditButtonHooks } from '../../editing/use-graph-edit-button-hooks';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
+import { TransientIdOffset } from '../../editing/graph-edits';
+import { cloneOrganizationNode } from './clone-organization-node';
+import { mapToPartyIdBundleIdRecords } from './map-to-party-id-bundle-id-records';
+import { mapLinksBackToIdRefs } from '../../links/map-links-back-to-id-refs';
+import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
+import { useForceAdjustments } from '../../graph/show-force-adjustments';
+import { useNodeEditing } from '../../show-node-editing';
+import NodeDetails from '../../components/node-details';
+import { useNodeCloneFunction } from '../../editing/use-node-clone-function';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -57,37 +51,9 @@ function removeTransientId(id: number) {
 const cloneFunction = { function: cloneOrganizationNode };
 
 const CurriculumDeliveryGraphPageKey = 'curriculum-delivery-graph-page';
-export default function CurriculumDeliveryGraph({
-  children,
-  bundles
-}: GraphTypeProps<OrganizationDto> &
-  PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
-  const { nodes } = useGenericNodeContext<OrganizationDto>();
-  const { links } = useGenericLinkContext<OrganizationDto>();
-  const nodesRef = useRef(nodes);
-  const linksRef = useRef(links);
+
+function useUnsavedGraphChangesController() {
   const { uniqueGraphName } = useContext(GraphContext);
-
-  useForceAdjustments(true);
-
-  useNodeEditing(false);
-
-  useSelectiveContextControllerFunction<
-    DataNode<OrganizationDto>,
-    DataNode<OrganizationDto>
-  >(NodeCloneFunctionKey, uniqueGraphName, cloneFunction);
-
-  useEffect(() => {
-    nodesRef.current = nodes;
-    linksRef.current = links;
-  }, [nodes, links]);
-
-  const appRouterInstance = useRouter();
-
-  const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
-    CurriculumDeliveryGraphPageKey
-  );
-
   const unsavedGraphContextKey = useSelectiveContextKeyMemo(
     UnsavedNodeDataContextKey,
     uniqueGraphName
@@ -99,6 +65,38 @@ export default function CurriculumDeliveryGraph({
       unsavedGraphContextKey,
       false
     );
+  return { unsavedGraphContextKey, unsavedGraphChanges, setUnsaved };
+}
+
+export default function CurriculumDeliveryGraph({
+  children,
+  bundles
+}: GraphTypeProps<OrganizationDto> &
+  PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
+  const { uniqueGraphName } = useContext(GraphContext);
+
+  useForceAdjustments(true);
+
+  useNodeEditing(false);
+
+  useNodeCloneFunction(cloneFunction);
+  const { nodes } = useGenericNodeContext<OrganizationDto>();
+  const { links } = useGenericLinkContext<OrganizationDto>();
+  const nodesRef = useRef(nodes);
+  const linksRef = useRef(links);
+
+  useEffect(() => {
+    nodesRef.current = nodes;
+    linksRef.current = links;
+  }, [nodes, links]);
+
+  const appRouterInstance = useRouter();
+
+  const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
+    CurriculumDeliveryGraphPageKey
+  );
+  const { unsavedGraphContextKey, unsavedGraphChanges, setUnsaved } =
+    useUnsavedGraphChangesController();
 
   const { isOpen, closeModal, openModal } = useModal();
 
@@ -196,7 +194,7 @@ export default function CurriculumDeliveryGraph({
       onConfirm={handleSaveGraph}
     >
       {' '}
-      {/*<NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />*/}
+      <NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />
     </NodeLinkRefWrapper>
   );
 }

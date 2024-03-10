@@ -4,7 +4,7 @@ import React from 'react';
 import { DataNode, GraphDto } from '../api/zod-mods';
 import GraphContextProvider from './graph/graph-context-provider';
 import { getCurriculumDeliveries } from '../api/actions/curriculum-delivery-model';
-import CurriculumDeliveryGraph from './graph-types/curriculum-delivery-graph';
+import CurriculumDeliveryGraph from './graph-types/organization/curriculum-delivery-graph';
 import { GenericNodeContextProvider } from './nodes/generic-node-context-provider';
 import { GenericLinkContextProvider } from './links/generic-link-context-provider';
 import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';

@@ -14,7 +14,7 @@ import {
 } from '../../components/key-listener-context/key-listener-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
-import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
+import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 export default function NodeText<T extends HasNumberIdDto>({
   textIndex,

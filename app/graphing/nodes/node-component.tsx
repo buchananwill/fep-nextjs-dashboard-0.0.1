@@ -9,7 +9,7 @@ import {
 import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
-import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
+import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 // Good start - clear name and type generic
 export function NodeComponent<T extends HasNumberIdDto>({

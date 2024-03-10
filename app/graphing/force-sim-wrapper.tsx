@@ -16,7 +16,7 @@ import {
   useSelectiveContextDispatchNumber,
   useSelectiveContextListenerNumber
 } from '../components/selective-context/selective-context-manager-number';
-import { NodePositionsKey } from './graph-types/curriculum-delivery-graph';
+import { NodePositionsKey } from './graph-types/organization/curriculum-delivery-graph';
 
 export default function ForceSimWrapper<T extends HasNumberIdDto>({
   linkElements,

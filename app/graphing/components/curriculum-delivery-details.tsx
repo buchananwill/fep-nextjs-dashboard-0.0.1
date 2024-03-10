@@ -27,7 +27,7 @@ import { useSelectiveContextControllerString } from '../../components/selective-
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
 import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-hooks';
 import { GraphContext } from '../graph/graph-context-creator';
-import { UnsavedNodeDataContextKey } from '../graph-types/curriculum-delivery-graph';
+import { UnsavedNodeDataContextKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
 import { resetLinks } from '../editing/add-nodes-button';
 
