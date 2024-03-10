@@ -3,7 +3,10 @@
 import { useContext, useEffect } from 'react';
 import { ForceGraphAttributesDto } from '../../api/dtos/ForceGraphAttributesDtoSchema';
 import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import {
+  useSelectiveContextControllerBoolean,
+  useSelectiveContextListenerBoolean
+} from '../../components/selective-context/selective-context-manager-boolean';
 import { GraphContext } from '../graph/graph-context-creator';
 import {
   forceAttributesInitial,
@@ -11,6 +14,7 @@ import {
   forceAttributesMin
 } from './force-attributes-meta-data';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
+import { ShowForceAdjustmentsKey } from '../graph/show-force-adjustments';
 
 export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
@@ -18,6 +22,12 @@ export default function GraphForceAdjustment() {
   const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
     readyToGraph,
     readyToGraph,
+    false
+  );
+
+  const { isTrue: show } = useSelectiveContextListenerBoolean(
+    ShowForceAdjustmentsKey,
+    'graph-adjuster',
     false
   );
 
@@ -54,14 +64,16 @@ export default function GraphForceAdjustment() {
   });
 
   return (
-    <DisclosureThatGrowsOpen
-      label={'Adjust Forces'}
-      heightWhenOpen={'h-60'}
-      showBorder={true}
-    >
-      <div className={'h-60 overflow-auto border-slate-300 '}>
-        <ul className={' p-2 '}>{...sliders}</ul>
-      </div>
-    </DisclosureThatGrowsOpen>
+    <div className={`${show ? '' : 'hidden'}`}>
+      <DisclosureThatGrowsOpen
+        label={'Adjust Forces'}
+        heightWhenOpen={'h-60'}
+        showBorder={true}
+      >
+        <div className={'h-60 overflow-auto border-slate-300 '}>
+          <ul className={' p-2 '}>{...sliders}</ul>
+        </div>
+      </DisclosureThatGrowsOpen>
+    </div>
   );
 }

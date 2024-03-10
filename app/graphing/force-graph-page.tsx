@@ -16,6 +16,7 @@ import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 import { usePathname } from 'next/navigation';
 import MountedTracker from './graph/mounted-tracker';
 import NodePositionsTracker from './graph/node-positions-tracker';
+import { ShowForceAdjustments } from './graph/show-force-adjustments';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
@@ -55,6 +56,7 @@ export default async function ForceGraphPage({
             <GraphContextProvider uniqueGraphName={uniqueGraphName}>
               <MountedTracker />
               <NodePositionsTracker />
+              <ShowForceAdjustments />
               <CurriculumDeliveryGraph
                 graphData={organizationGraph}
                 bundles={data}

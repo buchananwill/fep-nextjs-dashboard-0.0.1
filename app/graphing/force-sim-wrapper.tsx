@@ -29,16 +29,8 @@ export default function ForceSimWrapper<T extends HasNumberIdDto>({
   linkElements: ReactNode[];
   uniqueGraphName: string;
 }) {
-  const { dispatch: genericNodeDispatch } =
-    useGenericNodeContext<DataNode<T>>();
-  const { dispatch: genericLinkDispatch } =
-    useGenericLinkContext<DataLink<T>>();
-
   const nodesRef = useContext(GenericNodeRefContext);
   const linksRef = useContext(GenericLinkRefContext);
-  // const contextAlterKey = `${uniqueGraphName}-ready`;
-  // const listenerAlterKey = `${uniqueGraphName}-force-sim-wrapper`;
-  //
 
   const { currentState, dispatchWithoutControl } =
     useSelectiveContextDispatchNumber({

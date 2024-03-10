@@ -30,6 +30,11 @@ export const GraphContext = createContext<GraphContextInterface>({
   uniqueGraphName: 'default'
 });
 
+export function useGraphName() {
+  const { uniqueGraphName } = useContext(GraphContext);
+  return uniqueGraphName;
+}
+
 export function useGraphSelectiveContextKey(
   contextKey: GraphSelectiveContext,
   listenerKey: string

@@ -1,6 +1,5 @@
 'use client';
-import { DataLink, DataNode, GraphDto } from '../../api/zod-mods';
-import { PartyDto } from '../../api/dtos/PartyDtoSchema';
+import { DataNode, GraphDto } from '../../api/zod-mods';
 import React, {
   PropsWithChildren,
   useContext,
@@ -8,44 +7,22 @@ import React, {
   useMemo,
   useRef
 } from 'react';
-import { GenericNodeContextProvider } from '../nodes/generic-node-context-provider';
-import { GenericLinkContextProvider } from '../links/generic-link-context-provider';
-import {
-  GraphContext,
-  useGraphSelectiveContextDispatch
-} from '../graph/graph-context-creator';
+import { GraphContext } from '../graph/graph-context-creator';
 import { Card } from '@tremor/react';
 import CurriculumDeliveryDetails from '../components/curriculum-delivery-details';
 import { NodePayload } from '../force-graph-page';
 import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
-import { GraphViewer } from '../graph/graph-viewer';
 import GraphForceAdjuster from '../components/graph-force-adjustment';
 import NodeDetails from '../components/node-details';
-import { AddNodesButton, CloneFunction } from '../editing/add-nodes-button';
-import {
-  GenericLinkRefContext,
-  useGenericLinkContext
-} from '../links/generic-link-context-creator';
-import {
-  GenericNodeRefContext,
-  useGenericNodeContext
-} from '../nodes/generic-node-context-creator';
+import { useGenericLinkContext } from '../links/generic-link-context-creator';
+import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../components/selective-context/selective-context-manager-boolean';
-import AddLinksButton from '../editing/add-links-button';
-import { DeleteLinksButton } from '../editing/delete-links-button';
-import { DeleteNodesButton } from '../editing/delete-nodes-button';
-import {
-  StringMap,
-  StringMapPayload
-} from '../../curriculum-models/contexts/string-map-context-creator';
 import { useBundleAssignmentsContext } from '../../curriculum-models/contexts/use-bundle-assignments-context';
-import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
-import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
 import { useModal } from '../../components/confirm-action-modal';
 import {
   deleteLinks,
@@ -56,7 +33,12 @@ import { useRouter } from 'next/navigation';
 import { useGraphEditButtonHooks } from '../editing/use-graph-edit-button-hooks';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { TransientIdOffset } from '../editing/graph-edits';
-import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { cloneOrganizationNode } from './organization/clone-organization-node';
+import { mapToPartyIdBundleIdRecords } from './organization/map-to-party-id-bundle-id-records';
+import { mapLinksBackToIdRefs } from '../links/map-links-back-to-id-refs';
+import { NodeEditorDisclosure } from '../nodes/node-editor-disclosure';
+import { NodeLinkRefWrapper } from '../graph/node-link-ref-wrapper';
+import { useForceAdjustments } from '../graph/show-force-adjustments';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -65,127 +47,8 @@ export interface GraphTypeProps<T extends HasNumberIdDto> {
   graphData: GraphDto<T>;
 }
 
-const nameCharLimit = 255;
-export const cloneOrganizationNode: CloneFunction<DataNode<OrganizationDto>> = (
-  templateNode
-) => {
-  const {
-    data: { name }
-  } = templateNode;
-  let cloneName = `${name}${templateNode.data.name.substring(name.length - 1)}`;
-  cloneName.length > nameCharLimit
-    ? cloneName.substring(cloneName.length - nameCharLimit)
-    : cloneName;
-  return {
-    ...templateNode,
-    data: { ...templateNode.data, name: cloneName }
-  };
-};
-
-export function mapToPartyIdBundleIdRecords(
-  bundles: WorkSeriesBundleDeliveryDto[]
-) {
-  const bundleAssignments = {} as StringMap<string>;
-  const initialPayload = [] as StringMapPayload<string>[];
-  bundles.forEach((bundleDeliveryDto) => {
-    const partyIdString = bundleDeliveryDto.partyId.toString();
-    const bundleIdString =
-      bundleDeliveryDto.workSeriesSchemaBundle.id.toString();
-    bundleAssignments[partyIdString] = bundleIdString;
-    initialPayload.push({ key: partyIdString, data: bundleIdString });
-  });
-
-  return { bundleAssignments, initialPayload };
-}
-
-function mapLinksBackToIdRefs<T extends HasNumberIdDto>(l: DataLink<T>) {
-  const objectRefSource = l.source as DataNode<T>;
-  const objectRefTarget = l.target as DataNode<T>;
-  return { ...l, source: objectRefSource.id, target: objectRefTarget.id };
-}
-
 function removeTransientId(id: number) {
   return id < TransientIdOffset;
-}
-
-function NodeEditorDisclosure<T extends HasNumberIdDto>({
-  cloneFunction
-}: {
-  cloneFunction: CloneFunction<DataNode<T>>;
-}) {
-  return (
-    <div className={'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 '}>
-      <div className={'h-2'}></div>
-      <DisclosureThatGrowsOpen
-        label={'Edit Nodes'}
-        heightWhenOpen={'h-[6.5rem]'}
-      >
-        <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
-          <AddNodesButton relation={'sibling'} cloneFunction={cloneFunction}>
-            Add Sibling
-          </AddNodesButton>
-          <AddNodesButton relation={'child'} cloneFunction={cloneFunction}>
-            Add Child
-          </AddNodesButton>
-          <AddLinksButton>Join Nodes</AddLinksButton>
-        </div>
-        <div className={'w-full grid grid-cols-2 gap-1 relative'}>
-          <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
-          <DeleteLinksButton>Delete Links</DeleteLinksButton>
-        </div>
-      </DisclosureThatGrowsOpen>
-      <div className={'h-2  border-t'}></div>
-    </div>
-  );
-}
-
-function NodeLinkRefWrapper({
-  handleOpen,
-  onClose,
-  onConfirm,
-  show,
-  textList,
-  titleList,
-  unsavedChanges,
-  nodeListRef,
-  linkListRef,
-  children
-}: {
-  nodeListRef: React.MutableRefObject<DataNode<OrganizationDto>[]>;
-  linkListRef: React.MutableRefObject<DataLink<OrganizationDto>[]>;
-  textList: string[];
-  titleList: string[];
-  unsavedChanges: boolean;
-  handleOpen: () => void;
-  show: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-} & PropsWithChildren) {
-  return (
-    <GenericNodeRefContext.Provider value={nodeListRef}>
-      <GenericLinkRefContext.Provider value={linkListRef}>
-        <div className={'flex-col'}>
-          <GraphViewer
-            textList={textList}
-            titleList={titleList}
-            uniqueGraphName={'party-dto-graph'}
-          >
-            {children}
-          </GraphViewer>
-        </div>
-        <UnsavedChangesModal
-          unsavedChanges={unsavedChanges}
-          handleOpen={handleOpen}
-          show={show}
-          onClose={onClose}
-          onConfirm={onConfirm}
-          onCancel={onClose}
-        >
-          <p>Save graph changes to database?</p>
-        </UnsavedChangesModal>
-      </GenericLinkRefContext.Provider>
-    </GenericNodeRefContext.Provider>
-  );
 }
 
 export default function CurriculumDeliveryGraph({
@@ -197,12 +60,8 @@ export default function CurriculumDeliveryGraph({
   const { links } = useGenericLinkContext<OrganizationDto>();
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
-  let nodeVersion: number;
-  // ({ currentState: nodeVersion } = useSelectiveContextControllerNumber({
-  //   contextKey: NodeVersionKey,
-  //   listenerKey: 'curriculum-delivery-graph',
-  //   initialValue: 0
-  // }));
+
+  useForceAdjustments(false);
 
   useEffect(() => {
     nodesRef.current = nodes;
@@ -210,10 +69,7 @@ export default function CurriculumDeliveryGraph({
   }, [nodes, links]);
 
   const { uniqueGraphName } = useContext(GraphContext);
-  const mountedKey = useMemo(
-    () => `${uniqueGraphName}-mounted`,
-    [uniqueGraphName]
-  );
+
   const appRouterInstance = useRouter();
 
   const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
@@ -329,8 +185,7 @@ export default function CurriculumDeliveryGraph({
     >
       {' '}
       <NodeEditorDisclosure cloneFunction={cloneOrganizationNode} />
-      <GraphForceAdjuster />
-      <NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />
+      {/*<NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />*/}
     </NodeLinkRefWrapper>
   );
 }

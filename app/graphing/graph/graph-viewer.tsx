@@ -18,13 +18,11 @@ import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 export function GraphViewer<T extends HasNumberIdDto, U>({
   textList,
   titleList,
-  uniqueGraphName,
   children
 }: {
   graphDto?: GraphDto<T>;
   textList: string[];
   titleList: string[];
-  uniqueGraphName: string;
 } & PropsWithChildren) {
   const [mouseActionContext, reducer] = useReducer(
     ForceGraphMouseActionReducer,
@@ -43,12 +41,7 @@ export function GraphViewer<T extends HasNumberIdDto, U>({
             value={mouseActionContext}
           >
             <ForceGraphMouseButtonEventsDispatch.Provider value={reducer}>
-              <Graph
-                // graphDto={graphDto}
-                textList={textList}
-                titleList={titleList}
-                uniqueGraphName={uniqueGraphName}
-              >
+              <Graph textList={textList} titleList={titleList}>
                 {children}
               </Graph>
             </ForceGraphMouseButtonEventsDispatch.Provider>

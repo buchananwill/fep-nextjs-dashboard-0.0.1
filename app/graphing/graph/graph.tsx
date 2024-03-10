@@ -20,6 +20,8 @@ import {
   useMouseMoveSvgDraggable
 } from '../force-graph-dnd/mouse-event-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useGraphName } from './graph-context-creator';
+import GraphForceAdjuster from '../components/graph-force-adjustment';
 
 export const DefaultGraphZoom = 100;
 export const MaxGraphZoom = 200;
@@ -29,17 +31,16 @@ const DefaultGraphHeight = 600;
 export default function Graph<T extends HasNumberIdDto>({
   titleList,
   textList,
-  uniqueGraphName,
   children
 }: {
-  // graphDto?: GraphDto<T>;
   textList: string[];
   titleList: string[];
-  uniqueGraphName: string;
 } & PropsWithChildren) {
   const textAccessor = (n: number) => textList[n] || '';
   const titleAccessor = (n: number) => titleList[n] || ''; //auxNodes[n.data.entityId].data.product.name;
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
+
+  const uniqueGraphName = useGraphName();
 
   const { nodeElements, linkElements, textElements } = useGraphElements(
     nodeListRef?.current || [],
@@ -130,14 +131,17 @@ export default function Graph<T extends HasNumberIdDto>({
                   <GraphViewOptions />
                 </div>
               </div>
-              <div
-                className={
-                  'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg px-2 pb-2 mt-2 relative'
-                }
-                style={{ height: '600px' }}
-              >
-                {children}
-              </div>
+              {
+                <div
+                  className={
+                    'flex flex-col overflow-auto border-slate-600 border-2 rounded-lg px-2 pb-2 mt-2 relative'
+                  }
+                  style={{ height: '600px' }}
+                >
+                  <GraphForceAdjuster />
+                  {children}
+                </div>
+              }
             </div>
           </IsDraggingContext.Provider>
         </DraggablePositionContext.Provider>
