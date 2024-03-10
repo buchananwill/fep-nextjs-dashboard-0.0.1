@@ -30,7 +30,10 @@ import {
   GenericNodeRefContext,
   useGenericNodeContext
 } from '../nodes/generic-node-context-creator';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import {
+  useSelectiveContextControllerBoolean,
+  useSelectiveContextDispatchBoolean
+} from '../../components/selective-context/selective-context-manager-boolean';
 import AddLinksButton from '../editing/add-links-button';
 import { DeleteLinksButton } from '../editing/delete-links-button';
 import { DeleteNodesButton } from '../editing/delete-nodes-button';
@@ -56,7 +59,7 @@ import { TransientIdOffset } from '../editing/graph-edits';
 import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
-export const NodeVersionKey = 'node-version-key';
+export const NodePositionsKey = 'node-positions-key';
 
 export interface GraphTypeProps<T extends HasNumberIdDto> {
   graphData: GraphDto<T>;
@@ -195,11 +198,11 @@ export default function CurriculumDeliveryGraph({
   const nodesRef = useRef(nodes);
   const linksRef = useRef(links);
   let nodeVersion: number;
-  ({ currentState: nodeVersion } = useSelectiveContextControllerNumber({
-    contextKey: NodeVersionKey,
-    listenerKey: 'curriculum-delivery-graph',
-    initialValue: 0
-  }));
+  // ({ currentState: nodeVersion } = useSelectiveContextControllerNumber({
+  //   contextKey: NodeVersionKey,
+  //   listenerKey: 'curriculum-delivery-graph',
+  //   initialValue: 0
+  // }));
 
   useEffect(() => {
     nodesRef.current = nodes;
@@ -212,18 +215,6 @@ export default function CurriculumDeliveryGraph({
     [uniqueGraphName]
   );
   const appRouterInstance = useRouter();
-  const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
-    mountedKey,
-    mountedKey,
-    true
-  );
-
-  useEffect(() => {
-    dispatchUpdate({ contextKey: mountedKey, value: true });
-    return () => {
-      dispatchUpdate({ contextKey: mountedKey, value: false });
-    };
-  }, [dispatchUpdate, mountedKey]);
 
   const { deletedLinkIds, deletedNodeIds } = useGraphEditButtonHooks(
     'curriculum-delivery-graph-page'
@@ -318,8 +309,7 @@ export default function CurriculumDeliveryGraph({
           }
         });
       }
-
-      dispatchUpdate({ contextKey: unsavedGraphContextKey, value: false });
+      setUnsaved({ contextKey: unsavedGraphContextKey, value: false });
       appRouterInstance.refresh();
       closeModal();
     }

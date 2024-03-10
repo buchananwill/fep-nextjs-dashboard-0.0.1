@@ -11,6 +11,8 @@ import * as d3 from 'd3';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
+import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
 
 export function LinkComponent<T extends HasNumberIdDto>({
   children,
@@ -24,10 +26,11 @@ export function LinkComponent<T extends HasNumberIdDto>({
   const { uniqueGraphName } = useGenericLinkContext<T>();
   const { linkListRef } = useGenericGraphRefs();
   const { selected } = useNodeInteractionContext();
+  const listenerKey = `link-${linkData.closureType}-${linkData.id}`;
+
+  useSelectiveContextListenerNumber(NodePositionsKey, listenerKey, 0);
 
   const genericLinks = linkListRef?.current;
-
-  const listenerKey = `link-${linkData.closureType}-${linkData.id}`;
 
   const { isTrue: showArrowsToParents } = useSelectiveContextListenerBoolean(
     `arrows-to-parents-${uniqueGraphName}`,

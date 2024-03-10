@@ -8,6 +8,8 @@ import {
 } from './generic-node-context-creator';
 import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { NodePositionsKey } from '../graph-types/curriculum-delivery-graph';
 
 // Good start - clear name and type generic
 export function NodeComponent<T extends HasNumberIdDto>({
@@ -26,8 +28,9 @@ export function NodeComponent<T extends HasNumberIdDto>({
   const { nodes } = useGenericNodeContext<T>();
   // const updatedNodeData = nodes[nodeIndex];
   const { dispatch, hover, selected } = useNodeInteractionContext();
-
   const nodeDragKey = `node-${nodeId}`;
+
+  useSelectiveContextListenerNumber(NodePositionsKey, nodeDragKey, 0);
 
   const { mouseDown, mouseUp, doDrag, draggablePosition } =
     useForceGraphDndElement({

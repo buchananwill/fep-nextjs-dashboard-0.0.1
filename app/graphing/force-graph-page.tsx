@@ -14,6 +14,8 @@ import { GenericLinkContextProvider } from './links/generic-link-context-provide
 import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 import { usePathname } from 'next/navigation';
+import MountedTracker from './graph/mounted-tracker';
+import NodePositionsTracker from './graph/node-positions-tracker';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
@@ -51,6 +53,8 @@ export default async function ForceGraphPage({
             uniqueGraphName={uniqueGraphName}
           >
             <GraphContextProvider uniqueGraphName={uniqueGraphName}>
+              <MountedTracker />
+              <NodePositionsTracker />
               <CurriculumDeliveryGraph
                 graphData={organizationGraph}
                 bundles={data}
