@@ -156,17 +156,17 @@ export default function Navbar({
         name: 'Electives',
         href: '/electives',
         dropdownItems: electivesDropdown
-      }
+      },
       // {
       //   name: 'Contact Time',
       //   href: '/contact-time',
       //   dropdownItems: contactTimeDropdown
       // },
-      // {
-      //   name: 'Premises',
-      //   href: '/premises',
-      //   dropdownItems: premisesDropdown
-      // }
+      {
+        name: 'Premises',
+        href: '/premises',
+        dropdownItems: premisesDropdown
+      }
     ];
 
     return { timetablesDropdown, buildMetricsDropdown, navigation };

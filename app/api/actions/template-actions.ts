@@ -35,6 +35,13 @@ export async function postEntities<T>(
   const requestInit = createRequestInit({ body: dtoList });
   return callApi<T[]>(url, requestInit);
 }
+export async function postEntitiesWithDifferentReturnType<T, U>(
+  dtoList: T[],
+  url: string
+): ActionResponsePromise<U[]> {
+  const requestInit = createRequestInit({ body: dtoList });
+  return callApi<U[]>(url, requestInit);
+}
 export async function getWithoutBody<T>(url: string) {
   const requestInit = createRequestInit({});
   return callApi<T>(url, requestInit);

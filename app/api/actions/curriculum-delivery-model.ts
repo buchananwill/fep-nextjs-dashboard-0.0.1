@@ -15,6 +15,7 @@ import {
   getDtoListByIds,
   getWithoutBody,
   postEntities,
+  postEntitiesWithDifferentReturnType,
   putEntities
 } from './template-actions';
 import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
@@ -141,59 +142,25 @@ export async function deleteBundles(
 export async function putModels(
   modelList: WorkProjectSeriesSchemaDto[]
 ): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
-  try {
-    const response = await fetch(`${SCHEMA_URL}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(modelList)
-    });
-    const deliveries: WorkProjectSeriesSchemaDto[] = await response.json();
-    return successResponse(deliveries);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  return putEntities(modelList, SCHEMA_URL);
 }
 export async function postModels(
   modelList: WorkProjectSeriesSchemaDto[]
 ): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
-  try {
-    const response = await fetch(`${SCHEMA_URL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(modelList)
-    });
-    const deliveries: WorkProjectSeriesSchemaDto[] = await response.json();
-    return successResponse(deliveries);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  return postEntities(modelList, SCHEMA_URL);
+}
+
+export interface CreateBundleAssignmentDto {
+  partyId: number;
+  bundleId: number;
 }
 
 export async function postBundleDeliveries(
-  bundleAssignments: { partyId: number; bundleId: number }[]
+  bundleAssignments: CreateBundleAssignmentDto[]
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
-  console.log(API_BASE_URL, SCHEMA_URL);
-  try {
-    const response = await fetch(`${SCHEMA_URL}/deliveries`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(bundleAssignments)
-    });
-    const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
-    return successResponse(deliveries);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  const bundlePostUrl = `${SCHEMA_URL}/deliveries`;
+  return postEntitiesWithDifferentReturnType<
+    CreateBundleAssignmentDto,
+    WorkSeriesBundleDeliveryDto
+  >(bundleAssignments, bundlePostUrl);
 }
