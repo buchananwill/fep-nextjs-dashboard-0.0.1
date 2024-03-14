@@ -1,16 +1,6 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow
-} from '@tremor/react';
-
 import { TabularDTO } from '../api/dto-interfaces';
 import { reconstructTableWithDimensions } from '../utils/tables';
 import React from 'react';
-import { overflows } from '@headlessui/react/dist/hooks/document-overflow/overflow-store';
 
 export type HeaderTransformer<H> = React.FC<HeaderTransformerProps<H>>;
 

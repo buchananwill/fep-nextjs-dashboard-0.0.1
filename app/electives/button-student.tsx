@@ -1,6 +1,6 @@
 'use client';
 import { DisclosureLabelTransformer } from '../components/list-disclosure-panel';
-import { StudentDTO } from '../api/dto-interfaces';
+
 import React, { useContext } from 'react';
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import {
@@ -9,6 +9,7 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export const ButtonStudent: DisclosureLabelTransformer<StudentDTO> = ({
   data: { name }

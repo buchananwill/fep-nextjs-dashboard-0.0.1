@@ -93,41 +93,31 @@ export async function deleteLinks(
 export async function getCurriculumDeliveries(
   idList: number[]
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
-  try {
-    const response = await fetch(`${SCHEMA_URL}/deliveries/by-party-id`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(idList)
-    });
-    const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
-    return successResponse(deliveries);
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  const urlForDeliveries = `${SCHEMA_URL}/deliveries/by-party-id`;
+  return getDtoListByIds(idList, urlForDeliveries);
+
+  // try {
+  //   const response = await fetch(urlForDeliveries, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json' // Indicate we're sending JSON data
+  //     },
+  //     cache: 'no-cache',
+  //     body: JSON.stringify(idList)
+  //   });
+  //   const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
+  //   return successResponse(deliveries);
+  // } catch (error) {
+  //   console.error('Error fetching data: ', error);
+  //   return errorResponse(`${error}`);
+  // }
 }
 
 export async function getBundles(
   idList: string[]
 ): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
-  try {
-    const response = await fetch(`${SCHEMA_URL}/bundles/schema-id-list`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Indicate we're sending JSON data
-      },
-      cache: 'no-cache',
-      body: JSON.stringify(idList)
-    });
-    const deliveries: WorkSeriesSchemaBundleLeanDto[] = await response.json();
-    return successResponse(deliveries.sort((bun1, bun2) => bun1.id - bun2.id));
-  } catch (error) {
-    console.error('Error fetching data: ', error);
-    return errorResponse(`${error}`);
-  }
+  const urlForBundlesContainingSchemasInList = `${SCHEMA_URL}/bundles/schema-id-list`;
+  return getDtoListByIds(idList, urlForBundlesContainingSchemasInList);
 }
 
 const bundleApiEndpoint = `${SCHEMA_URL}/bundles`;

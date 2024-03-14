@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { apiBaseUrl } from '../data-fetching-functions';
+import { apiBaseUrl } from '../../api/actions/data-fetching-functions';
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;

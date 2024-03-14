@@ -1,12 +1,12 @@
 import Navbar from './navbar';
 import { getServerSession } from 'next-auth/next';
 
-import { fetchScheduleIds } from '../timetables/data-fetching-functions';
 import {
   getKnowledgeLevels,
   getServiceCategory
 } from '../api/actions/service-categories';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
+import { fetchScheduleIds } from '../api/actions/timetables';
 
 export default async function Nav() {
   const session = await getServerSession();

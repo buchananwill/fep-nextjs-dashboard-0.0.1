@@ -3,12 +3,13 @@ import React, { useContext, useEffect, useState, useTransition } from 'react';
 
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
-import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
+
 import ListDisclosurePanel from '../components/list-disclosure-panel';
 import { ButtonStudent } from './button-student';
 import { ButtonClusterStudent } from './button-cluster-student';
 import { StudentPanelTransformer } from './student-panel-transformer';
 import { filterStudentList } from './filter-student-list';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 export default function StudentsDisclosureGroup() {
   const [isPending, startTransition] = useTransition();

@@ -1,5 +1,6 @@
-import { ElectiveDTO, ElectivePreferenceDTO } from '../api/dto-interfaces';
 import { ElectiveAvailability } from '../api/state-types';
+import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 export function compileElectiveAvailability(
   electives: ElectiveDTO[]

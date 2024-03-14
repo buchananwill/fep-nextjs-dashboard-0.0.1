@@ -1,15 +1,11 @@
-import {
-  getFormattedPeriodsInCycle,
-  getLessonCycleBuildMetricSummary,
-  getLessonCycleMetricsWithInfinityCosts
-} from './data-fetching-functions';
-import {
-  LessonCycleMetricSummary,
-  NameIdStringTuple
-} from '../../../api/dto-interfaces';
 import React from 'react';
 import { LessonCycleBuildMetricsCard } from './lesson-cycle-build-metrics-card';
 import LessonCycleMetricContextProvider from './lesson-cycle-metric-context-provider';
+import { getFormattedPeriodsInCycle } from '../../../api/actions/cycle-model';
+import {
+  getLessonCycleBuildMetricSummary,
+  getLessonCycleMetricsWithInfinityCosts
+} from '../../../api/actions/build-metrics';
 
 export default async function LessonCycleBuildMetrics({
   params: { schedule },
@@ -23,15 +19,14 @@ export default async function LessonCycleBuildMetrics({
   const scheduleId = parseInt(schedule);
   const response = await getLessonCycleMetricsWithInfinityCosts(schedule);
 
-  const availableLessonCycleMetrics: NameIdStringTuple[] =
-    await response.json();
+  const availableLessonCycleMetrics = response.data;
 
-  if (!id) {
+  if (!id || availableLessonCycleMetrics === undefined) {
     return (
       <LessonCycleBuildMetricsCard
         selectedLessonCycle={{ name: '', id: '' }}
         schedule={schedule}
-        nameIdStringTuples={availableLessonCycleMetrics}
+        nameIdStringTuples={[]}
         tableSchema={allPeriodsInCycle}
       />
     );
@@ -43,25 +38,26 @@ export default async function LessonCycleBuildMetrics({
 
   const lessonCycleSummaryResponse = await getLessonCycleBuildMetricSummary(id);
 
-  const lessonCycleMetricSummary: LessonCycleMetricSummary =
-    await lessonCycleSummaryResponse.json();
+  const lessonCycleMetricSummary = lessonCycleSummaryResponse.data;
 
   const range: number[] = [0, 0];
 
   const periodToCostComparisonMap = new Map<number, number>();
-  lessonCycleMetricSummary.lessonCycleMetrics.map(
-    ({ finiteCostCount, infinityCostCount, periodIdList }) => {
-      periodIdList.forEach((periodId) => {
-        const costDifference =
-          finiteCostCount -
-          infinityCostCount +
-          (periodToCostComparisonMap.get(periodId) || 0);
-        periodToCostComparisonMap.set(periodId, costDifference);
-        if (costDifference < range[0]) range[0] = costDifference;
-        if (costDifference > range[1]) range[1] = costDifference;
-      });
-    }
-  );
+  if (lessonCycleMetricSummary !== undefined) {
+    lessonCycleMetricSummary.lessonCycleMetrics.map(
+      ({ finiteCostCount, infinityCostCount, periodIdList }) => {
+        periodIdList.forEach((periodId) => {
+          const costDifference =
+            finiteCostCount -
+            infinityCostCount +
+            (periodToCostComparisonMap.get(periodId) || 0);
+          periodToCostComparisonMap.set(periodId, costDifference);
+          if (costDifference < range[0]) range[0] = costDifference;
+          if (costDifference > range[1]) range[1] = costDifference;
+        });
+      }
+    );
+  }
 
   return (
     <LessonCycleMetricContextProvider

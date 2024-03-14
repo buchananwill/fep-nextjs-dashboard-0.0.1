@@ -20,8 +20,9 @@ import {
   ConfirmActionModal,
   useModal
 } from '../components/confirm-action-modal';
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
+
 import { UpdateElectivePreference } from './elective-reducers';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 interface Props {
   children: React.ReactNode;

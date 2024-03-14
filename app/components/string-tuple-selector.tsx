@@ -2,7 +2,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { NameIdStringTuple } from '../api/dto-interfaces';
+import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 
 export type OptionTransformer = React.FC<OptionTransformerProps>;
 

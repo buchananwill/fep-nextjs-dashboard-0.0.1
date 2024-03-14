@@ -1,13 +1,10 @@
 import React from 'react';
 
-import { Period } from '../../../api/dto-interfaces';
-import BigTableCard from '../../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../components/dynamic-dimension-timetable';
 
 import TimetablesContextProvider from '../../timetables-context-provider';
-import { FilteredLessonCycles } from '../../filtered-lesson-cycles';
 
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
@@ -17,16 +14,12 @@ import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
 import fetchAllStudents from '../../../api/actions/student-search';
 import { StudentTimetableSelector } from './student-timetable-selector';
-import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
-import ColorSelector, {
-  useColorState
-} from '../../../components/color-selector';
+import { PeriodDTO } from '../../../api/dtos/PeriodDTOSchema';
+import { fetchAllPeriodsInCycle } from '../../../api/actions/cycle-model';
 import {
   fetchAllLessonCycles,
-  fetchAllPeriodsInCycle,
-  fetchLessonEnrollments,
   fetchScheduleIds
-} from '../../data-fetching-functions';
+} from '../../../api/actions/timetables';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,7 +95,7 @@ export default async function TimetablesPage({
               </>
             )}
             <PendingScheduleEditionModal></PendingScheduleEditionModal>
-            <DynamicDimensionTimetable<string, Period>
+            <DynamicDimensionTimetable<string, PeriodDTO>
               tableContents={allPeriodsInCycle}
               cellDataTransformer={LessonCardTransformer}
               headerTransformer={HeaderTransformerConcrete}

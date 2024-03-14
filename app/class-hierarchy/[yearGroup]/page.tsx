@@ -28,8 +28,9 @@ export default async function Page({
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { page, size } = searchParams;
   const bundleDeliveries = await getBundleDeliveriesByOrgType(yearGroup);
+
+  console.log(bundleDeliveries);
 
   const actionResponseOrganizationGraph =
     await getOrganizationGraphByOrganizationType(yearGroup);
@@ -49,6 +50,8 @@ export default async function Page({
     .map((delivery) => delivery.workSeriesSchemaBundle)
     .map((bundle) => bundle.workProjectSeriesSchemaIds)
     .reduce((prev, curr) => [...prev, ...curr], []);
+
+  console.log(schemaIdList);
 
   const actionResponseSchemas = await getSchemasByIdList(schemaIdList);
 

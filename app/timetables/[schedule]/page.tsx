@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Period } from '../../api/dto-interfaces';
 import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
@@ -16,11 +15,12 @@ import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
 import DropdownParam from '../../components/dropdown-param';
 import Link from 'next/link';
+import { PeriodDTO } from '../../api/dtos/PeriodDTOSchema';
+import { fetchAllPeriodsInCycle } from '../../api/actions/cycle-model';
 import {
   fetchAllLessonCycles,
-  fetchAllPeriodsInCycle,
   fetchScheduleIds
-} from '../data-fetching-functions';
+} from '../../api/actions/timetables';
 
 export const dynamic = 'force-dynamic';
 
@@ -85,7 +85,7 @@ export default async function TimetablesPage({
             </>
           )}
           <PendingScheduleEditionModal></PendingScheduleEditionModal>
-          <DynamicDimensionTimetable<string, Period>
+          <DynamicDimensionTimetable<string, PeriodDTO>
             tableContents={allPeriodsInCycle}
             cellDataTransformer={PeriodCardTransformer}
             headerTransformer={HeaderTransformerConcrete}

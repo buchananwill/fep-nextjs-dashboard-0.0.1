@@ -1,8 +1,8 @@
 import React from 'react';
-import { ScheduleCellInfo } from '../api/dto-interfaces';
+import { ScheduleCell } from '../api/dtos/ScheduleCellSchema';
 
 interface TimetablePeriodProps {
-  periodInfo: ScheduleCellInfo;
+  periodInfo: ScheduleCell;
 }
 
 function TimetablePeriod({ periodInfo }: TimetablePeriodProps) {

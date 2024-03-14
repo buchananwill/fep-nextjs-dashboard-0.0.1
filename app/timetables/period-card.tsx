@@ -1,6 +1,6 @@
 'use client';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
-import { LessonCycleDTO, Period } from '../api/dto-interfaces';
+import { LessonCycleDTO } from '../api/dto-interfaces';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import InteractiveTableCard from '../components/interactive-table-card';
 import {
@@ -11,6 +11,7 @@ import { Badge } from '@tremor/react';
 import { LessonCycle } from '../api/state-types';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import { convertDtoToState } from './build-timetables-state';
+import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 
 function countConcurrency(
   highlightedSubjects: Set<string>,
@@ -74,8 +75,8 @@ async function swapPeriods(
   return await response.json();
 }
 
-export const PeriodCardTransformer: CellDataTransformer<Period> = ({
-  data: { periodId, startTime, description }
+export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({
+  data: { id, startTime, description }
 }) => {
   const {
     focusPeriodId,
@@ -100,25 +101,25 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
   const [cycleIds, setCycleIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (periodId) {
-      const oldSet = periodIdToLessonCycleMap.get(periodId);
+    if (id) {
+      const oldSet = periodIdToLessonCycleMap.get(id);
       const updatedIds = new Set<string>();
       oldSet?.forEach((lessonCycleId) => updatedIds.add(lessonCycleId));
       setCycleIds(updatedIds);
     }
-  }, [periodIdToLessonCycleMap, setCycleIds, periodId]);
+  }, [periodIdToLessonCycleMap, setCycleIds, id]);
 
   const borderVisible = cycleIds.has(lessonCycleId);
 
   const additionalClassNames = [
     borderVisible ? '' : 'border-transparent',
     'items-center',
-    periodId == focusPeriodId ? 'bg-emerald-100' : ''
+    id == focusPeriodId ? 'bg-emerald-100' : ''
   ];
 
   const concurrency = countConcurrency(
     highlightedSubjects,
-    periodId,
+    id,
     periodIdToLessonCycleMap,
     lessonCycleMap
   );
@@ -139,7 +140,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
       type: 'setUpdatePending',
       value: true
     });
-    const updatedDtoList = await swapPeriods(periodId, scheduleId);
+    const updatedDtoList = await swapPeriods(id, scheduleId);
 
     const lessonCycles = updatedDtoList.map((dto) => convertDtoToState(dto));
 
@@ -162,7 +163,7 @@ export const PeriodCardTransformer: CellDataTransformer<Period> = ({
     >
       <div
         className="flex w-full h-full justify-between pr-2"
-        onClick={() => handleCardClick(periodId)}
+        onClick={() => handleCardClick(id)}
       >
         <p> {description}</p>
         <Badge className={`bg-${badgeColor}-300`}>{concurrency}</Badge>

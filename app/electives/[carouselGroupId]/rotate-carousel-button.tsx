@@ -15,8 +15,9 @@ import {
   useModal
 } from '../../components/confirm-action-modal';
 import '../../components/custom-component-styles.css';
-import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
+
 import { UpdateElectivePreference } from '../elective-reducers';
+import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
 
 export type direction = 'LEFT' | 'RIGHT';
 

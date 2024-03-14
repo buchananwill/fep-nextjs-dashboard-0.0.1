@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import { FilterOption } from '../api/state-types';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 export interface Filter<T> {
   apply(setOfElements: T): T;

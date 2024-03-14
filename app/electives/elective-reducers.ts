@@ -1,11 +1,10 @@
 import { produce } from 'immer';
 import { FilterType } from './elective-filter-reducers';
-import {
-  ElectiveDTO,
-  ElectivePreferenceDTO,
-  StudentDTO
-} from '../api/dto-interfaces';
+
 import { ElectiveAvailability } from '../api/state-types';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 
 interface SetCarousel {
   type: 'setCarousel';

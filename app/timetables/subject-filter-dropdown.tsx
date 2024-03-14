@@ -2,18 +2,7 @@
 import { Listbox, Transition } from '@headlessui/react';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import {
-  ElectiveContext,
-  ElectiveDispatchContext
-} from '../electives/elective-context';
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
-import {
-  ElectiveFilterContext,
-  ElectiveFilterDispatchContext
-} from '../electives/elective-filter-context';
-import { ElectiveFilterState } from '../electives/elective-filter-reducers';
-import { FilterOption } from '../api/state-types';
-import { TimetablesState } from './timetables-reducers';
+
 import {
   TimetablesContext,
   TimetablesDispatchContext

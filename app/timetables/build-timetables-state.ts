@@ -1,10 +1,11 @@
 import { LessonCycle } from '../api/state-types';
 import { TimetablesState } from './timetables-reducers';
 import { FilterType } from '../electives/elective-filter-reducers';
-import { LessonCycleDTO, Period, TabularDTO } from '../api/dto-interfaces';
+import { LessonCycleDTO, TabularDTO } from '../api/dto-interfaces';
+import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 
 export function buildTimetablesState(
-  allPeriodsInCycle: TabularDTO<string, Period>,
+  allPeriodsInCycle: TabularDTO<string, PeriodDTO>,
   allLessonCycles: LessonCycleDTO[],
   scheduleId: number
 ): { initialState: TimetablesState; lessonCycleArray: LessonCycle[] } {
@@ -21,21 +22,19 @@ export function buildTimetablesState(
   const periodToLessonCycleMap = new Map<number, Set<string>>();
 
   // Work through the periods and add cycles with matching lessons.
-  allPeriodsInCycle.cellDataAndMetaData.forEach(
-    ({ cellData: { periodId } }) => {
-      if (periodId) {
-        // const stringOfId = periodId.toString();
-        const setOfLessonCycles = new Set<string>();
-        lessonCycleArray.forEach((lessonCycle) => {
-          if (lessonCycle.periodVenueAssignments.has(periodId)) {
-            const retrievedCycle = lessonCycleMap.get(lessonCycle.id);
-            if (retrievedCycle) setOfLessonCycles.add(retrievedCycle.id);
-          }
-        });
-        periodToLessonCycleMap.set(periodId, setOfLessonCycles);
-      }
+  allPeriodsInCycle.cellDataAndMetaData.forEach(({ cellData: { id } }) => {
+    if (id) {
+      // const stringOfId = id.toString();
+      const setOfLessonCycles = new Set<string>();
+      lessonCycleArray.forEach((lessonCycle) => {
+        if (lessonCycle.periodVenueAssignments.has(id)) {
+          const retrievedCycle = lessonCycleMap.get(lessonCycle.id);
+          if (retrievedCycle) setOfLessonCycles.add(retrievedCycle.id);
+        }
+      });
+      periodToLessonCycleMap.set(id, setOfLessonCycles);
     }
-  );
+  });
 
   const initialState = {
     highlightedSubjects: new Set<string>(),

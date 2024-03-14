@@ -1,6 +1,5 @@
 import { FilterOption } from '../api/state-types';
-import { ElectiveState } from './elective-reducers';
-import { ElectivePreferenceDTO, StudentDTO } from '../api/dto-interfaces';
+
 import genericPredicateFactorySupplier from './elective-filters/elective-preference-factory-supplier';
 import {
   packageRequest,
@@ -8,6 +7,8 @@ import {
   PredicateRequest
 } from '../components/filters/filter-types';
 import { FilterType } from './elective-filter-reducers';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export function filterStudentList(
   courseFilters: FilterOption<string>[],

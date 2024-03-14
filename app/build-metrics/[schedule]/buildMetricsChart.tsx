@@ -1,21 +1,13 @@
 'use client';
 import { LineChart } from '@tremor/react';
-import { BuildMetricDTO, QueueTreeNodeDTO } from '../../api/dto-interfaces';
 
-const chartData: QueueTreeNodeDTO[] = [
-  {
-    nodeNumber: 1,
-    id: 'pretendUuid',
-    netFailureCount: 30,
-    totalAllocationArea: 14,
-    subjectContactTimeUnits: [{ name: 'maths', value: 5 }]
-  }
-];
+import CustomToolTip from './custom-metric-tooltip';
+import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';
 
 export function BuildMetricsChart({
   buildMetricData
 }: {
-  buildMetricData: BuildMetricDTO;
+  buildMetricData: BuildMetricDto;
 }) {
   const qtnArray = buildMetricData.queueTreeNodes;
 
@@ -26,7 +18,7 @@ export function BuildMetricsChart({
       index="nodeNumber"
       categories={['netFailureCount']}
       colors={['red', 'blue']}
-      // customTooltip={CustomToolTip}
+      customTooltip={CustomToolTip}
     />
   ) : (
     <>No data.</>

@@ -1,4 +1,3 @@
-import { StudentDTO } from '../api/dto-interfaces';
 import { checkAssignment } from './checkElectiveAssignments';
 import React, { useContext } from 'react';
 import { PanelTransformer } from '../components/list-disclosure-panel';
@@ -12,6 +11,7 @@ import {
 } from '../components/tooltips/tooltip';
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
   data: { id, name }

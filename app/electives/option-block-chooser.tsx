@@ -1,10 +1,11 @@
 'use client';
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
+
 import { ElectiveAvailability } from '../api/state-types';
 import { matchCarouselOrdinal } from './checkElectiveAssignments';
 import React, { startTransition, useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { usePathname, useRouter } from 'next/navigation';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 interface OptionBlockChooserParams {
   electivePreference: ElectivePreferenceDTO;

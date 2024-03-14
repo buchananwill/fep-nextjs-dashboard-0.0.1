@@ -9,12 +9,7 @@ import { Suspense } from 'react';
 
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
-import {
-  CellDataAndMetaData,
-  ElectiveDTO,
-  TabularDTO,
-  YearGroupElectives
-} from '../../api/dto-interfaces';
+import { CellDataAndMetaData, TabularDTO } from '../../api/dto-interfaces';
 import BigTableCard from '../../components/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
@@ -22,6 +17,8 @@ import DynamicDimensionTimetable, {
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
 import { RotateCarouselButton } from './rotate-carousel-button';
+import { YearGroupWithElectivesDTO } from '../../api/dtos/YearGroupWithElectivesDTOSchema';
+import { ElectiveDTO } from '../../api/dtos/ElectiveDTOSchema';
 
 interface Props {
   params: { carouselGroupId: string };
@@ -47,7 +44,7 @@ export default async function ElectivesPage({
     requestCacheValue = 'default';
   }
 
-  const yearGroupElectiveData: YearGroupElectives =
+  const yearGroupElectiveData: YearGroupWithElectivesDTO =
     await fetchCarouselGroupWithAllStudents(carouselGroupId);
 
   // Initialize with empty arrays or nulls

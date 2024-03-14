@@ -1,11 +1,11 @@
 'use client';
 
-import { BuildMetricDTO } from '../../api/dto-interfaces';
 import { ReactNode } from 'react';
 import { MetricsContext } from './metrics-context';
+import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';
 
 interface Props {
-  buildMetricDto: BuildMetricDTO;
+  buildMetricDto: BuildMetricDto;
   children: ReactNode;
 }
 

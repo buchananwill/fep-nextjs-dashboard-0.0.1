@@ -3,8 +3,9 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment, startTransition, useState } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { NameIdStringTuple } from '../api/dto-interfaces';
+
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 
 export default function NameIdTupleSelector({
   selectionList,

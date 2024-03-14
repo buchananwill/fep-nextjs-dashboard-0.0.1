@@ -2,7 +2,7 @@
 
 import { Card, ScatterChart, Text, Title } from '@tremor/react';
 import { ScatterChartValueFormatter } from '@tremor/react/dist/components/chart-elements/ScatterChart/ScatterChart';
-import { AllSubjectsContactTimeDTO } from '../api/dto-interfaces';
+import { AllSubjectsContactTimeDTO } from '../api/dtos/AllSubjectsContactTimeDTOSchema';
 
 const formatter: ScatterChartValueFormatter = {
   x: (amount) => `${amount}`,

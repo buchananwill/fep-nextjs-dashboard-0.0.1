@@ -5,7 +5,7 @@ import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import { ElectiveFilterContext } from './elective-filter-context';
-import { ElectiveDTO, ElectivePreferenceDTO } from '../api/dto-interfaces';
+
 import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import { FilterOption } from '../api/state-types';
@@ -16,6 +16,8 @@ import {
   TooltipTrigger
 } from '../components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 const aLevelClassLimitInt = 25;
 

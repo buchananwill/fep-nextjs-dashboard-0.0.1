@@ -7,7 +7,7 @@ import {
   TableRow,
   Text
 } from '@tremor/react';
-import { ArrayDTO, StudentDTO } from '../api/dto-interfaces';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export default function StudentsTable({
   students

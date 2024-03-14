@@ -1,14 +1,14 @@
 import { Button, Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
-import { BuildMetricDTO } from '../../api/dto-interfaces';
 import MetricsContextProvider from './metrics-context-provider';
 import DropdownParam from '../../components/dropdown-param';
 import React from 'react';
 import Link from 'next/link';
-import {
-  fetchBuildMetricDto,
-  fetchScheduleIds
-} from '../../timetables/data-fetching-functions';
+import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';
+import { fetchScheduleIds } from '../../api/actions/timetables';
+import { fetchBuildMetricDto } from '../../api/actions/build-metrics';
+import { ActionResponsePromise } from '../../api/actions/actionResponse';
+import { useDirectSimRefEditsController } from '../../graphing/editing/use-graph-edit-button-hooks';
 
 export default async function BuildMetricsOverview({
   params: { schedule }
@@ -20,7 +20,12 @@ export default async function BuildMetricsOverview({
 
   const scheduleId = parseInt(schedule);
 
-  const buildMetricDto: BuildMetricDTO = await fetchBuildMetricDto(scheduleId);
+  const buildMetricDtoResponse = await fetchBuildMetricDto(scheduleId);
+  const buildMetricDto = buildMetricDtoResponse.data;
+  if (buildMetricDto === undefined) {
+    console.log(buildMetricDtoResponse.message);
+    return <Card>No data found!</Card>;
+  }
 
   return (
     <MetricsContextProvider buildMetricDto={buildMetricDto}>

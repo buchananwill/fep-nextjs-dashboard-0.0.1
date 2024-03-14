@@ -1,5 +1,5 @@
 'use client';
-import { LessonEnrollmentDTO, Period } from '../api/dto-interfaces';
+import { LessonEnrollmentDTO } from '../api/dto-interfaces';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import React, { useContext, useEffect, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
@@ -22,6 +22,7 @@ import {
 } from '../components/color-context';
 import { HueOption } from '../components/hue-selector';
 import { LightnessOption } from '../components/lightness-selector';
+import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 
 const freePeriod: LessonEnrollmentDTO = {
   id: NaN,
@@ -74,12 +75,12 @@ function getTextStyling(lessonText: string): { color: string } {
   }
 }
 
-export const LessonCardTransformer: CellDataTransformer<Period> = ({
+export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
   data
 }) => {
   const { studentTimetables, lessonCycleMap, studentId } =
     useContext(TimetablesContext);
-  const { periodId } = data;
+  const { id } = data;
   const readonlyURLSearchParams = useSearchParams();
   const student = readonlyURLSearchParams?.get('id');
   const [lesson, setLesson] = useState(freePeriod);
@@ -100,11 +101,11 @@ export const LessonCardTransformer: CellDataTransformer<Period> = ({
     if (timetables && timetables.find) {
       updatedLesson =
         timetables?.find(
-          (lessonEnrollmentDto) => lessonEnrollmentDto.periodId == periodId
+          (lessonEnrollmentDto) => lessonEnrollmentDto.periodId == id
         ) || freePeriod;
     }
     setLesson(updatedLesson);
-  }, [setLesson, studentId, studentTimetables, lessonCycleMap, periodId]);
+  }, [setLesson, studentId, studentTimetables, lessonCycleMap, id]);
 
   useEffect(() => {
     let updatedText: string;

@@ -8,7 +8,7 @@ import Intersection from '../components/intersection';
 import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
 import { FillableButton, PinIcons } from '../components/fillable-button';
-import { ElectiveDTO } from '../api/dto-interfaces';
+
 import { FilterOption } from '../api/state-types';
 import {
   ElectiveFilterContext,
@@ -21,6 +21,7 @@ import {
 } from '../components/tooltips/tooltip';
 import TooltipsContext from '../components/tooltips/tooltips-context';
 import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];

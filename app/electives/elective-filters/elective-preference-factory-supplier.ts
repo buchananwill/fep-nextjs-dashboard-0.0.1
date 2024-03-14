@@ -1,9 +1,10 @@
-import { ElectivePreferenceDTO, StudentDTO } from '../../api/dto-interfaces';
 import {
   packagePredicate,
   Predicate,
   PredicateFactory
 } from '../../components/filters/filter-types';
+import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
+import { StudentDTO } from '../../api/dtos/StudentDTOSchema';
 
 type ElectivePreferenceCondition = (
   preference: ElectivePreferenceDTO

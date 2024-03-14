@@ -5,8 +5,7 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTransition, useState } from 'react';
 import { Select, SelectItem } from '@tremor/react';
-
-import { StudentDTO } from '../api/dto-interfaces';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export default function StudentSelector({
   students

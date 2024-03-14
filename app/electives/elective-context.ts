@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { ElectiveState } from './elective-reducers';
 
 import { FilterType } from './elective-filter-reducers';
-import { ElectiveDTO, StudentDTO } from '../api/dto-interfaces';
+import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export const ElectiveContext = createContext<ElectiveState>({
   highlightedCourses: [],

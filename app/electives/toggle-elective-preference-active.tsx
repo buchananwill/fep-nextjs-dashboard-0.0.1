@@ -1,7 +1,7 @@
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
 import React, { startTransition, useContext } from 'react';
 import { ElectiveDispatchContext } from './elective-context';
 import { usePathname, useRouter } from 'next/navigation';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 export function ToggleElectivePreferenceActive({
   electivePreferenceDTOS,

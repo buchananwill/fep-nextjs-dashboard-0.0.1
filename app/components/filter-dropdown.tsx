@@ -6,13 +6,14 @@ import {
   ElectiveContext,
   ElectiveDispatchContext
 } from '../electives/elective-context';
-import { ElectivePreferenceDTO } from '../api/dto-interfaces';
+
 import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
 } from '../electives/elective-filter-context';
 import { ElectiveFilterState } from '../electives/elective-filter-reducers';
 import { FilterOption } from '../api/state-types';
+import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 // For example, using TypeScript enum
 export enum CacheSetting {

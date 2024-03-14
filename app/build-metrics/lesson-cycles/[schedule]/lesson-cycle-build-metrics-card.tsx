@@ -1,8 +1,4 @@
-import {
-  NameIdStringTuple,
-  Period,
-  TabularDTO
-} from '../../../api/dto-interfaces';
+import { TabularDTO } from '../../../api/dto-interfaces';
 import { Button, Card } from '@tremor/react';
 import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
 import DynamicDimensionTimetable, {
@@ -11,6 +7,8 @@ import DynamicDimensionTimetable, {
 import { BuildMetricPeriodCardTransformer } from './period-card';
 import React from 'react';
 import Link from 'next/link';
+import { PeriodDTO } from '../../../api/dtos/PeriodDTOSchema';
+import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 
 export function LessonCycleBuildMetricsCard({
   nameIdStringTuples,
@@ -21,7 +19,7 @@ export function LessonCycleBuildMetricsCard({
   schedule: string;
   selectedLessonCycle: NameIdStringTuple;
   nameIdStringTuples: NameIdStringTuple[];
-  tableSchema: TabularDTO<string, Period>;
+  tableSchema: TabularDTO<string, PeriodDTO>;
 }) {
   return (
     <Card>

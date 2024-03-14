@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache';
 
 import { ElectiveState } from '../elective-reducers';
-import { ElectivePreferenceDTO } from '../../api/dto-interfaces';
+import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 
