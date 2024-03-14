@@ -1,10 +1,5 @@
 import { createContext, useContext, useMemo } from 'react';
-import {
-  useSelectiveContextControllerNumber,
-  useSelectiveContextDispatchNumber
-} from '../../components/selective-context/selective-context-manager-number';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { useSelectiveContextControllerStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
 import {
   UseSelectiveContextController,
   UseSelectiveContextDispatch

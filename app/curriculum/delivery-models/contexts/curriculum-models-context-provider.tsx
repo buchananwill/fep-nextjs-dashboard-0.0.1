@@ -2,17 +2,17 @@
 
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import {
   CurriculumModelsContext,
   CurriculumModelsContextDispatch
 } from './use-curriculum-model-context';
-import { ConfirmActionModal } from '../../components/confirm-action-modal';
-import { putModels } from '../../api/actions/curriculum-delivery-model';
+import { ConfirmActionModal } from '../../../components/confirm-action-modal';
+import { putModels } from '../../../api/actions/curriculum-delivery-model';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextListenerBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
+} from '../../../components/selective-context/selective-context-manager-boolean';
 import { curriculumDeliveryCommitKey } from '../curriculum-delivery-models';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { getPayloadArray } from '../use-curriculum-delivery-model-editing';

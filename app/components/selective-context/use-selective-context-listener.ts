@@ -10,7 +10,7 @@ import {
   UpdateAction,
   UpdateRefInterface
 } from './selective-context-manager';
-import { SchemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
+import { SchemaBundleKeyPrefix } from '../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
 
 export interface UseSelectiveContextListenerReturn<T> {
   currentState: T;

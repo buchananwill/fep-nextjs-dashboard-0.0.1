@@ -1,21 +1,21 @@
 'use client';
 import { Card, Flex, Text, Title } from '@tremor/react';
-import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { DeliveryAllocationDto } from '../api/dtos/DeliveryAllocationDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { DeliveryAllocationDto } from '../../api/dtos/DeliveryAllocationDtoSchema';
 import React, { Fragment, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
-import LandscapeStepper from '../components/landscape-stepper';
-import { StepperContext } from '../components/stepper/stepper-context-creator';
-import { TabStyled } from '../components/tab-layouts/tab-styled';
-import { TabPanelStyled } from '../components/tab-layouts/tab-panel-styled';
+import LandscapeStepper from '../../components/landscape-stepper';
+import { StepperContext } from '../../components/stepper/stepper-context-creator';
+import { TabStyled } from '../../components/tab-layouts/tab-styled';
+import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { sumDeliveryAllocations } from '../graphing/components/curriculum-delivery-details';
+import { sumDeliveryAllocations } from '../../graphing/components/curriculum-delivery-details';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
-} from '../components/selective-context/selective-context-manager-boolean';
+} from '../../components/selective-context/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const allocationSizes = [1, 2];

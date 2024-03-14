@@ -5,32 +5,32 @@ import React, { useMemo, useState } from 'react';
 import {
   ConfirmActionModal,
   useModal
-} from '../components/confirm-action-modal';
+} from '../../components/confirm-action-modal';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { Listbox } from '@headlessui/react';
-import StringTupleSelector from '../components/string-tuple-selector';
-import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
+import StringTupleSelector from '../../components/string-tuple-selector';
+import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { StringMap } from './contexts/string-map-context-creator';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { randomUUID } from 'node:crypto';
 import { AdjustAllocation } from './curriculum-delivery-model';
-import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
-import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../components/selective-context/selective-context-manager-boolean';
+} from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   postModels,
   putModels
-} from '../api/actions/curriculum-delivery-model';
+} from '../../api/actions/curriculum-delivery-model';
 import {
   getStepperInterface,
   StepperContext
-} from '../components/stepper/stepper-context-creator';
-import LandscapeStepper from '../components/landscape-stepper';
+} from '../../components/stepper/stepper-context-creator';
+import LandscapeStepper from '../../components/landscape-stepper';
 import { getPayloadArray } from './use-curriculum-delivery-model-editing';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };

@@ -6,7 +6,7 @@ export default function NodePositionsTracker() {
   let nodeVersion: number;
   ({ currentState: nodeVersion } = useSelectiveContextControllerNumber({
     contextKey: NodePositionsKey,
-    listenerKey: 'curriculum-delivery-graph',
+    listenerKey: 'curriculum-graph',
     initialValue: 0
   }));
   return <></>;

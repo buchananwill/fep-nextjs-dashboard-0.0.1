@@ -193,7 +193,6 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
         linkStrengthRef.current != linkStrengthNormalized ||
         linkDistanceRef.current != linkDistanceNormalized
       ) {
-        console.log('Updating link values');
         updateLinkForce(
           currentSim,
           linkStrengthNormalized,
@@ -208,7 +207,6 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
         manyBodyMinDistanceRef.current != manyBodyMinDistanceNormalized ||
         manyBodyMaxDistanceRef.current != manyBodyMaxDistanceNormalized
       ) {
-        console.log('Updating manyBody values');
         updateManyBodyForce(
           currentSim,
           manyBodyStrengthNormalized,
@@ -222,17 +220,14 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
         manyBodyMaxDistanceRef.current = manyBodyMaxDistanceNormalized;
       }
       if (forceXStrengthRef.current != forceXStrengthNormalized) {
-        console.log('Updating forceX values');
         updateForceX(currentSim, forceXStrengthNormalized);
         forceXStrengthRef.current = forceXStrengthNormalized;
       }
       if (forceYStrengthRef.current != forceYStrengthNormalized) {
-        console.log('Updating forceY values');
         updateForceY(currentSim, forceYStrengthNormalized);
         forceYStrengthRef.current = forceYStrengthNormalized;
       }
       if (forceRadialStrengthRef.current != forceRadialStrengthNormalized) {
-        console.log('Updating radial values');
         updateForceRadial(currentSim, forceRadialStrengthNormalized);
         forceRadialStrengthRef.current = forceRadialStrengthNormalized;
       }

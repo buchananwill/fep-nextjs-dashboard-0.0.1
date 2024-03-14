@@ -5,8 +5,8 @@ import {
   StringMap,
   StringMapDispatch
 } from './string-map-context-creator';
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 
 export function useWorkTaskTypeContext() {
   const workTaskTypeMap = useContext(WorkTaskTypeContext);

@@ -7,7 +7,7 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import { index } from 'd3';
 import { NodeComponentContext } from '../nodes/node-component-context';
 
-import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
+import { useCurriculumModelContext } from '../../curriculum/delivery-models/contexts/use-curriculum-model-context';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function useBasicNodeElements<T extends HasNumberIdDto>(

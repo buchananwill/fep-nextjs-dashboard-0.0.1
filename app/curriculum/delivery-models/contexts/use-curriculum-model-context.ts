@@ -5,7 +5,7 @@ import {
   StringMap,
   StringMapDispatch
 } from './string-map-context-creator';
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
 export function useCurriculumModelContext() {
   const curriculumModelsMap = useContext(CurriculumModelsContext);

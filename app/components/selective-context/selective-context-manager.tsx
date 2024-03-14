@@ -37,7 +37,6 @@ export function useSelectiveContextManager<T>(
     }
 
     if (currentElement !== value) {
-      console.log('updating', contextKey);
       try {
         Object.values(listeners).forEach((l) => {
           l(value);

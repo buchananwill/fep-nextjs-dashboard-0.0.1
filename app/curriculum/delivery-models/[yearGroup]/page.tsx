@@ -1,14 +1,14 @@
-import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../api/actions/curriculum-delivery-model';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../api/actions/curriculum-delivery-model';
 import { Card, Title } from '@tremor/react';
-import { Pagination } from '../../components/pagination';
+import { Pagination } from '../../../components/pagination';
 import {
   normalizeQueryParamToNumber,
   oneIndexToZeroIndex,
   zeroIndexToOneIndex
-} from '../../api/utils';
+} from '../../../api/utils';
 import { CurriculumDeliveryModels } from '../curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
-import { getWorkTaskTypes } from '../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
 
 export default async function Page({
   params: { yearGroup },

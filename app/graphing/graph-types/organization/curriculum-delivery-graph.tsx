@@ -15,7 +15,7 @@ import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleD
 import { useGenericLinkContext } from '../../links/generic-link-context-creator';
 import { useGenericNodeContext } from '../../nodes/generic-node-context-creator';
 import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
-import { useBundleAssignmentsContext } from '../../../curriculum-models/contexts/use-bundle-assignments-context';
+import { useBundleAssignmentsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
 import { useModal } from '../../../components/confirm-action-modal';
@@ -50,7 +50,7 @@ function removeTransientId(id: number) {
 
 const cloneFunction = { function: cloneOrganizationNode };
 
-const CurriculumDeliveryGraphPageKey = 'curriculum-delivery-graph-page';
+const CurriculumDeliveryGraphPageKey = 'curriculum-graph-page';
 
 function useUnsavedGraphChangesController() {
   const { uniqueGraphName } = useContext(GraphContext);
@@ -145,6 +145,8 @@ export default function CurriculumDeliveryGraph({
       };
     }
   );
+
+  console.log(nodeDetailElements);
 
   const handleSaveGraph = () => {
     const nodes = nodesRef.current;

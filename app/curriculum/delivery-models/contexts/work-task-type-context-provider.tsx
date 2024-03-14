@@ -2,14 +2,14 @@
 
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
 import {
   WorkTaskTypeContext,
   WorkTaskTypeContextDispatch
 } from './use-work-task-type-context';
-import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
-import { putWorkTaskTypes } from '../../api/actions/work-task-types';
-import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
+import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
+import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
+import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
 import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';

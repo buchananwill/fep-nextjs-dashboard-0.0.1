@@ -10,6 +10,7 @@ export default function NodeDetails<T extends HasNumberIdDto>({
   nodeDetailElements: NodePayload<T>[];
   labels: string[];
 }) {
+  console.log('Rendering node details.');
   return (
     <div>
       {nodeDetailElements.map((detailElement, index) => (

@@ -1,32 +1,31 @@
 'use client';
-import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { Badge, Card, Color, Title } from '@tremor/react';
-import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 import { Tab } from '@headlessui/react';
-import { TabStyled } from '../../../components/tab-layouts/tab-styled';
+import { TabStyled } from '../../../../components/tab-layouts/tab-styled';
 import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
-import { sumAllSchemas } from '../../../graphing/components/curriculum-delivery-details';
+import { sumAllSchemas } from '../../../../graphing/components/curriculum-delivery-details';
 import { usePathname } from 'next/navigation';
 import { BundlePanel } from './bundle-panel';
 import {
   RenameModal,
   RenameModalWrapperContextKey
-} from '../../../components/rename-modal/rename-modal';
-import { useModal } from '../../../components/confirm-action-modal';
+} from '../../../../components/rename-modal/rename-modal';
+import { useModal } from '../../../../components/confirm-action-modal';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
-import { useSelectiveContextControllerString } from '../../../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
+import { useSelectiveContextControllerString } from '../../../../components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../../components/selective-context/use-selective-context-listener';
 import { produce } from 'immer';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
-import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../../components/selective-context/selective-context-manager-boolean';
 import {
   useSelectiveContextControllerNumberList,
   useSelectiveContextDispatchNumberList
-} from '../../../components/selective-context/selective-context-manager-number-list';
-import { TransientIdOffset } from '../../../graphing/editing/graph-edits';
-import { TwoStageClick } from '../../../components/buttons/two-stage-click';
+} from '../../../../components/selective-context/selective-context-manager-number-list';
+import { TransientIdOffset } from '../../../../graphing/editing/graph-edits';
+import { TwoStageClick } from '../../../../components/buttons/two-stage-click';
 import {
   DeletedBundlesList,
   StaticDeletedBundleList

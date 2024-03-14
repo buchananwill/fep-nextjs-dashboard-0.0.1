@@ -1,14 +1,14 @@
 import {
   getBundles,
   getCurriculumDeliveryModelSchemasByKnowledgeLevel
-} from '../../../api/actions/curriculum-delivery-model';
-import { normalizeQueryParamToNumber } from '../../../api/utils';
+} from '../../../../api/actions/curriculum-delivery-model';
+import { normalizeQueryParamToNumber } from '../../../../api/utils';
 import { Card } from '@tremor/react';
 import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../contexts/string-map-context-creator';
-import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
 
 const emptyBundles = {} as StringMap<string>;

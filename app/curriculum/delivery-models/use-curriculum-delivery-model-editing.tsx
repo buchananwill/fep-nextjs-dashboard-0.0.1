@@ -1,8 +1,8 @@
-import { WorkProjectSeriesSchemaDto } from '../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
+import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
-import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useEffect } from 'react';
 import { StringMapPayload } from './contexts/string-map-context-creator';
@@ -34,6 +34,8 @@ export function useCurriculumDeliveryModelEditing(
     false
   );
 
+  console.log(workProjectSeriesSchemaDtos, taskTypeList);
+
   useEffect(() => {
     const payloadArray = getPayloadArray(
       workProjectSeriesSchemaDtos,
@@ -44,6 +46,7 @@ export function useCurriculumDeliveryModelEditing(
       payload: payloadArray
     });
   }, [workProjectSeriesSchemaDtos, dispatch]);
+
   useEffect(() => {
     const payloadArray = getPayloadArray(taskTypeList, (taskType) =>
       taskType.id.toString()

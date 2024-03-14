@@ -139,17 +139,17 @@ export default function Navbar({
       },
       {
         name: 'Models',
-        href: '/curriculum-models',
+        href: '/curriculum/delivery-models',
         dropdownItems: curriculumModelsDropdownItems
       },
       {
         name: 'Bundles',
-        href: '/curriculum-models',
+        href: '/curriculum/delivery-models',
         dropdownItems: bundlesDropdownItems
       },
       {
         name: 'Classes',
-        href: '/class-hierarchy',
+        href: '/curriculum/class-hierarchy',
         dropdownItems: organizationTypes || []
       },
       {
@@ -173,11 +173,14 @@ export default function Navbar({
   }, [electivesDropdown, scheduleId, knowledgeLevels, organizationTypes]);
 
   const handleNavigation = (href: string) => {
+    console.log('Navigating to: ', href);
     const fullNavigation = useCache ? href + cacheSetting : href;
     startTransition(() => {
-      router.push(fullNavigation);
+      router.push(href);
     });
   };
+
+  console.log(navigation);
 
   return (
     <Disclosure as="menu" className="bg-white shadow-sm">

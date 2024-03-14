@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { CurriculumModelsContextProvider } from './contexts/curriculum-models-context-provider';
-import { WorkTaskTypeContextProvider } from './contexts/work-task-type-context-provider';
+import { CurriculumModelsContextProvider } from './delivery-models/contexts/curriculum-models-context-provider';
+import { WorkTaskTypeContextProvider } from './delivery-models/contexts/work-task-type-context-provider';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

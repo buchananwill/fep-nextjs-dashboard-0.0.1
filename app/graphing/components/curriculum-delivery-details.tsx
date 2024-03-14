@@ -6,18 +6,18 @@ import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeli
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { isNotNull } from '../editing/graph-edits';
-import { useCurriculumModelContext } from '../../curriculum-models/contexts/use-curriculum-model-context';
+import { useCurriculumModelContext } from '../../curriculum/delivery-models/contexts/use-curriculum-model-context';
 import {
   useBundleAssignmentsContext,
   useSingleBundleAssignment
-} from '../../curriculum-models/contexts/use-bundle-assignments-context';
-import { useBundleItemsContext } from '../../curriculum-models/contexts/use-bundle-Items-context';
+} from '../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
+import { useBundleItemsContext } from '../../curriculum/delivery-models/contexts/use-bundle-Items-context';
 import { Listbox } from '@headlessui/react';
-import { SchemaBundleKeyPrefix } from '../../curriculum-models/[yearGroup]/bundles/bundle-editor';
+import { SchemaBundleKeyPrefix } from '../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
 import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
 import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { UnsavedBundleAssignmentsKey } from '../../curriculum-models/contexts/bundle-assignments-provider';
+import { UnsavedBundleAssignmentsKey } from '../../curriculum/delivery-models/contexts/bundle-assignments-provider';
 import {
   RenameModal,
   RenameModalWrapperContextKey
@@ -77,13 +77,23 @@ export default function CurriculumDeliveryDetails({
       false
     );
 
-  const { dispatch: dispatchNodes } = useGenericNodeContext();
-
-  const { currentState: schemaIdList } = useSelectiveContextListenerStringList(
-    selectiveContextKey,
-    selectiveListenerKey,
-    EmptyStringArray
+  console.log(
+    'node: ',
+    node,
+    ' assignment: ',
+    assignmentOptional,
+    curriculumModelsMap
   );
+
+  console.log(
+    'context key: ',
+    selectiveContextKey,
+    ' listener key: ',
+    selectiveListenerKey
+  );
+
+  // const { dispatch: dispatchNodes } = useGenericNodeContext();
+
   const { isOpen, closeModal, openModal } = useModal();
   const renameModalContextKey = useSelectiveContextKeyMemo(
     `${RenameModalWrapperContextKey}:${selectiveContextKey}`,
@@ -112,6 +122,14 @@ export default function CurriculumDeliveryDetails({
 
   const { nodeListRef, incrementSimVersion, linkListRef } =
     useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
+
+  const schemaIdList = useMemo(() => {
+    if (assignmentOptional) {
+      const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
+      return bundleItemsMapElement.workProjectSeriesSchemaIds;
+    } else return [];
+  }, [bundleItemsMap, assignmentOptional]);
+
   const handleConfirmRename = () => {
     if (nodeListRef && linkListRef) {
       const copiedElements = [...nodeListRef.current];
@@ -148,6 +166,14 @@ export default function CurriculumDeliveryDetails({
     // }
     return { schemas: EmptySchemasArray, bundleRowSpan: 'span 1' };
   }, [schemaIdList, curriculumModelsMap]);
+
+  console.log(
+    'schemas: ',
+    schemas,
+    'from ID list:',
+    schemaIdList,
+    curriculumModelsMap
+  );
 
   const totalAllocation = useMemo(() => sumAllSchemas(schemas), [schemas]);
 

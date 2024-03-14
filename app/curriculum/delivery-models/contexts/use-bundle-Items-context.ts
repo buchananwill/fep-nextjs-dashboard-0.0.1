@@ -4,7 +4,7 @@ import {
   StringMap,
   StringMapDispatch
 } from './string-map-context-creator';
-import { WorkSeriesSchemaBundleLeanDto } from '../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 export const BundleItemsContext = createContext<
   StringMap<WorkSeriesSchemaBundleLeanDto>

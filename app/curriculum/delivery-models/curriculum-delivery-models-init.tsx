@@ -10,6 +10,10 @@ export function CurriculumDeliveryModelsInit({
   taskTypeList,
   workProjectSeriesSchemaDtos
 }: PropsWithChildren & CurriculumDeliveryModelEditingProps) {
-  useCurriculumDeliveryModelEditing(workProjectSeriesSchemaDtos, taskTypeList);
+  const b = useCurriculumDeliveryModelEditing(
+    workProjectSeriesSchemaDtos,
+    taskTypeList
+  );
+  console.log('schemas in the model init: ', workProjectSeriesSchemaDtos);
   return <></>;
 }

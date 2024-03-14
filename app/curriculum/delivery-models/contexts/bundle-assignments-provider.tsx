@@ -5,16 +5,16 @@ import {
   BundleAssignmentsContextDispatch
 } from './use-bundle-assignments-context';
 import { useStringMapReducer } from './string-map-context-creator';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import {
   ConfirmActionModal,
   useModal
-} from '../../components/confirm-action-modal';
+} from '../../../components/confirm-action-modal';
 import { Text } from '@tremor/react';
-import { postBundleDeliveries } from '../../api/actions/curriculum-delivery-model';
+import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
 import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
-import { mapToPartyIdBundleIdRecords } from '../../graphing/graph-types/organization/map-to-party-id-bundle-id-records';
+import { mapToPartyIdBundleIdRecords } from '../../../graphing/graph-types/organization/map-to-party-id-bundle-id-records';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -48,6 +48,8 @@ export function BundleAssignmentsProvider({
       UnsavedBundleAssignmentsProvider,
       false
     );
+
+  console.log(bundleAssignmentState);
 
   const { openModal, isOpen, closeModal } = useModal();
 
