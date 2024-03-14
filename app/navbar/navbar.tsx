@@ -138,6 +138,11 @@ export default function Navbar({
         dropdownItems: buildMetricsDropdown
       },
       {
+        name: 'Lesson Types',
+        href: '/curriculum/lesson-types',
+        dropdownItems: [{ name: 'All', href: '' }]
+      },
+      {
         name: 'Models',
         href: '/curriculum/delivery-models',
         dropdownItems: curriculumModelsDropdownItems
@@ -187,16 +192,16 @@ export default function Navbar({
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 justify-between">
-              <div className="flex">
+            <div className="flex h-24 justify-between py-1">
+              <div className="flex grow">
                 <SvgLogo isPending={isPending} />
-                <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-2">
+                <div className="-my-px mx-3 grid grid-cols-6 gap-x-2 w-full">
                   {navigation.map((dropdownLabel, index) => (
                     <div
                       key={`label-${dropdownLabel.name}`}
-                      className="w-32 normal-case my-2 mx-0"
+                      className="w-full normal-case flex items-center"
                     >
-                      <Menu as="div" className="relative text-left">
+                      <Menu as="div" className="relative text-left w-full">
                         <div>
                           <Menu.Button className="inline-flex w-full justify-center rounded-md bg-gray-100 py-2 text-sm font-medium hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
                             <Text>{dropdownLabel.name}</Text>
@@ -254,7 +259,7 @@ export default function Navbar({
                   ))}
                 </div>
               </div>
-              <div className="hidden sm:ml-6 sm:flex sm:items-center">
+              <div className=" flex items-center ">
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
