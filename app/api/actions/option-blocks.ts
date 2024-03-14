@@ -6,20 +6,12 @@ import {
   successResponse
 } from './actionResponse';
 import { CarouselGroupDto } from '../dtos/CarouselGroupDtoSchema';
+import { getWithoutBody } from './template-actions';
 
 export async function getOptionBlocks(): ActionResponsePromise<
   CarouselGroupDto[]
 > {
   const fullUrl = `${API_ACADEMIC_URL}/carousel-groups`;
 
-  console.log('Processing request...');
-  console.log(fullUrl);
-
-  try {
-    const response = await fetch(fullUrl, { cache: 'no-store' });
-    const carouselGroups: CarouselGroupDto[] = await response.json();
-    return successResponse(carouselGroups);
-  } catch (e) {
-    return errorResponse('error');
-  }
+  return getWithoutBody(fullUrl);
 }

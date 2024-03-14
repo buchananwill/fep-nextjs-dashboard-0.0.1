@@ -1,8 +1,5 @@
 import { PerSubjectDonut } from '../per-subject-donut';
-import {
-  fetchAllSubjectsByYearGroupContactTime,
-  fetchSingleSubjectByYearGroupContactTime
-} from '../../api/actions/request-subject-contact-time-metrics';
+import { fetchAllSubjectsByYearGroupContactTime } from '../../api/actions/request-subject-contact-time-metrics';
 import { transformRecordToObjectArray } from '../../utils/data-transformations';
 import { NamedNumberRecord } from '../../api/dto-interfaces';
 
@@ -28,9 +25,13 @@ function dataComparator(a: NamedNumberRecord, b: NamedNumberRecord): number {
 export default async function ContactTimeBreakdownPage({
   params: { breakdown }
 }: Props) {
-  const allData = await fetchAllSubjectsByYearGroupContactTime();
+  const actionResponse = await fetchAllSubjectsByYearGroupContactTime();
 
-  const bigRestructuredData = allData
+  if (actionResponse.data === undefined) {
+    return <div>No data...</div>;
+  }
+
+  const bigRestructuredData = actionResponse.data
     .sort((a, b) => dataComparator(a, b))
     .map((dataUnit) => ({
       name: dataUnit.name,

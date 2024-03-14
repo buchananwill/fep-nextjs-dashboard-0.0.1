@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import DynamicDimensionTimetable, {
   HeaderTransformer
@@ -23,6 +23,10 @@ import {
 
 export const dynamic = 'force-dynamic';
 
+function DataNotFoundCard({ children }: { children: ReactNode }) {
+  return <Card>{children}</Card>;
+}
+
 export default async function TimetablesPage({
   params: { schedule },
   searchParams: { year, id }
@@ -30,7 +34,11 @@ export default async function TimetablesPage({
   params: { schedule: string };
   searchParams: { year: string; id: string };
 }) {
-  const allPeriodsInCycle = await fetchAllPeriodsInCycle();
+  const { data: allPeriodsInCycle } = await fetchAllPeriodsInCycle();
+
+  if (allPeriodsInCycle === undefined) {
+    return <DataNotFoundCard>No Data!</DataNotFoundCard>;
+  }
 
   allPeriodsInCycle.headerData = allPeriodsInCycle.headerData.map(
     (label) =>
@@ -41,22 +49,31 @@ export default async function TimetablesPage({
   const scheduleId = schedule ? parseInt(schedule) : NaN;
 
   if (isNaN(scheduleId)) {
-    return <Text>No schedules found.</Text>;
+    return <DataNotFoundCard>No schedules found.</DataNotFoundCard>;
   }
 
   const studentId = id ? parseInt(id) : NaN;
 
-  const studentDTOS = await fetchAllStudents({ q: 'ell' });
+  const { data: studentDTOS } = await fetchAllStudents({ q: 'ell' });
+  if (studentDTOS === undefined) {
+    return <Card>No students found.</Card>;
+  }
 
   const nameIdTupleList = studentDTOS.map((studentDTO) => ({
     name: studentDTO.name,
     id: studentDTO.id.toString()
   }));
 
-  const scheduleIds = await fetchScheduleIds();
+  const { data: scheduleIds } = await fetchScheduleIds();
+  if (scheduleIds === undefined) {
+    return <DataNotFoundCard>Schedules not found.</DataNotFoundCard>;
+  }
   const scheduleIdsToString = scheduleIds.map((value) => value.toString());
 
-  const allLessonCycles = await fetchAllLessonCycles(scheduleId);
+  const { data: allLessonCycles } = await fetchAllLessonCycles(scheduleId);
+  if (allLessonCycles === undefined) {
+    return <DataNotFoundCard>Lesson cycles not found.</DataNotFoundCard>;
+  }
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
     allPeriodsInCycle,

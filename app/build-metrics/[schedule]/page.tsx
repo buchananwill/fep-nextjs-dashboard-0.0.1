@@ -15,8 +15,13 @@ export default async function BuildMetricsOverview({
 }: {
   params: { schedule: string };
 }) {
-  const scheduleIds = await fetchScheduleIds();
-  const filteredIds = scheduleIds.map((value) => value.toString());
+  const { data: scheduleIds } = await fetchScheduleIds();
+
+  let filteredIds: string[] = [];
+
+  if (scheduleIds) {
+    filteredIds = scheduleIds.map((value) => value.toString());
+  }
 
   const scheduleId = parseInt(schedule);
 
