@@ -4,5 +4,6 @@ export const KnowledgeDomainDtoSchema = z.object({
   serviceCategoryId: z.number(),
   knowledgeDomainDescriptor: z.string(),
   name: z.string(),
+  workTaskTypeCount: z.number(),
 });
 export type KnowledgeDomainDto = z.infer<typeof KnowledgeDomainDtoSchema>;

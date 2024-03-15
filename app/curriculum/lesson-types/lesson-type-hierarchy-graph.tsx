@@ -12,7 +12,7 @@ export function LessonTypeHierarchyGraph() {
 
   const classList: string[] = [];
 
-  useForceAttributeOverride('forceXStrength', 15);
+  // useForceAttributeOverride('forceXStrength', 5);
 
   nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     classList.push(n.data.name);

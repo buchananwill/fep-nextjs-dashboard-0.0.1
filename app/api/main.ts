@@ -1,6 +1,8 @@
 export const API_BASE_URL = process.env.API_BASE_URL!;
 export const API_ACADEMIC_URL = process.env.API_ACADEMIC_URL!;
 
+export const SECONDARY_EDUCATION_CATEGORY_ID = 2;
+
 // Spring Web Pagination interface
 export interface Page<T> {
   content: T[];

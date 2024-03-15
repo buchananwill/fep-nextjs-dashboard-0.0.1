@@ -9,17 +9,31 @@ import { API_BASE_URL } from '../main';
 import { ServiceCategoryDto } from '../dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelDto } from '../dtos/KnowledgeLevelDtoSchema';
 import { getWithoutBody } from './template-actions';
+import { KnowledgeDomainDto } from '../dtos/KnowledgeDomainDtoSchema';
 
-export async function getServiceCategory(
-  id: number
+const serviceCategoriesApi = `${API_BASE_URL}/serviceCategories`;
+
+export async function getServiceCategoryByIdentifier(
+  id: string
 ): ActionResponsePromise<ServiceCategoryDto> {
-  const url = `${API_BASE_URL}/serviceCategories/${id}`;
+  const url = `${serviceCategoriesApi}/${id}`;
+  return getWithoutBody(url);
+}
+
+export async function getServiceCategoryNames() {
+  const url = `${serviceCategoriesApi}/names`;
   return getWithoutBody(url);
 }
 
 export async function getKnowledgeLevels(
-  serviceCategoryId: number
+  serviceCategoryId: string
 ): ActionResponsePromise<KnowledgeLevelDto[]> {
-  const url = `${API_BASE_URL}/serviceCategories/${serviceCategoryId}/knowledgeLevels`;
+  const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeLevels`;
+  return getWithoutBody(url);
+}
+export async function getKnowledgeDomains(
+  serviceCategoryId: string
+): ActionResponsePromise<KnowledgeDomainDto[]> {
+  const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeDomains`;
   return getWithoutBody(url);
 }

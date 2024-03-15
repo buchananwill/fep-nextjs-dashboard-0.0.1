@@ -3,19 +3,24 @@ import { getServerSession } from 'next-auth/next';
 
 import {
   getKnowledgeLevels,
-  getServiceCategory
+  getServiceCategoryByIdentifier
 } from '../api/actions/service-categories';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { fetchScheduleIds } from '../api/actions/timetables';
+import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
 
 export default async function Nav() {
   const session = await getServerSession();
 
-  const scheduleIds = await fetchScheduleIds();
+  const { data: scheduleIds } = await fetchScheduleIds();
   const latestSchedule =
-    scheduleIds.length > 0 ? scheduleIds[scheduleIds.length - 1] : NaN;
+    scheduleIds && scheduleIds.length > 0
+      ? scheduleIds[scheduleIds.length - 1]
+      : NaN;
 
-  const serviceCategoryResponse = await getServiceCategory(2);
+  const serviceCategoryResponse = await getServiceCategoryByIdentifier(
+    SECONDARY_EDUCATION_CATEGORY_ID.toString()
+  );
 
   const knowledgeLevelResponse = await getKnowledgeLevels(2);
 

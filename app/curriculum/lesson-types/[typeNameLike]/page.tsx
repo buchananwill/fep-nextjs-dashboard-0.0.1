@@ -7,8 +7,12 @@ import ForceGraphPage from '../../../graphing/force-graph-page';
 import { LessonTypeHierarchyGraph } from '../lesson-type-hierarchy-graph';
 import DropdownParam from '../../../components/dropdown/dropdown-param';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
-import { getKnowledgeLevels } from '../../../api/actions/service-categories';
+import {
+  getKnowledgeDomains,
+  getKnowledgeLevels
+} from '../../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
+import { SECONDARY_EDUCATION_CATEGORY_ID } from '../../../api/main';
 
 export const dynamic = 'force-dynamic';
 const paramsMock = ['Maths', 'Year 13', 'all'];
@@ -19,23 +23,32 @@ export default async function LessonTypesPage({
   searchParams: { typeNameLike: string };
 }) {
   const paramOrFallBack =
-    typeNameLike === 'all' || undefined ? 'teaching' : typeNameLike;
+    typeNameLike === 'All' || undefined ? 'teaching' : typeNameLike;
   const lessonTypesResponseGraph: ActionResponsePromise<
     GraphDto<WorkTaskTypeDto>
   > = getWorkTaskTypeGraph(paramOrFallBack);
 
-  const { data } = await getKnowledgeLevels(2);
-  if (data === undefined) {
-    return <DataNotFoundCard>No year groups found.</DataNotFoundCard>;
+  const { data: kLevels } = await getKnowledgeLevels(
+    SECONDARY_EDUCATION_CATEGORY_ID.toString()
+  );
+
+  const { data: kDomains } = await getKnowledgeDomains(
+    SECONDARY_EDUCATION_CATEGORY_ID.toString()
+  );
+
+  if (kLevels === undefined || kDomains === undefined) {
+    return <DataNotFoundCard>Category data missing.</DataNotFoundCard>;
   }
 
-  const yearGroupOptions = data.map((kl) => `Year ${kl.levelOrdinal}`);
+  const yearGroupOptions = kLevels.map((kl) => `Year ${kl.levelOrdinal}`);
+  const subjectOptions = kDomains.map((kd) => kd.name);
+  const allOptions = ['All', ...yearGroupOptions, ...subjectOptions];
 
   return (
     <LessonTypeGraphPage
       lessonTypesResponseGraph={lessonTypesResponseGraph}
       currentSelection={typeNameLike}
-      selectionOptions={yearGroupOptions}
+      selectionOptions={allOptions}
     />
   );
 }
