@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import Loading from '../loading';
 import { fetchAllSubjectsContactTime } from '../api/actions/request-subject-contact-time-metrics';
-import { CacheSetting } from '../components/filter-dropdown';
+import { CacheSetting } from '../components/dropdown/filter-dropdown';
 
 const dynamic = 'force-dynamic';
 

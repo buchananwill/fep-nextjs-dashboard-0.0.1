@@ -29,3 +29,20 @@ export function updateForceX<T extends HasNumberIdDto>(
   }
   updateForce(currentSim, 'forceX', consumerForceX);
 }
+
+export function getHorizontalParentsToChildrenLayout<T extends HasNumberIdDto>(
+  nodes: DataNode<T>[],
+  width: number,
+  strength: number
+): D3.ForceX<DataNode<T>> {
+  const rootDistances = new Set<number>();
+  nodes.forEach((n) => rootDistances.add(n.distanceFromRoot));
+  const spacing = width / (rootDistances.size + 1);
+  const distancesInOrder: number[] = [...rootDistances.values()];
+  distancesInOrder.sort((a, b) => a - b);
+  return D3.forceX((d, index) => {
+    return (
+      distancesInOrder.indexOf((d as DataNode<T>).distanceFromRoot) * spacing
+    );
+  }).strength(strength);
+}

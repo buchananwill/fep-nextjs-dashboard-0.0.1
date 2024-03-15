@@ -9,7 +9,7 @@ import TimetablesContextProvider from '../../timetables-context-provider';
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
 import { Card, Text, Title } from '@tremor/react';
-import DropdownParam from '../../../components/dropdown-param';
+import DropdownParam from '../../../components/dropdown/dropdown-param';
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
 import fetchAllStudents from '../../../api/actions/student-search';
@@ -23,7 +23,7 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-function DataNotFoundCard({ children }: { children: ReactNode }) {
+export function DataNotFoundCard({ children }: { children: ReactNode }) {
   return <Card>{children}</Card>;
 }
 
@@ -86,7 +86,10 @@ export default async function TimetablesPage({
       <div className="flex w-full items-baseline grow-0 mb-2">
         <Title>Schedule Version Id: {scheduleId}</Title>
         <Text className="mx-2">Schedule Layout</Text>
-        <DropdownParam paramOptions={scheduleIdsToString} />
+        <DropdownParam
+          paramOptions={scheduleIdsToString}
+          currentSelection={schedule}
+        />
         <StudentTimetableSelector selectionList={nameIdTupleList} />
       </div>
 

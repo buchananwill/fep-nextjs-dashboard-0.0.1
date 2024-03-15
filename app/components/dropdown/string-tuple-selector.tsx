@@ -2,18 +2,18 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { LongIdStringNameTuple } from '../api/dtos/LongIdStringNameTupleSchema';
+import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 
-export type NumberIdOptionTransformer = React.FC<OptionTransformerProps>;
+export type OptionTransformer = React.FC<OptionTransformerProps>;
 
 interface OptionTransformerProps {
   selected: boolean;
-  tuple: LongIdStringNameTuple;
+  tuple: NameIdStringTuple;
 }
 
 function DefaultTransformer(props: {
   selected: boolean;
-  tuple: LongIdStringNameTuple;
+  tuple: NameIdStringTuple;
 }) {
   return (
     <span
@@ -26,18 +26,18 @@ function DefaultTransformer(props: {
   );
 }
 
-export default function NumberTupleSelector({
+export default function StringTupleSelector({
   selectedState,
   selectionList,
   updateSelectedState,
   selectionDescriptor,
   optionTransformer: OptionTransformerComponent
 }: {
-  selectedState: LongIdStringNameTuple;
-  selectionList: LongIdStringNameTuple[];
-  updateSelectedState: (value: LongIdStringNameTuple) => void;
+  selectedState: NameIdStringTuple;
+  selectionList: NameIdStringTuple[];
+  updateSelectedState: (value: NameIdStringTuple) => void;
   selectionDescriptor: string;
-  optionTransformer?: NumberIdOptionTransformer;
+  optionTransformer?: OptionTransformer;
 }) {
   return (
     <Listbox

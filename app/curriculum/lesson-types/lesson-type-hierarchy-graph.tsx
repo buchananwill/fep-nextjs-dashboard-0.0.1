@@ -4,15 +4,15 @@ import { useNodeAndLinkRefs } from '../../graphing/graph-types/organization/curr
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { DataNode } from '../../api/zod-mods';
 import { NodeLinkRefWrapper } from '../../graphing/graph/node-link-ref-wrapper';
+import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useForceAttributeOverride } from '../../graphing/forces/use-force-attribute-override';
 
 export function LessonTypeHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<WorkTaskTypeDto>();
 
-  console.log(nodes);
-
-  // useForceAdjustments(false);
-
   const classList: string[] = [];
+
+  useForceAttributeOverride('forceXStrength', 15);
 
   nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     classList.push(n.data.name);

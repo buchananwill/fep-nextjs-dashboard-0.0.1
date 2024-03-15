@@ -4,11 +4,15 @@ import { Fragment, useEffect, useRef, useState, useTransition } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePathname, useRouter } from 'next/navigation';
 
-export default function DropdownParam({
-  paramOptions
-}: {
+interface DropdownParamProps {
   paramOptions: string[];
-}) {
+  currentSelection: string;
+}
+
+export default function DropdownParam({
+  paramOptions,
+  currentSelection
+}: DropdownParamProps) {
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const { push } = useRouter();
@@ -27,7 +31,9 @@ export default function DropdownParam({
       <Menu as="div" className="text-right">
         <div>
           <Menu.Button className="w-full flex justify-center rounded-lg bg-gray-300 px-4 py-2 text-sm font-medium text-white hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
-            Schedules
+            {currentSelection
+              ? currentSelection.replace('%20', ' ')
+              : 'No selection'}
             <ChevronDownIcon
               className="-mr-1 ml-2 h-5 w-5 text-gray-500 "
               aria-hidden="true"

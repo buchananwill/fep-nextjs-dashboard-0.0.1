@@ -1,5 +1,5 @@
 'use client';
-import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
+import NameIdTupleSelector from '../../../components/dropdown/name-id-tuple-selector';
 import React, {
   Fragment,
   useContext,
@@ -16,7 +16,7 @@ import {
 } from '../../timetables-context';
 import { useSearchParams } from 'next/navigation';
 import { LessonEnrollmentDTO } from '../../../api/dto-interfaces';
-import StringTupleSelector from '../../../components/string-tuple-selector';
+import StringTupleSelector from '../../../components/dropdown/string-tuple-selector';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 
 const noSelection = { name: '', id: '' };

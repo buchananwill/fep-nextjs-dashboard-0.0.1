@@ -4,10 +4,10 @@ import { API_BASE_URL } from '../main';
 import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
 import { getWithoutBody, putEntities } from './template-actions';
 
-export async function getWorkTaskTypeGraph(): ActionResponsePromise<
-  GraphDto<WorkTaskTypeDto>
-> {
-  const url = `${API_BASE_URL}/graphs/workTaskTypes`;
+export async function getWorkTaskTypeGraph(
+  typeNameLike: string
+): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
+  const url = `${API_BASE_URL}/graphs/workTaskTypes?typeNameLike=${typeNameLike}`;
   return getWithoutBody(url);
 }
 

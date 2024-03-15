@@ -4,7 +4,11 @@ import * as d3 from 'd3';
 import { Simulation } from 'd3';
 
 import { useForceAttributeListeners } from '../api/dtos/ForceGraphAttributesDtoSchema';
-import { getGridX, updateForceX } from './forces/force-x';
+import {
+  getGridX,
+  getHorizontalParentsToChildrenLayout,
+  updateForceX
+} from './forces/force-x';
 import { getModulusGridY, updateForceY } from './forces/force-y';
 import {
   getForceManyBody,
@@ -135,8 +139,12 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
     } = forceAttributeListeners;
 
     function beginSim() {
-      const forceX = getGridX(width, spacingX, forceXStrengthNormalized);
-
+      // const forceX = getGridX(width, spacingX, forceXStrengthNormalized);
+      const forceX = getHorizontalParentsToChildrenLayout(
+        nodesMutable,
+        width,
+        forceXStrengthNormalized
+      );
       const forceY = getModulusGridY(
         spacingY,
         height,

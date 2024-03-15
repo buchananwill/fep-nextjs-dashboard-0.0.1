@@ -24,7 +24,7 @@ export const colorSettings: Record<CacheSetting, string> = {
   [CacheSetting.NoCache]: 'red'
 };
 
-export const RefreshDropdown = () => {
+export default function SearchParamsDropdown() {
   const [cacheSetting, setCacheSetting] = useState<CacheSetting>(
     CacheSetting.Default
   );
@@ -98,10 +98,4 @@ export const RefreshDropdown = () => {
       </Listbox>
     </div>
   );
-};
-
-// {isPending && (
-//   <div className="absolute left-2 top-2 flex items-center justify-center">
-//     <span className="loading loading-ring loading-sm"></span>
-//   </div>
-// )}
+}

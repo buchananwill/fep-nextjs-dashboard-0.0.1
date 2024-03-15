@@ -5,15 +5,15 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
   ElectiveContext,
   ElectiveDispatchContext
-} from '../electives/elective-context';
+} from '../../electives/elective-context';
 
 import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
-} from '../electives/elective-filter-context';
-import { ElectiveFilterState } from '../electives/elective-filter-reducers';
-import { FilterOption } from '../api/state-types';
-import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+} from '../../electives/elective-filter-context';
+import { ElectiveFilterState } from '../../electives/elective-filter-reducers';
+import { FilterOption } from '../../api/state-types';
+import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
 
 // For example, using TypeScript enum
 export enum CacheSetting {

@@ -1,7 +1,7 @@
 import { Button, Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
 import MetricsContextProvider from './metrics-context-provider';
-import DropdownParam from '../../components/dropdown-param';
+import DropdownParam from '../../components/dropdown/dropdown-param';
 import React from 'react';
 import Link from 'next/link';
 import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';

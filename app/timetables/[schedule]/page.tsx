@@ -13,7 +13,7 @@ import { buildTimetablesState } from '../build-timetables-state';
 import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
 import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
-import DropdownParam from '../../components/dropdown-param';
+import DropdownParam from '../../components/dropdown/dropdown-param';
 import Link from 'next/link';
 import { PeriodDTO } from '../../api/dtos/PeriodDTOSchema';
 import { fetchAllPeriodsInCycle } from '../../api/actions/cycle-model';

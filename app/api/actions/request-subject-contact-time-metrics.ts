@@ -1,5 +1,5 @@
 import { revalidateTag } from 'next/cache';
-import { CacheSetting } from '../../components/filter-dropdown';
+import { CacheSetting } from '../../components/dropdown/filter-dropdown';
 import { NamedNumberRecord } from '../dto-interfaces';
 import { AllSubjectsContactTimeDTO } from '../dtos/AllSubjectsContactTimeDTOSchema';
 import { getWithoutBody } from './template-actions';

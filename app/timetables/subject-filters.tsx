@@ -1,6 +1,6 @@
 'use client';
 import { Card, Text } from '@tremor/react';
-import { FilterDropdown } from '../components/filter-dropdown';
+import { FilterDropdown } from '../components/dropdown/filter-dropdown';
 import { useContext } from 'react';
 
 import Union from '../components/union';

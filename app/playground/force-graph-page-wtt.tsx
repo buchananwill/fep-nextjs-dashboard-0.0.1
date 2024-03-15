@@ -21,7 +21,7 @@ export interface NodePayload<T extends HasNumberIdDto> {
 }
 
 export default async function ForceGraphPageWtt() {
-  const actionResponse = await getWorkTaskTypeGraph();
+  const actionResponse = await getWorkTaskTypeGraph(typeNameLike);
 
   if (!actionResponse.data) {
     return <Card>No graphs!</Card>;

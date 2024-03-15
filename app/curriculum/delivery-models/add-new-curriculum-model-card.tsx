@@ -8,7 +8,7 @@ import {
 } from '../../components/confirm-action-modal';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { Listbox } from '@headlessui/react';
-import StringTupleSelector from '../../components/string-tuple-selector';
+import StringTupleSelector from '../../components/dropdown/string-tuple-selector';
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { StringMap } from './contexts/string-map-context-creator';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';

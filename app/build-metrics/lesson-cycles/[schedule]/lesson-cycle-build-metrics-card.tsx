@@ -1,6 +1,6 @@
 import { TabularDTO } from '../../../api/dto-interfaces';
 import { Button, Card } from '@tremor/react';
-import NameIdTupleSelector from '../../../components/name-id-tuple-selector';
+import NameIdTupleSelector from '../../../components/dropdown/name-id-tuple-selector';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../components/dynamic-dimension-timetable';

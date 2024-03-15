@@ -96,22 +96,6 @@ export async function getCurriculumDeliveries(
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
   const urlForDeliveries = `${SCHEMA_URL}/deliveries/by-party-id`;
   return getDtoListByIds(idList, urlForDeliveries);
-
-  // try {
-  //   const response = await fetch(urlForDeliveries, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json' // Indicate we're sending JSON data
-  //     },
-  //     cache: 'no-cache',
-  //     body: JSON.stringify(idList)
-  //   });
-  //   const deliveries: WorkSeriesBundleDeliveryDto[] = await response.json();
-  //   return successResponse(deliveries);
-  // } catch (error) {
-  //   console.error('Error fetching data: ', error);
-  //   return errorResponse(`${error}`);
-  // }
 }
 
 export async function getBundles(
