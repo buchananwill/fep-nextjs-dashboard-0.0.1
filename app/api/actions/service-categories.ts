@@ -8,7 +8,7 @@ import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLea
 import { API_BASE_URL } from '../main';
 import { ServiceCategoryDto } from '../dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelDto } from '../dtos/KnowledgeLevelDtoSchema';
-import { getWithoutBody } from './template-actions';
+import { getWithoutBody, patchEntity } from './template-actions';
 import { KnowledgeDomainDto } from '../dtos/KnowledgeDomainDtoSchema';
 
 const serviceCategoriesApi = `${API_BASE_URL}/serviceCategories`;
@@ -36,4 +36,11 @@ export async function getKnowledgeDomains(
 ): ActionResponsePromise<KnowledgeDomainDto[]> {
   const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeDomains`;
   return getWithoutBody(url);
+}
+
+export async function patchKnowledgeDomain(
+  knowledgeDomainDto: KnowledgeDomainDto
+): ActionResponsePromise<KnowledgeDomainDto> {
+  const url = `${serviceCategoriesApi}/${knowledgeDomainDto.serviceCategoryId}/knowledgeDomains`;
+  return patchEntity(knowledgeDomainDto, url);
 }

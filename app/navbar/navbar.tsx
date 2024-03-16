@@ -178,14 +178,11 @@ export default function Navbar({
   }, [electivesDropdown, scheduleId, knowledgeLevels, organizationTypes]);
 
   const handleNavigation = (href: string) => {
-    console.log('Navigating to: ', href);
     const fullNavigation = useCache ? href + cacheSetting : href;
     startTransition(() => {
       router.push(href);
     });
   };
-
-  console.log(navigation);
 
   return (
     <Disclosure as="menu" className="bg-white shadow-sm">

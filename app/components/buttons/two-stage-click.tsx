@@ -11,17 +11,20 @@ export function TwoStageClick({
   HTMLButtonElement
 >) {
   const [clickPrimed, setClickPrimed] = useState(false);
-  const timeoutRef = useRef(undefined);
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { refs, floatingStyles } = useFloating({
     placement: 'right',
     middleware: [offset({ mainAxis: 10 })]
   });
+
   const guardClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (clickPrimed && onClick) {
       onClick(e);
+      setClickPrimed(false);
+      if (timeoutRef.current !== undefined) clearTimeout(timeoutRef.current);
     } else {
       setClickPrimed(true);
-      setTimeout(() => setClickPrimed(false), 2000);
+      timeoutRef.current = setTimeout(() => setClickPrimed(false), 2000);
     }
   };
 

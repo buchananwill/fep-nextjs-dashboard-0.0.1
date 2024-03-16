@@ -5,7 +5,7 @@ export function TabPanelStyled({ children }: { children: React.ReactNode }) {
   return (
     <Tab.Panel
       className={
-        'outline-2 outline-slate-200 overflow-auto outline outline-offset-2 rounded-md'
+        'outline-2 outline-slate-200 overflow-auto outline  rounded-md'
       }
     >
       {children}

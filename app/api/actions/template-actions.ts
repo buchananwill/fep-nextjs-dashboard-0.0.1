@@ -67,6 +67,17 @@ export async function putEntities<T>(
   return callApi<T>(url, requestInit);
 }
 
+export async function patchEntity<T>(
+  entity: T,
+  url: string
+): ActionResponsePromise<T> {
+  const requestInit = createRequestInit({
+    body: entity,
+    method: 'PATCH'
+  });
+  return callApi<T>(url, requestInit);
+}
+
 export async function deleteEntities<T>(
   entityBody: T,
   url: string

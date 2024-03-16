@@ -18,7 +18,7 @@ import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { useSelectiveContextControllerString } from '../../../../components/selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../../../components/selective-context/use-selective-context-listener';
 import { produce } from 'immer';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { TrashIcon } from '@heroicons/react/20/solid';
 import { useSelectiveContextDispatchBoolean } from '../../../../components/selective-context/selective-context-manager-boolean';
 import {
   useSelectiveContextControllerNumberList,
@@ -30,6 +30,7 @@ import {
   DeletedBundlesList,
   StaticDeletedBundleList
 } from '../../contexts/bundle-items-context-provider';
+import { RenameButton } from '../../../../components/buttons/rename-button';
 
 export const BundleEditorKey = 'bundles-editor';
 
@@ -217,17 +218,17 @@ export function BundleEditor({
     dispatchWithoutControl(true);
   };
 
+  const activeBundle = sortedBundleList[activeTab];
+  const { name: nameOfBundle } = sortedBundleList[activeTab];
   return (
     <Card>
       <Title className={'w-full flex items-center pb-2'}>
         Current Tab:{' '}
-        <button
-          className={'btn btn-primary btn-outline btn-sm grow-0 mx-2'}
+        <RenameButton
           onClick={handleOpen}
-        >
-          {sortedBundleList[activeTab].name}
-          <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
-        </button>
+          currentName={nameOfBundle}
+          className={'mx-2 '}
+        />
         <TwoStageClick onClick={() => deleteBundle(activeBundleAndId.id)}>
           <TrashIcon className={'h-4 w-4'}></TrashIcon>
         </TwoStageClick>
