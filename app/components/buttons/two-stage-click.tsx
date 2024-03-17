@@ -1,15 +1,18 @@
 import React, { useRef, useState } from 'react';
 import { Badge } from '@tremor/react';
 import { offset, useFloating } from '@floating-ui/react';
+import { GenericButtonProps } from './rename-button';
 
 export function TwoStageClick({
   children,
   onClick,
+  primedAppearance = 'btn-error',
+  primedMessage = 'Confirm delete?',
   ...props
-}: {} & React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->) {
+}: {
+  primedAppearance?: 'btn-error' | 'btn-primary';
+  primedMessage?: string;
+} & GenericButtonProps) {
   const [clickPrimed, setClickPrimed] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { refs, floatingStyles } = useFloating({
@@ -31,7 +34,7 @@ export function TwoStageClick({
   return (
     <button
       className={`relative btn transition-colors duration-500  ${
-        clickPrimed ? 'btn-error' : 'btn-outline'
+        clickPrimed ? primedAppearance : 'btn-outline'
       } btn-sm `}
       {...props}
       onClick={guardClick}
@@ -41,10 +44,10 @@ export function TwoStageClick({
         <Badge
           ref={refs.setFloating}
           style={floatingStyles}
-          color={'red'}
+          color={primedAppearance === 'btn-error' ? 'red' : 'blue'}
           onClick={guardClick}
         >
-          Confirm delete?
+          {primedMessage}
         </Badge>
       )}
       {children}

@@ -2,7 +2,6 @@ import { Card, Title } from '@tremor/react';
 import { getServiceCategoryByIdentifier } from '../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { ServiceCategoryEditor } from './serviceCategoryEditor';
-import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
 import KnowledgeDomainTableEditor from './knowledge-domain-table-editor';
 
 export default async function ServiceCategoriesPage({

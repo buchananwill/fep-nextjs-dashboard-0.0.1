@@ -77,13 +77,23 @@ export async function patchEntity<T>(
   });
   return callApi<T>(url, requestInit);
 }
-
-export async function deleteEntities<T>(
-  entityBody: T,
+export async function postEntity<T>(
+  entity: T,
   url: string
 ): ActionResponsePromise<T> {
+  const requestInit = createRequestInit({
+    body: entity,
+    method: 'POST'
+  });
+  return callApi<T>(url, requestInit);
+}
+
+export async function deleteEntities<T>(
+  entityBody: T[],
+  url: string
+): ActionResponsePromise<T[]> {
   const request = createRequestInit({ body: entityBody, method: 'DELETE' });
-  return callApi<T>(url, request);
+  return callApi<T[]>(url, request);
 }
 
 async function callApi<T>(

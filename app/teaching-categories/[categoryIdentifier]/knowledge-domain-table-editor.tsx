@@ -1,8 +1,9 @@
 import { getKnowledgeDomains } from '../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
-import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { KnowledgeDomainTableCell } from './knowledge-domain-table-cell';
+import { KnowledgeDomainNameCell } from './knowledge-domain-name-cell';
+import { NewKnowledgeDomainButton } from './new-knowledge-domain-button';
+import { KnowledgeDomainDependencies } from './knowledge-domain-dependencies';
 
 export default async function KnowledgeDomainTableEditor({
   category
@@ -26,11 +27,12 @@ export default async function KnowledgeDomainTableEditor({
       <table className={''}>
         <thead className={''}>
           <tr className={''}>
-            <th className={'flex items-center p-2'}>
+            <th className={'flex items-center p-2 justify-center'}>
               {category.knowledgeDomainDescriptor}
-              <button className={'flex btn btn-outline btn-xs ml-2'}>
-                <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
-              </button>
+              <NewKnowledgeDomainButton
+                className={'flex btn btn-outline btn-xs ml-2'}
+                serviceCategory={category}
+              />
             </th>
             <th>Work Task Types</th>
           </tr>
@@ -40,9 +42,11 @@ export default async function KnowledgeDomainTableEditor({
             return (
               <tr key={index}>
                 <td>
-                  <KnowledgeDomainTableCell kd={kd} />
+                  <KnowledgeDomainNameCell kd={kd} />
                 </td>
-                <td>{kd.workTaskTypeCount}</td>
+                <td>
+                  <KnowledgeDomainDependencies kd={kd} />
+                </td>
               </tr>
             );
           })}

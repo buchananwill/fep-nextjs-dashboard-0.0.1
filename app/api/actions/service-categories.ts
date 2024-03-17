@@ -8,7 +8,12 @@ import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLea
 import { API_BASE_URL } from '../main';
 import { ServiceCategoryDto } from '../dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelDto } from '../dtos/KnowledgeLevelDtoSchema';
-import { getWithoutBody, patchEntity } from './template-actions';
+import {
+  deleteEntities,
+  getWithoutBody,
+  patchEntity,
+  postEntity
+} from './template-actions';
 import { KnowledgeDomainDto } from '../dtos/KnowledgeDomainDtoSchema';
 
 const serviceCategoriesApi = `${API_BASE_URL}/serviceCategories`;
@@ -43,4 +48,16 @@ export async function patchKnowledgeDomain(
 ): ActionResponsePromise<KnowledgeDomainDto> {
   const url = `${serviceCategoriesApi}/${knowledgeDomainDto.serviceCategoryId}/knowledgeDomains`;
   return patchEntity(knowledgeDomainDto, url);
+}
+export async function postKnowledgeDomain(
+  knowledgeDomainDto: KnowledgeDomainDto
+): ActionResponsePromise<KnowledgeDomainDto> {
+  const url = `${serviceCategoriesApi}/${knowledgeDomainDto.serviceCategoryId}/knowledgeDomains`;
+  return postEntity(knowledgeDomainDto, url);
+}
+export async function deleteKnowledgeDomain(
+  knowledgeDomainDto: KnowledgeDomainDto
+): ActionResponsePromise<KnowledgeDomainDto[]> {
+  const url = `${serviceCategoriesApi}/${knowledgeDomainDto.serviceCategoryId}/knowledgeDomains`;
+  return deleteEntities([knowledgeDomainDto], url);
 }

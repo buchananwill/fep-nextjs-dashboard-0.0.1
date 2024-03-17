@@ -1,16 +1,18 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 
+export type GenericButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
+
 export function RenameButton({
   currentName,
   className,
   ...props
 }: {
   currentName?: string;
-} & React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->) {
+} & GenericButtonProps) {
   return (
     <button
       className={`btn btn-primary btn-outline btn-sm ${className}`}

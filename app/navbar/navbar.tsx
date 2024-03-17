@@ -140,7 +140,7 @@ export default function Navbar({
       {
         name: 'Lesson Types',
         href: '/curriculum/lesson-types',
-        dropdownItems: [{ name: 'All', href: '' }]
+        dropdownItems: [{ name: 'All', href: '/All' }]
       },
       {
         name: 'Models',
