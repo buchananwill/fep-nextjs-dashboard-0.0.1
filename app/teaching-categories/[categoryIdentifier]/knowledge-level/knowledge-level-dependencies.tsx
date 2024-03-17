@@ -1,16 +1,12 @@
 'use client';
-import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
-import { TwoStageClick } from '../../components/buttons/two-stage-click';
-import { deleteKnowledgeDomain } from '../../api/actions/service-categories';
+import { TwoStageClick } from '../../../components/buttons/two-stage-click';
+import { deleteKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
+import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 
-export function KnowledgeDomainDependencies({
-  kd
-}: {
-  kd: KnowledgeDomainDto;
-}) {
+export function KnowledgeLevelDependencies({ kl }: { kl: KnowledgeLevelDto }) {
   const appRouterInstance = useRouter();
-  const { workTaskTypeCount, serviceCategoryId, id } = kd;
+  const { workTaskTypeCount, serviceCategoryId, id } = kl;
   return workTaskTypeCount > 0 ? (
     <TwoStageClick
       onClick={() =>
@@ -24,7 +20,7 @@ export function KnowledgeDomainDependencies({
   ) : (
     <TwoStageClick
       onClick={() => {
-        deleteKnowledgeDomain(kd).then(() => appRouterInstance.refresh());
+        deleteKnowledgeLevel(kl).then(() => appRouterInstance.refresh());
       }}
     >
       {workTaskTypeCount}

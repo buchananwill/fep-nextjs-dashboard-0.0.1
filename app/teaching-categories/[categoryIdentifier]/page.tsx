@@ -2,7 +2,8 @@ import { Card, Title } from '@tremor/react';
 import { getServiceCategoryByIdentifier } from '../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { ServiceCategoryEditor } from './serviceCategoryEditor';
-import KnowledgeDomainTableEditor from './knowledge-domain-table-editor';
+import KnowledgeDomainTableEditor from './knowledge-domain/knowledge-domain-table-editor';
+import KnowledgeLevelTableEditor from './knowledge-level/knowledge-level-table-editor';
 
 export default async function ServiceCategoriesPage({
   params: { categoryIdentifier }
@@ -28,7 +29,11 @@ export default async function ServiceCategoriesPage({
               category={data}
             ></KnowledgeDomainTableEditor>
           }
-          knowledgeLevelPanel={data.knowledgeLevelDescriptor}
+          knowledgeLevelPanel={
+            <KnowledgeLevelTableEditor
+              category={data}
+            ></KnowledgeLevelTableEditor>
+          }
         ></ServiceCategoryEditor>
       </div>
     </Card>

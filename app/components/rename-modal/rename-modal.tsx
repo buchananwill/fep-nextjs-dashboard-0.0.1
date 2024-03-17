@@ -17,8 +17,15 @@ export function RenameModal({
   contextKey,
   listenerKey,
   children,
+  error,
+  errorMessage = 'Please choose unique non-empty name',
   ...props
-}: { contextKey: string; listenerKey?: string } & ConfirmActionModalProps) {
+}: {
+  contextKey: string;
+  listenerKey?: string;
+  errorMessage?: string;
+  error?: boolean;
+} & ConfirmActionModalProps) {
   const combinedKey = useSelectiveContextKeyMemo(
     contextKey,
     listenerKey || RenameModalWrapperListener
@@ -34,6 +41,8 @@ export function RenameModal({
         <TextInput
           value={currentState}
           onValueChange={dispatchWithoutControl}
+          error={error}
+          errorMessage={errorMessage}
         />
       )}
     </ConfirmActionModal>

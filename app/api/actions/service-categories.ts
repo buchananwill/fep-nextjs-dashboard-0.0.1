@@ -12,6 +12,7 @@ import {
   deleteEntities,
   getWithoutBody,
   patchEntity,
+  patchEntityList,
   postEntity
 } from './template-actions';
 import { KnowledgeDomainDto } from '../dtos/KnowledgeDomainDtoSchema';
@@ -36,6 +37,27 @@ export async function getKnowledgeLevels(
   const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeLevels`;
   return getWithoutBody(url);
 }
+
+export async function patchKnowledgeLevels(
+  serviceCategory: ServiceCategoryDto,
+  knowledgeLevelDtoList: KnowledgeLevelDto[]
+): ActionResponsePromise<KnowledgeLevelDto[]> {
+  const url = `${serviceCategoriesApi}/${serviceCategory.id}/knowledgeLevels`;
+  return patchEntityList(knowledgeLevelDtoList, url);
+}
+export async function postKnowledgeLevel(
+  knowledgeLevelDto: KnowledgeLevelDto
+): ActionResponsePromise<KnowledgeLevelDto> {
+  const url = `${serviceCategoriesApi}/${knowledgeLevelDto.serviceCategoryId}/knowledgeLevels`;
+  return postEntity(knowledgeLevelDto, url);
+}
+export async function deleteKnowledgeLevel(
+  knowledgeLevelDto: KnowledgeLevelDto
+): ActionResponsePromise<KnowledgeLevelDto[]> {
+  const url = `${serviceCategoriesApi}/${knowledgeLevelDto.serviceCategoryId}/knowledgeLevels`;
+  return deleteEntities([knowledgeLevelDto], url);
+}
+
 export async function getKnowledgeDomains(
   serviceCategoryId: string
 ): ActionResponsePromise<KnowledgeDomainDto[]> {

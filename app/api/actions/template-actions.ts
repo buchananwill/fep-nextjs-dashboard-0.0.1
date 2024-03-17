@@ -77,6 +77,16 @@ export async function patchEntity<T>(
   });
   return callApi<T>(url, requestInit);
 }
+export async function patchEntityList<T>(
+  entityList: T[],
+  url: string
+): ActionResponsePromise<T[]> {
+  const requestInit = createRequestInit({
+    body: entityList,
+    method: 'PATCH'
+  });
+  return callApi<T[]>(url, requestInit);
+}
 export async function postEntity<T>(
   entity: T,
   url: string
