@@ -16,8 +16,10 @@ export function KnowledgeDomainDependencies({
       onClick={() =>
         console.log('Number of tasks associated:', workTaskTypeCount)
       }
+      standardAppearance={'btn-ghost'}
       primedAppearance={'btn-primary'}
       primedMessage={'Go to dependencies?'}
+      className={'btn-sm'}
     >
       {workTaskTypeCount}
     </TwoStageClick>
@@ -26,6 +28,8 @@ export function KnowledgeDomainDependencies({
       onClick={() => {
         deleteKnowledgeDomain(kd).then(() => appRouterInstance.refresh());
       }}
+      standardAppearance={'btn-ghost'}
+      className={'btn-sm'}
     >
       {workTaskTypeCount}
     </TwoStageClick>

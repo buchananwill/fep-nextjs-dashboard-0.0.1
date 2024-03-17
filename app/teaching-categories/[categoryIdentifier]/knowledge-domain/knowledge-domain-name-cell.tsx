@@ -40,7 +40,7 @@ export function KnowledgeDomainNameCell({
   };
 
   return (
-    <div className={'flex items-center px-2'}>
+    <>
       <button onClick={openModal} className={'btn btn-ghost btn-sm'}>
         <PencilSquareIcon className={'w-4 h-4'} />{' '}
       </button>
@@ -55,6 +55,6 @@ export function KnowledgeDomainNameCell({
         onCancel={handleCancel}
         error={error}
       />
-    </div>
+    </>
   );
 }

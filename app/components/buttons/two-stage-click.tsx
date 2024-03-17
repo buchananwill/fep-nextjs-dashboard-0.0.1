@@ -6,10 +6,13 @@ import { GenericButtonProps } from './rename-button';
 export function TwoStageClick({
   children,
   onClick,
+  standardAppearance = 'btn-outline',
   primedAppearance = 'btn-error',
   primedMessage = 'Confirm delete?',
+  className,
   ...props
 }: {
+  standardAppearance?: 'btn-outline' | 'btn-ghost';
   primedAppearance?: 'btn-error' | 'btn-primary';
   primedMessage?: string;
 } & GenericButtonProps) {
@@ -34,8 +37,8 @@ export function TwoStageClick({
   return (
     <button
       className={`relative btn transition-colors duration-500  ${
-        clickPrimed ? primedAppearance : 'btn-outline'
-      } btn-sm `}
+        clickPrimed ? primedAppearance : standardAppearance
+      } ${className}`}
       {...props}
       onClick={guardClick}
       ref={refs.setReference}

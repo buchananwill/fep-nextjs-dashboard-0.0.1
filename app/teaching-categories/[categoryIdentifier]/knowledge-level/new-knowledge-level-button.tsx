@@ -19,6 +19,8 @@ import {
 import { postKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
+import { useTransition } from 'react';
+
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 
 type NewKnowledgeLevelButtonProps = Omit<GenericButtonProps, 'onClick'> & {
@@ -86,6 +88,22 @@ export function TextInputUniqueNonEmpty({
   );
 }
 
+export function PendingOverlay(props: { pending: boolean }) {
+  return (
+    <>
+      {props.pending && (
+        <div
+          className={
+            'w-full h-full absolute bg-slate-100 opacity-75 top-0 left-0 z-20 flex place-content-center'
+          }
+        >
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
+    </>
+  );
+}
+
 export function NewKnowledgeLevelButton({
   serviceCategory,
   className,
@@ -93,6 +111,7 @@ export function NewKnowledgeLevelButton({
 }: NewKnowledgeLevelButtonProps) {
   const appRouterInstance = useRouter();
   const { isOpen, closeModal, openModal } = useModal();
+  const [pending, startTransition] = useTransition();
 
   const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
     NewKnowledgeLevelContextKey,
@@ -129,15 +148,21 @@ export function NewKnowledgeLevelButton({
         knowledgeLevelDescriptor: serviceCategory.knowledgeLevelDescriptor,
         levelOrdinal: NaN
       };
-      postKnowledgeLevel(kdToPost).then(() => {
-        appRouterInstance.refresh();
-      });
-      setConfirmWithoutName({
-        contextKey: NewKnowledgeLevelContextKey,
-        value: false
-      });
-      console.log();
-      closeModal();
+      postKnowledgeLevel(kdToPost)
+        .then(() => {
+          appRouterInstance.refresh();
+        })
+        .then(() => {
+          setConfirmWithoutName({
+            contextKey: NewKnowledgeLevelContextKey,
+            value: false
+          });
+          dispatchUpdate({
+            contextKey: NewKnowledgeLevelContextKey,
+            value: ''
+          });
+          closeModal();
+        });
     }
   };
 
@@ -152,7 +177,9 @@ export function NewKnowledgeLevelButton({
           });
           openModal();
         }}
+        disabled={pending}
       >
+        <PendingOverlay pending={pending} />
         <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
       </button>
       <ConfirmActionModal

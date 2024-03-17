@@ -12,8 +12,10 @@ export function KnowledgeLevelDependencies({ kl }: { kl: KnowledgeLevelDto }) {
       onClick={() =>
         console.log('Number of tasks associated:', workTaskTypeCount)
       }
+      standardAppearance={'btn-ghost'}
       primedAppearance={'btn-primary'}
       primedMessage={'Go to dependencies?'}
+      className={'btn-sm'}
     >
       {workTaskTypeCount}
     </TwoStageClick>
@@ -22,6 +24,8 @@ export function KnowledgeLevelDependencies({ kl }: { kl: KnowledgeLevelDto }) {
       onClick={() => {
         deleteKnowledgeLevel(kl).then(() => appRouterInstance.refresh());
       }}
+      standardAppearance={'btn-ghost'}
+      className={'btn-sm'}
     >
       {workTaskTypeCount}
     </TwoStageClick>

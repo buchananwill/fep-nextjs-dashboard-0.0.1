@@ -21,7 +21,10 @@ import {
 import { postKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
-import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';
+import {
+  PendingOverlay,
+  TextInputUniqueNonEmpty
+} from '../knowledge-level/new-knowledge-level-button';
 const NewKnowledgeDomainContextKey = 'new-knowledge-domain-name';
 
 type NewKnowledgeDomainButtonProps = Omit<GenericButtonProps, 'onClick'> & {
@@ -144,15 +147,7 @@ export function NewKnowledgeDomainButton({
         }}
         disabled={pending}
       >
-        {pending && (
-          <div
-            className={
-              'w-full h-full absolute bg-slate-100 opacity-75 top-0 left-0 z-20 flex place-content-center'
-            }
-          >
-            <span className="loading loading-spinner loading-lg"></span>
-          </div>
-        )}
+        <PendingOverlay pending={pending} />
         <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
       </button>
       <ConfirmActionModal

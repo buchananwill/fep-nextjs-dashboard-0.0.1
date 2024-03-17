@@ -5,6 +5,14 @@ import { KnowledgeDomainNameCell } from './knowledge-domain-name-cell';
 import { NewKnowledgeDomainButton } from './new-knowledge-domain-button';
 import { KnowledgeDomainDependencies } from './knowledge-domain-dependencies';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
+import {
+  KnowledgeCategoryTable,
+  KnowledgeCategoryTableBody,
+  KnowledgeCategoryTableCell,
+  KnowledgeCategoryTableHeader,
+  KnowledgeCategoryTableHeaderCell,
+  KnowledgeCategoryTableRow
+} from '../components/knowledge-category-table';
 
 export function getNameList<T extends HasNameDto>(namedDtoArray: T[]) {
   return namedDtoArray.map((dto) => dto.name);
@@ -29,44 +37,36 @@ export default async function KnowledgeDomainTableEditor({
   const nameList = getNameList(knowledgeDomains);
 
   return (
-    <div className={'h-[60vh]'}>
-      <table className={''}>
-        <thead className={'sticky top-0 bg-white opacity-100 z-10'}>
-          <tr>
-            <th scope={'col'}>
-              <div className={'flex items-center p-2 justify-center'}>
-                {category.knowledgeDomainDescriptor}
-                <NewKnowledgeDomainButton
-                  className={
-                    'flex btn btn-outline btn-xs ml-2 relative overflow-hidden'
-                  }
-                  serviceCategory={category}
-                  knowledgeDomainServiceCategoryNameList={nameList}
-                />
-              </div>
-            </th>
-            <th scope={'col'}>
-              <div className={'flex items-center p-2 justify-center'}>
-                Work Task Types
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {knowledgeDomains.map((kd, index) => {
-            return (
-              <tr key={kd.id}>
-                <td>
-                  <KnowledgeDomainNameCell kd={kd} nameList={nameList} />
-                </td>
-                <td>
-                  <KnowledgeDomainDependencies kd={kd} />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <KnowledgeCategoryTable>
+      <KnowledgeCategoryTableHeader>
+        <KnowledgeCategoryTableHeaderCell>
+          {category.knowledgeDomainDescriptor}
+          <NewKnowledgeDomainButton
+            className={
+              'flex btn btn-outline btn-xs ml-2 relative overflow-hidden'
+            }
+            serviceCategory={category}
+            knowledgeDomainServiceCategoryNameList={nameList}
+          />
+        </KnowledgeCategoryTableHeaderCell>
+        <KnowledgeCategoryTableHeaderCell>
+          Work Task Types
+        </KnowledgeCategoryTableHeaderCell>
+      </KnowledgeCategoryTableHeader>
+      <KnowledgeCategoryTableBody>
+        {knowledgeDomains.map((kd, index) => {
+          return (
+            <KnowledgeCategoryTableRow key={kd.id}>
+              <KnowledgeCategoryTableCell>
+                <KnowledgeDomainNameCell kd={kd} nameList={nameList} />
+              </KnowledgeCategoryTableCell>
+              <KnowledgeCategoryTableCell>
+                <KnowledgeDomainDependencies kd={kd} />
+              </KnowledgeCategoryTableCell>
+            </KnowledgeCategoryTableRow>
+          );
+        })}
+      </KnowledgeCategoryTableBody>
+    </KnowledgeCategoryTable>
   );
 }
