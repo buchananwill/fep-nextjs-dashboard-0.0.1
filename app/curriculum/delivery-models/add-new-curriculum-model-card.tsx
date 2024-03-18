@@ -114,7 +114,7 @@ export function AddNewCurriculumModelCard({
       name: 'New model',
       userToProviderRatio: 30
     };
-    console.log('Next new model: ', curriculumModelsMap[nextModelId]);
+
     postModels([unsavedModel]).then((r) => {
       if (r.data !== undefined) {
         const payloadArray = getPayloadArray(r.data, (schema) => schema.id);

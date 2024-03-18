@@ -63,7 +63,7 @@ export async function putEntities<T>(
     body: entities,
     method: 'PUT'
   });
-  console.log(url, requestInit);
+
   return callApi<T>(url, requestInit);
 }
 

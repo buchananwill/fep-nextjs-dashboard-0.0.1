@@ -61,9 +61,8 @@ export function BundleAssignmentsProvider({
       .map(parseStringStringToIntInt)
       .map(curriedMapper);
     const apiPayload = mappedBundles as { partyId: number; bundleId: number }[];
-    console.log('apiPayload:', apiPayload);
+
     postBundleDeliveries(apiPayload).then((r) => {
-      console.log(r.data, r);
       if (r.status < 300 && r.data) {
         const { initialPayload: payloadArray } = mapToPartyIdBundleIdRecords(
           r.data

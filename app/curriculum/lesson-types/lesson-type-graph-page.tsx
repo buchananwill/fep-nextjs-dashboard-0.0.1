@@ -24,8 +24,6 @@ export default async function LessonTypeGraphPage({
 
   const { data: graphDto } = actionResponse;
 
-  console.log(graphDto);
-
   return (
     <>
       <Card className={'mb-4 flex'}>

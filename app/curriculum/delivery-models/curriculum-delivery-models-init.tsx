@@ -14,6 +14,6 @@ export function CurriculumDeliveryModelsInit({
     workProjectSeriesSchemaDtos,
     taskTypeList
   );
-  console.log('schemas in the model init: ', workProjectSeriesSchemaDtos);
+
   return <></>;
 }
