@@ -4,7 +4,12 @@ import { GraphContext } from '../../graph/graph-context-creator';
 import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
 import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { DataLink, DataNode, GraphDto } from '../../../api/zod-mods';
+import {
+  DataLink,
+  DataNode,
+  GraphDto,
+  GraphDtoPutRequestBody
+} from '../../../api/zod-mods';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { GenericFunctionWrapper } from '../../../components/selective-context/selective-context-manager-function';
 import { useModal } from '../../../components/confirm-action-modal';
@@ -51,7 +56,7 @@ export function useEnableNodeEditing<T extends HasNumberIdDto>(
   deleteNodes: (idList: number[]) => ActionResponsePromise<number[]>,
   deleteLinks: (idList: number[]) => ActionResponsePromise<number[]>,
   putUpdatedGraph: (
-    updatedGraph: GraphDto<T>
+    updatedGraph: GraphDtoPutRequestBody<T>
   ) => ActionResponsePromise<GraphDto<T>>
 ): UnsavedNodeChangesProps {
   const { unsavedGraphContextKey, unsavedGraphChanges, setUnsaved } =
@@ -81,17 +86,27 @@ export function useEnableNodeEditing<T extends HasNumberIdDto>(
         deletedLinkIds.filter(removeTransientId);
       const deletedNodeNonTransientIds =
         deletedNodeIds.filter(removeTransientId);
-      if (deletedNodeNonTransientIds.length > 0) {
-        deleteNodes(deletedNodeNonTransientIds);
-      }
-      if (deletedLinkNonTransientIds.length > 0) {
-        deleteLinks(deletedLinkNonTransientIds);
-      }
+      // if (deletedNodeNonTransientIds.length > 0) {
+      //   deleteNodes(deletedNodeNonTransientIds);
+      // }
+      // if (deletedLinkNonTransientIds.length > 0) {
+      //   deleteLinks(deletedLinkNonTransientIds);
+      // }
       const unsavedNodes = nodes.filter((n) => !removeTransientId(n.id));
       const unsavedLinks = links.filter((l) => !removeTransientId(l.id));
-      console.log('unsaved links: ', unsavedLinks);
-      if (unsavedLinks.length > 0 || unsavedNodes.length > 0) {
-        putUpdatedGraph(updatedGraph).then((r) => {
+
+      if (
+        unsavedLinks.length > 0 ||
+        unsavedNodes.length > 0 ||
+        deletedLinkNonTransientIds.length > 0 ||
+        deletedNodeNonTransientIds.length > 0
+      ) {
+        const request: GraphDtoPutRequestBody<T> = {
+          graphDto: updatedGraph,
+          deletedClosureIdList: deletedLinkNonTransientIds,
+          deletedNodeIdList: deletedNodeNonTransientIds
+        };
+        putUpdatedGraph(request).then((r) => {
           console.log(r);
           if (r.status == 200) {
           }

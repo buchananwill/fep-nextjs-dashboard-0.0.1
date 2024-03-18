@@ -1,5 +1,9 @@
 'use client';
-import { DataNode, GraphDto } from '../../../api/zod-mods';
+import {
+  DataNode,
+  GraphDto,
+  GraphDtoPutRequestBody
+} from '../../../api/zod-mods';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { Card } from '@tremor/react';
 import CurriculumDeliveryDetails from '../../components/curriculum-delivery-details';
@@ -19,7 +23,6 @@ import {
   deleteNodes,
   putOrganizationGraph
 } from '../../../api/actions/curriculum-delivery-model';
-import { produce } from 'immer';
 import { deDuplicateNames } from '../../../curriculum/lesson-types/increment-clone-suffix';
 import * as _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
@@ -37,10 +40,11 @@ export function getGraphUpdaterWithNameDeDuplication<
   T extends HasNumberIdDto & HasNameDto
 >(
   putUpdatedGraph: (
-    updatedGraph: GraphDto<T>
+    request: GraphDtoPutRequestBody<T>
   ) => ActionResponsePromise<GraphDto<T>>
 ) {
-  return (graphDto: GraphDto<T>) => {
+  return (request: GraphDtoPutRequestBody<T>) => {
+    const { graphDto } = request;
     const { nodes } = graphDto;
     const organizationDtos = nodes.map((dn) => dn.data);
     const dtosWithNamesDeDuplicated = deDuplicateNames(organizationDtos);
@@ -56,7 +60,8 @@ export function getGraphUpdaterWithNameDeDuplication<
       ...graphDto,
       nodes: nodesWithDataNamesDeDuplicated
     };
-    return putUpdatedGraph(safeGraph);
+    const safeRequest = { ...request, graphDto: safeGraph };
+    return putUpdatedGraph(safeRequest);
   };
 }
 

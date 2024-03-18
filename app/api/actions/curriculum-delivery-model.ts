@@ -6,7 +6,7 @@ import {
 } from './actionResponse';
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
 import { API_BASE_URL, Page } from '../main';
-import { GraphDto } from '../zod-mods';
+import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
 import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
@@ -16,7 +16,8 @@ import {
   getWithoutBody,
   postEntities,
   postEntitiesWithDifferentReturnType,
-  putEntities
+  putEntities,
+  putRequestWithDifferentReturnType
 } from './template-actions';
 import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
 
@@ -74,9 +75,12 @@ export async function getOrganizationTypes(): ActionResponsePromise<
 }
 
 export async function putOrganizationGraph(
-  updatedGraph: GraphDto<OrganizationDto>
+  requestBody: GraphDtoPutRequestBody<OrganizationDto>
 ): ActionResponsePromise<GraphDto<OrganizationDto>> {
-  return putEntities(updatedGraph, organizationGraphEndpoint);
+  return putRequestWithDifferentReturnType<
+    GraphDtoPutRequestBody<OrganizationDto>,
+    GraphDto<OrganizationDto>
+  >(requestBody, organizationGraphEndpoint);
 }
 
 export async function deleteNodes(

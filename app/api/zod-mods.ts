@@ -45,6 +45,12 @@ export interface GraphDto<T extends HasNumberIdDto> {
   closureDtos: ClosureDto[];
 }
 
+export interface GraphDtoPutRequestBody<T extends HasNumberIdDto> {
+  graphDto: GraphDto<T>;
+  deletedNodeIdList: number[];
+  deletedClosureIdList: number[];
+}
+
 function makeDataNodeSchema<T extends z.ZodSchema>(schema: T) {
   return z.object({
     id: z.number(),
