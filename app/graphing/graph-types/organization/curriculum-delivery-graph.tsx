@@ -14,7 +14,11 @@ import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
 import { useEnableNodeEditing } from './use-enable-node-editing';
 import { useNodeAndLinkRefs } from './use-node-and-link-refs';
-import { putOrganizationGraph } from '../../../api/actions/curriculum-delivery-model';
+import {
+  deleteLinks,
+  deleteNodes,
+  putOrganizationGraph
+} from '../../../api/actions/curriculum-delivery-model';
 import { produce } from 'immer';
 import { deDuplicateNames } from '../../../curriculum/lesson-types/increment-clone-suffix';
 import * as _ from 'lodash';
@@ -85,6 +89,8 @@ export default function CurriculumDeliveryGraph({
     nodesRef,
     linksRef,
     cloneFunctionWrapper,
+    deleteNodes,
+    deleteLinks,
     organizationGraphUpdater
   );
 
