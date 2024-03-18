@@ -8,10 +8,7 @@ import { useNodeAndLinkRefs } from '../../graphing/graph-types/organization/use-
 import { incrementCloneSuffix } from './increment-clone-suffix';
 import { useEnableNodeEditing } from '../../graphing/graph-types/organization/use-enable-node-editing';
 import { getGraphUpdaterWithNameDeDuplication } from '../../graphing/graph-types/organization/curriculum-delivery-graph';
-import {
-  putWorkTaskTypeGraph,
-  putWorkTaskTypes
-} from '../../api/actions/work-task-types';
+import { putWorkTaskTypeGraph } from '../../api/actions/work-task-types';
 
 function cloneWorkTaskType(
   template: DataNode<WorkTaskTypeDto>

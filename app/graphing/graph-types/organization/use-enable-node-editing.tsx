@@ -53,8 +53,7 @@ export function useEnableNodeEditing<T extends HasNumberIdDto>(
   nodesRef: React.MutableRefObject<DataNode<T>[]>,
   linksRef: React.MutableRefObject<DataLink<T>[]>,
   cloneFunction: GenericFunctionWrapper<DataNode<T>, DataNode<T>>,
-  deleteNodes: (idList: number[]) => ActionResponsePromise<number[]>,
-  deleteLinks: (idList: number[]) => ActionResponsePromise<number[]>,
+
   putUpdatedGraph: (
     updatedGraph: GraphDtoPutRequestBody<T>
   ) => ActionResponsePromise<GraphDto<T>>

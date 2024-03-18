@@ -1,20 +1,29 @@
+'use server';
 import { ActionResponsePromise } from './actionResponse';
-import { GraphDto } from '../zod-mods';
+import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
 import { API_BASE_URL } from '../main';
 import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
-import { getWithoutBody, putEntities } from './template-actions';
+import {
+  getWithoutBody,
+  putEntities,
+  putRequestWithDifferentReturnType
+} from './template-actions';
 
+const workTaskTypesEndpointUrl = `${API_BASE_URL}/workTasks/types`;
 export async function getWorkTaskTypeGraph(
   typeNameLike: string
 ): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
-  const url = `${API_BASE_URL}/workTasks/types/graph?typeNameLike=${typeNameLike}`;
+  const url = `${workTaskTypesEndpointUrl}/graph?typeNameLike=${typeNameLike}`;
   return getWithoutBody(url);
 }
 export async function putWorkTaskTypeGraph(
-  graph: GraphDto<WorkTaskTypeDto>
+  graph: GraphDtoPutRequestBody<WorkTaskTypeDto>
 ): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
-  const url = `${API_BASE_URL}/workTasks/types/graph`;
-  return getWithoutBody(url);
+  const url = `${workTaskTypesEndpointUrl}/graph`;
+  return putRequestWithDifferentReturnType<
+    GraphDtoPutRequestBody<WorkTaskTypeDto>,
+    GraphDto<WorkTaskTypeDto>
+  >(graph, url);
 }
 
 export async function getWorkTaskTypes(

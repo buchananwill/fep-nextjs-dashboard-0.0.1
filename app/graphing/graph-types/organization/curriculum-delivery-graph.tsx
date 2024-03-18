@@ -94,8 +94,6 @@ export default function CurriculumDeliveryGraph({
     nodesRef,
     linksRef,
     cloneFunctionWrapper,
-    deleteNodes,
-    deleteLinks,
     organizationGraphUpdater
   );
 
