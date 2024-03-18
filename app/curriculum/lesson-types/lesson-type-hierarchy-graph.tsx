@@ -1,38 +1,24 @@
 'use client';
 
-import { useNodeAndLinkRefs } from '../../graphing/graph-types/organization/curriculum-delivery-graph';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { DataNode } from '../../api/zod-mods';
 import { NodeLinkRefWrapper } from '../../graphing/graph/node-link-ref-wrapper';
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
-import { useForceAttributeOverride } from '../../graphing/forces/use-force-attribute-override';
 import { useNodeCloneFunction } from '../../graphing/editing/use-node-clone-function';
-
-const CloneSuffixPattern = /\(\d+\)$/;
+import { useNodeAndLinkRefs } from '../../graphing/graph-types/organization/use-node-and-link-refs';
+import { incrementCloneSuffix } from './increment-clone-suffix';
+import { useEnableNodeEditing } from '../../graphing/graph-types/organization/use-enable-node-editing';
+import { getGraphUpdaterWithNameDeDuplication } from '../../graphing/graph-types/organization/curriculum-delivery-graph';
+import {
+  putWorkTaskTypeGraph,
+  putWorkTaskTypes
+} from '../../api/actions/work-task-types';
 
 function cloneWorkTaskType(
   template: DataNode<WorkTaskTypeDto>
 ): DataNode<WorkTaskTypeDto> {
   const { data } = template;
   const { name } = data;
-  let cloneName = name;
-  if (CloneSuffixPattern.test(name)) {
-    const lastOpenParenthesis = name.lastIndexOf('(');
-    const cloneCounter = name.substring(
-      lastOpenParenthesis + 1,
-      name.length - 1
-    );
-    try {
-      const cloneCounterInt = parseInt(cloneCounter);
-      cloneName = `${name.substring(0, lastOpenParenthesis)} (${
-        cloneCounterInt + 1
-      })`;
-    } catch (error) {
-      console.error(error);
-    }
-  } else {
-    cloneName = `${name} (1)`;
-  }
+  let cloneName = incrementCloneSuffix(name);
 
   return {
     ...template,
@@ -42,12 +28,19 @@ function cloneWorkTaskType(
 
 const cloneFunctionWrapper = { function: cloneWorkTaskType };
 
+const graphUpdater = getGraphUpdaterWithNameDeDuplication(putWorkTaskTypeGraph);
+
 export function LessonTypeHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<WorkTaskTypeDto>();
 
   const classList: string[] = [];
 
-  useNodeCloneFunction(cloneFunctionWrapper);
+  const unsavedNodeChangesProps = useEnableNodeEditing(
+    nodesRef,
+    linksRef,
+    cloneFunctionWrapper,
+    graphUpdater
+  );
 
   nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     classList.push(n.data.name);
@@ -64,6 +57,7 @@ export function LessonTypeHierarchyGraph() {
       titleList={titleList}
       linkListRef={linksRef}
       textList={classList}
+      unsavedNodeChangesProps={unsavedNodeChangesProps}
     ></NodeLinkRefWrapper>
   );
 }

@@ -11,7 +11,8 @@ import {
   useGraphSelectiveContextDispatch,
   useGraphSelectiveContextNumberDispatch,
   useGraphSelectiveContextKey,
-  GraphContext
+  GraphContext,
+  useGraphName
 } from '../graph/graph-context-creator';
 import {
   useSelectiveContextControllerNumber,
@@ -115,6 +116,7 @@ export function useGraphEditButtonHooks<T extends HasNumberIdDto>(
   buttonListenerKey: string
 ) {
   const { selected } = useNodeInteractionContext();
+  const graphName = useGraphName();
 
   const { incrementSimVersion, nodeListRef, linkListRef } =
     useDirectSimRefEditsDispatch<T>(buttonListenerKey);

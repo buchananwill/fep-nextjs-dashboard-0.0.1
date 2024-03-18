@@ -1,8 +1,9 @@
 import { CloneFunction } from '../../editing/add-nodes-button';
 import { DataNode } from '../../../api/zod-mods';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
+import { incrementCloneSuffix } from '../../../curriculum/lesson-types/increment-clone-suffix';
 
-const nameCharLimit = 255;
+export const NameCharLimit = 255;
 export function cloneOrganizationNode(
   templateNode: DataNode<OrganizationDto>
 ): DataNode<OrganizationDto> {
@@ -13,10 +14,8 @@ export function cloneOrganizationNode(
   const {
     data: { name }
   } = templateNode;
-  let cloneName = `${name}${templateNode.data.name.substring(name.length - 1)}`;
-  cloneName.length > nameCharLimit
-    ? cloneName.substring(cloneName.length - nameCharLimit)
-    : cloneName;
+  let cloneName = incrementCloneSuffix(name);
+
   return {
     ...templateNode,
     data: { ...templateNode.data, name: cloneName }

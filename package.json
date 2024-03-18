@@ -29,6 +29,7 @@
     "eslint-config-next": "14.0.4",
     "immer": "^10.0.3",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "postcss": "^8.4.28",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "@types/lodash": "^4.17.0",
     "daisyui": "^4.7.2"
   }
 }

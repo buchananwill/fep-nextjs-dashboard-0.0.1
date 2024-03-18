@@ -14,7 +14,9 @@ import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle
 import { StringMap } from '../../delivery-models/contexts/string-map-context-creator';
 import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
-import CurriculumDeliveryGraph from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
+import CurriculumDeliveryGraph, {
+  CurriculumDeliveryGraphPageKey
+} from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
 
 const emptyBundles = {} as StringMap<string>;
@@ -92,7 +94,10 @@ export default async function Page({
           taskTypeList={workTaskTypeDtos}
         />
 
-        <ForceGraphPage dataGraph={dataGraph} graphName={'curriculum-graph'}>
+        <ForceGraphPage
+          dataGraph={dataGraph}
+          graphName={CurriculumDeliveryGraphPageKey}
+        >
           <CurriculumDeliveryGraph
             bundles={assignedBundleDeliveryData}
           ></CurriculumDeliveryGraph>

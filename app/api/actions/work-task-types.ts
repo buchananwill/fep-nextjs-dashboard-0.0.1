@@ -7,7 +7,13 @@ import { getWithoutBody, putEntities } from './template-actions';
 export async function getWorkTaskTypeGraph(
   typeNameLike: string
 ): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
-  const url = `${API_BASE_URL}/graphs/workTaskTypes?typeNameLike=${typeNameLike}`;
+  const url = `${API_BASE_URL}/workTasks/types/graph?typeNameLike=${typeNameLike}`;
+  return getWithoutBody(url);
+}
+export async function putWorkTaskTypeGraph(
+  graph: GraphDto<WorkTaskTypeDto>
+): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
+  const url = `${API_BASE_URL}/workTasks/types/graph`;
   return getWithoutBody(url);
 }
 
