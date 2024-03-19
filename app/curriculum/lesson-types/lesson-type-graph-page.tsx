@@ -1,6 +1,6 @@
 import { Card, Title } from '@tremor/react';
 import ForceGraphPage from '../../graphing/force-graph-page';
-import { LessonTypeHierarchyGraph } from './lesson-type-hierarchy-graph';
+import { LessonTypeHierarchyGraph } from '../../graphing/graph-types/work-task-types/lesson-type-hierarchy-graph';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
@@ -18,7 +18,6 @@ export default async function LessonTypeGraphPage({
   const actionResponse = await lessonTypesResponseGraph;
 
   if (actionResponse.status != 200 || actionResponse.data === undefined) {
-    console.log(actionResponse);
     return <Card>No premises!</Card>;
   }
 
@@ -33,11 +32,10 @@ export default async function LessonTypeGraphPage({
           currentSelection={currentSelection}
         />
       </Card>
-      <Card className={'p-1'}>
-        <ForceGraphPage dataGraph={graphDto} graphName={'lesson-types-graph'}>
-          <LessonTypeHierarchyGraph />
-        </ForceGraphPage>
-      </Card>
+
+      <ForceGraphPage dataGraph={graphDto} graphName={'lesson-types-graph'}>
+        <LessonTypeHierarchyGraph />
+      </ForceGraphPage>
     </>
   );
 }

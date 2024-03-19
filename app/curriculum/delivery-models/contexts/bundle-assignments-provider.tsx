@@ -49,8 +49,6 @@ export function BundleAssignmentsProvider({
       false
     );
 
-  console.log(bundleAssignmentState);
-
   const { openModal, isOpen, closeModal } = useModal();
 
   const handleConfirm = () => {
@@ -75,7 +73,6 @@ export function BundleAssignmentsProvider({
       }
     });
     closeModal();
-    console.log(bundleAssignmentState);
   };
 
   const handleCancel = () => {

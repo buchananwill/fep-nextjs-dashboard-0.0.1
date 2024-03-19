@@ -4,7 +4,7 @@ import { GraphDto } from '../../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import ForceGraphPage from '../../../graphing/force-graph-page';
-import { LessonTypeHierarchyGraph } from '../lesson-type-hierarchy-graph';
+import { LessonTypeHierarchyGraph } from '../../../graphing/graph-types/work-task-types/lesson-type-hierarchy-graph';
 import DropdownParam from '../../../components/dropdown/dropdown-param';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
 import {

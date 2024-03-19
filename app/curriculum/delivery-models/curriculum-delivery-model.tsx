@@ -9,7 +9,6 @@ import { StepperContext } from '../../components/stepper/stepper-context-creator
 import { TabStyled } from '../../components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { sumDeliveryAllocations } from '../../graphing/components/curriculum-delivery-details';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import {
   useSelectiveContextControllerBoolean,
@@ -17,6 +16,7 @@ import {
   useSelectiveContextListenerBoolean
 } from '../../components/selective-context/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 
 const allocationSizes = [1, 2];
 

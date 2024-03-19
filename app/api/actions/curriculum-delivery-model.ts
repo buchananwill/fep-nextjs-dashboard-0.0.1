@@ -77,6 +77,7 @@ export async function getOrganizationTypes(): ActionResponsePromise<
 export async function putOrganizationGraph(
   requestBody: GraphDtoPutRequestBody<OrganizationDto>
 ): ActionResponsePromise<GraphDto<OrganizationDto>> {
+  console.log('Putting graph!');
   return putRequestWithDifferentReturnType<
     GraphDtoPutRequestBody<OrganizationDto>,
     GraphDto<OrganizationDto>

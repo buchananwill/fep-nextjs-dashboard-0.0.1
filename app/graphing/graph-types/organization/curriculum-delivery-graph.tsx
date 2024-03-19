@@ -6,7 +6,7 @@ import {
 } from '../../../api/zod-mods';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { Card } from '@tremor/react';
-import CurriculumDeliveryDetails from '../../components/curriculum-delivery-details';
+import CurriculumDeliveryDetails from './curriculum-delivery-details';
 import { NodePayload } from '../../force-graph-page';
 import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { useBundleAssignmentsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
@@ -16,14 +16,14 @@ import { cloneOrganizationNode } from './clone-organization-node';
 import { mapToPartyIdBundleIdRecords } from './map-to-party-id-bundle-id-records';
 import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
-import { useEnableNodeEditing } from './use-enable-node-editing';
-import { useNodeAndLinkRefs } from './use-node-and-link-refs';
+import { useEnableNodeEditing } from '../../editing/use-enable-node-editing';
+import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
 import {
   deleteLinks,
   deleteNodes,
   putOrganizationGraph
 } from '../../../api/actions/curriculum-delivery-model';
-import { deDuplicateNames } from '../../../curriculum/lesson-types/increment-clone-suffix';
+import { deDuplicateNames } from '../../editing/increment-clone-suffix';
 import * as _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
@@ -126,8 +126,6 @@ export default function CurriculumDeliveryGraph({
       };
     }
   );
-
-  console.log(nodeDetailElements);
 
   return (
     <NodeLinkRefWrapper

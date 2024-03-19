@@ -1,61 +1,120 @@
 'use client';
-import { DataNode } from '../../api/zod-mods';
+import { DataNode } from '../../../api/zod-mods';
 import React, { useContext, useMemo } from 'react';
-import { PartyDto } from '../../api/dtos/PartyDtoSchema';
-import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
-import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { isNotNull } from '../editing/graph-edits';
-import { useCurriculumModelContext } from '../../curriculum/delivery-models/contexts/use-curriculum-model-context';
-import {
-  useBundleAssignmentsContext,
-  useSingleBundleAssignment
-} from '../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
-import { useBundleItemsContext } from '../../curriculum/delivery-models/contexts/use-bundle-Items-context';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { isNotNull } from '../../editing/graph-edits';
+import { useCurriculumModelContext } from '../../../curriculum/delivery-models/contexts/use-curriculum-model-context';
+import { useSingleBundleAssignment } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
+import { useBundleItemsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-Items-context';
 import { Listbox } from '@headlessui/react';
-import { SchemaBundleKeyPrefix } from '../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
-import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
-import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { UnsavedBundleAssignmentsKey } from '../../curriculum/delivery-models/contexts/bundle-assignments-provider';
+import { SchemaBundleKeyPrefix } from '../../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
+import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
+import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { UnsavedBundleAssignmentsKey } from '../../../curriculum/delivery-models/contexts/bundle-assignments-provider';
 import {
   RenameModal,
+  RenameModalProps,
   RenameModalWrapperContextKey
-} from '../../components/rename-modal/rename-modal';
-import { useModal } from '../../components/confirm-action-modal';
-import { useSelectiveContextControllerString } from '../../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
-import { useDirectSimRefEditsDispatch } from '../editing/use-graph-edit-button-hooks';
-import { GraphContext } from '../graph/graph-context-creator';
-import { UnsavedNodeDataContextKey } from '../graph-types/organization/curriculum-delivery-graph';
-import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
-import { resetLinks } from '../editing/add-nodes-button';
+} from '../../../components/rename-modal/rename-modal';
+import {
+  ConfirmActionModalProps,
+  useModal
+} from '../../../components/confirm-action-modal';
+import { useSelectiveContextControllerString } from '../../../components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
+import { useDirectSimRefEditsDispatch } from '../../editing/use-graph-edit-button-hooks';
+import { GraphContext } from '../../graph/graph-context-creator';
+import { UnsavedNodeDataContextKey } from './curriculum-delivery-graph';
+import { resetLinks } from '../../editing/add-nodes-button';
+
+import { sumAllSchemas } from '../../../curriculum/delivery-models/functions/sum-delivery-allocations';
+import { SimulationNodeDatum } from 'd3';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
+import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
-export const EmptyStringArray = [] as string[];
-
-export function sumDeliveryAllocations(
-  schema: WorkProjectSeriesSchemaDto
-): number {
-  return schema
-    ? schema.deliveryAllocations
-        .map((da) => da.count * da.deliveryAllocationSize)
-        .reduce((prev, curr) => prev + curr, 0)
-    : 0;
-}
-
-export function sumAllSchemas(
-  deliveryBundle: WorkProjectSeriesSchemaDto[]
-): number {
-  return deliveryBundle
-    ? deliveryBundle
-        .map(sumDeliveryAllocations)
-        .reduce((prev, curr) => prev + curr, 0)
-    : 0;
-}
-
 const cellFormatting = 'px-2 text-xs';
+
+export const LeftCol = 'text-xs w-full text-center h-full grid items-center';
 export const CurriculumDetailsListenerKey = 'curriculum-details';
+
+function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
+  node: DataNode<T>,
+  componentListenerKey: string
+) {
+  const { isOpen, closeModal, openModal } = useModal();
+  const renameModalContextKey = useSelectiveContextKeyMemo(
+    `${RenameModalWrapperContextKey}:${node.data.id}`,
+    componentListenerKey
+  );
+  const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
+    renameModalContextKey,
+    componentListenerKey,
+    node.data.name
+  );
+
+  const { uniqueGraphName } = useContext(GraphContext);
+  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
+    UnsavedNodeDataContextKey,
+    uniqueGraphName
+  );
+
+  const {
+    currentState: unsavedGraph,
+    dispatchWithoutControl: dispatchUnsavedGraph
+  } = useSelectiveContextDispatchBoolean(
+    unsavedGraphContextKey,
+    componentListenerKey,
+    false
+  );
+
+  const { nodeListRef, incrementSimVersion, linkListRef } =
+    useDirectSimRefEditsDispatch<OrganizationDto>(componentListenerKey);
+  const handleConfirmRename = () => {
+    if (nodeListRef && linkListRef) {
+      // const copiedElements = [...nodeListRef.current];
+      const currentElement = nodeListRef.current[node.index!];
+
+      currentElement.data.name = currentState;
+      const resetLinks1 = resetLinks(linkListRef.current);
+      console.log(
+        resetLinks1,
+        currentElement,
+        currentState,
+        nodeListRef.current
+      );
+      linkListRef.current = resetLinks1;
+      // nodeListRef.current = copiedElements;
+      incrementSimVersion();
+      dispatchUnsavedGraph(true);
+    }
+
+    closeModal();
+  };
+
+  const handleCancelRename = () => {
+    dispatchUpdate({
+      contextKey: renameModalContextKey,
+      value: node.data.name
+    });
+    closeModal();
+  };
+
+  const renameModalProps: RenameModalProps & ConfirmActionModalProps = {
+    contextKey: renameModalContextKey,
+    onConfirm: handleConfirmRename,
+    onCancel: handleCancelRename,
+    onClose: closeModal,
+    show: isOpen
+  };
+
+  return {
+    openModal,
+    renameModalProps
+  };
+}
+
 export default function CurriculumDeliveryDetails({
   node
 }: {
@@ -77,52 +136,6 @@ export default function CurriculumDeliveryDetails({
       false
     );
 
-  console.log(
-    'node: ',
-    node,
-    ' assignment: ',
-    assignmentOptional,
-    curriculumModelsMap
-  );
-
-  console.log(
-    'context key: ',
-    selectiveContextKey,
-    ' listener key: ',
-    selectiveListenerKey
-  );
-
-  // const { dispatch: dispatchNodes } = useGenericNodeContext();
-
-  const { isOpen, closeModal, openModal } = useModal();
-  const renameModalContextKey = useSelectiveContextKeyMemo(
-    `${RenameModalWrapperContextKey}:${selectiveContextKey}`,
-    CurriculumDetailsListenerKey
-  );
-  const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
-    renameModalContextKey,
-    CurriculumDetailsListenerKey,
-    node.data.name
-  );
-
-  const { uniqueGraphName } = useContext(GraphContext);
-  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
-    UnsavedNodeDataContextKey,
-    uniqueGraphName
-  );
-
-  const {
-    currentState: unsavedGraph,
-    dispatchWithoutControl: dispatchUnsavedGraph
-  } = useSelectiveContextDispatchBoolean(
-    unsavedGraphContextKey,
-    CurriculumDetailsListenerKey,
-    false
-  );
-
-  const { nodeListRef, incrementSimVersion, linkListRef } =
-    useDirectSimRefEditsDispatch<OrganizationDto>(selectiveListenerKey);
-
   const schemaIdList = useMemo(() => {
     if (assignmentOptional) {
       const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
@@ -130,29 +143,10 @@ export default function CurriculumDeliveryDetails({
     } else return [];
   }, [bundleItemsMap, assignmentOptional]);
 
-  const handleConfirmRename = () => {
-    if (nodeListRef && linkListRef) {
-      const copiedElements = [...nodeListRef.current];
-      const currentElement = copiedElements[node.index!];
-      currentElement.data.name = currentState;
-      const resetLinks1 = resetLinks([...linkListRef.current]);
-      console.log(resetLinks1);
-      linkListRef.current = resetLinks1;
-      nodeListRef.current = copiedElements;
-      incrementSimVersion();
-      dispatchUnsavedGraph(true);
-    }
-
-    closeModal();
-  };
-
-  const handleCancelRename = () => {
-    dispatchUpdate({
-      contextKey: renameModalContextKey,
-      value: node.data.name
-    });
-    closeModal();
-  };
+  const { openModal, renameModalProps } = useNodeNameEditing(
+    node,
+    `${CurriculumDetailsListenerKey}:${node.id}`
+  );
 
   const { schemas, bundleRowSpan } = useMemo(() => {
     const schemas = schemaIdList
@@ -166,14 +160,6 @@ export default function CurriculumDeliveryDetails({
     // }
     return { schemas: EmptySchemasArray, bundleRowSpan: 'span 1' };
   }, [schemaIdList, curriculumModelsMap]);
-
-  console.log(
-    'schemas: ',
-    schemas,
-    'from ID list:',
-    schemaIdList,
-    curriculumModelsMap
-  );
 
   const totalAllocation = useMemo(() => sumAllSchemas(schemas), [schemas]);
 
@@ -192,11 +178,10 @@ export default function CurriculumDeliveryDetails({
     dispatchWithoutControl(true);
   };
 
-  const leftCol = 'text-xs w-full text-center h-full grid items-center';
   return (
-    <div>
+    <div className={'mt-1'}>
       <div className={'grid grid-cols-6 gap-1 mb-1'}>
-        <div className={leftCol}>Block:</div>
+        <div className={LeftCol}>Block:</div>
         <div className={'col-start-2 col-span-5'}>
           <button className={'btn btn-xs w-full'} onClick={openModal}>
             <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
@@ -216,7 +201,7 @@ export default function CurriculumDeliveryDetails({
         }}
       >
         <div
-          className={leftCol}
+          className={LeftCol}
           style={{
             gridRow: bundleRowSpan
           }}
@@ -266,13 +251,7 @@ export default function CurriculumDeliveryDetails({
           </Listbox>
         </div>
       </div>
-      <RenameModal
-        contextKey={renameModalContextKey}
-        show={isOpen}
-        onClose={closeModal}
-        onConfirm={handleConfirmRename}
-        onCancel={handleCancelRename}
-      />
+      <RenameModal {...renameModalProps} />
     </div>
   );
 }

@@ -65,7 +65,6 @@ export function useSelectiveContextController<T>(
 
   useEffect(() => {
     if (freshRef[contextKey] === undefined) {
-      // console.log(contextKey, ' is undefined , setting to ', initialValue);
       freshRef[contextKey] = initialValue;
     }
   }, [latestRef, freshRef, initialValue, contextKey]);

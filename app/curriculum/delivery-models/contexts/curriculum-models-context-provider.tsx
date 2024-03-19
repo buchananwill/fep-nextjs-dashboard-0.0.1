@@ -39,11 +39,6 @@ export function CurriculumModelsContextProvider({
       false
     );
 
-  // console.log(
-  //   'Re-rendering model changes provider, with unsaved changes?: ',
-  //   unsavedChanges
-  // );
-
   const handleClose = () => {
     dispatchUpdate({ contextKey: curriculumDeliveryCommitKey, value: false });
   };

@@ -74,7 +74,6 @@ export function createNewLinks<T extends HasNumberIdDto>({
   let nextLinkId = linkIdSequenceStart;
   switch (relation) {
     case 'sibling': {
-      console.log('Making sibling');
       for (let i = 0; i < newNodes.length; i++) {
         const referenceNode = references[i];
         const newNode = newNodes[i];
@@ -97,7 +96,6 @@ export function createNewLinks<T extends HasNumberIdDto>({
       break;
     }
     case 'child': {
-      console.log('making child');
       const templateLinkDefined =
         allLinks.length > 0
           ? allLinks[0]

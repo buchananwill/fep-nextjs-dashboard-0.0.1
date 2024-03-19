@@ -4,6 +4,8 @@ import { DataLink, DataNode } from '../../api/zod-mods';
 import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { SimulationLinkDatum } from 'd3';
+import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
 
 export type Relation = 'sibling' | 'child';
 
@@ -15,7 +17,7 @@ export interface CloneFunction<T extends HasNumberIdDto> {
 
 export function resetLinks<T extends HasNumberIdDto>(
   allUpdatedLinks: DataLink<T>[]
-) {
+): (SimulationLinkDatum<DataNode<T>> & ClosureDto)[] {
   return [...allUpdatedLinks].map((link, index) => {
     const source = link.source as DataNode<T>;
     const target = link.target as DataNode<T>;

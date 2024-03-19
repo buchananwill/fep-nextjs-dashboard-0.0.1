@@ -66,9 +66,11 @@ function StandardDisclosureButton({
     <Disclosure.Button
       className={`btn ${
         open ? 'btn-primary' : ''
-      } max-w-full grow flex justify-between`}
+      } max-w-full w-[300px] grow flex justify-between`}
     >
-      {label}
+      <span className={'w-5/6 h-fit leading-6 text-left truncate ...'}>
+        {label}
+      </span>
       <ChevronDownIcon
         className={`w-6 h-6 ${
           !open ? 'rotate-90 transform' : ''

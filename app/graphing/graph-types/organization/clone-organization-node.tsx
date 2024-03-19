@@ -1,7 +1,7 @@
 import { CloneFunction } from '../../editing/add-nodes-button';
 import { DataNode } from '../../../api/zod-mods';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
-import { incrementCloneSuffix } from '../../../curriculum/lesson-types/increment-clone-suffix';
+import { incrementCloneSuffix } from '../../editing/increment-clone-suffix';
 
 export const NameCharLimit = 255;
 export function cloneOrganizationNode(

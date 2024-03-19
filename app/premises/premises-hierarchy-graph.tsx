@@ -4,7 +4,7 @@ import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { DataNode } from '../api/zod-mods';
 import { NodeLinkRefWrapper } from '../graphing/graph/node-link-ref-wrapper';
 import { useForceAdjustments } from '../graphing/graph/show-force-adjustments';
-import { useNodeAndLinkRefs } from '../graphing/graph-types/organization/use-node-and-link-refs';
+import { useNodeAndLinkRefs } from '../graphing/graph/use-node-and-link-refs';
 
 export function PremisesHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<AssetDto>();

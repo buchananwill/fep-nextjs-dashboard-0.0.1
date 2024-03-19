@@ -1,6 +1,6 @@
-import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { useGenericNodeContext } from '../../nodes/generic-node-context-creator';
-import { useGenericLinkContext } from '../../links/generic-link-context-creator';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { useGenericNodeContext } from '../nodes/generic-node-context-creator';
+import { useGenericLinkContext } from '../links/generic-link-context-creator';
 import { useEffect, useRef } from 'react';
 
 export function useNodeAndLinkRefs<T extends HasNumberIdDto>() {

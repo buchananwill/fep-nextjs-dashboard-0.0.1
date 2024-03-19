@@ -23,7 +23,7 @@ import { TransientIdOffset } from './graph-edits';
 import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
 import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedNodeDataContextKey } from '../graph-types/organization/curriculum-delivery-graph';
-import { CurriculumDetailsListenerKey } from '../components/curriculum-delivery-details';
+import { CurriculumDetailsListenerKey } from '../graph-types/organization/curriculum-delivery-details';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericLinkContext } from '../links/generic-link-context-creator';
 import { DataLink, DataNode } from '../../api/zod-mods';

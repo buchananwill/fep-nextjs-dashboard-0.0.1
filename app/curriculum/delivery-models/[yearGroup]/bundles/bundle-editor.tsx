@@ -6,7 +6,6 @@ import { TabStyled } from '../../../../components/tab-layouts/tab-styled';
 import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
-import { sumAllSchemas } from '../../../../graphing/components/curriculum-delivery-details';
 import { usePathname } from 'next/navigation';
 import { BundlePanel } from './bundle-panel';
 import {
@@ -31,6 +30,8 @@ import {
   StaticDeletedBundleList
 } from '../../contexts/bundle-items-context-provider';
 import { RenameButton } from '../../../../components/buttons/rename-button';
+
+import { sumAllSchemas } from '../../functions/sum-delivery-allocations';
 
 export const BundleEditorKey = 'bundles-editor';
 

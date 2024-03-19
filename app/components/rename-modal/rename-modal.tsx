@@ -13,6 +13,13 @@ import { TextInput } from '@tremor/react';
 export const RenameModalWrapperContextKey = 'rename-modal-wrapper';
 export const RenameModalWrapperListener = `${RenameModalWrapperContextKey}:listener`;
 
+export interface RenameModalProps {
+  contextKey: string;
+  listenerKey?: string;
+  errorMessage?: string;
+  error?: boolean;
+}
+
 export function RenameModal({
   contextKey,
   listenerKey,
@@ -20,12 +27,7 @@ export function RenameModal({
   error,
   errorMessage = 'Please choose unique non-empty name',
   ...props
-}: {
-  contextKey: string;
-  listenerKey?: string;
-  errorMessage?: string;
-  error?: boolean;
-} & ConfirmActionModalProps) {
+}: RenameModalProps & ConfirmActionModalProps) {
   const combinedKey = useSelectiveContextKeyMemo(
     contextKey,
     listenerKey || RenameModalWrapperListener

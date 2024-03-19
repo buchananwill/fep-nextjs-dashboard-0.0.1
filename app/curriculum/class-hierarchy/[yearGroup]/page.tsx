@@ -59,7 +59,6 @@ export default async function Page({
     assignedBundleDeliveryData === undefined ||
     dataGraph === undefined
   ) {
-    console.log(workTaskTypeDtos, assignedBundleDeliveryData, dataGraph);
     return <Card>No deliveries found!</Card>;
   }
 
