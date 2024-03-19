@@ -92,7 +92,7 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
 
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
   const incrementSimVersion = () => {
-    dispatchUnsavedGraph(true);
+    // dispatchUnsavedGraph(true);
     if (nodeListRef && linkListRef) {
       const safeCopyOfNodes = nodeListRef.current.map(
         (n) => ({ ...n }) as DataNode<T>

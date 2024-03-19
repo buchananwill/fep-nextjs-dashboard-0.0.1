@@ -9,6 +9,7 @@ import {
   useModal
 } from '../confirm-action-modal';
 import { TextInput } from '@tremor/react';
+import { useEffect, useRef } from 'react';
 
 export const RenameModalWrapperContextKey = 'rename-modal-wrapper';
 export const RenameModalWrapperListener = `${RenameModalWrapperContextKey}:listener`;
@@ -26,6 +27,7 @@ export function RenameModal({
   children,
   error,
   errorMessage = 'Please choose unique non-empty name',
+  show,
   ...props
 }: RenameModalProps & ConfirmActionModalProps) {
   const combinedKey = useSelectiveContextKeyMemo(
@@ -35,12 +37,21 @@ export function RenameModal({
   const { currentState, dispatchWithoutControl } =
     useSelectiveContextDispatchString(contextKey, combinedKey);
 
+  const textInput = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (show) {
+      textInput.current?.focus();
+    }
+  });
+
   return (
-    <ConfirmActionModal {...props} enterToConfirm={true}>
+    <ConfirmActionModal {...props} enterToConfirm={true} show={show}>
       {children ? (
         children
       ) : (
         <TextInput
+          ref={textInput}
           value={currentState}
           onValueChange={dispatchWithoutControl}
           error={error}

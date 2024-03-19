@@ -1,6 +1,6 @@
 'use client';
 import { DataNode } from '../../../api/zod-mods';
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { isNotNull } from '../../editing/graph-edits';
@@ -12,108 +12,16 @@ import { SchemaBundleKeyPrefix } from '../../../curriculum/delivery-models/[year
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleAssignmentsKey } from '../../../curriculum/delivery-models/contexts/bundle-assignments-provider';
-import {
-  RenameModal,
-  RenameModalProps,
-  RenameModalWrapperContextKey
-} from '../../../components/rename-modal/rename-modal';
-import {
-  ConfirmActionModalProps,
-  useModal
-} from '../../../components/confirm-action-modal';
-import { useSelectiveContextControllerString } from '../../../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
-import { useDirectSimRefEditsDispatch } from '../../editing/use-graph-edit-button-hooks';
-import { GraphContext } from '../../graph/graph-context-creator';
-import { UnsavedNodeDataContextKey } from './curriculum-delivery-graph';
-import { resetLinks } from '../../editing/add-nodes-button';
+import { RenameModal } from '../../../components/rename-modal/rename-modal';
 
 import { sumAllSchemas } from '../../../curriculum/delivery-models/functions/sum-delivery-allocations';
-import { SimulationNodeDatum } from 'd3';
-import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
+import { useNodeNameEditing } from '../../editing/use-node-name-editing';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 const cellFormatting = 'px-2 text-xs';
 
 export const LeftCol = 'text-xs w-full text-center h-full grid items-center';
 export const CurriculumDetailsListenerKey = 'curriculum-details';
-
-function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
-  node: DataNode<T>,
-  componentListenerKey: string
-) {
-  const { isOpen, closeModal, openModal } = useModal();
-  const renameModalContextKey = useSelectiveContextKeyMemo(
-    `${RenameModalWrapperContextKey}:${node.data.id}`,
-    componentListenerKey
-  );
-  const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
-    renameModalContextKey,
-    componentListenerKey,
-    node.data.name
-  );
-
-  const { uniqueGraphName } = useContext(GraphContext);
-  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
-    UnsavedNodeDataContextKey,
-    uniqueGraphName
-  );
-
-  const {
-    currentState: unsavedGraph,
-    dispatchWithoutControl: dispatchUnsavedGraph
-  } = useSelectiveContextDispatchBoolean(
-    unsavedGraphContextKey,
-    componentListenerKey,
-    false
-  );
-
-  const { nodeListRef, incrementSimVersion, linkListRef } =
-    useDirectSimRefEditsDispatch<OrganizationDto>(componentListenerKey);
-  const handleConfirmRename = () => {
-    if (nodeListRef && linkListRef) {
-      // const copiedElements = [...nodeListRef.current];
-      const currentElement = nodeListRef.current[node.index!];
-
-      currentElement.data.name = currentState;
-      const resetLinks1 = resetLinks(linkListRef.current);
-      console.log(
-        resetLinks1,
-        currentElement,
-        currentState,
-        nodeListRef.current
-      );
-      linkListRef.current = resetLinks1;
-      // nodeListRef.current = copiedElements;
-      incrementSimVersion();
-      dispatchUnsavedGraph(true);
-    }
-
-    closeModal();
-  };
-
-  const handleCancelRename = () => {
-    dispatchUpdate({
-      contextKey: renameModalContextKey,
-      value: node.data.name
-    });
-    closeModal();
-  };
-
-  const renameModalProps: RenameModalProps & ConfirmActionModalProps = {
-    contextKey: renameModalContextKey,
-    onConfirm: handleConfirmRename,
-    onCancel: handleCancelRename,
-    onClose: closeModal,
-    show: isOpen
-  };
-
-  return {
-    openModal,
-    renameModalProps
-  };
-}
 
 export default function CurriculumDeliveryDetails({
   node
@@ -143,9 +51,11 @@ export default function CurriculumDeliveryDetails({
     } else return [];
   }, [bundleItemsMap, assignmentOptional]);
 
+  const componentListenerKey = `${CurriculumDetailsListenerKey}:${node.id}`;
+  console.log(componentListenerKey);
   const { openModal, renameModalProps } = useNodeNameEditing(
     node,
-    `${CurriculumDetailsListenerKey}:${node.id}`
+    componentListenerKey
   );
 
   const { schemas, bundleRowSpan } = useMemo(() => {

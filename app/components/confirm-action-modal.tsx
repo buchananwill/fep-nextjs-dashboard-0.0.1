@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useState } from 'react';
+import React, { Fragment, ReactNode, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useEnterPressListener } from './useKeyPressListener';
 
@@ -36,7 +36,9 @@ export function ConfirmActionModal({
   enterToConfirm
 }: ConfirmActionModalProps) {
   const enterAction = enterToConfirm ? onConfirm : () => {};
-  useEnterPressListener(enterAction);
+  // useEnterPressListener(enterAction);
+  // let confirmButtonRef = useRef(null);
+
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog
@@ -44,6 +46,7 @@ export function ConfirmActionModal({
         className="relative z-50"
         onClose={onClose}
         role={'dialog'}
+        // initialFocus={confirmButtonRef}
       >
         <Transition.Child
           as={Fragment}
@@ -87,6 +90,7 @@ export function ConfirmActionModal({
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     onClick={onConfirm}
+                    // ref={confirmButtonRef}
                   >
                     Confirm
                   </button>
