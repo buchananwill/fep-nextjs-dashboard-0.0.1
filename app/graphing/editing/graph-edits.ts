@@ -2,6 +2,7 @@
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { CloneFunction, Relation } from './add-nodes-button';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { template } from 'lodash';
 
 export function isNotNull<T>(value: T | null): value is T {
   return value !== null;
@@ -23,6 +24,7 @@ export interface LinkParams<T extends HasNumberIdDto> {
   allLinks: DataLink<T>[];
   linkIdSequenceStart: number;
   relation: Relation;
+  templateLink?: DataLink<T>;
 }
 
 export function createNode<T extends HasNumberIdDto>(
@@ -65,7 +67,8 @@ export function createNewLinks<T extends HasNumberIdDto>({
   newNodes,
   allLinks,
   linkIdSequenceStart,
-  relation
+  relation,
+  templateLink
 }: LinkParams<T>): { allUpdatedLinks: DataLink<T>[]; newLinks: DataLink<T>[] } {
   const newLinks: DataLink<T>[] = [];
   let nextLinkId = linkIdSequenceStart;
@@ -95,14 +98,21 @@ export function createNewLinks<T extends HasNumberIdDto>({
     }
     case 'child': {
       console.log('making child');
-      const templateLink = allLinks[0];
+      const templateLinkDefined =
+        allLinks.length > 0
+          ? allLinks[0]
+          : templateLink !== undefined
+          ? templateLink
+          : null;
+      if (templateLinkDefined === null)
+        throw Error('No template link provided.');
       for (let i = 0; i < references.length; i++) {
         const targetNode = references[i];
         const sourceNode = newNodes[i];
         const currentLinkId = nextLinkId;
         nextLinkId++;
         const newLink = {
-          ...templateLink,
+          ...templateLinkDefined,
           source: sourceNode,
           target: targetNode,
           index: 0,
@@ -129,7 +139,7 @@ export function deleteLinks<T extends HasNumberIdDto>(
   const set = new Set(selectedNodeIds);
   const allPredicate = (l: DataLink<T>) => {
     return (
-      set.has((l.target as DataNode<T>).id) ||
+      set.has((l.target as DataNode<T>).id) &&
       set.has((l.source as DataNode<T>).id)
     );
   };

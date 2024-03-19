@@ -10,6 +10,7 @@ import React from 'react';
 import { useSelectiveContextListenerFunction } from '../../components/selective-context/selective-context-manager-function';
 import { GenericFunction } from '../../components/selective-context/selective-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import InvertLinksButton from '../editing/invert-links-button';
 
 export function FallBackCloneFunction<T extends HasNumberIdDto>(
   original: DataNode<T>
@@ -50,16 +51,19 @@ export function NodeEditorDisclosure<T extends HasNumberIdDto>({}: {
       <div className={'h-2'}></div>
       <DisclosureThatGrowsOpen
         label={'Edit Nodes'}
-        heightWhenOpen={'h-[6.5rem]'}
+        heightWhenOpen={'h-[9.5rem]'}
       >
-        <div className={'w-full grid grid-cols-3 gap-1 relative mb-1'}>
+        <div className={'w-full grid grid-cols-2 gap-1 relative mb-1'}>
           <AddNodesButton relation={'sibling'} cloneFunction={cloneFunction}>
             Add Sibling
           </AddNodesButton>
           <AddNodesButton relation={'child'} cloneFunction={cloneFunction}>
             Add Child
           </AddNodesButton>
+        </div>
+        <div className={'w-full grid grid-cols-2 gap-1 relative mb-1'}>
           <AddLinksButton>Join Nodes</AddLinksButton>
+          <InvertLinksButton>Invert Links</InvertLinksButton>
         </div>
         <div className={'w-full grid grid-cols-2 gap-1 relative'}>
           <DeleteNodesButton>Delete Nodes</DeleteNodesButton>
