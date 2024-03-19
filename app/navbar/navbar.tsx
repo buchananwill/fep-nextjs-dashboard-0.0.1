@@ -138,6 +138,11 @@ export default function Navbar({
         dropdownItems: buildMetricsDropdown
       },
       {
+        name: 'Teaching Categories',
+        href: '/teaching-categories',
+        dropdownItems: [{ name: 'Secondary', href: '/secondary' }]
+      },
+      {
         name: 'Lesson Types',
         href: '/curriculum/lesson-types',
         dropdownItems: [{ name: 'All', href: '/All' }]
