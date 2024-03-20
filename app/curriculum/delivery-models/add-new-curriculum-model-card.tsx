@@ -31,7 +31,8 @@ import {
   StepperContext
 } from '../../components/stepper/stepper-context-creator';
 import LandscapeStepper from '../../components/landscape-stepper';
-import { getPayloadArray } from './use-curriculum-delivery-model-editing';
+
+import { getPayloadArray } from './use-editing-context-dependency';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
 

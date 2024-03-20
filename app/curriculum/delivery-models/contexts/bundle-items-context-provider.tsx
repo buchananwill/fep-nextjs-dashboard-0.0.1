@@ -19,11 +19,11 @@ import {
   postBundles,
   putBundles
 } from '../../../api/actions/curriculum-delivery-model';
-import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { ActionResponse } from '../../../api/actions/actionResponse';
 import { Card, Title } from '@tremor/react';
 import { useSelectiveContextControllerNumberList } from '../../../components/selective-context/selective-context-manager-number-list';
+import { getPayloadArray } from '../use-editing-context-dependency';
 
 export const StaticDeletedBundleList: number[] = [];
 

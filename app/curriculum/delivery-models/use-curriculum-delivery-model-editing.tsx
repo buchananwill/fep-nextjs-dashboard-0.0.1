@@ -4,22 +4,11 @@ import { useCurriculumModelContext } from './contexts/use-curriculum-model-conte
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
-import { useEffect } from 'react';
-import { StringMapPayload } from './contexts/string-map-context-creator';
+import { useEditingContextDependency } from './use-editing-context-dependency';
 
 export interface CurriculumDeliveryModelEditingProps {
   workProjectSeriesSchemaDtos: WorkProjectSeriesSchemaDto[];
   taskTypeList: WorkTaskTypeDto[];
-}
-
-export function getPayloadArray<T>(
-  itemArray: T[],
-  keyAccessor: (item: T) => string
-): StringMapPayload<T>[] {
-  return itemArray.map((item) => ({
-    key: keyAccessor(item),
-    data: item
-  }));
 }
 
 export function useCurriculumDeliveryModelEditing(
@@ -33,26 +22,15 @@ export function useCurriculumDeliveryModelEditing(
     'all-models',
     false
   );
+  useEditingContextDependency(
+    workProjectSeriesSchemaDtos,
+    dispatch,
+    (schema) => schema.id
+  );
 
-  useEffect(() => {
-    const payloadArray = getPayloadArray(
-      workProjectSeriesSchemaDtos,
-      (schema) => schema.id
-    );
-    dispatch({
-      type: 'updateAll',
-      payload: payloadArray
-    });
-  }, [workProjectSeriesSchemaDtos, dispatch]);
+  useEditingContextDependency(taskTypeList, workTaskTypeDispatch, (wtt) =>
+    wtt.id.toString()
+  );
 
-  useEffect(() => {
-    const payloadArray = getPayloadArray(taskTypeList, (taskType) =>
-      taskType.id.toString()
-    );
-    workTaskTypeDispatch({
-      type: 'updateAll',
-      payload: payloadArray
-    });
-  }, [workTaskTypeDispatch, taskTypeList]);
   return alreadyUnsaved;
 }

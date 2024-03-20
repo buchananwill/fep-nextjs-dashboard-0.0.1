@@ -13,8 +13,8 @@ import {
 } from '../../../components/confirm-action-modal';
 import { Text } from '@tremor/react';
 import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
-import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
 import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';
+import { getPayloadArray } from '../use-editing-context-dependency';
 
 export function parseStringStringToIntInt(
   entry: [string, string]

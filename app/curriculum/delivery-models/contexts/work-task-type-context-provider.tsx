@@ -10,7 +10,8 @@ import {
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
 import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
-import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
+
+import { getPayloadArray } from '../use-editing-context-dependency';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
 export const WorkTaskTypeChangesProviderListener =

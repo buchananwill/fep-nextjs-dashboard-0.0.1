@@ -9,9 +9,12 @@ import {
 } from '../../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../../../api/main';
+import ServiceCategoryContextInit from '../service-category-context-init';
+import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 
 export const dynamic = 'force-dynamic';
 const paramsMock = ['Maths', 'Year 13', 'all'];
+const serviceCategoriesEmptyArray: ServiceCategoryDto[] = [];
 export default async function LessonTypesPage({
   params: { typeNameLike }
 }: {
@@ -41,10 +44,16 @@ export default async function LessonTypesPage({
   const allOptions = ['All', ...yearGroupOptions, ...subjectOptions];
 
   return (
-    <LessonTypeGraphPage
-      lessonTypesResponseGraph={lessonTypesResponseGraph}
-      currentSelection={typeNameLike}
-      selectionOptions={allOptions}
-    />
+    <ServiceCategoryContextInit
+      knowledgeLevels={kLevels}
+      knowledgeDomains={kDomains}
+      serviceCategories={serviceCategoriesEmptyArray}
+    >
+      <LessonTypeGraphPage
+        lessonTypesResponseGraph={lessonTypesResponseGraph}
+        currentSelection={typeNameLike}
+        selectionOptions={allOptions}
+      />
+    </ServiceCategoryContextInit>
   );
 }

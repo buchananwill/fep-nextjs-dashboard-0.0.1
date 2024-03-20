@@ -15,7 +15,8 @@ import {
 } from '../../../components/selective-context/selective-context-manager-boolean';
 import { curriculumDeliveryCommitKey } from '../curriculum-delivery-models';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
+
+import { getPayloadArray } from '../use-editing-context-dependency';
 
 export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
 export const ModelChangesProviderListener = 'unsaved-model-changes:provider';
