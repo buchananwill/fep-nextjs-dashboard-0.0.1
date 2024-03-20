@@ -1,11 +1,11 @@
 import {
   useGenericGraphRefs,
   useGenericNodeContext
-} from '../nodes/generic-node-context-creator';
+} from '../../nodes/generic-node-context-creator';
 import {
   getNodeId,
   useNodeInteractionContext
-} from '../nodes/node-interaction-context';
+} from '../../nodes/node-interaction-context';
 import { useContext, useMemo, useState } from 'react';
 import {
   useGraphSelectiveContextDispatch,
@@ -13,20 +13,20 @@ import {
   useGraphSelectiveContextKey,
   GraphContext,
   useGraphName
-} from '../graph/graph-context-creator';
+} from '../../graph/graph-context-creator';
 import {
   useSelectiveContextControllerNumber,
   useSelectiveContextDispatchNumber
-} from '../../components/selective-context/selective-context-manager-number';
-import { useSelectiveContextDispatchNumberList } from '../../components/selective-context/selective-context-manager-number-list';
+} from '../../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextDispatchNumberList } from '../../../components/selective-context/selective-context-manager-number-list';
 import { TransientIdOffset } from './graph-edits';
-import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { UnsavedNodeDataContextKey } from '../graph-types/organization/curriculum-delivery-graph';
-import { CurriculumDetailsListenerKey } from '../graph-types/organization/curriculum-delivery-details';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { useGenericLinkContext } from '../links/generic-link-context-creator';
-import { DataLink, DataNode } from '../../api/zod-mods';
+import { useSelectiveContextKeyMemo } from '../../../components/selective-context/use-selective-context-listener';
+import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { UnsavedNodeDataContextKey } from '../../graph-types/organization/curriculum-delivery-graph';
+import { CurriculumDetailsListenerKey } from '../../graph-types/organization/curriculum-delivery-details';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
+import { useGenericLinkContext } from '../../links/generic-link-context-creator';
+import { DataLink, DataNode } from '../../../api/zod-mods';
 
 export function useGraphVersionKeys<T extends HasNumberIdDto>(
   listenerKey: string

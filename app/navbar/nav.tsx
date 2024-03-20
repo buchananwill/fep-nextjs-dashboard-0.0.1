@@ -22,7 +22,9 @@ export default async function Nav() {
     SECONDARY_EDUCATION_CATEGORY_ID.toString()
   );
 
-  const knowledgeLevelResponse = await getKnowledgeLevels(2);
+  const knowledgeLevelResponse = await getKnowledgeLevels(
+    SECONDARY_EDUCATION_CATEGORY_ID.toString()
+  );
 
   const knowledgeLevels: KnowledgeLevelDto[] =
     knowledgeLevelResponse.data || [];

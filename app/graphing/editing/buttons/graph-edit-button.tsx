@@ -13,16 +13,14 @@ export function GraphEditButton({
 >) {
   return (
     <button className={'btn btn-primary btn-outline'} {...buttonProps}>
+      {children}
       {noNodeSelected && (
         <span
-          className={
-            'badge badge-error absolute -bottom-10 text-xs h-10 w-24 animate-pulse'
-          }
+          className={'badge badge-error absolute top-1 text-xs h-10 w-24 z-20'}
         >
           Select more nodes!
         </span>
       )}
-      {children}
     </button>
   );
 }

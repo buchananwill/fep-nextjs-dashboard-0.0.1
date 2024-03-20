@@ -10,7 +10,7 @@ import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
 } from '../../../components/selective-context/selective-context-manager-string';
-import { TransientIdOffset } from '../../../graphing/editing/graph-edits';
+import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { TextInput, Title } from '@tremor/react';
 import {
   useSelectiveContextControllerBoolean,

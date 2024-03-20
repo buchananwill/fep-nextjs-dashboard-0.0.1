@@ -8,7 +8,7 @@ import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';
 import { fetchScheduleIds } from '../../api/actions/timetables';
 import { fetchBuildMetricDto } from '../../api/actions/build-metrics';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
-import { useDirectSimRefEditsController } from '../../graphing/editing/use-graph-edit-button-hooks';
+import { useDirectSimRefEditsController } from '../../graphing/editing/functions/use-graph-edit-button-hooks';
 
 export default async function BuildMetricsOverview({
   params: { schedule }

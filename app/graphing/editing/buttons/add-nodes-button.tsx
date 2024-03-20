@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import { createNewLinks, createNode } from './graph-edits';
-import { DataLink, DataNode } from '../../api/zod-mods';
-import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
+import { DataLink, DataNode } from '../../../api/zod-mods';
+import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { SimulationLinkDatum } from 'd3';
-import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
+import { ClosureDto } from '../../../api/dtos/ClosureDtoSchema';
+import { createNodes } from '../functions/create-nodes';
+import { createLinks } from '../functions/create-links';
 
 export type Relation = 'sibling' | 'child';
 
@@ -62,7 +63,7 @@ export function AddNodesButton<T extends HasNumberIdDto>({
     const refNodes = nodeListRef.current.filter((n) => selected.includes(n.id));
 
     const nextNodeToSubmit = getNextNodeId();
-    const { allNodes, createdNodes } = createNode({
+    const { allNodes, createdNodes } = createNodes({
       startIdAt: nextNodeToSubmit,
       targetNodes: refNodes,
       allNodes: nodeListRef.current,
@@ -77,7 +78,7 @@ export function AddNodesButton<T extends HasNumberIdDto>({
 
     const nextLinkIdToSubmit = getNextLinkId();
 
-    const { allUpdatedLinks, newLinks } = createNewLinks<T>({
+    const { allUpdatedLinks, newLinks } = createLinks<T>({
       references: refNodes,
       newNodes: createdNodes,
       allLinks: linkListRef.current,

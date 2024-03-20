@@ -1,6 +1,6 @@
 import { DataNode } from '../../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import { incrementCloneSuffix } from '../../editing/increment-clone-suffix';
+import { incrementCloneSuffix } from '../../editing/functions/increment-clone-suffix';
 
 function cloneWorkTaskType(
   template: DataNode<WorkTaskTypeDto>

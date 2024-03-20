@@ -23,7 +23,7 @@ import {
   useSelectiveContextControllerNumberList,
   useSelectiveContextDispatchNumberList
 } from '../../../../components/selective-context/selective-context-manager-number-list';
-import { TransientIdOffset } from '../../../../graphing/editing/graph-edits';
+import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
 import { TwoStageClick } from '../../../../components/buttons/two-stage-click';
 import {
   DeletedBundlesList,

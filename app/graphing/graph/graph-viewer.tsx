@@ -12,7 +12,7 @@ import {
   ForceGraphMouseButtonEventsContext,
   ForceGraphMouseButtonEventsDispatch
 } from '../force-graph-dnd/mouse-event-context-creator';
-import { useGraphEditRootContext } from '../editing/use-graph-edit-root-context';
+import { useGraphEditRootContext } from '../editing/functions/use-graph-edit-root-context';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function GraphViewer<T extends HasNumberIdDto, U>({

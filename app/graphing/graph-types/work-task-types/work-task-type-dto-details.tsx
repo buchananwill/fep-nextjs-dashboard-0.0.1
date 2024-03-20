@@ -11,28 +11,34 @@ import { LeftCol } from '../organization/curriculum-delivery-details';
 import { RenameButton } from '../../../components/buttons/rename-button';
 import { RenameModal } from '../../../components/rename-modal/rename-modal';
 import { useModal } from '../../../components/confirm-action-modal';
+import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
+
+const WorkTaskTypeDtoDetailsListenerKey = 'work-task-type-details';
 
 export default function WorkTaskTypeDtoDetails({
   node
 }: {
   node: DataNode<WorkTaskTypeDto>;
 }) {
-  const nodeContext = useContext(GenericNodeContext);
-  const linkContext = useContext(GenericLinkContext);
-  const nodes = (nodeContext?.nodes as DataNode<WorkTaskTypeDto>[]) || [];
-  const links = (linkContext?.links as DataLink<WorkTaskTypeDto>[]) || [];
-  const useModal1 = useModal();
-
-  const noTransformation = {};
+  const { id } = node;
+  const listenerKey = `${WorkTaskTypeDtoDetailsListenerKey}:${id}`;
+  const { openModal, renameModalProps } = useNodeNameEditing(node, listenerKey);
 
   return (
     <div className={'mt-1'}>
       <div className={'grid grid-cols-6 gap-1 mb-1'}>
-        <div className={LeftCol}>Block:</div>
+        <div className={LeftCol}>Name:</div>
         <div className={'col-start-2 col-span-5'}>
-          <RenameButton></RenameButton>
+          <button
+            onClick={openModal}
+            className={'btn btn-ghost text-xs w-full btn-sm'}
+          >
+            {node.data.name}
+            <PencilSquareIcon className={'h-4 w-4'}></PencilSquareIcon>
+          </button>
         </div>
       </div>
+      <RenameModal {...renameModalProps} />
     </div>
   );
 }

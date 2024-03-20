@@ -14,7 +14,7 @@ import {
 import { Text } from '@tremor/react';
 import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
 import { getPayloadArray } from '../use-curriculum-delivery-model-editing';
-import { mapToPartyIdBundleIdRecords } from '../../../graphing/graph-types/organization/map-to-party-id-bundle-id-records';
+import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';
 
 export function parseStringStringToIntInt(
   entry: [string, string]

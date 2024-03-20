@@ -4,7 +4,7 @@ import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { DataNode } from '../../../api/zod-mods';
 import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
-import { useEnableNodeEditing } from '../../editing/use-enable-node-editing';
+import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { getGraphUpdaterWithNameDeDuplication } from '../organization/curriculum-delivery-graph';
 import { putWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import { CloneFunctionWrapper } from './clone-work-task-type';
@@ -22,7 +22,7 @@ export function LessonTypeHierarchyGraph() {
 
   const lessonTypeList: string[] = [];
 
-  const unsavedNodeChangesProps = useEnableNodeEditing(
+  const unsavedNodeChangesProps = useNodeEditing(
     nodesRef,
     linksRef,
     CloneFunctionWrapper,

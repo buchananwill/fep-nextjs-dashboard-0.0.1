@@ -143,9 +143,9 @@ export default function Navbar({
         dropdownItems: [{ name: 'Secondary', href: '/secondary' }]
       },
       {
-        name: 'Lesson Types',
-        href: '/curriculum/lesson-types',
-        dropdownItems: [{ name: 'All', href: '/All' }]
+        name: 'Work Types',
+        href: '/work-types',
+        dropdownItems: [{ name: 'All', href: '/lessons/All' }]
       },
       {
         name: 'Models',

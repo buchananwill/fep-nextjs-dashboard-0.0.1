@@ -1,16 +1,19 @@
 'use client';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { AddNodesButton, CloneFunction } from '../editing/add-nodes-button';
+import {
+  AddNodesButton,
+  CloneFunction
+} from '../editing/buttons/add-nodes-button';
 import { DataNode } from '../../api/zod-mods';
 import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
-import AddLinksButton from '../editing/add-links-button';
-import { DeleteNodesButton } from '../editing/delete-nodes-button';
-import { DeleteLinksButton } from '../editing/delete-links-button';
+import AddLinksButton from '../editing/buttons/add-links-button';
+import { DeleteNodesButton } from '../editing/buttons/delete-nodes-button';
+import { DeleteLinksButton } from '../editing/buttons/delete-links-button';
 import React from 'react';
 import { useSelectiveContextListenerFunction } from '../../components/selective-context/selective-context-manager-function';
 import { GenericFunction } from '../../components/selective-context/selective-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import InvertLinksButton from '../editing/invert-links-button';
+import InvertLinksButton from '../editing/buttons/invert-links-button';
 
 export function FallBackCloneFunction<T extends HasNumberIdDto>(
   original: DataNode<T>
@@ -50,7 +53,7 @@ export function NodeEditorDisclosure<T extends HasNumberIdDto>({}: {
     <div className={'sticky -top-0 w-full flex flex-col bg-slate-50 z-10 '}>
       <div className={'h-2'}></div>
       <DisclosureThatGrowsOpen
-        label={'Edit Nodes'}
+        label={'Edit Graph'}
         heightWhenOpen={'h-[9.5rem]'}
       >
         <div className={'w-full grid grid-cols-2 gap-1 relative mb-1'}>
@@ -62,7 +65,7 @@ export function NodeEditorDisclosure<T extends HasNumberIdDto>({}: {
           </AddNodesButton>
         </div>
         <div className={'w-full grid grid-cols-2 gap-1 relative mb-1'}>
-          <AddLinksButton>Join Nodes</AddLinksButton>
+          <AddLinksButton>Add Links</AddLinksButton>
           <InvertLinksButton>Invert Links</InvertLinksButton>
         </div>
         <div className={'w-full grid grid-cols-2 gap-1 relative'}>

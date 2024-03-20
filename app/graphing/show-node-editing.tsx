@@ -21,7 +21,7 @@ export function ShowNodeEditing() {
   return <></>;
 }
 
-export function useNodeEditing(show: boolean) {
+export function useShowNodeEditing(show: boolean) {
   const graphName = useGraphName();
   const { currentState, dispatchWithoutControl } =
     useSelectiveContextDispatchBoolean(ShowNodeEditingKey, graphName, show);

@@ -1,11 +1,11 @@
-import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
+import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
 import React, { useMemo } from 'react';
 import { GraphEditButton } from './graph-edit-button';
 import { channel } from 'node:diagnostics_channel';
-import { createNewLinks } from './graph-edits';
-import { DataLink } from '../../api/zod-mods';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { DataLink } from '../../../api/zod-mods';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { resetLinks } from './add-nodes-button';
+import { createLinks } from '../functions/create-links';
 const joinNodes = 'join-nodes';
 export default function AddLinksButton<T extends HasNumberIdDto>({
   children
@@ -49,7 +49,7 @@ export default function AddLinksButton<T extends HasNumberIdDto>({
     let allLinks = linkListRef.current;
     for (let child of children) {
       const singleton = [child];
-      const { newLinks, allUpdatedLinks } = createNewLinks({
+      const { newLinks, allUpdatedLinks } = createLinks({
         references: parent,
         newNodes: singleton,
         allLinks: allLinks,

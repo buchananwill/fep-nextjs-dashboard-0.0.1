@@ -1,9 +1,9 @@
-import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';
+import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
 import { useMemo } from 'react';
 import { GraphEditButton } from './graph-edit-button';
-import { DataNode } from '../../api/zod-mods';
-import { deleteLinks, isNotNull } from './graph-edits';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { DataNode } from '../../../api/zod-mods';
+import { deleteLinks, isNotNull } from '../functions/graph-edits';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { resetLinks } from './add-nodes-button';
 const deleteNodesKey = 'delete-nodes';
 

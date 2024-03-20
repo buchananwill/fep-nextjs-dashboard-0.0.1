@@ -1,80 +1,17 @@
 'use client';
 import { DataNode } from '../../../api/zod-mods';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { isNotNull } from '../../editing/graph-edits';
-import { useCurriculumModelContext } from '../../../curriculum/delivery-models/contexts/use-curriculum-model-context';
-import { useSingleBundleAssignment } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
-import { useBundleItemsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-Items-context';
 import { Listbox } from '@headlessui/react';
-import { SchemaBundleKeyPrefix } from '../../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
-import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
-import { UnsavedBundleAssignmentsKey } from '../../../curriculum/delivery-models/contexts/bundle-assignments-provider';
 import { RenameModal } from '../../../components/rename-modal/rename-modal';
+import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
+import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functions/use-sum-all-schemas-memo';
+import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
 
-import { sumAllSchemas } from '../../../curriculum/delivery-models/functions/sum-delivery-allocations';
-import { useNodeNameEditing } from '../../editing/use-node-name-editing';
-import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
-
-export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 export const LeftCol = 'text-xs w-full text-center h-full grid items-center';
 export const CurriculumDetailsListenerKey = 'curriculum-details';
-
-function useSchemaIdsFromBundleItemsContext(
-  assignmentOptional: string | undefined
-) {
-  const { bundleItemsMap } = useBundleItemsContext();
-  const schemaIdList = useMemo(() => {
-    if (assignmentOptional) {
-      const bundleItemsMapElement = bundleItemsMap[assignmentOptional];
-      return bundleItemsMapElement.workProjectSeriesSchemaIds;
-    } else return [];
-  }, [bundleItemsMap, assignmentOptional]);
-  return { bundleItemsMap, schemaIdList };
-}
-
-function useBundleAssignmentUnsavedFlag(
-  assignmentOptional: string | undefined,
-  id: number
-) {
-  const { selectiveListenerKey } = useMemo(() => {
-    const selectiveContextKey = `${SchemaBundleKeyPrefix}${assignmentOptional}`;
-    const selectiveListenerKey = `${selectiveContextKey}:${id}`;
-    return { selectiveContextKey, selectiveListenerKey };
-  }, [assignmentOptional, id]);
-  const { currentState: unsaved, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(
-      UnsavedBundleAssignmentsKey,
-      selectiveListenerKey,
-      false
-    );
-  return dispatchWithoutControl;
-}
-
-function useSchemaDetailMemo(
-  schemaIdList: string[],
-  curriculumModelsMap: StringMap<WorkProjectSeriesSchemaDto>
-) {
-  const { schemas } = useMemo(() => {
-    const schemas = schemaIdList
-      .map((schemaId) => {
-        return curriculumModelsMap[schemaId];
-      })
-      .filter(isNotNull<WorkProjectSeriesSchemaDto>);
-
-    if (schemas.length > 0) return { schemas };
-    return { schemas: EmptySchemasArray };
-  }, [schemaIdList, curriculumModelsMap]);
-  return schemas;
-}
-
-function useSumAllSchemasMemo(
-  schemas: WorkProjectSeriesSchemaDto[] | WorkProjectSeriesSchemaDto[]
-) {
-  return useMemo(() => sumAllSchemas(schemas), [schemas]);
-}
 
 export default function CurriculumDeliveryDetails({
   node
@@ -82,15 +19,13 @@ export default function CurriculumDeliveryDetails({
   node: DataNode<OrganizationDto>;
 }) {
   const { id } = node;
-  const { assignmentOptional, removeAssignment, setAssignment } =
-    useSingleBundleAssignment(node.id.toString());
-  const { bundleItemsMap, schemaIdList } =
-    useSchemaIdsFromBundleItemsContext(assignmentOptional);
-  const dispatchWithoutControl = useBundleAssignmentUnsavedFlag(
+  const {
     assignmentOptional,
-    id
-  );
-  const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+    setAssignment,
+    bundleItemsMap,
+    dispatchWithoutControl,
+    schemas
+  } = useSchemaBundleAssignmentContext(id);
 
   const componentListenerKey = `${CurriculumDetailsListenerKey}:${id}`;
 
@@ -98,8 +33,7 @@ export default function CurriculumDeliveryDetails({
     node,
     componentListenerKey
   );
-  const schemas = useSchemaDetailMemo(schemaIdList, curriculumModelsMap);
-  const bundleRowSpan = `span ${Math.max(schemaIdList.length, 1) + 1}`;
+  const bundleRowSpan = `span ${Math.max(schemas.length, 1) + 1}`;
 
   const totalAllocation = useSumAllSchemasMemo(schemas);
 
@@ -113,7 +47,6 @@ export default function CurriculumDeliveryDetails({
   });
 
   const handleAssignmentChange = (assignmentId: string) => {
-    console.log('Expected assigment', assignmentId);
     setAssignment(assignmentId);
     dispatchWithoutControl(true);
   };
@@ -209,20 +142,13 @@ function CourseSummary({
   course: WorkProjectSeriesSchemaDto;
 }): React.JSX.Element {
   return (
-    <tr
-      className={
-        'text-xs border-b last:border-0' +
-        // ' flex justify-between w-full' +
-        ''
-      }
-    >
+    <tr className={'text-xs border-b last:border-0'}>
       <td>
         {course.deliveryAllocations
           .map((da) => da.count * da.deliveryAllocationSize)
           .reduce((prev, curr) => prev + curr, 0)}
       </td>
       <td>{course.workTaskType.name.substring(9)}</td>
-      {/*<span className={'grow'}></span>*/}
     </tr>
   );
 }

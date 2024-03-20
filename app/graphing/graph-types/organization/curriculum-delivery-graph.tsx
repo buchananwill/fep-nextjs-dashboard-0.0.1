@@ -13,17 +13,17 @@ import { useBundleAssignmentsContext } from '../../../curriculum/delivery-models
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { cloneOrganizationNode } from './clone-organization-node';
-import { mapToPartyIdBundleIdRecords } from './map-to-party-id-bundle-id-records';
+import { mapToPartyIdBundleIdRecords } from '../../../curriculum/delivery-models/functions/map-to-party-id-bundle-id-records';
 import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
-import { useEnableNodeEditing } from '../../editing/use-enable-node-editing';
+import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
 import {
   deleteLinks,
   deleteNodes,
   putOrganizationGraph
 } from '../../../api/actions/curriculum-delivery-model';
-import { deDuplicateNames } from '../../editing/increment-clone-suffix';
+import { deDuplicateNames } from '../../editing/functions/increment-clone-suffix';
 import * as _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
@@ -90,7 +90,7 @@ export default function CurriculumDeliveryGraph({
     dispatch({ type: 'updateAll', payload: initialPayload });
   }, [initialPayload, dispatch]);
 
-  const unsavedGraphChanges = useEnableNodeEditing(
+  const unsavedGraphChanges = useNodeEditing(
     nodesRef,
     linksRef,
     cloneFunctionWrapper,
