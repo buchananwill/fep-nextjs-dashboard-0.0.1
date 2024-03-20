@@ -33,13 +33,13 @@ export function LessonTypeHierarchyGraph() {
     lessonTypeList.push(n.data.name);
   });
 
-  const titleList = nodes.map(
+  const titleList = nodesRef.current.map(
     (n: DataNode<WorkTaskTypeDto>) =>
       n.data?.serviceCategoryKnowledgeDomainDescriptor || ''
   );
 
-  const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] = nodes.map(
-    (node, index) => {
+  const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] =
+    nodesRef.current.map((node, index) => {
       return {
         node: node,
         payload: (
@@ -49,8 +49,7 @@ export function LessonTypeHierarchyGraph() {
           ></WorkTaskTypeDtoDetails>
         )
       };
-    }
-  );
+    });
 
   return (
     <NodeLinkRefWrapper

@@ -65,7 +65,8 @@ export default function AddLinksButton<T extends HasNumberIdDto>({
 
     setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
     nodeListRef.current = [...nodeListRef.current];
-    linkListRef.current = resetLinks([...allLinks]);
+    // linkListRef.current = resetLinks([...allLinks]);
+    linkListRef.current = [...allLinks];
     incrementSimVersion();
 
     deBounce();

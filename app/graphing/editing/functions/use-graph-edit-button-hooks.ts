@@ -27,6 +27,7 @@ import { CurriculumDetailsListenerKey } from '../../graph-types/organization/cur
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericLinkContext } from '../../links/generic-link-context-creator';
 import { DataLink, DataNode } from '../../../api/zod-mods';
+import { resetLinks } from '../buttons/add-nodes-button';
 
 export function useGraphVersionKeys<T extends HasNumberIdDto>(
   listenerKey: string
@@ -94,10 +95,11 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
   const incrementSimVersion = () => {
     // dispatchUnsavedGraph(true);
     if (nodeListRef && linkListRef) {
+      const resetLinksWithNumberIds = resetLinks(linkListRef.current);
       const safeCopyOfNodes = nodeListRef.current.map(
         (n) => ({ ...n }) as DataNode<T>
       );
-      const safeCopyOfLinks = linkListRef.current.map(
+      const safeCopyOfLinks = resetLinksWithNumberIds.map(
         (l) =>
           ({
             ...l
