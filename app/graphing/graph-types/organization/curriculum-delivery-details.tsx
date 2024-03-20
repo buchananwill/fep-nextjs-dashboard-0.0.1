@@ -155,13 +155,15 @@ export default function CurriculumDeliveryDetails({
         >
           <Listbox value={assignmentOptional} onChange={handleAssignmentChange}>
             <Listbox.Button className={'btn w-full h-full relative px-1'}>
-              <div className={'text-left w-full'}>
-                <div className={'flex justify-between w-full text-sm'}>
-                  <span>Item</span>
-                  <span>Total Periods</span>
-                </div>
-                {...elements}
-              </div>
+              <table className={'text-left w-full'}>
+                <thead className={'text-sm border-b-2'}>
+                  <tr>
+                    <th>Periods</th>
+                    <th>Item</th>
+                  </tr>
+                </thead>
+                <tbody>{...elements}</tbody>
+              </table>
             </Listbox.Button>
             <Listbox.Options
               className={
@@ -207,14 +209,20 @@ function CourseSummary({
   course: WorkProjectSeriesSchemaDto;
 }): React.JSX.Element {
   return (
-    <div className={'text-xs flex justify-between w-full'}>
-      <span>{course.workTaskType.name.substring(9)}</span>
-      <span className={'grow'}></span>
-      <span>
+    <tr
+      className={
+        'text-xs border-b last:border-0' +
+        // ' flex justify-between w-full' +
+        ''
+      }
+    >
+      <td>
         {course.deliveryAllocations
           .map((da) => da.count * da.deliveryAllocationSize)
           .reduce((prev, curr) => prev + curr, 0)}
-      </span>
-    </div>
+      </td>
+      <td>{course.workTaskType.name.substring(9)}</td>
+      {/*<span className={'grow'}></span>*/}
+    </tr>
   );
 }
