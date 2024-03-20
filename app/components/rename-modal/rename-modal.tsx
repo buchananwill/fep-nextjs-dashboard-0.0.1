@@ -1,12 +1,8 @@
-import {
-  useSelectiveContextControllerString,
-  useSelectiveContextDispatchString
-} from '../selective-context/selective-context-manager-string';
+import { useSelectiveContextDispatchString } from '../selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../selective-context/use-selective-context-listener';
 import {
   ConfirmActionModal,
-  ConfirmActionModalProps,
-  useModal
+  ConfirmActionModalProps
 } from '../confirm-action-modal';
 import { TextInput } from '@tremor/react';
 import { useEffect, useRef } from 'react';
@@ -26,7 +22,7 @@ export function RenameModal({
   listenerKey,
   children,
   error,
-  errorMessage = 'Please choose unique non-empty name',
+  errorMessage = 'Please choose unique, non-empty name',
   show,
   ...props
 }: RenameModalProps & ConfirmActionModalProps) {
