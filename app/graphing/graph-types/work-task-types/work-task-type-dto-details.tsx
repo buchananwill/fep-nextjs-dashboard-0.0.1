@@ -74,6 +74,8 @@ export default function WorkTaskTypeDtoDetails({
   const { domainMap, levelMap } = useServiceCategoryContext();
   const editListenerKey = `${WorkTaskTypeDtoDetailsListenerKey}-${id}`;
 
+  console.log(levelMap);
+
   const { incrementSimVersion, nodeListRef, linkListRef } =
     useDirectSimRefEditsDispatch<WorkTaskTypeDto>(editListenerKey);
 

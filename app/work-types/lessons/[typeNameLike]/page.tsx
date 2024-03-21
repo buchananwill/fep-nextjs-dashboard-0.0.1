@@ -4,6 +4,8 @@ import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
 import {
+  getAllKnowledgeDomains,
+  getAllKnowledgeLevels,
   getKnowledgeDomains,
   getKnowledgeLevels
 } from '../../../api/actions/service-categories';
@@ -27,13 +29,9 @@ export default async function LessonTypesPage({
     GraphDto<WorkTaskTypeDto>
   > = getWorkTaskTypeGraph(paramOrFallBack);
 
-  const { data: kLevels } = await getKnowledgeLevels(
-    SECONDARY_EDUCATION_CATEGORY_ID.toString()
-  );
+  const { data: kLevels } = await getAllKnowledgeLevels();
 
-  const { data: kDomains } = await getKnowledgeDomains(
-    SECONDARY_EDUCATION_CATEGORY_ID.toString()
-  );
+  const { data: kDomains } = await getAllKnowledgeDomains();
 
   if (kLevels === undefined || kDomains === undefined) {
     return <DataNotFoundCard>Category data missing.</DataNotFoundCard>;

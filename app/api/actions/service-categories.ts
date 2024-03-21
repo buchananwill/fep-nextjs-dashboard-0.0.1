@@ -37,6 +37,12 @@ export async function getKnowledgeLevels(
   const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeLevels`;
   return getWithoutBody(url);
 }
+export async function getAllKnowledgeLevels(): ActionResponsePromise<
+  KnowledgeLevelDto[]
+> {
+  const url = `${serviceCategoriesApi}/knowledgeLevels`;
+  return getWithoutBody(url);
+}
 
 export async function patchKnowledgeLevels(
   serviceCategory: ServiceCategoryDto,
@@ -62,6 +68,12 @@ export async function getKnowledgeDomains(
   serviceCategoryId: string
 ): ActionResponsePromise<KnowledgeDomainDto[]> {
   const url = `${serviceCategoriesApi}/${serviceCategoryId}/knowledgeDomains`;
+  return getWithoutBody(url);
+}
+export async function getAllKnowledgeDomains(): ActionResponsePromise<
+  KnowledgeDomainDto[]
+> {
+  const url = `${serviceCategoriesApi}/knowledgeDomains`;
   return getWithoutBody(url);
 }
 
