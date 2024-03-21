@@ -16,6 +16,7 @@ import KeyListenerManager from './components/key-listener-context/key-listener-m
 import SelectiveContextManagerStringList from './components/selective-context/selective-context-manager-string-list';
 import SelectiveContextManagerNumberList from './components/selective-context/selective-context-manager-number-list';
 import SelectiveContextManagerFunction from './components/selective-context/selective-context-manager-function';
+import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
 
 enableMapSet();
 
@@ -33,34 +34,36 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50" data-theme={'light'}>
       <body className="h-full">
-        <TooltipsContextProvider>
-          <SelectiveContextManagerBoolean>
-            <SelectiveContextManagerNumber>
-              <SelectiveContextManagerString>
-                <KeyListenerManager>
-                  <SubjectColorCodingProvider>
-                    <SelectiveContextManagerStringList>
-                      <SelectiveContextManagerNumberList>
-                        <SelectiveContextManagerFunction>
-                          <Suspense>
-                            <Nav />
-                          </Suspense>
-                          <main className="p-4 md:p-10 mx-auto max-w-full">
-                            <Suspense fallback={<Loading />}>
-                              {children}
+        <AnimationSyncContextProvider>
+          <TooltipsContextProvider>
+            <SelectiveContextManagerBoolean>
+              <SelectiveContextManagerNumber>
+                <SelectiveContextManagerString>
+                  <KeyListenerManager>
+                    <SubjectColorCodingProvider>
+                      <SelectiveContextManagerStringList>
+                        <SelectiveContextManagerNumberList>
+                          <SelectiveContextManagerFunction>
+                            <Suspense>
+                              <Nav />
                             </Suspense>
-                          </main>
-                          <Analytics />
-                          {/*<Toast />*/}
-                        </SelectiveContextManagerFunction>
-                      </SelectiveContextManagerNumberList>
-                    </SelectiveContextManagerStringList>
-                  </SubjectColorCodingProvider>
-                </KeyListenerManager>
-              </SelectiveContextManagerString>
-            </SelectiveContextManagerNumber>
-          </SelectiveContextManagerBoolean>
-        </TooltipsContextProvider>
+                            <main className="p-4 md:p-10 mx-auto max-w-full">
+                              <Suspense fallback={<Loading />}>
+                                {children}
+                              </Suspense>
+                            </main>
+                            <Analytics />
+                            {/*<Toast />*/}
+                          </SelectiveContextManagerFunction>
+                        </SelectiveContextManagerNumberList>
+                      </SelectiveContextManagerStringList>
+                    </SubjectColorCodingProvider>
+                  </KeyListenerManager>
+                </SelectiveContextManagerString>
+              </SelectiveContextManagerNumber>
+            </SelectiveContextManagerBoolean>
+          </TooltipsContextProvider>
+        </AnimationSyncContextProvider>
       </body>
     </html>
   );

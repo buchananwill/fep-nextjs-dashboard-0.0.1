@@ -92,7 +92,8 @@ export function AddNodesButton<T extends HasNumberIdDto>({
 
     deBounce();
 
-    linkListRef.current = resetLinks(allUpdatedLinks);
+    // linkListRef.current = resetLinks(allUpdatedLinks);
+    linkListRef.current = [...allUpdatedLinks];
     nodeListRef.current = allNodes;
 
     incrementSimVersion();

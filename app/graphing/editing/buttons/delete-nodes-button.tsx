@@ -72,7 +72,8 @@ export function DeleteNodesButton<T extends HasNumberIdDto>({
     setDeletedNodeIds([...deletedNodeIds, ...nodesForDeletion]);
     setDeletedLinkIds([...deletedLinkIds, ...linksToDelete]);
     deBounce();
-    linkListRef.current = resetLinks(linkCache);
+    // linkListRef.current = resetLinks(linkCache);
+    linkListRef.current = [...linkCache];
     nodeListRef.current = remainingNodes;
     incrementSimVersion();
   };

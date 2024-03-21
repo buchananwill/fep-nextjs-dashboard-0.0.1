@@ -12,9 +12,6 @@ export function DeleteLinksButton<T extends HasNumberIdDto>({
 }: {
   children: string;
 }) {
-  const deleteLinksMemoKey = useMemo(() => {
-    return deleteLinksKey;
-  }, []);
   const {
     nodeListRef,
     linkListRef,
@@ -26,7 +23,7 @@ export function DeleteLinksButton<T extends HasNumberIdDto>({
     selected,
     deletedLinkIds,
     setDeletedLinkIds
-  } = useGraphEditButtonHooks<T>(deleteLinksMemoKey);
+  } = useGraphEditButtonHooks<T>(deleteLinksKey);
 
   if (linkListRef === null) return <></>;
 
@@ -42,7 +39,8 @@ export function DeleteLinksButton<T extends HasNumberIdDto>({
     setDeletedLinkIds([...deletedLinkIds, ...toDelete]);
     deBounce();
     nodeListRef.current = [...nodeListRef.current];
-    linkListRef.current = resetLinks(remainingLinks);
+    // linkListRef.current = resetLinks(remainingLinks);
+    linkListRef.current = [...remainingLinks];
     incrementSimVersion();
   };
   return (

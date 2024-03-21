@@ -80,7 +80,8 @@ export default function InvertLinksButton<T extends HasNumberIdDto>({
     setDeletedLinkIds([...deletedLinkIds, ...linksToDelete]);
     setTransientLinkIds([...transientLinkIds, ...newLinkIds]);
     nodeListRef.current = [...nodeListRef.current];
-    linkListRef.current = resetLinks([...allUpdatedLinks]);
+    // linkListRef.current = resetLinks([...allUpdatedLinks]);
+    linkListRef.current = [...allUpdatedLinks];
     incrementSimVersion();
 
     deBounce();

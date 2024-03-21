@@ -13,6 +13,7 @@ import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
 import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
+import { useSineLutContext } from '../../contexts/animation-sync-context/animation-sync-context-creator';
 
 export function LinkComponent<T extends HasNumberIdDto>({
   children,
@@ -62,6 +63,8 @@ export function LinkComponent<T extends HasNumberIdDto>({
   const sourceSelected = useNodeSelectedListener(updatedLinkOptional?.source);
   const targetSelected = useNodeSelectedListener(updatedLinkOptional?.target);
 
+  const sineLutSync = Math.abs(useSineLutContext(Date.now() / 10));
+
   if (updatedLinkOptional !== undefined) {
     updatedLink = updatedLinkOptional as DataLink<T>;
   }
@@ -88,8 +91,12 @@ export function LinkComponent<T extends HasNumberIdDto>({
     { x: x2, y: y2 }
   );
 
-  const arrowToParentLocation = { ...locationInterpolation(0.85) };
-  const arrowToChildLocation = { ...locationInterpolation(0.15) };
+  const arrowToParentLocation = {
+    ...locationInterpolation(0.67 + 0.15 * sineLutSync)
+  };
+  const arrowToChildLocation = {
+    ...locationInterpolation(0.33 - 0.15 * sineLutSync)
+  };
 
   const parentRotationAngle = calculateRotationAngle(
     x1,
@@ -139,7 +146,7 @@ export function LinkComponent<T extends HasNumberIdDto>({
               strokeLinecap="round"
               strokeLinejoin="round"
               stroke={cssHSLA}
-              className={'animate-bounce-less'}
+              // className={'animate-bounce-less'}
               d="m-7.5 7.5 7.5-7.5 7.5 7.5"
             />
           )}
@@ -153,7 +160,7 @@ export function LinkComponent<T extends HasNumberIdDto>({
               strokeLinecap="round"
               strokeLinejoin="round"
               stroke={cssHSLA}
-              className={'animate-bounce-less'}
+              // className={'animate-bounce-less'}
               d="m-7.5 7.5 7.5-7.5 7.5 7.5"
             />
           )}
