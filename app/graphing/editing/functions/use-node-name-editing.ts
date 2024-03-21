@@ -35,19 +35,7 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
   );
 
   const { uniqueGraphName } = useContext(GraphContext);
-  const unsavedGraphContextKey = useSelectiveContextKeyMemo(
-    UnsavedNodeDataContextKey,
-    uniqueGraphName
-  );
-
-  const {
-    currentState: unsavedGraph,
-    dispatchWithoutControl: dispatchUnsavedGraph
-  } = useSelectiveContextDispatchBoolean(
-    unsavedGraphContextKey,
-    componentListenerKey,
-    false
-  );
+  useSelectiveContextKeyMemo(UnsavedNodeDataContextKey, uniqueGraphName);
 
   const { nodeListRef, incrementSimVersion, linkListRef } =
     useDirectSimRefEditsDispatch<OrganizationDto>(componentListenerKey);
@@ -57,17 +45,8 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
       const currentElement = nodeListRef.current[node.index!];
 
       currentElement.data.name = currentState;
-      const resetLinks1 = resetLinks(linkListRef.current);
-      console.log(
-        resetLinks1,
-        currentElement,
-        currentState,
-        nodeListRef.current
-      );
-      linkListRef.current = resetLinks1;
-      // nodeListRef.current = copiedElements;
+
       incrementSimVersion();
-      dispatchUnsavedGraph(true);
     }
 
     closeModal();
