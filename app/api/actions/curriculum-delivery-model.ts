@@ -36,6 +36,10 @@ export async function getCurriculumDeliveryModelSchemasByKnowledgeLevel(
   url = url + paging;
   return await getWithoutBody<Page<WorkProjectSeriesSchemaDto>>(url);
 }
+
+export async function deleteCurriculumDeliveryModels(schemaIdList: string[]) {
+  return deleteEntities(schemaIdList, SCHEMA_URL);
+}
 export async function getBundleDeliveriesByOrgType(
   orgType: string
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {

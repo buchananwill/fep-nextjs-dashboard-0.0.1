@@ -6,7 +6,7 @@ export function TabStyled({ children }: { children: string }) {
     <Tab as={'div'} className={'w-full p-0.5 rounded-lg overflow-hidden'}>
       {({ selected }) => (
         <button
-          className={`w-full btn btn-sm btn-outline px-2 py-0 text-xs   ${
+          className={`w-full btn btn-sm btn-outline py-0 text-xs   ${
             selected ? '' : 'opacity-25'
           }`}
         >

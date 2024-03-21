@@ -14,18 +14,18 @@ import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { useEffect, useState } from 'react';
 
 export function useValidationUniqueNonEmpty(
-  currentState: string,
-  name: string,
+  proposedName: string,
+  currentName: string,
   nameList: string[]
 ) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (currentState !== name && nameList.includes(currentState))
+    if (proposedName !== currentName && nameList.includes(proposedName))
       setError(true);
-    else if (currentState == '' || currentState == undefined) setError(true);
+    else if (proposedName == '' || proposedName == undefined) setError(true);
     else setError(false);
-  }, [name, nameList, setError, currentState]);
+  }, [currentName, nameList, setError, proposedName]);
   return error;
 }
 

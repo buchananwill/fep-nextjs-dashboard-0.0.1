@@ -36,7 +36,7 @@ export function TwoStageClick({
 
   return (
     <button
-      className={`relative btn transition-colors duration-500  ${
+      className={`z-10 relative btn transition-colors duration-500  ${
         clickPrimed ? primedAppearance : standardAppearance
       } ${className}`}
       {...props}
@@ -44,14 +44,18 @@ export function TwoStageClick({
       ref={refs.setReference}
     >
       {clickPrimed && (
-        <Badge
+        <div
           ref={refs.setFloating}
           style={floatingStyles}
-          color={primedAppearance === 'btn-error' ? 'red' : 'blue'}
-          onClick={guardClick}
+          className={'bg-white bg-opacity-100 w-fit h-fit rounded-md'}
         >
-          {primedMessage}
-        </Badge>
+          <Badge
+            color={primedAppearance === 'btn-error' ? 'red' : 'blue'}
+            onClick={guardClick}
+          >
+            {primedMessage}
+          </Badge>
+        </div>
       )}
       {children}
     </button>

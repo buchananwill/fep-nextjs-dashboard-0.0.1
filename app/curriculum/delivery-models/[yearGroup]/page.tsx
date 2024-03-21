@@ -9,6 +9,10 @@ import {
 import { CurriculumDeliveryModels } from '../curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
 import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
+import { StringMap } from '../contexts/string-map-context-creator';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { WorkTaskTypeInit } from './workTaskTypeInit';
+import { CurriculumModelNameListValidator } from './curriculum-model-name-list-validator';
 
 export default async function Page({
   params: { yearGroup },
@@ -22,7 +26,7 @@ export default async function Page({
   const { page, size } = searchParams;
   const queryParamToNumber = normalizeQueryParamToNumber(page, 1);
   const indexToZeroIndex = oneIndexToZeroIndex(queryParamToNumber);
-  const sizeToNumber = normalizeQueryParamToNumber(size, 11);
+  const sizeToNumber = normalizeQueryParamToNumber(size, 8);
   const curriculumDeliveryModelSchemas =
     await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
       indexToZeroIndex,
@@ -45,11 +49,17 @@ export default async function Page({
   const { content, last, first, number, totalPages } = data;
   const pageNumber = zeroIndexToOneIndex(number);
 
+  const stringMap: StringMap<WorkProjectSeriesSchemaDto> = {};
+  content.forEach((schema) => {
+    stringMap[schema.id] = schema;
+  });
+
   if (status >= 400) {
     return <Card>{message}</Card>;
   }
   return (
     <>
+      <WorkTaskTypeInit workTaskTypes={taskTypeList} />
       <div className={'w-full flex items-center gap-2'}>
         <Pagination
           first={first}
@@ -62,9 +72,8 @@ export default async function Page({
         </Title>
       </div>
       <CurriculumDeliveryModels
-        workProjectSeriesSchemaDtos={content}
-        taskTypeList={taskTypeList}
         yearGroup={parseInt(yearGroup)}
+        modelsPayload={content}
       />
     </>
   );

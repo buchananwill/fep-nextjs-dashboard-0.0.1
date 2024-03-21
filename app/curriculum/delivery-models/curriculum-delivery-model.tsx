@@ -17,8 +17,18 @@ import {
 } from '../../components/selective-context/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { TwoStageClick } from '../../components/buttons/two-stage-click';
+
+import { PendingOverlay } from '../../teaching-categories/[categoryIdentifier]/knowledge-level/pending-overlay';
+import { DeletedOverlay } from '../../components/overlays/deleted-overlay';
+import { RenameModal } from '../../components/rename-modal/rename-modal';
+import { useRenameCurriculumDeliveryModel } from './use-rename-curriculum-delivery-model';
+import { useDeleteCurriculumDeliveryModel } from './use-delete-curriculum-delivery-model';
 
 const allocationSizes = [1, 2];
+
+const CurriculumDeliveryModelCardKey = 'model-card';
 
 export function CurriculumDeliveryModel({
   model
@@ -29,14 +39,44 @@ export function CurriculumDeliveryModel({
   const workTaskTypeName = workTaskType.name;
   const lastColon = workTaskTypeName.lastIndexOf(':');
   const name = workTaskTypeName.substring(lastColon + 1);
+  const listenerKey = `${CurriculumDeliveryModelCardKey}:${model.id}`;
+  const { handleDelete, currentState, handleUnDelete } =
+    useDeleteCurriculumDeliveryModel(model.id, listenerKey);
+
+  const { openModal, renameModalProps } = useRenameCurriculumDeliveryModel(
+    model.id,
+    listenerKey
+  );
 
   return (
     <Card className={'overflow-x-auto p-4'}>
+      <DeletedOverlay
+        show={currentState.includes(model.id)}
+        handleUnDelete={handleUnDelete}
+      />
       <Tab.Group>
-        <div className={'grid grid-cols-4 mb-2 items-center'}>
-          <Title className={'text-left grow col-span-2'}>{name}</Title>
+        <div className={'grid grid-cols-4 mb-2 items-center gap-0.5'}>
+          <div className={'col-span-2 flex items-center gap-1'}>
+            <TwoStageClick
+              className={'btn-sm'}
+              standardAppearance={'btn-ghost'}
+              onClick={handleDelete}
+            >
+              {' '}
+              <TrashIcon className={'h-4 w-4'}></TrashIcon>
+            </TwoStageClick>
+            <button
+              className={
+                'btn btn-ghost btn-sm w-3/4 flex overflow-hidden flex-nowrap'
+              }
+              onClick={openModal}
+            >
+              <span className={'truncate ... w-3/4'}>{model.name}</span>
+              <PencilSquareIcon className={'h-4 w-4 grow'}></PencilSquareIcon>
+            </button>
+          </div>
           <Tab.List className={'grid col-span-2 grow grid-cols-2'}>
-            <TabStyled>Allocations</TabStyled>
+            <TabStyled>Periods</TabStyled>
             <TabStyled>Details</TabStyled>
           </Tab.List>
         </div>
@@ -51,6 +91,7 @@ export function CurriculumDeliveryModel({
           </Text>
         </TabPanelStyled>
       </Tab.Group>
+      <RenameModal {...renameModalProps} />
     </Card>
   );
 }
@@ -105,6 +146,7 @@ export function AdjustAllocation({
       type: 'update',
       payload: { key: modelId, data: updatedSchema }
     });
+    console.log(updatedSchema, updatedDevAlloc);
     setUnsaved(true);
   };
 

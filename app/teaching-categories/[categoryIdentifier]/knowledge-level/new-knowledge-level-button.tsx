@@ -20,6 +20,7 @@ import { postKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';
+import { PendingOverlay } from './pending-overlay';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 
@@ -85,22 +86,6 @@ export function TextInputUniqueNonEmpty({
       error={error}
       errorMessage={'Please enter a unique name.'}
     ></TextInput>
-  );
-}
-
-export function PendingOverlay(props: { pending: boolean }) {
-  return (
-    <>
-      {props.pending && (
-        <div
-          className={
-            'w-full h-full absolute bg-slate-100 opacity-75 top-0 left-0 z-20 flex place-content-center'
-          }
-        >
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
-    </>
   );
 }
 

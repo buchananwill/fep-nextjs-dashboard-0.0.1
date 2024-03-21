@@ -1,14 +1,20 @@
 'use client';
 
 import { StringMap, StringMapReducer } from './string-map-context-creator';
-import React, { PropsWithChildren, useReducer } from 'react';
+import React, { PropsWithChildren, useEffect, useReducer } from 'react';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import {
   CurriculumModelsContext,
   CurriculumModelsContextDispatch
 } from './use-curriculum-model-context';
-import { ConfirmActionModal } from '../../../components/confirm-action-modal';
-import { putModels } from '../../../api/actions/curriculum-delivery-model';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../../components/confirm-action-modal';
+import {
+  deleteCurriculumDeliveryModels,
+  putModels
+} from '../../../api/actions/curriculum-delivery-model';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextListenerBoolean
@@ -17,9 +23,15 @@ import { curriculumDeliveryCommitKey } from '../curriculum-delivery-models';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
+import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
 
 export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
+export const DeletedCurriculumModelIdsKey = 'deleted-curriculum-model-id-list';
 export const ModelChangesProviderListener = 'unsaved-model-changes:provider';
+
+const providerListenerKey = 'provider';
+
+export const EmptyIdArray: string[] = [];
 
 export function CurriculumModelsContextProvider({
   models,
@@ -27,12 +39,8 @@ export function CurriculumModelsContextProvider({
 }: { models: StringMap<WorkProjectSeriesSchemaDto> } & PropsWithChildren) {
   const CurriculumModelsReducer = StringMapReducer<WorkProjectSeriesSchemaDto>;
   const [currentModels, dispatch] = useReducer(CurriculumModelsReducer, models);
-  const { currentState: modalOpen, dispatchUpdate } =
-    useSelectiveContextControllerBoolean(
-      curriculumDeliveryCommitKey,
-      curriculumDeliveryCommitKey,
-      false
-    );
+
+  const { isOpen, openModal, closeModal } = useModal();
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
       UnsavedCurriculumModelChanges,
@@ -40,21 +48,53 @@ export function CurriculumModelsContextProvider({
       false
     );
 
-  const handleClose = () => {
-    dispatchUpdate({ contextKey: curriculumDeliveryCommitKey, value: false });
-  };
-  const openModal = () =>
-    dispatchUpdate({ contextKey: curriculumDeliveryCommitKey, value: true });
+  const {
+    currentState: deletedModelsIdList,
+    dispatchUpdate: dispatchDeletedModelIdList
+  } = useSelectiveContextControllerStringList(
+    DeletedCurriculumModelIdsKey,
+    providerListenerKey,
+    EmptyIdArray
+  );
 
   async function handleCommit() {
-    const workProjectSeriesSchemaDtosCurrent = Object.values(currentModels);
-    putModels(workProjectSeriesSchemaDtosCurrent).then((r) => {
-      if (r.data) {
-        const schemas = getPayloadArray(r.data, (schema) => schema.id);
-        dispatch({ type: 'updateAll', payload: schemas });
+    let successDelete = false;
+    let successUpdate = false;
+    const clearFlag = () => {
+      if (successUpdate && successDelete) {
         setUnsaved({ contextKey: UnsavedCurriculumModelChanges, value: false });
       }
-    });
+    };
+    console.log('Committing!');
+    if (deletedModelsIdList.length > 0) {
+      deleteCurriculumDeliveryModels(deletedModelsIdList)
+        .then((r) => {
+          if (r.status == 200) {
+            dispatchDeletedModelIdList({
+              contextKey: DeletedCurriculumModelIdsKey,
+              value: EmptyIdArray
+            });
+            successDelete = true;
+          } else {
+            console.log(r.message);
+          }
+        })
+        .finally(clearFlag);
+    }
+    const workProjectSeriesSchemaDtosCurrent = Object.values(currentModels);
+    putModels(workProjectSeriesSchemaDtosCurrent)
+      .then((r) => {
+        if (r.data) {
+          const schemas = getPayloadArray(r.data, (schema) => schema.id);
+          dispatch({ type: 'updateAll', payload: schemas });
+          successUpdate = true;
+        } else {
+          console.log(r.message);
+          successDelete = false;
+        }
+      })
+      .finally(clearFlag);
+    closeModal();
   }
 
   return (
@@ -66,7 +106,10 @@ export function CurriculumModelsContextProvider({
             className={
               'z-40 flex items-center border-gray-200 shadow-lg border-2 bg-gray-100 fixed top-16 right-16 p-2 rounded-md hover:bg-gray-50 group cursor-pointer'
             }
-            onClick={() => openModal()}
+            onClick={() => {
+              console.log('Opening commit modal');
+              openModal();
+            }}
           >
             Unsaved Ch-Ch-Changes{' '}
             <ExclamationTriangleIcon
@@ -77,15 +120,10 @@ export function CurriculumModelsContextProvider({
           </div>
         )}
         <ConfirmActionModal
-          show={modalOpen}
-          onClose={handleClose}
-          onConfirm={() => {
-            handleClose();
-            handleCommit();
-          }}
-          onCancel={() => {
-            handleClose();
-          }}
+          show={isOpen}
+          onClose={closeModal}
+          onConfirm={handleCommit}
+          onCancel={closeModal}
         >
           <p>Commit updated models to the database?</p>
         </ConfirmActionModal>

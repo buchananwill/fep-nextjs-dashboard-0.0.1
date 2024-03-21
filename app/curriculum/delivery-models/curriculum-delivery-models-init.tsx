@@ -2,18 +2,19 @@
 import { PropsWithChildren } from 'react';
 import {
   CurriculumDeliveryModelEditingProps,
-  useCurriculumDeliveryModelEditing
-} from './use-curriculum-delivery-model-editing';
+  useCurriculumDeliveryModelAndWorkTaskDependency
+} from './use-curriculum-delivery-model-and-work-task-dependency';
 
 export function CurriculumDeliveryModelsInit({
   children,
   taskTypeList,
   workProjectSeriesSchemaDtos
 }: PropsWithChildren & CurriculumDeliveryModelEditingProps) {
-  const b = useCurriculumDeliveryModelEditing(
+  const b = useCurriculumDeliveryModelAndWorkTaskDependency(
     workProjectSeriesSchemaDtos,
     taskTypeList
   );
+  console.log('Curriculum Delivery Models Init');
 
   return <></>;
 }

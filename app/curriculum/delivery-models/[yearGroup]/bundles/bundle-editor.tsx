@@ -230,7 +230,10 @@ export function BundleEditor({
           currentName={nameOfBundle}
           className={'mx-2 '}
         />
-        <TwoStageClick onClick={() => deleteBundle(activeBundleAndId.id)}>
+        <TwoStageClick
+          onClick={() => deleteBundle(activeBundleAndId.id)}
+          className={'btn-sm'}
+        >
           <TrashIcon className={'h-4 w-4'}></TrashIcon>
         </TwoStageClick>
         <span className={'grow'}></span>

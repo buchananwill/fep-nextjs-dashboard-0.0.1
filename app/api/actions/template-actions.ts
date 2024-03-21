@@ -125,7 +125,10 @@ async function callApi<T>(
       const message = response.statusText;
       return successResponse(responseBody, message);
     } else {
-      return errorResponse(response.statusText);
+      const newVar = await response.json();
+      const errorMessage: string = newVar.message;
+      const originalRequest: T = newVar.requestBody;
+      return errorResponse(errorMessage, originalRequest);
     }
   } catch (error) {
     console.error('Error fetching data: ', error);
