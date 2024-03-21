@@ -24,7 +24,7 @@ export default async function LessonTypesPage({
   searchParams: { typeNameLike: string };
 }) {
   const paramOrFallBack =
-    typeNameLike === 'All' || undefined ? 'teaching' : typeNameLike;
+    typeNameLike === 'All' || undefined ? '' : typeNameLike;
   const lessonTypesResponseGraph: ActionResponsePromise<
     GraphDto<WorkTaskTypeDto>
   > = getWorkTaskTypeGraph(paramOrFallBack);
