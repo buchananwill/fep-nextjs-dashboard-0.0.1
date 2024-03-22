@@ -1,21 +1,17 @@
-import { ProviderAvailability } from '../../../api/dto-interfaces';
 import { useContext, useEffect } from 'react';
-import {
-  AvailabilityContext,
-  AvailabilityDispatchContext
-} from '../../contexts/availability/availability-context';
+import { AvailabilityDispatchContext } from '../../contexts/availability/availability-context';
 import { BarsArrowDownIcon } from '@heroicons/react/20/solid';
-import { produce } from 'immer';
-import { addHours } from 'date-fns';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
+import { getStartAndEndDatesAsEpochal } from '../../contexts/availability/get-start-and-end-dates-as-epochal';
 
 export default function AvailabilityBlock({
   providerAvailability
 }: {
-  providerAvailability: ProviderAvailability;
+  providerAvailability: ProviderAvailabilityDto;
 }) {
-  const dndId = `${providerAvailability.providerId}-${providerAvailability.cycleSubspan.id}`;
+  const dndId = `${providerAvailability.providerRoleId}-${providerAvailability.cycleSubspanDto.id}`;
   const {
     attributes,
     listeners,
@@ -36,7 +32,7 @@ export default function AvailabilityBlock({
   useEffect(() => {
     dispatch({
       type: 'setDndKey',
-      draggableKey: dndId,
+      key: dndId,
       data: providerAvailability
     });
   });
@@ -48,12 +44,15 @@ export default function AvailabilityBlock({
   const hue = availabilityCode == 1 ? 'emerald' : 'red';
 
   function handleToggle() {
+    const { startDate, endDate } =
+      getStartAndEndDatesAsEpochal(providerAvailability);
+
     dispatch({
       type: 'toggleAvailability',
-      providerId: providerAvailability.providerId,
+      providerId: providerAvailability.providerRoleId,
       targetOutcome: 1 - availabilityCode,
-      start: providerAvailability.cycleSubspan.timespan.start,
-      end: providerAvailability.cycleSubspan.timespan.end
+      start: startDate.getTime(),
+      end: endDate.getTime()
     });
   }
 

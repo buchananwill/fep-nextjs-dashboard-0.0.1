@@ -17,13 +17,16 @@ import { DndContextProvider } from '../../../components/dnd-context-provider';
 import { DragEndEvent } from '@dnd-kit/core';
 
 import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';
-import { createRangeStartingMondayThisWeek } from '../../calendar-view/range/create-range-starting-monday-this-week';
+import {
+  createRangeStartingMondayEpochalTime,
+  createRangeStartingMondayThisWeek
+} from '../../calendar-view/range/create-range-starting-monday-this-week';
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
 
 export function AvailabilityTable() {
   enableMapSet();
 
-  const normalizedInterval = createRangeStartingMondayThisWeek();
+  const normalizedInterval = createRangeStartingMondayEpochalTime();
   // Get the selected providerRoles and add their availability
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
   const { providerAvailability, dndMap } = useContext(AvailabilityContext);
@@ -41,7 +44,6 @@ export function AvailabilityTable() {
             getStartAndEndDatesAsEpochal(providerAvailability);
           return {
             key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${mechanic}`,
-            interval: providerAvailability.cycleSubspanDto,
             startDate: startDate.getTime(),
             endDate: endDate.getTime(),
             colorKey: mechanic.name,
@@ -58,10 +60,7 @@ export function AvailabilityTable() {
 
   return (
     <DndContextProvider onDragEnd={handleDragEnd}>
-      <CalendarRangeContextProvider
-        initialRange={normalizedInterval}
-        dayWidth={60}
-      >
+      <CalendarRangeContextProvider initialRange={normalizedInterval}>
         {
           <Transition
             show={false}

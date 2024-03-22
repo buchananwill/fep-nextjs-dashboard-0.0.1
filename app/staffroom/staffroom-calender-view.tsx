@@ -33,6 +33,8 @@ export function StaffroomCalenderView({
     );
   }
 
+  console.log(eventBlocks);
+
   const totalDayWidth =
     selectedProviders.length > 0 ? selectedProviders.length * x : x;
 

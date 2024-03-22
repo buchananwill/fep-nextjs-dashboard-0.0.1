@@ -45,8 +45,6 @@ export default function ProviderRoleContextProvider({
     providerRoleAndTaskData.providerRoles
   );
 
-  console.log(providerRoleAndTaskData.workTaskTypes);
-
   const [open, setOpen] = useState(false);
   const [skillModalOpen, setSkillModalOpen] = useState(false);
   const [unsavedChanges, setUnsavedChanges] = useState(false);

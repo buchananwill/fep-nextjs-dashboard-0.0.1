@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 
-import { useDroppable } from '@dnd-kit/core';
 import { CalendarIdContext } from './calendar-id-context';
-import { EventsDispatch } from '../../contexts/events/event-context';
 
 export function TimeDropZone({
   children,
