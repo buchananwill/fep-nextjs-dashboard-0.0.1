@@ -5,6 +5,9 @@ import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 export function isNotNull<T>(value: T | null): value is T {
   return value !== null;
 }
+export function isNotUndefined<T>(value: T | undefined): value is T {
+  return value !== undefined;
+}
 
 export const TransientIdOffset = Math.pow(2, 50);
 

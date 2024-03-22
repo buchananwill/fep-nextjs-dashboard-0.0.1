@@ -30,7 +30,7 @@ export function timeToZeroIndexedEpochalDateTime(
   return plusDays(timeToDateTime(stringTime));
 }
 
-export const DayOfWeek = {
+export const DayOfWeekObject = {
   MONDAY: 'Monday',
   TUESDAY: 'Tuesday',
   WEDNESDAY: 'Wednesday',
@@ -39,3 +39,15 @@ export const DayOfWeek = {
   SATURDAY: 'Saturday',
   SUNDAY: 'Sunday'
 };
+export const DayOfWeekArray = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+] as const;
+
+// Create a type from the values of DayOfWeekArray
+export type DayOfWeek = (typeof DayOfWeekArray)[number];

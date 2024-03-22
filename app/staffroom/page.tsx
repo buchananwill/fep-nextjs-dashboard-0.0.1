@@ -8,8 +8,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState,
-  useTransition
+  useState
 } from 'react';
 import { EventsContext, EventsDispatch } from './contexts/events/event-context';
 import { Calendarable } from './calendar-view/blocks/timespan-block';
@@ -18,24 +17,34 @@ import { ProviderContext } from './contexts/mechanics/provider-context';
 import { PageTitleContext } from '../contexts/page-title/page-title-context';
 import { DndContextProvider } from '../components/dnd-context-provider';
 import { closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { CalendarEvent, MechanicDto } from '../api/zod-mods';
+
 import { TeacherSelectionContext } from './contexts/mechanics/teacher-selection-context';
 import { addMinutes, differenceInCalendarDays, format } from 'date-fns';
-import { ZoomScaleContext } from './calendar-view/scale/zoom-scale-context';
 import { addDays } from 'date-fns/fp';
 import { Transform } from '@dnd-kit/utilities';
-import TransactionModal from '../components/transactional-modal/transaction-modal';
-import { TransactionalModalInterface } from '../components/transactional-modal/transactional-modal-context';
+
 import { produce } from 'immer';
-import { patchEvents } from '../actions/calendars';
+
 import { ClearUnSyncedEvents } from './contexts/events/event-reducer';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/navigation';
+import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
+import { EventDto } from '../api/dtos/EventDtoSchema';
+import { patchEvents } from '../api/actions/calendars';
+import {
+  isNotNull,
+  isNotUndefined
+} from '../graphing/editing/functions/graph-edits';
+import {
+  ConfirmActionModal,
+  ConfirmActionModalProps
+} from '../components/confirm-action-modal';
+import { useCalendarScaledZoom } from './calendar-view/columns/time-column';
 
-function getMechanic(
+function getProvider(
   mechanicId: number,
-  list: MechanicDto[]
-): MechanicDto | undefined {
+  list: ProviderRoleDto[]
+): ProviderRoleDto | undefined {
   return list.find((mechanicDto) => mechanicDto.id == mechanicId);
 }
 
@@ -50,16 +59,15 @@ export default function Page() {
 
   const { providers } = useContext(ProviderContext);
   const { selectedProviders } = useContext(TeacherSelectionContext);
-  const { y, x } = useContext(ZoomScaleContext);
   const [modalOpen, setModalOpen] = useState(false);
-  const [pendingEvent, setPendingEvent] = useState<CalendarEvent | null>(null);
+  const [pendingEvent, setPendingEvent] = useState<EventDto | null>(null);
   const [awaitingSync, setAwaitingSync] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const appRouterInstance = useRouter();
   const isPaused = useRef(false);
 
   const setEvent = useCallback(
-    (calendarEvent: CalendarEvent) =>
+    (calendarEvent: EventDto) =>
       dispatch({
         type: 'setEvent',
         event: calendarEvent
@@ -68,7 +76,7 @@ export default function Page() {
   );
 
   const addUnSynced = useCallback(
-    (calendarEvent: CalendarEvent) => {
+    (calendarEvent: EventDto) => {
       dispatch({
         type: 'addUnSyncedEvent',
         event: calendarEvent
@@ -85,29 +93,31 @@ export default function Page() {
   const eventBlocks = new Map<number, Calendarable[]>();
 
   selectedProviders.forEach(({ id, name }) => {
-    const mechanic = getMechanic(id, providers);
+    const mechanic = getProvider(id, providers);
     if (!mechanic) return;
     const eventsThisMechanic = events.get(id);
     const elements: Calendarable[] =
-      eventsThisMechanic?.map((calendarEvent, index) => ({
-        interval: {
-          start: calendarEvent.eventStart,
-          end: calendarEvent.eventEnd
-        },
-        key: calendarEvent.id,
-        colorKey: name,
-        content: (
-          <WorkshopJobBlock
-            workshopJob={calendarEvent}
-            mechanic={mechanic}
-            key={index}
-          ></WorkshopJobBlock>
-        )
-      })) || [];
+      eventsThisMechanic?.map((calendarEvent, index) => {
+        const { eventStart, eventEnd } = calendarEvent;
+        const calendarable = {
+          startDate: eventStart.getTime(),
+          endDate: eventEnd.getTime(),
+          key: calendarEvent.id,
+          colorKey: name,
+          content: (
+            <WorkshopJobBlock
+              workshopJob={calendarEvent}
+              mechanic={mechanic}
+              key={index}
+            ></WorkshopJobBlock>
+          )
+        };
+        return calendarable;
+      }) || [];
     eventBlocks.set(id, elements);
   });
 
-  function processPending(calendarEvent: CalendarEvent) {
+  function processPending(calendarEvent: EventDto) {
     setEvent(calendarEvent);
     addUnSynced(calendarEvent);
   }
@@ -117,7 +127,10 @@ export default function Page() {
       const calendarEvents = unSyncedEvents.map((id) => eventsById[id]);
       const patchedEvents = await patchEvents(calendarEvents);
       if (patchedEvents) {
-        patchedEvents.forEach(setEvent);
+        patchedEvents
+          .map((arp) => arp.data)
+          .filter(isNotUndefined)
+          .forEach(setEvent);
         clearUnSyncedEvents();
       } else {
         alert(
@@ -145,29 +158,31 @@ export default function Page() {
     confirmModalOpen
   ]);
 
-  const changeMechanicModal: TransactionalModalInterface = {
-    open: modalOpen,
-    confirm: () => {
+  const changeProviderModal: ConfirmActionModalProps = {
+    show: modalOpen,
+    onConfirm: () => {
       if (!!pendingEvent) processPending(pendingEvent);
       setPendingEvent(null);
       setModalOpen(false);
     },
-    cancel: () => {
+    onCancel: () => {
       setPendingEvent(null);
       setModalOpen(false);
-    }
+    },
+    onClose: () => setModalOpen(false)
   };
 
-  const confirmModal: TransactionalModalInterface = {
-    open: confirmModalOpen,
-    confirm: () => {
+  const confirmModal: ConfirmActionModalProps = {
+    show: confirmModalOpen,
+    onConfirm: () => {
       isPaused.current = false;
       setConfirmModalOpen(false);
     },
-    cancel: () => {
+    onCancel: () => {
       location.reload();
       setConfirmModalOpen(false);
-    }
+    },
+    onClose: () => setConfirmModalOpen(false)
   };
 
   return (
@@ -193,12 +208,12 @@ export default function Page() {
           <StaffroomCalenderView eventBlocks={eventBlocks} />
         </DndContextProvider>
       </Card>
-      <TransactionModal
+      <ConfirmActionModal
         title={'Assign to different mechanic?'}
-        context={changeMechanicModal}
+        {...changeProviderModal}
       >
         <Text>Assign this task event to a different mechanic?</Text>
-      </TransactionModal>
+      </ConfirmActionModal>
       {unSyncedEvents.length > 0 && (
         <div
           className={
@@ -217,15 +232,12 @@ export default function Page() {
           ></ExclamationTriangleIcon>
         </div>
       )}
-      <TransactionModal
-        title={'Confirm Unsaved Changes'}
-        context={confirmModal}
-      >
+      <ConfirmActionModal title={'Confirm Unsaved Changes'} {...confirmModal}>
         Confirm changes to events or revert to database state?
         {unSyncedEvents.map((event) => (
           <div key={event}>{eventsById[event].name}</div>
         ))}
-      </TransactionModal>
+      </ConfirmActionModal>
     </>
   );
 
@@ -299,7 +311,7 @@ export function TimeDeltaMonitor({
   transform: Transform;
   referenceDate: Date;
 }) {
-  const { y } = useContext(ZoomScaleContext);
+  const { y } = useCalendarScaledZoom();
   const deltaMinutes = convertDeltaYtoMinutes(transform.y, y);
 
   const updatedDate = addMinutes(referenceDate, deltaMinutes);

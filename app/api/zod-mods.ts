@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { SimulationLinkDatum, SimulationNodeDatum } from 'd3';
 import { isValid, parseISO } from 'date-fns';
-import { DayOfWeek, REGEX_DATE, REGEX_TIME } from './date-and-time';
+import { DayOfWeekObject, REGEX_DATE, REGEX_TIME } from './date-and-time';
 import { ProductComponentDtoSchema } from './dtos/ProductComponentDtoSchema';
 import { ClosureDto, ClosureDtoSchema } from './dtos/ClosureDtoSchema';
 import { ProductComponentStateDtoSchema } from './dtos/ProductComponentStateDtoSchema';
@@ -10,7 +10,7 @@ import { HasUuidDtoSchema } from './dtos/HasUuidDtoSchema';
 import { HasNameDtoSchema } from './dtos/HasNameDtoSchema';
 import { HasNumberIdDto } from './dtos/HasNumberIdDtoSchema';
 
-const days = DayOfWeek;
+const days = DayOfWeekObject;
 
 export const zDateOnly = z
   .string()

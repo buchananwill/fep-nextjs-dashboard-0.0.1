@@ -1,8 +1,7 @@
 import { createContext, Dispatch } from 'react';
 
-import { CalendarEvent } from '../../../api/zod-mods';
 import { EventAction } from './event-reducer';
-import { NormalizedInterval } from 'date-fns/types';
+import { EventDto } from '../../../api/dtos/EventDtoSchema';
 
 export interface CalendarDropZone {
   start: number;
@@ -11,8 +10,8 @@ export interface CalendarDropZone {
 }
 
 export interface EventsContextObject {
-  events: Map<number, CalendarEvent[]>;
-  eventsById: { [key: string]: CalendarEvent };
+  events: Map<number, EventDto[]>;
+  eventsById: { [key: string]: EventDto };
   unSyncedEvents: string[];
 }
 export const EventsContext = createContext<EventsContextObject>({

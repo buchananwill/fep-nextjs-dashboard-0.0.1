@@ -1,15 +1,31 @@
 'use client';
-import { createDateMatcher, getDayOfWeekAbr } from '../../classes/local-date';
+
 import { MONTHS } from './range/calendar-range-reducers';
 import { DaySubColumnLabel } from './day-sub-column-label';
 import { HourLabelsColumn } from '../hour-labels-column';
 import React, { ReactNode, useContext, useEffect, useRef } from 'react';
-import { ZoomScaleContext } from './scale/zoom-scale-context';
-import { NameIdNumberTuple } from '../../api/zod-mods';
-import { DndContext } from '@dnd-kit/core';
+
+import { LongIdStringNameTuple } from '../../api/dtos/LongIdStringNameTupleSchema';
+import { createDateMatcher } from './columns/day-column';
+import { DayOfWeekArray } from '../../api/date-and-time';
 
 export function makeMondayZero(day: number) {
   return (day + 6) % 7;
+}
+
+export function getDayOfWeekAbr(dayOfWeek: number) {
+  return DayOfWeekArray[dayOfWeek].toString().substring(0, 3);
+}
+
+export const DefaultPixelsPerDayWidth = 100;
+
+export function scaleToCalendarZoomX(x: number) {
+  return x * DefaultPixelsPerDayWidth;
+}
+export const DefaultPixelsPerHourHeight = 60;
+
+export function scaleToCalendarZoomY(y: number) {
+  return y * DefaultPixelsPerHourHeight;
 }
 
 export default function CalendarView({
@@ -20,7 +36,7 @@ export default function CalendarView({
 }: {
   totalDayWidth: number;
   dates: Date[];
-  daySubLabels: NameIdNumberTuple[];
+  daySubLabels: LongIdStringNameTuple[];
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);

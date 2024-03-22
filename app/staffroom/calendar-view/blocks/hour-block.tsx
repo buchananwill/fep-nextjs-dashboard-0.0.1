@@ -1,12 +1,10 @@
 'use client';
 import React, { useContext, useMemo } from 'react';
-import { ZoomScaleContext } from '../scale/zoom-scale-context';
-import { CalendarIdContext } from './calendar-id-context';
 import { DateColumnContext } from '../columns/date-column-context';
-import { useDroppable } from '@dnd-kit/core';
 import { TimeDropZone } from './time-drop-zone';
 import { set } from 'date-fns';
 import { interval } from 'date-fns/interval';
+import { useCalendarScaledZoom } from '../columns/time-column';
 
 export interface HourTransformerProps {
   hour: number;
@@ -47,7 +45,7 @@ export function HourBlock({
   hourTransFormer?: HourTransformer;
   hour: number;
 }) {
-  const { y } = useContext(ZoomScaleContext);
+  const { y } = useCalendarScaledZoom();
 
   const date = useContext(DateColumnContext);
 

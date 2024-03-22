@@ -13,9 +13,17 @@ import { TimeDropZone } from '../blocks/time-drop-zone';
 import { ZoomScaleContext } from '../scale/zoom-scale-context';
 import { NormalizedInterval } from 'date-fns/types';
 import { useDroppable } from '@dnd-kit/core';
-import { PROJECT_EPOCH_DATE_TIME } from '../../../../utils/date-and-time';
+import { PROJECT_EPOCH_DATE_TIME } from '../../../api/date-and-time';
+import { scaleToCalendarZoomX, scaleToCalendarZoomY } from '../calendar-view';
 
 const FALLBACK_DATE = PROJECT_EPOCH_DATE_TIME;
+
+export function useCalendarScaledZoom() {
+  const { y: normalizedY, x: normalizedX } = useContext(ZoomScaleContext);
+  const y = scaleToCalendarZoomY(normalizedY);
+  const x = scaleToCalendarZoomX(normalizedX);
+  return { x, y };
+}
 
 export default function TimeColumn({
   hours,
@@ -33,7 +41,7 @@ export default function TimeColumn({
   ownerId?: number;
 }) {
   const [intervals, setIntervals] = useState<NormalizedInterval[]>([]);
-  const { y } = useContext(ZoomScaleContext);
+  const { y } = useCalendarScaledZoom();
 
   const zoneRef = useRef('');
 

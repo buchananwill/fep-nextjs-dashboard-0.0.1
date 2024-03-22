@@ -1,24 +1,18 @@
 'use client';
 import {
   ColorCoding,
-  ColorCodingState,
   ModalColorSelectContext
 } from '../../contexts/color-coding/context';
-import React, { Fragment, useContext, useState } from 'react';
-import { ZoomScaleContext } from './scale/zoom-scale-context';
-import { Transition } from '@headlessui/react';
+import React, { useContext } from 'react';
 import { HoverWidth } from '../../components/hover-width/hover-width';
 import { BASE_HSL } from '../../contexts/color/color-context';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '../../components/tooltips/tooltip';
+import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import { useCalendarScaledZoom } from './columns/time-column';
 
 export function DaySubColumnLabel({ labelText }: { labelText: string }) {
   const colorCodingState = useContext(ColorCoding);
-  const { x } = useContext(ZoomScaleContext);
+  const { x } = useCalendarScaledZoom();
   const { setModalText, openModal } = useContext(ModalColorSelectContext);
 
   const colorCodingStateElement = colorCodingState[labelText];

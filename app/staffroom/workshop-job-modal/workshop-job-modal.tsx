@@ -1,12 +1,12 @@
 'use client';
-import TransactionModal from '../../components/transactional-modal/transaction-modal';
+
 import { useContext, useEffect, useState, useTransition } from 'react';
 import { Textarea } from '@tremor/react';
 import { ColorContextButton } from './color-context-button';
 import RunnableContextProvider from './runnable-context-provider';
 import { ProviderContext } from '../contexts/mechanics/provider-context';
 import { format } from 'date-fns';
-import { CalendarEvent, WorkTaskDto } from '../../api/zod-mods';
+
 import { enableMapSet, produce } from 'immer';
 import {
   Tooltip,
@@ -19,11 +19,14 @@ import {
   WrenchIcon
 } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { WorkshopTaskDispatchContext } from '../../contexts/workshop-task/workshop-task-context';
-import { getWorkshopTask, patchWorkshopTask } from '../../actions/tasks';
+
 import { ZoomScaleContext } from '../calendar-view/scale/zoom-scale-context';
 import { DndContext, useDndContext } from '@dnd-kit/core';
 import { DndMonitorContext } from '@dnd-kit/core/dist/components/DndMonitor';
+import { useCalendarScaledZoom } from '../calendar-view/columns/time-column';
+import { EventDto } from '../../api/dtos/EventDtoSchema';
+import { WorkTaskDto } from '../../api/dtos/WorkTaskDtoSchema';
+import { ConfirmActionModal } from '../../components/confirm-action-modal';
 
 function getIconSize(hourHeight: number): string {
   if (hourHeight < 70) return 'h-3 w-3';
@@ -32,10 +35,18 @@ function getIconSize(hourHeight: number): string {
   return 'h-6 w-6';
 }
 
+async function getWorkshopTask(eventReasonId: number) {
+  return null;
+}
+
+async function patchWorkshopTask(workshopTaskDto: WorkTaskDto) {
+  return workshopTaskDto;
+}
+
 export default function WorkshopJobModal({
   workshopJob
 }: {
-  workshopJob: CalendarEvent;
+  workshopJob: EventDto;
 }) {
   enableMapSet();
   const [open, setOpen] = useState(false);
@@ -56,16 +67,16 @@ export default function WorkshopJobModal({
   const [edited, setEdited] = useState(false);
   const [pending, startTransition] = useTransition();
   const { providers } = useContext(ProviderContext);
-  const { dispatch } = useContext(WorkshopTaskDispatchContext);
-  const { y } = useContext(ZoomScaleContext);
+
+  const { y } = useCalendarScaledZoom();
   const { active } = useDndContext();
 
   useEffect(() => {
     const getTask = async () => {
       const task = await getWorkshopTask(eventReasonId);
-      if (task) {
+      if (task !== null) {
         setWorkshopTask(task);
-        setNotes(task.notes || '');
+        // setNotes(task.notes || '');
       }
     };
     startTransition(() => getTask());
@@ -118,15 +129,15 @@ export default function WorkshopJobModal({
         workshopTaskDto = produce(workshopTask, (draft) => {
           draft.completedDate = new Date(Date.now());
         });
-        dispatch({
-          type: 'addEditedTask',
-          editedTask: workshopTaskDto
-        });
+        // dispatch({
+        //   type: 'addEditedTask',
+        //   editedTask: workshopTaskDto
+        // });
       } else {
-        workshopTaskDto = produce(workshopTask, (draft) => {
-          draft.completedDate = null;
-        });
-        dispatch({ type: 'addEditedTask', editedTask: workshopTaskDto });
+        // workshopTaskDto = produce(workshopTask, (draft) => {
+        //   draft.completedDate = null;
+        // });
+        // dispatch({ type: 'addEditedTask', editedTask: workshopTaskDto });
       }
       setWorkshopTask(workshopTaskDto);
     }
@@ -175,9 +186,14 @@ export default function WorkshopJobModal({
         </Tooltip>
       </RunnableContextProvider>
 
-      <TransactionModal
+      <ConfirmActionModal
         title={'Workshop Job'}
-        context={{ open: open, confirm: handleConfirm, cancel: handleCancel }}
+        {...{
+          show: open,
+          onConfirm: handleConfirm,
+          onCancel: handleCancel,
+          onClose: () => close()
+        }}
       >
         <div className=" divide-y flex  flex-col ">
           <p className="pt-2 text-sm">
@@ -207,12 +223,8 @@ export default function WorkshopJobModal({
               ></Textarea>
               <div className={'text-gray-400 pt-2 text-sm'}>Asset Details:</div>
               {Object.entries(
-                (({
-                  targetAssetName,
-                  targetAssetAssetTypeName
-                }: WorkTaskDto) => ({
-                  targetAssetName,
-                  targetAssetAssetTypeName
+                (({ targetAssetName }: WorkTaskDto) => ({
+                  targetAssetName
                 }))(workshopTask)
               ).map((entry) => (
                 <div
@@ -227,7 +239,7 @@ export default function WorkshopJobModal({
             <div>Task not loaded...</div>
           )}
         </div>
-      </TransactionModal>
+      </ConfirmActionModal>
     </div>
   );
 }

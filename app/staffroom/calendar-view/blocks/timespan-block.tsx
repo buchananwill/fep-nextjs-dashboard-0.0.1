@@ -1,11 +1,10 @@
 'use client';
-import React, { ReactNode, useContext, useMemo, useState } from 'react';
-
-import { ZoomScaleContext } from '../scale/zoom-scale-context';
+import React, { ReactNode, useMemo, useState } from 'react';
 
 import DepthContextProvider from '../../../contexts/z-context/z-context-provider';
 import { Z_INDEX } from '../../../contexts/z-context/z-context';
 import { useMemoizedNormalizedInterval } from './use-memoized-normalized-interval';
+import { useCalendarScaledZoom } from '../columns/time-column';
 
 export function TimespanBlock({
   // interval: { end, start },
@@ -19,7 +18,8 @@ export function TimespanBlock({
   children: ReactNode;
 }) {
   const { start, end } = useMemoizedNormalizedInterval(startDate, endDate);
-  const { x, y } = useContext(ZoomScaleContext);
+  const { x, y } = useCalendarScaledZoom();
+
   const [zIndex, setZIndex] = useState<Z_INDEX>('z-10');
   const MINUTES_IN_DAY = y * 24;
 

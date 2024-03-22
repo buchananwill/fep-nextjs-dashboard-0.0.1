@@ -50,7 +50,7 @@ export default function AvailabilityBlock({
   function handleToggle() {
     dispatch({
       type: 'toggleAvailability',
-      mechanic: providerAvailability.providerId,
+      providerId: providerAvailability.providerId,
       targetOutcome: 1 - availabilityCode,
       start: providerAvailability.cycleSubspan.timespan.start,
       end: providerAvailability.cycleSubspan.timespan.end

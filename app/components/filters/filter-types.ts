@@ -19,7 +19,7 @@ function combinePredicates<T>(
 }
 
 export interface PredicateRequest<T> extends HasNumberId, Nameable {
-  predicateFactoryList: PredicateFactory<T>[];
+  predicateProducerList: PredicateProducer<T>[];
   operator: LogicalOperator;
   inversion?: boolean;
 }
@@ -29,25 +29,25 @@ type PredicateReducer<T> = (
 ) => Predicate<T>;
 
 const reducePredicates: PredicateReducer<any> = <T>({
-  predicateFactoryList,
+  predicateProducerList,
   operator,
   inversion
 }: PredicateRequest<T>): Predicate<T> => {
-  const reduced = predicateFactoryList
-    .map((factory) => factory())
+  const reduced = predicateProducerList
+    .map((producer) => producer())
     .reduce((prev, curr) => combinePredicates(prev, curr, operator));
   return inversion ? invertPredicate(reduced) : reduced;
 };
 
-export type PredicateFactory<T> = () => Predicate<T>;
+export type PredicateProducer<T> = () => Predicate<T>;
 
 interface PredicateFactoryStack<T> extends Nameable, HasNumberId {
-  masterFactory: PredicateFactory<T>;
+  masterFactory: PredicateProducer<T>;
 }
 
 export function packagePredicate<T>(
   predicate: Predicate<T>
-): PredicateFactory<T> {
+): PredicateProducer<T> {
   return () => {
     return predicate;
   };
@@ -56,8 +56,10 @@ export function packagePredicate<T>(
 export function packageRequest<T>(
   request: PredicateRequest<T>,
   defaultValue: boolean = true
-): PredicateFactory<T> {
-  if (request.predicateFactoryList.length == 0)
+): PredicateProducer<T> {
+  if (request.predicateProducerList.length == 0)
     return packagePredicate((element) => defaultValue);
   return () => reducePredicates(request);
 }
+
+export type CurryPredicate<T> = (value: T) => Predicate<T>;

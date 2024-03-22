@@ -3,13 +3,14 @@ import { produce } from 'immer';
 import { interval } from 'date-fns/interval';
 import { areIntervalsOverlapping } from 'date-fns/fp';
 import { WritableDraft } from 'immer/src/types/types-external';
-import { ProviderAvailability } from '../../../api/dto-interfaces';
+import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
+import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
 
 export interface ToggleAvailability {
   type: 'toggleAvailability';
-  mechanic: number;
-  start: Date;
-  end: Date;
+  providerId: number;
+  start: number;
+  end: number;
   targetOutcome: number;
 }
 
@@ -22,21 +23,21 @@ export interface ClearUnsavedAvailability {
   type: 'clearUnsavedAvailability';
 }
 
-export interface UpdateMechanicAvailabilities {
+export interface UpdateProviderAvailabilities {
   type: 'updateMechanicAvailabilities';
-  data: ProviderAvailability[];
+  data: ProviderAvailabilityDto[];
 }
 
 export interface SetDndKey {
   type: 'setDndKey';
   key: string;
-  data: ProviderAvailability;
+  data: ProviderAvailabilityDto;
 }
 
 export type AvailabilityAction =
   | ToggleAvailability
   | SetAvailabilityData
-  | UpdateMechanicAvailabilities
+  | UpdateProviderAvailabilities
   | ClearUnsavedAvailability
   | SetDndKey;
 
@@ -47,23 +48,23 @@ export default function availabilityReducer(
   switch (action.type) {
     case 'toggleAvailability': {
       return produce(state, (draft) => {
-        const { mechanicAvailability: mechanicAvailabilities } = draft;
-        const { mechanic, start, end, targetOutcome } = action;
-        const mechanicAvailabilityList = mechanicAvailabilities.get(mechanic);
+        const { providerAvailability: availabilityMap } = draft;
+        const { providerId, start, end, targetOutcome } = action;
+        const providerAvailabilityList = availabilityMap.get(providerId);
         let modified = false;
-        if (mechanicAvailabilityList) {
+        if (providerAvailabilityList) {
           const dateNormalizedInterval = interval(start, end);
           const overlapCheck = areIntervalsOverlapping(dateNormalizedInterval);
           const availabilityOverlapCheck = (
-            nextAvail: WritableDraft<ProviderAvailability>
+            nextAvail: WritableDraft<ProviderAvailabilityDto>
           ): boolean => {
-            const {
-              cycleSubspan: { timespan }
-            } = nextAvail;
+            const { startDate, endDate } =
+              getStartAndEndDatesAsEpochal(nextAvail);
+            const timespan = interval(startDate, endDate);
             return overlapCheck(timespan);
           };
 
-          const filtered = mechanicAvailabilityList.filter(
+          const filtered = providerAvailabilityList.filter(
             availabilityOverlapCheck
           );
           if (filtered.length > 0) {

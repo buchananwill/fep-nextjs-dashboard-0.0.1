@@ -6,9 +6,12 @@ import { eachDayOfInterval } from 'date-fns';
 import { ProviderContext } from './contexts/mechanics/provider-context';
 import { ZoomScaleContext } from './calendar-view/scale/zoom-scale-context';
 
-import CalendarView from './calendar-view/calendar-view';
+import CalendarView, {
+  scaleToCalendarZoomX
+} from './calendar-view/calendar-view';
 import { Calendarable } from './calendar-view/blocks/timespan-block';
 import { TeacherSelectionContext } from './contexts/mechanics/teacher-selection-context';
+import { useCalendarScaledZoom } from './calendar-view/columns/time-column';
 
 export function StaffroomCalenderView({
   eventBlocks
@@ -17,8 +20,8 @@ export function StaffroomCalenderView({
 }) {
   const interval = useContext(CalendarRangeContext);
   let dates = eachDayOfInterval(interval);
-  const scale = useContext(ZoomScaleContext);
-  const { x } = scale;
+
+  const { x } = useCalendarScaledZoom();
 
   const { providers } = useContext(ProviderContext);
   const { selectedProviders } = useContext(TeacherSelectionContext);

@@ -1,17 +1,22 @@
 'use client';
-import TimeColumn from './time-column';
+import TimeColumn, { useCalendarScaledZoom } from './time-column';
 import React, { useContext } from 'react';
-import { Predicate } from '../../../components/filters/filter-types';
+import {
+  CurryPredicate,
+  Predicate
+} from '../../../components/filters/filter-types';
 import { Calendarable, TimespanBlock } from '../blocks/timespan-block';
-
-import { ZoomScaleContext } from '../scale/zoom-scale-context';
-
-import { createDateMatcher } from '../../../classes/local-date';
-
-import { NormalizedInterval } from 'date-fns/types';
 
 import DateColumnContextProvider from './date-column-context-provider';
 import CalendarIdContextProvider from '../blocks/calendar-id-context-provider';
+
+export const createDateMatcher: CurryPredicate<Date> = (date: Date) => {
+  return (dateToMatch: Date) => {
+    if (date.getFullYear() != dateToMatch.getFullYear()) return false;
+    if (date.getMonth() != dateToMatch.getMonth()) return false;
+    return date.getDate() == dateToMatch.getDate();
+  };
+};
 
 export default function DayColumn({
   date,
@@ -22,14 +27,20 @@ export default function DayColumn({
   calendarables: Map<number, Calendarable[]>;
   selectedCalendars: number[];
 }) {
-  const { x } = useContext(ZoomScaleContext);
+  const { x } = useCalendarScaledZoom();
   const matchDate: Predicate<Date> = createDateMatcher(date);
   if (selectedCalendars.length == 0) {
     return <TimeColumn hours={24} width={x} date={date}></TimeColumn>;
   }
 
-  const matchStartOrEnd = ({ start, end }: NormalizedInterval) => {
-    return matchDate(start) || matchDate(end);
+  const matchStartOrEnd = ({
+    startDate,
+    endDate
+  }: {
+    startDate: number;
+    endDate: number;
+  }) => {
+    return matchDate(new Date(startDate)) || matchDate(new Date(endDate));
   };
 
   return (
@@ -40,11 +51,11 @@ export default function DayColumn({
           <CalendarIdContextProvider calendarId={calendarId} key={calendarId}>
             <TimeColumn hours={24} width={x} date={date} ownerId={calendarId}>
               {subList
-                .filter((calendarable) =>
-                  matchStartOrEnd(calendarable.interval)
+                .filter(({ startDate, endDate }) =>
+                  matchStartOrEnd({ startDate, endDate })
                 )
-                .map(({ key, content, interval }) => (
-                  <TimespanBlock key={key} interval={interval}>
+                .map(({ content, key, ...interval }) => (
+                  <TimespanBlock key={key} {...interval}>
                     {content}
                   </TimespanBlock>
                 ))}

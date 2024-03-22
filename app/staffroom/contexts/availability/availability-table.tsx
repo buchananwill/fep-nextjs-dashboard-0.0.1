@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StaffroomCalenderView } from '../../staffroom-calender-view';
 
-import { enableMapSet, produce } from 'immer';
+import { enableMapSet } from 'immer';
 import {
   AvailabilityContext,
   AvailabilityDispatchContext
@@ -19,6 +19,7 @@ import { DragEndEvent } from '@dnd-kit/core';
 
 import { TeacherSelectionContext } from '../mechanics/teacher-selection-context';
 import { createRangeStartingMondayThisWeek } from '../../calendar-view/range/create-range-starting-monday-this-week';
+import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
 
 export function AvailabilityTable() {
   enableMapSet();
@@ -41,14 +42,20 @@ export function AvailabilityTable() {
     const nextBlocks = new Map<number, Calendarable[]>();
     selectedProviders.forEach((mechanic) => {
       const list: Calendarable[] =
-        providerAvailability.get(mechanic.id)?.map((providerAvailability) => ({
-          key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${mechanic}`,
-          interval: providerAvailability.cycleSubspanDto,
-          colorKey: mechanic.name,
-          content: (
-            <AvailabilityBlock providerAvailability={providerAvailability} />
-          )
-        })) || [];
+        providerAvailability.get(mechanic.id)?.map((providerAvailability) => {
+          const { startDate, endDate } =
+            getStartAndEndDatesAsEpochal(providerAvailability);
+          return {
+            key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${mechanic}`,
+            interval: providerAvailability.cycleSubspanDto,
+            startDate: startDate.getTime(),
+            endDate: endDate.getTime(),
+            colorKey: mechanic.name,
+            content: (
+              <AvailabilityBlock providerAvailability={providerAvailability} />
+            )
+          };
+        }) || [];
       nextBlocks.set(mechanic.id, list);
     });
 
@@ -100,13 +107,14 @@ export function AvailabilityTable() {
     if (over) {
       const dataOver = dndMap[over.id];
       const dataActive = dndMap[active.id];
+      const { startDate, endDate } = getStartAndEndDatesAsEpochal(dataActive);
 
       dispatch({
         type: 'toggleAvailability',
-        start: dataActive.cycleSubspan.timespan.start,
-        end: dataOver.cycleSubspan.timespan.end,
+        start: startDate.getTime(),
+        end: endDate.getTime(),
         targetOutcome: dataActive.availabilityCode,
-        mechanic: dataActive.providerId
+        providerId: dataActive.providerRoleId
       });
     }
   }
