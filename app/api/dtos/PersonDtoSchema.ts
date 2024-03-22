@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const PersonDtoSchema = z.object({
   id: z.number(),
   dateOfBirth: zDateOnly,
-  personalNamePersonalName: z.string(),
-  familyNameFamilyName: z.string(),
+  personalName: z.string(),
+  familyName: z.string(),
 });
 export type PersonDto = z.infer<typeof PersonDtoSchema>;

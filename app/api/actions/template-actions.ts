@@ -36,11 +36,11 @@ export async function postEntities<T>(
   return callApi<T[]>(url, requestInit);
 }
 export async function postEntitiesWithDifferentReturnType<T, U>(
-  dtoList: T[],
+  dtoOutbound: T,
   url: string
-): ActionResponsePromise<U[]> {
-  const requestInit = createRequestInit({ body: dtoList, method: 'POST' });
-  return callApi<U[]>(url, requestInit);
+): ActionResponsePromise<U> {
+  const requestInit = createRequestInit({ body: dtoOutbound, method: 'POST' });
+  return callApi<U>(url, requestInit);
 }
 export async function putRequestWithDifferentReturnType<T, U>(
   request: T,

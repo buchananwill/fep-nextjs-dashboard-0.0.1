@@ -17,6 +17,7 @@ import SelectiveContextManagerStringList from './components/selective-context/se
 import SelectiveContextManagerNumberList from './components/selective-context/selective-context-manager-number-list';
 import SelectiveContextManagerFunction from './components/selective-context/selective-context-manager-function';
 import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
+import ColorCodingProvider from './contexts/color-coding/color-coding-provider';
 
 enableMapSet();
 
@@ -44,15 +45,17 @@ export default async function RootLayout({
                       <SelectiveContextManagerStringList>
                         <SelectiveContextManagerNumberList>
                           <SelectiveContextManagerFunction>
-                            <Suspense>
-                              <Nav />
-                            </Suspense>
-                            <main className="p-4 md:p-10 mx-auto max-w-full">
-                              <Suspense fallback={<Loading />}>
-                                {children}
+                            <ColorCodingProvider>
+                              <Suspense>
+                                <Nav />
                               </Suspense>
-                            </main>
-                            <Analytics />
+                              <main className="p-4 md:p-10 mx-auto max-w-full">
+                                <Suspense fallback={<Loading />}>
+                                  {children}
+                                </Suspense>
+                              </main>
+                              <Analytics />
+                            </ColorCodingProvider>
                             {/*<Toast />*/}
                           </SelectiveContextManagerFunction>
                         </SelectiveContextManagerNumberList>

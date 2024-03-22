@@ -153,7 +153,7 @@ export async function postBundleDeliveries(
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
   const bundlePostUrl = `${SCHEMA_URL}/deliveries`;
   return postEntitiesWithDifferentReturnType<
-    CreateBundleAssignmentDto,
-    WorkSeriesBundleDeliveryDto
+    CreateBundleAssignmentDto[],
+    WorkSeriesBundleDeliveryDto[]
   >(bundleAssignments, bundlePostUrl);
 }

@@ -8,15 +8,19 @@ import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 
+export const ServiceCategoriesEmptyArray: ServiceCategoryDto[] = [];
+export const KnowledgeLevelsEmptyArray: KnowledgeLevelDto[] = [];
+export const KnowledgeDomainsEmptyArray: KnowledgeDomainDto[] = [];
+
 export default function ServiceCategoryContextInit({
   serviceCategories,
-  knowledgeLevels,
-  knowledgeDomains,
+  knowledgeLevels = KnowledgeLevelsEmptyArray,
+  knowledgeDomains = KnowledgeDomainsEmptyArray,
   children
 }: {
   serviceCategories: ServiceCategoryDto[];
-  knowledgeLevels: KnowledgeLevelDto[];
-  knowledgeDomains: KnowledgeDomainDto[];
+  knowledgeLevels?: KnowledgeLevelDto[];
+  knowledgeDomains?: KnowledgeDomainDto[];
 } & PropsWithChildren) {
   const { dispatchCategories, dispatchDomains, dispatchLevels } =
     useServiceCategoryContext();
