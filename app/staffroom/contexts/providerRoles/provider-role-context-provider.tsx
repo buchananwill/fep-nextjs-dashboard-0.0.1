@@ -2,7 +2,7 @@
 import {
   ProviderContext,
   ProviderRoleContextInterface,
-  ProviderAndTaskData
+  ProviderRoleAndTaskData
 } from './provider-context';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import {
@@ -20,7 +20,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { SkillEditContext } from './skill-edit-context';
 
-import MechanicSelectionContextProvider from './mechanic-selection-context-provider';
+import ProviderRoleSelectionContextProvider from './provider-role-selection-context-provider';
 import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
 import { performApiAction } from '../../../api/actions/performApiAction';
 import { updateTeachers } from '../../../api/actions/provider-roles';
@@ -31,34 +31,38 @@ import {
   ConfirmActionModalProps
 } from '../../../components/confirm-action-modal';
 
-export default function MechanicContextProvider({
-  mechanicAndTaskData,
+export default function ProviderRoleContextProvider({
+  providerRoleAndTaskData,
   children
 }: {
-  mechanicAndTaskData: ProviderAndTaskData;
+  providerRoleAndTaskData: ProviderRoleAndTaskData;
   children: ReactNode;
 }) {
   const [selectedMechanics, setSelectedMechanics] = useState<
     LongIdStringNameTuple[]
   >([]);
-  const [mechanics, setMechanics] = useState(mechanicAndTaskData.mechanics);
+  const [providerRoleDtos, setProviderRoles] = useState(
+    providerRoleAndTaskData.providerRoles
+  );
+
+  console.log(providerRoleAndTaskData.workTaskTypes);
 
   const [open, setOpen] = useState(false);
   const [skillModalOpen, setSkillModalOpen] = useState(false);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
-  const mechanicsStateContext: ProviderRoleContextInterface = {
-    providers: mechanics,
-    setProviders: setMechanics,
-    workTaskTypes: mechanicAndTaskData.workTaskTypes,
+  const providerRoleState: ProviderRoleContextInterface = {
+    providers: providerRoleDtos,
+    setProviders: setProviderRoles,
+    workTaskTypes: providerRoleAndTaskData.workTaskTypes,
     unsavedChanges: unsavedChanges,
     setUnsavedChanges: setUnsavedChanges
   };
 
   const handleConfirm = () => {
-    performApiAction(() => updateTeachers(mechanics)).then((r) => {
+    performApiAction(() => updateTeachers(providerRoleDtos)).then((r) => {
       if (r.status >= 200 && r.status < 400 && r.data) {
-        setMechanics(r.data);
+        setProviderRoles(r.data);
       }
     });
     setOpen(false);
@@ -79,7 +83,7 @@ export default function MechanicContextProvider({
 
   const { setColorCoding } = useContext(ColorCodingDispatch);
 
-  const firstMechanic = mechanics[0];
+  const firstMechanic = providerRoleDtos[0];
   const [modalSkillValue, setModalSkillValue] = useState(0);
   const [skillInModal, setSkillInModal] = useState(
     firstMechanic?.workTaskCompetencyDtoList[0]
@@ -103,7 +107,7 @@ export default function MechanicContextProvider({
   }
 
   const confirmSkillValue = () => {
-    const updatedProviderState = produce(mechanics, (draft) => {
+    const updatedProviderState = produce(providerRoleDtos, (draft) => {
       const modifiedProvider = draft.find(
         (mechanic) => mechanic.id == mechanicInModal.id
       );
@@ -116,7 +120,7 @@ export default function MechanicContextProvider({
         }
       }
     });
-    setMechanics(updatedProviderState);
+    setProviderRoles(updatedProviderState);
     setUnsavedChanges(true);
   };
 
@@ -133,7 +137,7 @@ export default function MechanicContextProvider({
   useEffect(() => {
     const unColorCodedMechanics: string[] = [];
 
-    mechanics.forEach(({ partyName }) => {
+    providerRoleDtos.forEach(({ partyName }) => {
       if (!colorCodingState[partyName]) {
         unColorCodedMechanics.push(partyName);
       }
@@ -153,11 +157,11 @@ export default function MechanicContextProvider({
       }
       setColorCoding(currentState);
     }
-  }, [colorCodingState, selectedMechanics, mechanics, setColorCoding]);
+  }, [colorCodingState, selectedMechanics, providerRoleDtos, setColorCoding]);
 
   return (
-    <ProviderContext.Provider value={mechanicsStateContext}>
-      <MechanicSelectionContextProvider>
+    <ProviderContext.Provider value={providerRoleState}>
+      <ProviderRoleSelectionContextProvider>
         <SkillEditContext.Provider value={{ triggerModal: triggerModal }}>
           {children}
           {unsavedChanges && (
@@ -214,7 +218,7 @@ export default function MechanicContextProvider({
           {/*  <div>Send updated mechanic info to database?</div>*/}
           {/*</TransactionModal>*/}
         </SkillEditContext.Provider>
-      </MechanicSelectionContextProvider>
+      </ProviderRoleSelectionContextProvider>
     </ProviderContext.Provider>
   );
 }

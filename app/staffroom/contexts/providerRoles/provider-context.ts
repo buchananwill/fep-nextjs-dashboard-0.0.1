@@ -11,8 +11,8 @@ export interface ProviderRoleContextInterface {
   setUnsavedChanges: (update: boolean) => void;
 }
 
-export interface ProviderAndTaskData {
-  mechanics: ProviderRoleDto[];
+export interface ProviderRoleAndTaskData {
+  providerRoles: ProviderRoleDto[];
   workTaskTypes: WorkTaskTypeDto[];
 }
 

@@ -17,7 +17,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { ProviderContext } from '../contexts/mechanics/provider-context';
+import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import { PageTitleContext } from '../../contexts/page-title/page-title-context';
 
 import { LongIdStringNameTuple } from '../../api/dtos/LongIdStringNameTupleSchema';

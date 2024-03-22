@@ -1,6 +1,6 @@
 'use client';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
-import { ProviderContext } from '../contexts/mechanics/provider-context';
+import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import ListDisclosurePanel from '../../components/list-disclosure-panel';
 import { FillableButton, PinIcons } from '../../components/fillable-button';
 import { produce } from 'immer';
@@ -14,8 +14,8 @@ import {
 
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
-import { SkillEditContext } from '../contexts/mechanics/skill-edit-context';
-import { TeacherSelectionContext } from '../contexts/mechanics/teacher-selection-context';
+import { SkillEditContext } from '../contexts/providerRoles/skill-edit-context';
+import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
 
 const competencyColors: { [key: string]: string } = {
@@ -102,7 +102,7 @@ function MechanicButtonCluster({ data }: { data: ProviderRoleDto }) {
   // const { setSelectedMechanics, selectedMechanics } =
   //   useContext(MechanicContext);
   const { selectedProviders, toggleProviderSelection } = useContext(
-    TeacherSelectionContext
+    ProviderRoleSelectionContext
   );
   const { current } = useContext(HslColorContext);
   const { id, partyName } = data;

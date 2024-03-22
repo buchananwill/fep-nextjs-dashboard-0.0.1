@@ -13,12 +13,12 @@ import React, {
 import { EventsContext, EventsDispatch } from './contexts/events/event-context';
 import { Calendarable } from './calendar-view/blocks/timespan-block';
 import { WorkshopJobBlock } from './calendar-view/blocks/workshop-job-block';
-import { ProviderContext } from './contexts/mechanics/provider-context';
+import { ProviderContext } from './contexts/providerRoles/provider-context';
 import { PageTitleContext } from '../contexts/page-title/page-title-context';
 import { DndContextProvider } from '../components/dnd-context-provider';
 import { closestCenter, DragEndEvent } from '@dnd-kit/core';
 
-import { TeacherSelectionContext } from './contexts/mechanics/teacher-selection-context';
+import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
 import { addMinutes, differenceInCalendarDays, format } from 'date-fns';
 import { addDays } from 'date-fns/fp';
 import { Transform } from '@dnd-kit/utilities';
@@ -58,7 +58,7 @@ export default function Page() {
   }, [setTitle]);
 
   const { providers } = useContext(ProviderContext);
-  const { selectedProviders } = useContext(TeacherSelectionContext);
+  const { selectedProviders } = useContext(ProviderRoleSelectionContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [pendingEvent, setPendingEvent] = useState<EventDto | null>(null);
   const [awaitingSync, setAwaitingSync] = useState(false);

@@ -3,14 +3,14 @@ import React, { useContext } from 'react';
 import { CalendarRangeContext } from './calendar-view/range/calendar-range-context';
 import DayColumn from './calendar-view/columns/day-column';
 import { eachDayOfInterval } from 'date-fns';
-import { ProviderContext } from './contexts/mechanics/provider-context';
+import { ProviderContext } from './contexts/providerRoles/provider-context';
 import { ZoomScaleContext } from './calendar-view/scale/zoom-scale-context';
 
 import CalendarView, {
   scaleToCalendarZoomX
 } from './calendar-view/calendar-view';
 import { Calendarable } from './calendar-view/blocks/timespan-block';
-import { TeacherSelectionContext } from './contexts/mechanics/teacher-selection-context';
+import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
 import { useCalendarScaledZoom } from './calendar-view/columns/time-column';
 
 export function StaffroomCalenderView({
@@ -24,7 +24,7 @@ export function StaffroomCalenderView({
   const { x } = useCalendarScaledZoom();
 
   const { providers } = useContext(ProviderContext);
-  const { selectedProviders } = useContext(TeacherSelectionContext);
+  const { selectedProviders } = useContext(ProviderRoleSelectionContext);
 
   function getMechanicName(mechanic: number) {
     return (

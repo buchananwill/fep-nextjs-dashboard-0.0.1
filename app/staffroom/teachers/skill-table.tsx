@@ -1,6 +1,6 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import { ProviderContext } from '../contexts/mechanics/provider-context';
+import { ProviderContext } from '../contexts/providerRoles/provider-context';
 
 import { HUE_OPTIONS } from '../../contexts/color/color-context';
 import { PageTitleContext } from '../../contexts/page-title/page-title-context';
@@ -12,12 +12,12 @@ import {
 } from '../../components/tooltips/tooltip';
 import TooltipsContext from '../../components/tooltips/tooltips-context';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
-import { SkillEditContext } from '../contexts/mechanics/skill-edit-context';
-import { TeacherSelectionContext } from '../contexts/mechanics/teacher-selection-context';
+import { SkillEditContext } from '../contexts/providerRoles/skill-edit-context';
+import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 
 export default function SkillTable() {
-  const { providers } = useContext(ProviderContext);
-  const { selectedProviders } = useContext(TeacherSelectionContext);
+  const { providers, workTaskTypes } = useContext(ProviderContext);
+  const { selectedProviders } = useContext(ProviderRoleSelectionContext);
   const { setTitle } = useContext(PageTitleContext);
   useEffect(() => {
     setTitle('Skill Matrix');
@@ -59,19 +59,19 @@ export default function SkillTable() {
                 <div className={'text-left'}>Name</div>
               </div>
             </th>
-            {firstMechanic.serviceCompetencyDtoList.map((skill) => (
+            {workTaskTypes.map((skill) => (
               <th
                 className={`overflow-visible align-bottom relative`}
-                key={skill.serviceProductTypeId}
+                key={skill.id}
               >
                 <div
                   className={`group/skill overflow-visible align-bottom`}
-                  style={{ width: '24px', height: '160px' }}
+                  style={{ width: '24px', height: '200px' }}
                 >
                   <div
-                    className={` absolute origin-left left-3 -bottom-2 group-hover/skill:-translate-y-3 group-hover/skill:z-10 group-hover/skill:-translate-x-3  -rotate-90 group-hover/skill:rotate-0 transition-transform duration-200 align-bottom bg-gray-100 rounded-lg w-40 py-1 font-medium opacity-50 group-hover/skill:opacity-100`}
+                    className={`text-xs absolute origin-left left-3 -bottom-2 group-hover/skill:-translate-y-3 group-hover/skill:z-10 group-hover/skill:-translate-x-3  -rotate-90 group-hover/skill:rotate-0 transition-transform duration-200 align-bottom bg-gray-100 rounded-lg w-48 py-1 font-medium opacity-50 group-hover/skill:opacity-100 truncate ...`}
                   >
-                    {skill.serviceProductType}
+                    {skill.name}
                   </div>
                 </div>
               </th>
@@ -82,7 +82,7 @@ export default function SkillTable() {
           {filterMechanics.map((mechanicDto) => (
             <tr key={mechanicDto.id} className="">
               <td className="text-sm px-2">{mechanicDto.partyName}</td>
-              {mechanicDto.serviceCompetencyDtoList.map((skill) => (
+              {mechanicDto.workTaskCompetencyDtoList.map((skill) => (
                 <td
                   className={`border bg-${
                     HUE_OPTIONS[skill.competencyRating].id
@@ -98,8 +98,7 @@ export default function SkillTable() {
                     </TooltipTrigger>
 
                     <StandardTooltipContent>
-                      <strong>{skill.serviceProductType}</strong>: click to
-                      edit.
+                      <strong>{skill.workTaskType}</strong>: click to edit.
                     </StandardTooltipContent>
                   </Tooltip>
                 </td>

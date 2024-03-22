@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { ProviderAndTaskData } from './contexts/mechanics/provider-context';
-import ProviderRoleContextProvider from './contexts/mechanics/mechanic-context-provider';
+import { ProviderRoleAndTaskData } from './contexts/providerRoles/provider-context';
+import ProviderRoleContextProvider from './contexts/providerRoles/provider-role-context-provider';
 import AvailabilityContextProvider from './contexts/availability/availability-context-provider';
 import { TeachersToolCard } from './teachers-tool-card';
 import ToolCardContextProvider from '../components/tool-card/tool-card-context-provider';
@@ -13,11 +13,10 @@ import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypes } from '../api/actions/work-task-types';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
-import {
-  getAvailabilities,
-  getAvailbilityUnits
-} from '../api/actions/availability';
+import { getAvailabilities } from '../api/actions/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
+import { getAllCycleSubspans } from '../api/actions/cycle-model';
+import CalendarRangeContextProvider from './calendar-view/range/calendar-range-context-provider';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,8 +30,8 @@ export default async function StaffroomLayout({
     if (r.data) {
       const teacherDtos = r.data;
 
-      for (const mechanicDto of teacherDtos) {
-        teacherList.push(mechanicDto);
+      for (const teacherDto of teacherDtos) {
+        teacherList.push(teacherDto);
       }
     }
   });
@@ -57,29 +56,30 @@ export default async function StaffroomLayout({
   //   });
   // }
 
-  const sptList: WorkTaskTypeDto[] = [];
-  performApiAction(() =>
-    getWorkTaskTypes(SECONDARY_EDUCATION_CATEGORY_ID)
-  ).then((r) => {
-    if (r.data) sptList.push(...r.data);
-  });
+  let workTaskTypeDtos: WorkTaskTypeDto[] = [];
 
-  const mechanicAndTaskData: ProviderAndTaskData = {
-    mechanics: teacherList,
-    workTaskTypes: sptList
+  const { data: workTaskTypeDtosOptional } = await getWorkTaskTypes(
+    SECONDARY_EDUCATION_CATEGORY_ID
+  );
+
+  if (workTaskTypeDtosOptional) {
+    workTaskTypeDtos = workTaskTypeDtosOptional;
+  }
+
+  const providerRolesAndTaskData: ProviderRoleAndTaskData = {
+    providerRoles: teacherList,
+    workTaskTypes: workTaskTypeDtos
   };
-  const availabilityUnits: CycleSubspanDto[] = [];
-  performApiAction(() => getAvailbilityUnits()).then((r) => {
-    if (r.data) {
-      availabilityUnits.push(...r.data);
-    }
-  });
+  let availabilityUnits: CycleSubspanDto[] = [];
+  const { data } = await getAllCycleSubspans();
+  if (data) {
+    availabilityUnits = data;
+  }
 
   const availabilityMap = new Map<number, ProviderAvailabilityDto[]>();
   for (let mechanicDto of teacherList) {
-    performApiAction(() => getAvailabilities(mechanicDto.id)).then((r) => {
-      if (r.data) availabilityMap.set(mechanicDto.id, r.data);
-    });
+    const { data } = await getAvailabilities(mechanicDto.id);
+    if (data) availabilityMap.set(mechanicDto.id, data);
   }
 
   return (
@@ -91,23 +91,25 @@ export default async function StaffroomLayout({
         dndMap: {}
       }}
     >
-      <ProviderRoleContextProvider mechanicAndTaskData={mechanicAndTaskData}>
-        {/*<CalendarRangeContextProvider>*/}
-        {/*  <EventsContextProvider*/}
-        {/*    initialContext={{*/}
-        {/*      events: eventMap,*/}
-        {/*      eventsById: eventsById,*/}
-        {/*      unSyncedEvents: []*/}
-        {/*    }}*/}
-        {/*  >*/}
-        <div className="flex w-full px-2">
-          <ToolCardContextProvider>
-            <TeachersToolCard />
-          </ToolCardContextProvider>
-          {children}
-        </div>
-        {/*</EventsContextProvider>*/}
-        {/*</CalendarRangeContextProvider>*/}
+      <ProviderRoleContextProvider
+        providerRoleAndTaskData={providerRolesAndTaskData}
+      >
+        <CalendarRangeContextProvider>
+          {/*  <EventsContextProvider*/}
+          {/*    initialContext={{*/}
+          {/*      events: eventMap,*/}
+          {/*      eventsById: eventsById,*/}
+          {/*      unSyncedEvents: []*/}
+          {/*    }}*/}
+          {/*  >*/}
+          <div className="flex w-full px-2">
+            <ToolCardContextProvider>
+              <TeachersToolCard />
+            </ToolCardContextProvider>
+            {children}
+          </div>
+          {/*</EventsContextProvider>*/}
+        </CalendarRangeContextProvider>
       </ProviderRoleContextProvider>
     </AvailabilityContextProvider>
   );

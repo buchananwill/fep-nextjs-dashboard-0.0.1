@@ -12,12 +12,11 @@ import { Calendarable } from '../../calendar-view/blocks/timespan-block';
 
 import CalendarRangeContextProvider from '../../calendar-view/range/calendar-range-context-provider';
 
-import { PageTitleContext } from '../../../contexts/page-title/page-title-context';
 import { Transition } from '@headlessui/react';
 import { DndContextProvider } from '../../../components/dnd-context-provider';
 import { DragEndEvent } from '@dnd-kit/core';
 
-import { TeacherSelectionContext } from '../mechanics/teacher-selection-context';
+import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';
 import { createRangeStartingMondayThisWeek } from '../../calendar-view/range/create-range-starting-monday-this-week';
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
 
@@ -25,18 +24,13 @@ export function AvailabilityTable() {
   enableMapSet();
 
   const normalizedInterval = createRangeStartingMondayThisWeek();
-  // Get the selected mechanics and add their availability
-  const { selectedProviders } = useContext(TeacherSelectionContext);
+  // Get the selected providerRoles and add their availability
+  const { selectedProviders } = useContext(ProviderRoleSelectionContext);
   const { providerAvailability, dndMap } = useContext(AvailabilityContext);
   const { dispatch } = useContext(AvailabilityDispatchContext);
   const [eventBlocks, setEventBlocks] = useState(
     new Map<number, Calendarable[]>()
   );
-
-  const { setTitle } = useContext(PageTitleContext);
-  useEffect(() => {
-    setTitle('Weekly Availability');
-  }, [setTitle]);
 
   useEffect(() => {
     const nextBlocks = new Map<number, Calendarable[]>();

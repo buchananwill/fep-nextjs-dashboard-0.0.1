@@ -4,7 +4,7 @@ import { useContext, useEffect, useState, useTransition } from 'react';
 import { Textarea } from '@tremor/react';
 import { ColorContextButton } from './color-context-button';
 import RunnableContextProvider from './runnable-context-provider';
-import { ProviderContext } from '../contexts/mechanics/provider-context';
+import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import { format } from 'date-fns';
 
 import { enableMapSet, produce } from 'immer';
