@@ -1,17 +1,7 @@
 'use client';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  useTransition
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StaffroomCalenderView } from '../../staffroom-calender-view';
-import {
-  ProviderAvailability,
-  ProviderAvailabilityDto
-} from '../../../api/dto-interfaces';
-import { ProviderContext } from '../mechanics/provider-context';
+
 import { enableMapSet, produce } from 'immer';
 import {
   AvailabilityContext,
@@ -19,19 +9,16 @@ import {
 } from './availability-context';
 import AvailabilityBlock from '../../calendar-view/blocks/availability-block';
 import { Calendarable } from '../../calendar-view/blocks/timespan-block';
-import { CalendarRangeContext } from '../../calendar-view/range/calendar-range-context';
-import CalendarRangeContextProvider, {
-  createRangeStartingMondayThisWeek
-} from '../../calendar-view/range/calendar-range-context-provider';
-import { map } from 'd3-array';
-import { Text } from '@tremor/react';
+
+import CalendarRangeContextProvider from '../../calendar-view/range/calendar-range-context-provider';
+
 import { PageTitleContext } from '../../../contexts/page-title/page-title-context';
 import { Transition } from '@headlessui/react';
 import { DndContextProvider } from '../../../components/dnd-context-provider';
-import { DataRef, DragEndEvent } from '@dnd-kit/core';
+import { DragEndEvent } from '@dnd-kit/core';
 
-import { getAvailabilities } from '../../../actions/availability';
 import { TeacherSelectionContext } from '../mechanics/teacher-selection-context';
+import { createRangeStartingMondayThisWeek } from '../../calendar-view/range/create-range-starting-monday-this-week';
 
 export function AvailabilityTable() {
   enableMapSet();
@@ -39,7 +26,7 @@ export function AvailabilityTable() {
   const normalizedInterval = createRangeStartingMondayThisWeek();
   // Get the selected mechanics and add their availability
   const { selectedProviders } = useContext(TeacherSelectionContext);
-  const { mechanicAvailability, dndMap } = useContext(AvailabilityContext);
+  const { providerAvailability, dndMap } = useContext(AvailabilityContext);
   const { dispatch } = useContext(AvailabilityDispatchContext);
   const [eventBlocks, setEventBlocks] = useState(
     new Map<number, Calendarable[]>()
@@ -54,9 +41,9 @@ export function AvailabilityTable() {
     const nextBlocks = new Map<number, Calendarable[]>();
     selectedProviders.forEach((mechanic) => {
       const list: Calendarable[] =
-        mechanicAvailability.get(mechanic.id)?.map((providerAvailability) => ({
-          key: `availability-unit-${providerAvailability.cycleSubspan.id}-${mechanic}`,
-          interval: providerAvailability.cycleSubspan.timespan,
+        providerAvailability.get(mechanic.id)?.map((providerAvailability) => ({
+          key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${mechanic}`,
+          interval: providerAvailability.cycleSubspanDto,
           colorKey: mechanic.name,
           content: (
             <AvailabilityBlock providerAvailability={providerAvailability} />
@@ -66,7 +53,7 @@ export function AvailabilityTable() {
     });
 
     setEventBlocks(nextBlocks);
-  }, [mechanicAvailability, selectedProviders]);
+  }, [providerAvailability, selectedProviders]);
 
   return (
     <DndContextProvider onDragEnd={handleDragEnd}>

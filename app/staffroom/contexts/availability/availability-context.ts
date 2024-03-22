@@ -1,18 +1,14 @@
-import {
-  CycleSubspan,
-  CycleSubspanDto,
-  ProviderAvailability,
-  ProviderAvailabilityDto
-} from '../../../api/dto-interfaces';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 import { AvailabilityAction, ToggleAvailability } from './availability-reducer';
+import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
+import { CycleSubspanDto } from '../../../api/dtos/CycleSubspanDtoSchema';
 
 export interface AvailabilityContextInterface {
-  mechanicAvailability: Map<number, ProviderAvailability[]>;
-  workshopAvailability: CycleSubspan[];
+  providerAvailability: Map<number, ProviderAvailabilityDto[]>;
+  cycleAvailabilityUnits: CycleSubspanDto[];
   unsavedChanges: boolean;
-  dndMap: { [key: string]: ProviderAvailability };
+  dndMap: { [key: string]: ProviderAvailabilityDto };
 }
 
 export interface AvailabilityDispatch {
@@ -20,8 +16,8 @@ export interface AvailabilityDispatch {
 }
 
 export const AvailabilityContext = createContext<AvailabilityContextInterface>({
-  mechanicAvailability: new Map(),
-  workshopAvailability: [],
+  providerAvailability: new Map(),
+  cycleAvailabilityUnits: [],
   unsavedChanges: false,
   dndMap: {}
 });

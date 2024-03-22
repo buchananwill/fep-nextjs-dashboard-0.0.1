@@ -28,9 +28,9 @@ export default function AvailabilityContextProvider({
   const { isOpen, openModal, closeModal } = useModal();
 
   const confirmChanges = () => {
-    const { mechanicAvailability } = reducerState;
+    const { providerAvailability } = reducerState;
 
-    updateAvailabilities(mechanicAvailability).then((r) => {
+    updateAvailabilities(providerAvailability).then((r) => {
       if (r.data)
         dispatch({ type: 'updateMechanicAvailabilities', data: r.data });
     });

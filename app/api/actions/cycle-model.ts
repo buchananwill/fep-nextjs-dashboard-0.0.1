@@ -1,8 +1,9 @@
 import { TabularDTO } from '../dto-interfaces';
 import { PeriodDTO } from '../dtos/PeriodDTOSchema';
-import { API_ACADEMIC_URL } from '../main';
+import { API_ACADEMIC_URL, API_BASE_URL } from '../main';
 import { getWithoutBody } from './template-actions';
 import { ActionResponsePromise } from './actionResponse';
+import { CycleSubspanDto } from '../dtos/CycleSubspanDtoSchema';
 
 export const fetchAllPeriodsInCycle = async (): ActionResponsePromise<
   TabularDTO<string, PeriodDTO>
@@ -34,4 +35,9 @@ export async function getFormattedPeriodsInCycle() {
       label.substring(label.length - 3, label.length)
   );
   return allPeriodsInCycle;
+}
+
+export function getAllCycleSubspans() {
+  const url = `${API_BASE_URL}/cycleModel/1/cycleSubspans`;
+  return getWithoutBody<CycleSubspanDto[]>(url);
 }

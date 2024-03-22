@@ -1,22 +1,24 @@
 'use client';
 import React, { ReactNode, useContext, useMemo, useState } from 'react';
 
-import { ColorCoding } from '../../../contexts/color-coding/context';
 import { ZoomScaleContext } from '../scale/zoom-scale-context';
 
-import { NormalizedInterval } from 'date-fns/types';
-
-import { HasNumberId } from '../../../api/zod-mods';
 import DepthContextProvider from '../../../contexts/z-context/z-context-provider';
 import { Z_INDEX } from '../../../contexts/z-context/z-context';
+import { useMemoizedNormalizedInterval } from './use-memoized-normalized-interval';
 
 export function TimespanBlock({
-  interval: { end, start },
-  children
+  // interval: { end, start },
+  children,
+  startDate,
+  endDate
 }: {
-  interval: NormalizedInterval;
+  // interval: NormalizedInterval;
+  startDate: number;
+  endDate: number;
   children: ReactNode;
 }) {
+  const { start, end } = useMemoizedNormalizedInterval(startDate, endDate);
   const { x, y } = useContext(ZoomScaleContext);
   const [zIndex, setZIndex] = useState<Z_INDEX>('z-10');
   const MINUTES_IN_DAY = y * 24;
@@ -72,11 +74,20 @@ export function formatAsTwoDigits(number: number): string {
 
 export interface Calendarable {
   key: string;
-  interval: NormalizedInterval;
+  startDate: number;
+  endDate: number;
   colorKey: string;
   content: React.JSX.Element;
 }
 
-export function generateTimespanBlock({ interval, content }: Calendarable) {
-  return <TimespanBlock interval={interval}>{content}</TimespanBlock>;
+export function generateTimespanBlock({
+  startDate,
+  endDate,
+  content
+}: Calendarable) {
+  return (
+    <TimespanBlock startDate={startDate} endDate={endDate}>
+      {content}
+    </TimespanBlock>
+  );
 }

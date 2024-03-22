@@ -85,8 +85,8 @@ export default async function StaffroomLayout({
   return (
     <AvailabilityContextProvider
       initialData={{
-        workshopAvailability: availabilityUnits,
-        mechanicAvailability: availabilityMap,
+        cycleAvailabilityUnits: availabilityUnits,
+        providerAvailability: availabilityMap,
         unsavedChanges: false,
         dndMap: {}
       }}
