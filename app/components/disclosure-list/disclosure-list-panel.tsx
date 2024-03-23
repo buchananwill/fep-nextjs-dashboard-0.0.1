@@ -16,7 +16,7 @@ export interface TransformerProps<D> {
   className?: string;
 }
 
-export interface FilterDisclosurePanelProps<D> {
+export interface DisclosureListPanelProps<D> {
   data: D[];
   buttonCluster: ButtonClusterTransformer<D>;
   disclosureLabelTransformer: DisclosureLabelTransformer<D>;
@@ -36,7 +36,7 @@ export default function DisclosureListPanel<D>({
   panelTransformer: PanelTransformerComponent,
   buttonCluster: ButtonCluster,
   disclosureLabelTransformer: ButtonTransformerComponent
-}: FilterDisclosurePanelProps<D>) {
+}: DisclosureListPanelProps<D>) {
   try {
     return (
       <>
