@@ -3,8 +3,13 @@ import { interval } from 'date-fns/interval';
 import { createLocalDate } from '../../../api/local-date';
 import {
   DayOfWeekArray,
-  PROJECT_EPOCH_DATE_TIME
+  DayOfWeekObject,
+  PROJECT_EPOCH_DATE_TIME,
+  PROJECT_EPOCH_DATE_TIME_MONDAY
 } from '../../../api/date-and-time';
+import { addMinutes } from 'date-fns';
+
+const MinutesInADay = 24 * 60;
 
 export function createRangeStartingMondayThisWeek() {
   const startDateTime = new Date(Date.now());
@@ -21,18 +26,19 @@ export function createRangeStartingMondayThisWeek() {
 
   return interval(firstDayInWeek, lastDayInWeek);
 }
-export function createRangeStartingMondayEpochalTime() {
-  const startDateTime = PROJECT_EPOCH_DATE_TIME;
+export function createRangeStartingEpochalTime(
+  length: number,
+  dayZero: string
+) {
+  let dayZeroIndex = 0;
 
-  let localDate = createLocalDate(startDateTime);
+  const startDateTime = PROJECT_EPOCH_DATE_TIME_MONDAY;
 
-  let firstDayInWeek = addDays(-DayOfWeekArray.indexOf(localDate.dayOfWeek))(
-    startDateTime
-  );
+  const addedDays = addDays(length - 1);
 
-  const addSixDays = addDays(6);
+  let lastDayInWeek = addedDays(startDateTime);
 
-  let lastDayInWeek = addSixDays(firstDayInWeek);
+  const endOfRange = addMinutes(lastDayInWeek, MinutesInADay - 1);
 
-  return interval(firstDayInWeek, lastDayInWeek);
+  return interval(startDateTime, endOfRange);
 }

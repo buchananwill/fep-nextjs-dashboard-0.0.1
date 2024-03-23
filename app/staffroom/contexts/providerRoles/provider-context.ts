@@ -5,7 +5,7 @@ import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 
 export interface ProviderRoleContextInterface {
   providers: ProviderRoleDto[];
-  setProviders: (mechanics: ProviderRoleDto[]) => void;
+  setProviders: (providerRoleDtos: ProviderRoleDto[]) => void;
   workTaskTypes: WorkTaskTypeDto[];
   unsavedChanges: boolean;
   setUnsavedChanges: (update: boolean) => void;

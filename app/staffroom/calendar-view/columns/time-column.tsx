@@ -13,10 +13,10 @@ import { TimeDropZone } from '../blocks/time-drop-zone';
 import { ZoomScaleContext } from '../scale/zoom-scale-context';
 import { NormalizedInterval } from 'date-fns/types';
 import { useDroppable } from '@dnd-kit/core';
-import { PROJECT_EPOCH_DATE_TIME } from '../../../api/date-and-time';
+import { PROJECT_EPOCH_DATE_TIME_MONDAY } from '../../../api/date-and-time';
 import { scaleToCalendarZoomX, scaleToCalendarZoomY } from '../calendar-view';
 
-const FALLBACK_DATE = PROJECT_EPOCH_DATE_TIME;
+const FALLBACK_DATE = PROJECT_EPOCH_DATE_TIME_MONDAY;
 
 export function useCalendarScaledZoom() {
   const { y: normalizedY, x: normalizedX } = useContext(ZoomScaleContext);

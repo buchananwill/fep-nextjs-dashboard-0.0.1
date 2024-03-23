@@ -24,7 +24,7 @@ export interface ClearUnsavedAvailability {
 }
 
 export interface UpdateProviderAvailabilities {
-  type: 'updateMechanicAvailabilities';
+  type: 'updateProviderAvailabilities';
   data: ProviderAvailabilityDto[];
 }
 
@@ -82,7 +82,7 @@ export default function availabilityReducer(
     case 'setAvailabilityData': {
       return action.data;
     }
-    case 'updateMechanicAvailabilities': {
+    case 'updateProviderAvailabilities': {
       return produce(state, (draft) => {
         console.log('Not implemented yet.');
       });

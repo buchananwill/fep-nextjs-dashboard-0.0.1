@@ -30,6 +30,7 @@ import {
   ConfirmActionModal,
   ConfirmActionModalProps
 } from '../../../components/confirm-action-modal';
+import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits';
 
 export default function ProviderRoleContextProvider({
   providerRoleAndTaskData,
@@ -38,7 +39,7 @@ export default function ProviderRoleContextProvider({
   providerRoleAndTaskData: ProviderRoleAndTaskData;
   children: ReactNode;
 }) {
-  const [selectedMechanics, setSelectedMechanics] = useState<
+  const [selectedProviderRoles, setSelectedProviderRoles] = useState<
     LongIdStringNameTuple[]
   >([]);
   const [providerRoleDtos, setProviderRoles] = useState(
@@ -58,11 +59,24 @@ export default function ProviderRoleContextProvider({
   };
 
   const handleConfirm = () => {
-    performApiAction(() => updateTeachers(providerRoleDtos)).then((r) => {
-      if (r.status >= 200 && r.status < 400 && r.data) {
-        setProviderRoles(r.data);
-      }
-    });
+    console.log('Updating...');
+
+    Promise.all(providerRoleDtos.map((pr) => updateTeachers([pr])))
+      .then((responseArray) => {
+        return responseArray
+          .map((r) => r.data)
+          .filter(isNotUndefined)
+          .reduce((prev, curr, index, filteredArray) => [...prev, ...curr], []);
+      })
+      .then((r) => {
+        console.log(r);
+      });
+    // updateTeachers(providerRoleDtos).then((r) => {
+    //   console.log('received response:', r);
+    //   if (r.status >= 200 && r.status < 400 && r.data) {
+    //     setProviderRoles(r.data);
+    //   }
+    // });
     setOpen(false);
     setUnsavedChanges(false);
   };
@@ -71,22 +85,23 @@ export default function ProviderRoleContextProvider({
     setOpen(false);
   };
 
-  // const transactionalModal: TransactionalModalInterface = {
-  //   open: open,
-  //   confirm: handleConfirm,
-  //   cancel: handleCancel
-  // };
+  const transactionalModal: ConfirmActionModalProps = {
+    show: open,
+    onConfirm: handleConfirm,
+    onCancel: handleCancel,
+    onClose: () => setOpen(false)
+  };
 
   const colorCodingState = useContext(ColorCoding);
 
   const { setColorCoding } = useContext(ColorCodingDispatch);
 
-  const firstMechanic = providerRoleDtos[0];
+  const firstProvider = providerRoleDtos[0];
   const [modalSkillValue, setModalSkillValue] = useState(0);
   const [skillInModal, setSkillInModal] = useState(
-    firstMechanic?.workTaskCompetencyDtoList[0]
+    firstProvider?.workTaskCompetencyDtoList[0]
   );
-  const [mechanicInModal, setProviderInModal] = useState(firstMechanic);
+  const [mechanicInModal, setProviderInModal] = useState(firstProvider);
 
   const triggerModal = (
     skill: WorkTaskCompetencyDto,
@@ -155,7 +170,12 @@ export default function ProviderRoleContextProvider({
       }
       setColorCoding(currentState);
     }
-  }, [colorCodingState, selectedMechanics, providerRoleDtos, setColorCoding]);
+  }, [
+    colorCodingState,
+    selectedProviderRoles,
+    providerRoleDtos,
+    setColorCoding
+  ]);
 
   return (
     <ProviderContext.Provider value={providerRoleState}>
@@ -209,12 +229,12 @@ export default function ProviderRoleContextProvider({
               </div>
             </ConfirmActionModal>
           )}
-          {/*<TransactionModal*/}
-          {/*  title={'Update mechanic database'}*/}
-          {/*  context={transactionalModal}*/}
-          {/*>*/}
-          {/*  <div>Send updated mechanic info to database?</div>*/}
-          {/*</TransactionModal>*/}
+          <ConfirmActionModal
+            title={'Update mechanic database'}
+            {...transactionalModal}
+          >
+            <div>Send updated teacher skill info to database?</div>
+          </ConfirmActionModal>
         </SkillEditContext.Provider>
       </ProviderRoleSelectionContextProvider>
     </ProviderContext.Provider>

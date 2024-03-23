@@ -1,8 +1,12 @@
 import { createContext } from 'react';
-import { MechanicDto, ServiceCompetencyDto } from '../../../api/zod-mods';
+import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
+import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 
 interface SkillEditContext {
-  triggerModal: (skill: ServiceCompetencyDto, mechanic: MechanicDto) => void;
+  triggerModal: (
+    skill: WorkTaskCompetencyDto,
+    providerRoleDto: ProviderRoleDto
+  ) => void;
 }
 
 const defaultContext = {

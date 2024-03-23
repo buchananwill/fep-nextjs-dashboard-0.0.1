@@ -18,7 +18,7 @@ import { DragEndEvent } from '@dnd-kit/core';
 
 import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';
 import {
-  createRangeStartingMondayEpochalTime,
+  createRangeStartingEpochalTime,
   createRangeStartingMondayThisWeek
 } from '../../calendar-view/range/create-range-starting-monday-this-week';
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
@@ -26,10 +26,14 @@ import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epoch
 export function AvailabilityTable() {
   enableMapSet();
 
-  const normalizedInterval = createRangeStartingMondayEpochalTime();
+  const { providerAvailability, dndMap, cycleModel } =
+    useContext(AvailabilityContext);
+  const normalizedInterval = createRangeStartingEpochalTime(
+    cycleModel.cycleLengthInDays,
+    cycleModel.cycleDayZero
+  );
   // Get the selected providerRoles and add their availability
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
-  const { providerAvailability, dndMap } = useContext(AvailabilityContext);
   const { dispatch } = useContext(AvailabilityDispatchContext);
   const [eventBlocks, setEventBlocks] = useState(
     new Map<number, Calendarable[]>()
@@ -37,22 +41,26 @@ export function AvailabilityTable() {
 
   useEffect(() => {
     const nextBlocks = new Map<number, Calendarable[]>();
-    selectedProviders.forEach((mechanic) => {
+    selectedProviders.forEach((providerRole) => {
       const list: Calendarable[] =
-        providerAvailability.get(mechanic.id)?.map((providerAvailability) => {
-          const { startDate, endDate } =
-            getStartAndEndDatesAsEpochal(providerAvailability);
-          return {
-            key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${mechanic}`,
-            startDate: startDate.getTime(),
-            endDate: endDate.getTime(),
-            colorKey: mechanic.name,
-            content: (
-              <AvailabilityBlock providerAvailability={providerAvailability} />
-            )
-          };
-        }) || [];
-      nextBlocks.set(mechanic.id, list);
+        providerAvailability
+          .get(providerRole.id)
+          ?.map((providerAvailability) => {
+            const { startDate, endDate } =
+              getStartAndEndDatesAsEpochal(providerAvailability);
+            return {
+              key: `availability-unit-${providerAvailability.cycleSubspanDto.id}-${providerRole}`,
+              startDate: startDate.getTime(),
+              endDate: endDate.getTime(),
+              colorKey: providerRole.name,
+              content: (
+                <AvailabilityBlock
+                  providerAvailability={providerAvailability}
+                />
+              )
+            };
+          }) || [];
+      nextBlocks.set(providerRole.id, list);
     });
 
     setEventBlocks(nextBlocks);
@@ -76,7 +84,7 @@ export function AvailabilityTable() {
                 'w-full top-0 left-0 h-full bg-gray-100 bg-opacity-75 z-40 absolute rounded-lg flex items-center justify-center'
               }
             >
-              Loading mechanic data.
+              Loading teacher data.
             </div>
           </Transition>
         }
@@ -86,7 +94,7 @@ export function AvailabilityTable() {
               'w-full h-full bg-gray-500/50 absolute top-0 left-0 z-40 flex items-center justify-center rounded-lg'
             }
           >
-            No mechanics selected.
+            No teachers selected.
           </div>
         )}
         <StaffroomCalenderView
@@ -100,7 +108,8 @@ export function AvailabilityTable() {
     if (over) {
       const dataOver = dndMap[over.id];
       const dataActive = dndMap[active.id];
-      const { startDate, endDate } = getStartAndEndDatesAsEpochal(dataActive);
+      const { startDate } = getStartAndEndDatesAsEpochal(dataActive);
+      const { endDate } = getStartAndEndDatesAsEpochal(dataOver);
 
       dispatch({
         type: 'toggleAvailability',

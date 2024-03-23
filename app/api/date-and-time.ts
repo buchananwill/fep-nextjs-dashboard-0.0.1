@@ -1,6 +1,9 @@
 import { addDays, setHours, setMinutes, setSeconds } from 'date-fns/fp';
 
 export const PROJECT_EPOCH_DATE_TIME = new Date('2000-01-01T00:00:00.000Z');
+export const PROJECT_EPOCH_DATE_TIME_MONDAY = new Date(
+  '2000-01-03T00:00:00.000Z'
+);
 
 export const REGEX_TIME = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
@@ -14,7 +17,7 @@ export function timeToDateTime(stringTime: string): Date {
   if (time.length == 2) {
     time.push(0);
   }
-  let epochalDateTime = new Date(PROJECT_EPOCH_DATE_TIME);
+  let epochalDateTime = new Date(PROJECT_EPOCH_DATE_TIME_MONDAY);
   const hours = setHours(time[0]);
   const minutes = setMinutes(time[1]);
   const seconds = setSeconds(time[2]);

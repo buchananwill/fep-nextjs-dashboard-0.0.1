@@ -15,8 +15,10 @@ import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
 import { getAvailabilities } from '../api/actions/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
-import { getAllCycleSubspans } from '../api/actions/cycle-model';
+import { getCycleModel } from '../api/actions/cycle-model';
 import CalendarRangeContextProvider from './calendar-view/range/calendar-range-context-provider';
+import { CycleDto } from '../api/dtos/CycleDtoSchema';
+import { CycleModelMock } from './contexts/availability/availability-context';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,20 +73,23 @@ export default async function StaffroomLayout({
     workTaskTypes: workTaskTypeDtos
   };
   let availabilityUnits: CycleSubspanDto[] = [];
-  const { data } = await getAllCycleSubspans();
-  if (data) {
-    availabilityUnits = data;
+  let cycleModel: CycleDto = CycleModelMock;
+  const { data } = await getCycleModel();
+  if (data !== undefined) {
+    availabilityUnits = data.cycleSubspans;
+    cycleModel = data;
   }
 
   const availabilityMap = new Map<number, ProviderAvailabilityDto[]>();
-  for (let mechanicDto of teacherList) {
-    const { data } = await getAvailabilities(mechanicDto.id);
-    if (data) availabilityMap.set(mechanicDto.id, data);
+  for (let providerRoleDto of teacherList) {
+    const { data } = await getAvailabilities(providerRoleDto.id);
+    if (data) availabilityMap.set(providerRoleDto.id, data);
   }
 
   return (
     <AvailabilityContextProvider
       initialData={{
+        cycleModel,
         cycleAvailabilityUnits: availabilityUnits,
         providerAvailability: availabilityMap,
         unsavedChanges: false,

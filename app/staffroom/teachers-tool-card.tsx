@@ -13,7 +13,7 @@ export function TeachersToolCard() {
             'w-full  h-full px-2 cursor-default select-none flex items-center justify-center overflow-hidden'
           }
         >
-          Mechanics
+          Teachers
         </div>
       </ToolCard.UpperSixth>
 

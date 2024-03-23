@@ -42,10 +42,10 @@ import {
 import { useCalendarScaledZoom } from './calendar-view/columns/time-column';
 
 function getProvider(
-  mechanicId: number,
+  providerRoleId: number,
   list: ProviderRoleDto[]
 ): ProviderRoleDto | undefined {
-  return list.find((mechanicDto) => mechanicDto.id == mechanicId);
+  return list.find((mechanicDto) => mechanicDto.id == providerRoleId);
 }
 
 const smallestScheduleDelta = 15;

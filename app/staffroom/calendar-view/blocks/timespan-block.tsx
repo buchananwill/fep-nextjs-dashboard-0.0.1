@@ -17,7 +17,6 @@ export function TimespanBlock({
   endDate: number;
   children: ReactNode;
 }) {
-  console.log('Rendering timespan block');
   const { start, end } = useMemoizedNormalizedInterval(startDate, endDate);
   const { x, y } = useCalendarScaledZoom();
 

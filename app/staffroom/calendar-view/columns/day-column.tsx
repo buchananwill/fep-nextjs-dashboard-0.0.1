@@ -43,8 +43,6 @@ export default function DayColumn({
     return matchDate(new Date(startDate)) || matchDate(new Date(endDate));
   };
 
-  console.log('rendering day column');
-
   return (
     <DateColumnContextProvider date={date}>
       {selectedCalendars.map((calendarId) => {

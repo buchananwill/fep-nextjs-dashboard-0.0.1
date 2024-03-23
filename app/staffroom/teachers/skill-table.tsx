@@ -23,18 +23,18 @@ export default function SkillTable() {
     setTitle('Skill Matrix');
   }, [setTitle]);
   const { triggerModal } = useContext(SkillEditContext);
-  const firstMechanic = providers[0];
+  const firstProvider = providers[0];
 
-  if (!firstMechanic) {
+  if (!firstProvider) {
     return (
       <div className={'w-full h-fit bg-gray-400 text-black rounded-lg p-2'}>
-        No mechanics
+        No teachers.
       </div>
     );
   }
 
-  const filterMechanics = providers.filter((mechanic) =>
-    selectedProviders.some((id) => mechanic.id == id.id)
+  const filteredProviderRoles = providers.filter((providerRole) =>
+    selectedProviders.some((id) => providerRole.id == id.id)
   );
   return (
     <div className="m-2 p-2 border-2 rounded-lg">
@@ -79,7 +79,7 @@ export default function SkillTable() {
           </tr>
         </thead>
         <tbody>
-          {filterMechanics.map((mechanicDto) => (
+          {filteredProviderRoles.map((mechanicDto) => (
             <tr key={mechanicDto.id} className="">
               <td className="text-sm px-2">{mechanicDto.partyName}</td>
               {mechanicDto.workTaskCompetencyDtoList.map((skill) => (

@@ -1,3 +1,4 @@
+'use server';
 import {
   ActionResponsePromise,
   errorResponse,
@@ -10,9 +11,9 @@ import { CycleSubspanDto } from '../dtos/CycleSubspanDtoSchema';
 
 const teachersEndpoint = `${API_BASE_URL}/providers/teachers`;
 export async function getAvailabilities(
-  mechanicId: number
+  providerRoleId: number
 ): ActionResponsePromise<ProviderAvailabilityDto[]> {
-  const url = `${teachersEndpoint}/${mechanicId}/availability`;
+  const url = `${teachersEndpoint}/${providerRoleId}/availability`;
 
   return await getWithoutBody<ProviderAvailabilityDto[]>(url);
 }

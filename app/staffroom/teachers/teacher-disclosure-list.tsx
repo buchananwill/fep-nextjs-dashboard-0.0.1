@@ -34,7 +34,7 @@ const lighten = (hslObject: HSLA): HSLA => {
   return { ...hslObject, l: lighterL, cssHSLA: lighterHSL };
 };
 
-function MechanicLabel({
+function ProviderRoleLabel({
   data: { partyName, knowledgeDomainName, id },
   children
 }: {
@@ -91,16 +91,15 @@ function MechanicLabel({
       </TooltipTrigger>
 
       <StandardTooltipContent>
-        Show mechanic skill details.
+        Show teacher skill details.
       </StandardTooltipContent>
     </Tooltip>
   );
 }
 
-function MechanicButtonCluster({ data }: { data: ProviderRoleDto }) {
+function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
   const [isPinned, setPinned] = useState(false);
-  // const { setSelectedMechanics, selectedMechanics } =
-  //   useContext(MechanicContext);
+
   const { selectedProviders, toggleProviderSelection } = useContext(
     ProviderRoleSelectionContext
   );
@@ -114,15 +113,6 @@ function MechanicButtonCluster({ data }: { data: ProviderRoleDto }) {
 
   const handlePinClick = () => {
     toggleProviderSelection({ name: data.partyName, id: data.id });
-    // if (isPinned) {
-    //   const filteredOut = selectedMechanics?.filter(
-    //     ({ id: mechId }) => mechId !== id
-    //   );
-    //   setSelectedMechanics(filteredOut);
-    // } else {
-    //   const addedId = [{ name: partyName, id: id }, ...selectedMechanics];
-    //   setSelectedMechanics(addedId);
-    // }
   };
 
   return (
@@ -181,8 +171,8 @@ export default function TeacherDisclosureList() {
       {providers && (
         <ListDisclosurePanel
           data={providers}
-          buttonCluster={MechanicButtonCluster}
-          disclosureLabelTransformer={MechanicLabel}
+          buttonCluster={ProviderRoleButtonCluster}
+          disclosureLabelTransformer={ProviderRoleLabel}
           panelTransformer={TeacherPanelTransformer}
         />
       )}

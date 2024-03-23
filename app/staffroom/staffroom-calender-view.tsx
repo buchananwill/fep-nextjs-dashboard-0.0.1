@@ -22,29 +22,17 @@ export function StaffroomCalenderView({
   let dates = eachDayOfInterval(interval);
 
   const { x } = useCalendarScaledZoom();
-
-  const { providers } = useContext(ProviderContext);
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
-
-  function getMechanicName(mechanic: number) {
-    return (
-      providers.find((mechanicDto) => mechanicDto.id == mechanic)?.partyName ||
-      ''
-    );
-  }
-
-  console.log(eventBlocks);
-
   const totalDayWidth =
     selectedProviders.length > 0 ? selectedProviders.length * x : x;
 
-  const mechanicNames = selectedProviders;
+  const providerNames = selectedProviders;
   const numbers = selectedProviders.map(({ id }) => id);
   return (
     <CalendarView
       totalDayWidth={totalDayWidth}
       dates={dates}
-      daySubLabels={mechanicNames}
+      daySubLabels={providerNames}
     >
       {dates.map((day, index) => (
         <DayColumn
