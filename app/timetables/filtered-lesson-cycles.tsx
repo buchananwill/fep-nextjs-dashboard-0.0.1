@@ -1,7 +1,7 @@
 'use client';
 import { LessonCycle } from '../api/state-types';
 import RightHandToolCard from '../components/right-hand-tool-card';
-import ListDisclosurePanel from '../components/list-disclosure-panel';
+import DisclosureListPanel from '../components/disclosure-list-panel';
 import { DisclosureButtonLessonCycle } from './disclosure-button-lesson-cycle';
 import ButtonClusterLessonCycle from './button-cluster-lesson-cycle';
 import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';
@@ -59,7 +59,7 @@ export function FilteredLessonCycles({ data }: { data: LessonCycle[] }) {
     <RightHandToolCard>
       <RightHandToolCard.UpperSixth>Lesson Cycles</RightHandToolCard.UpperSixth>
       <RightHandToolCard.LowerFiveSixths>
-        <ListDisclosurePanel
+        <DisclosureListPanel
           data={filteredLessonCycles}
           disclosureLabelTransformer={DisclosureButtonLessonCycle}
           buttonCluster={ButtonClusterLessonCycle}

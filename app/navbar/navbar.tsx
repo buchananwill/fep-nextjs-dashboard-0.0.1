@@ -36,7 +36,7 @@ const contactTimeDropdown = [
 
 const studentsDropdown = [{ name: 'Students', href: '' }];
 
-const premisesDropdown = [{ name: 'Premises', href: '' }];
+const premisesDropdown = [{ name: 'Graph Overview', href: '' }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

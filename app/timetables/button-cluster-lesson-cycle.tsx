@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext } from 'react';
 
-import { ButtonClusterTransformer } from '../components/list-disclosure-panel';
+import { ButtonClusterTransformer } from '../components/disclosure-list-panel';
 import { LessonCycle } from '../api/state-types';
 import { FillableButton, PinIcons } from '../components/fillable-button';
 import {

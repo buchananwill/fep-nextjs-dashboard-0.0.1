@@ -18,7 +18,7 @@ import {
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { SkillEditContext } from './skill-edit-context';
+import { SkillEditContext } from './rating-edit-context';
 
 import ProviderRoleSelectionContextProvider from './provider-role-selection-context-provider';
 import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';

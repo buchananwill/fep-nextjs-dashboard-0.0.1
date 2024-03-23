@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
 
-import ListDisclosurePanel from '../components/list-disclosure-panel';
+import DisclosureListPanel from '../components/disclosure-list-panel';
 import { ButtonStudent } from './button-student';
 import { ButtonClusterStudent } from './button-cluster-student';
 import { StudentPanelTransformer } from './student-panel-transformer';
@@ -65,7 +65,7 @@ export default function StudentsDisclosureGroup() {
 
   try {
     return (
-      <ListDisclosurePanel
+      <DisclosureListPanel
         data={filteredStudents}
         buttonCluster={ButtonClusterStudent}
         disclosureLabelTransformer={ButtonStudent}

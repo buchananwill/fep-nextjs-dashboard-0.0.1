@@ -1,5 +1,5 @@
 'use client';
-import { DisclosureLabelTransformer } from '../components/list-disclosure-panel';
+import { DisclosureLabelTransformer } from '../components/disclosure-list-panel';
 
 import React, { useContext } from 'react';
 import TooltipsContext from '../components/tooltips/tooltips-context';

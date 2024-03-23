@@ -33,8 +33,13 @@ import {
 import LandscapeStepper from '../../components/landscape-stepper';
 
 import { getPayloadArray } from './use-editing-context-dependency';
+import { AccessorFunction } from '../../staffroom/teachers/rating-table';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
+
+export interface NameAccessor<T> extends AccessorFunction<T, string> {
+  (object: T): string;
+}
 
 export function stringMapToIdNameTuple<T>(
   nameAccessor: (item: T) => string,

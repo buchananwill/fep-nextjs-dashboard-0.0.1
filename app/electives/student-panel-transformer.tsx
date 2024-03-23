@@ -1,6 +1,6 @@
 import { checkAssignment } from './checkElectiveAssignments';
 import React, { useContext } from 'react';
-import { PanelTransformer } from '../components/list-disclosure-panel';
+import { PanelTransformer } from '../components/disclosure-list-panel';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { OptionBlockChooser } from './option-block-chooser';
 import { ToggleElectivePreferenceActive } from './toggle-elective-preference-active';

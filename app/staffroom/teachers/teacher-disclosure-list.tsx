@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
-import ListDisclosurePanel from '../../components/list-disclosure-panel';
+import DisclosureListPanel from '../../components/disclosure-list-panel';
 import { FillableButton, PinIcons } from '../../components/fillable-button';
 import { produce } from 'immer';
 import { ColorCoding } from '../../contexts/color-coding/context';
@@ -14,7 +14,7 @@ import {
 
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
-import { SkillEditContext } from '../contexts/providerRoles/skill-edit-context';
+import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context';
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
 
@@ -166,7 +166,7 @@ export default function TeacherDisclosureList() {
   return (
     <>
       {providers && (
-        <ListDisclosurePanel
+        <DisclosureListPanel
           data={providers}
           buttonCluster={ProviderRoleButtonCluster}
           disclosureLabelTransformer={ProviderRoleLabel}

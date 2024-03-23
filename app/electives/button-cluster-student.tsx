@@ -1,4 +1,4 @@
-import { ButtonClusterTransformer } from '../components/list-disclosure-panel';
+import { ButtonClusterTransformer } from '../components/disclosure-list-panel';
 
 import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';

@@ -1,5 +1,4 @@
 'use client';
-
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
@@ -20,11 +19,11 @@ export const WorkTaskTypeChangesProviderListener =
 export const workTaskTypeCommitKey = 'commit-model-changes-open';
 
 export function WorkTaskTypeContextProvider({
-  models,
+  entityMap,
   children
-}: { models: StringMap<WorkTaskTypeDto> } & PropsWithChildren) {
+}: { entityMap: StringMap<WorkTaskTypeDto> } & PropsWithChildren) {
   const WorkTaskTypeReducer = StringMapReducer<WorkTaskTypeDto>;
-  const [currentModels, dispatch] = useReducer(WorkTaskTypeReducer, models);
+  const [currentModels, dispatch] = useReducer(WorkTaskTypeReducer, entityMap);
   const { currentState: modalOpen, dispatchUpdate } =
     useSelectiveContextControllerBoolean(
       workTaskTypeCommitKey,
