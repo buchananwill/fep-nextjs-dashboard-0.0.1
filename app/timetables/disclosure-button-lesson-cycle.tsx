@@ -1,5 +1,5 @@
 'use client';
-import { ButtonClusterTransformer } from '../components/disclosure-list-panel';
+import { ButtonClusterTransformer } from '../components/disclosure-list/disclosure-list-panel';
 import { LessonCycle } from '../api/state-types';
 import { Disclosure } from '@headlessui/react';
 import React from 'react';

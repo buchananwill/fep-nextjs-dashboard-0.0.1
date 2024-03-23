@@ -1,8 +1,11 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
-import DisclosureListPanel from '../../components/disclosure-list-panel';
-import { FillableButton, PinIcons } from '../../components/fillable-button';
+import DisclosureListPanel from '../../components/disclosure-list/disclosure-list-panel';
+import {
+  FillableButton,
+  PinIcons
+} from '../../components/buttons/fillable-button';
 import { produce } from 'immer';
 import { ColorCoding } from '../../contexts/color-coding/context';
 import {

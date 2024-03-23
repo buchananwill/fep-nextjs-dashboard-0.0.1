@@ -1,9 +1,9 @@
 'use client';
 
-import { getArrowLeftCircle } from './button-svg/get-arrow-left-circle';
-import { getMortarBoard } from './button-svg/get-mortar-board';
-import { getPin } from './button-svg/get-pin';
-import { getArrowUpOnSquare } from './button-svg/get-arrow-up-on-square';
+import { getArrowLeftCircle } from '../button-svg/get-arrow-left-circle';
+import { getMortarBoard } from '../button-svg/get-mortar-board';
+import { getPin } from '../button-svg/get-pin';
+import { getArrowUpOnSquare } from '../button-svg/get-arrow-up-on-square';
 
 export enum PinIcons {
   mapPin = 'mapPin',

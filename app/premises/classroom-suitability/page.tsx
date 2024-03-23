@@ -1,31 +1,18 @@
-import {
-  ActionResponsePromise,
-  errorResponse,
-  successResponse
-} from '../../api/actions/actionResponse';
+import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { fetchPremises } from '../../api/actions/request-class-rooms';
 import { Card } from '@tremor/react';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
-import {
-  getWorkTaskTypeGraph,
-  getWorkTaskTypes
-} from '../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../../api/main';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
-import { WorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../curriculum/delivery-models/contexts/convert-list-to-string-map';
-import { StringMapEditContextProvider } from '../../components/string-map-context/string-map-edit-context-provider';
-import {
-  AssetChangesProviderListener,
-  AssetCommitKey,
-  AssetStringMapContext,
-  AssetStringMapDispatchContext,
-  UnsavedAssetChanges
-} from '../asset-string-map-context-creator';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
+import ToolCardContextProvider from '../../components/tool-card/tool-card-context-provider';
+import ToolCard from '../../components/tool-card/tool-card';
+import { ClassroomDisclosureListPanel } from './classroom-disclosure-list-panel';
 
 export default async function Page() {
   const premisesPromises: ActionResponsePromise<GraphDto<AssetDto>> =
@@ -58,7 +45,17 @@ export default async function Page() {
   return (
     <WorkTaskTypeContextProvider entityMap={wttStringMap}>
       <AssetStringMapContextProvider assetStringMap={assetStringMap}>
-        <AssetSuitabilityTableWrapper ratedElements={assetStringMap} />
+        <div className={'w-full flex'}>
+          <ToolCardContextProvider>
+            <ToolCard>
+              <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
+              <ToolCard.LowerFiveSixths>
+                <ClassroomDisclosureListPanel />
+              </ToolCard.LowerFiveSixths>
+            </ToolCard>
+          </ToolCardContextProvider>
+          <AssetSuitabilityTableWrapper ratedElements={assetStringMap} />
+        </div>
       </AssetStringMapContextProvider>
     </WorkTaskTypeContextProvider>
   );

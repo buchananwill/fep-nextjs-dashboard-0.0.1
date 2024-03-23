@@ -1,7 +1,7 @@
 'use client';
 import { LessonCycle } from '../api/state-types';
 import RightHandToolCard from '../components/right-hand-tool-card';
-import DisclosureListPanel from '../components/disclosure-list-panel';
+import DisclosureListPanel from '../components/disclosure-list/disclosure-list-panel';
 import { DisclosureButtonLessonCycle } from './disclosure-button-lesson-cycle';
 import ButtonClusterLessonCycle from './button-cluster-lesson-cycle';
 import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';

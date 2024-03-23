@@ -7,7 +7,10 @@ import Union from '../components/union';
 import Intersection from '../components/intersection';
 import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
-import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  FillableButton,
+  PinIcons
+} from '../components/buttons/fillable-button';
 
 import { FilterOption } from '../api/state-types';
 import {

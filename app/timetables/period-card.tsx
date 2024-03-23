@@ -9,7 +9,10 @@ import {
 } from './timetables-context';
 import { Badge } from '@tremor/react';
 import { LessonCycle } from '../api/state-types';
-import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  FillableButton,
+  PinIcons
+} from '../components/buttons/fillable-button';
 import { convertDtoToState } from './build-timetables-state';
 import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 

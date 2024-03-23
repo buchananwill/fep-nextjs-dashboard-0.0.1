@@ -10,7 +10,7 @@ interface Props {
 function ToolCard({ children, height }: Props) {
   return (
     <Card
-      className={`max-w-[100%] w-fit p-0 sticky top-4 left-0 ${
+      className={`max-w-[100%] w-full p-0 sticky top-4 left-0 ${
         height ? '' : 'h-[65vh]'
       } text-center z-30 drop-shadow-xl overflow-hidden`}
       style={height ? { height: `${height}px` } : {}}

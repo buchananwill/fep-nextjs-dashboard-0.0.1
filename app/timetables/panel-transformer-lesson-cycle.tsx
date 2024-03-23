@@ -1,5 +1,5 @@
 'use client';
-import { PanelTransformer } from '../components/disclosure-list-panel';
+import { PanelTransformer } from '../components/disclosure-list/disclosure-list-panel';
 import { LessonCycle } from '../api/state-types';
 import React from 'react';
 

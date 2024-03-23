@@ -6,7 +6,10 @@ import { useContext } from 'react';
 import Union from '../components/union';
 import Intersection from '../components/intersection';
 
-import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  FillableButton,
+  PinIcons
+} from '../components/buttons/fillable-button';
 import { FilterOption, LessonCycle } from '../api/state-types';
 import { FilterType } from '../electives/elective-filter-reducers';
 import {

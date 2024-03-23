@@ -11,7 +11,7 @@ const {
 export { AssetStringMapContext, AssetStringMapDispatchContext };
 
 export const UnsavedAssetChanges = 'unsaved-asset-changes';
-export const AssetChangesProviderListener = 'unsaved-asset-changes:provider';
+export const AssetChangesProviderListener = 'asset-provider';
 
 export const AssetCommitKey = 'commit-asset-changes-open';
 

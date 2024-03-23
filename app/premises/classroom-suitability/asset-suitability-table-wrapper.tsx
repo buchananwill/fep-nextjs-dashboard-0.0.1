@@ -7,14 +7,9 @@ import {
   assetRoleWorkTaskSuitabilityLabelAccessor,
   assetRoleWorkTaskSuitabilityRatingAccessor
 } from './rating-table-accessor-functions';
-import { AssetRoleWorkTaskSuitabilityDto } from '../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import {
-  useSelectiveContextControllerNumberList,
-  useSelectiveContextListenerNumberList
-} from '../../components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
 import { useMemo } from 'react';
 import { isNotNull } from '../../graphing/editing/functions/graph-edits';
@@ -27,7 +22,7 @@ interface AssetSuitabilityTableProps {
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 
-function useMemoizedSelectionFromListAndStringMap<T>(
+export function useMemoizedSelectionFromListAndStringMap<T>(
   selectedList: number[],
   ratedElements: StringMap<T>
 ) {
@@ -41,7 +36,7 @@ function useMemoizedSelectionFromListAndStringMap<T>(
 const assetSuitabilityTableWrapperListenerKey =
   'asset-suitability-table-wrapper';
 
-const assetSelectionListContextKey = 'asset-selection-list';
+export const AssetSelectionListContextKey = 'asset-selection-list';
 
 const workTaskTypeSelectionListContextKey = 'work-task-type-selection-list';
 
@@ -52,9 +47,9 @@ export function AssetSuitabilityTableWrapper({
   const { assetDtoStringMap } = useAssetStringMapContext();
   const { dispatchUpdate, currentState: selectedAssetList } =
     useSelectiveContextControllerNumberList({
-      contextKey: assetSelectionListContextKey,
+      contextKey: AssetSelectionListContextKey,
       listenerKey: assetSuitabilityTableWrapperListenerKey,
-      initialValue: StaticNumberIdArray
+      initialValue: EmptyNumberIdArray
     });
 
   const { currentState: selectedWorkTaskTypeList } =

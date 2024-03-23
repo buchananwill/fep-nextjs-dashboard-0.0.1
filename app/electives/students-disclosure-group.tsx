@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveFilterContext } from './elective-filter-context';
 
-import DisclosureListPanel from '../components/disclosure-list-panel';
+import DisclosureListPanel from '../components/disclosure-list/disclosure-list-panel';
 import { ButtonStudent } from './button-student';
 import { ButtonClusterStudent } from './button-cluster-student';
 import { StudentPanelTransformer } from './student-panel-transformer';

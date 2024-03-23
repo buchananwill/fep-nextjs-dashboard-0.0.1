@@ -3,7 +3,10 @@ import { Badge, Color, Text } from '@tremor/react';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
-import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  FillableButton,
+  PinIcons
+} from '../components/buttons/fillable-button';
 import { ElectiveFilterContext } from './elective-filter-context';
 
 import InteractiveTableCard from '../components/interactive-table-card';

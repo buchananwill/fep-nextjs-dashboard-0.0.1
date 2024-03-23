@@ -1,8 +1,11 @@
-import { ButtonClusterTransformer } from '../components/disclosure-list-panel';
+import { ButtonClusterTransformer } from '../components/disclosure-list/disclosure-list-panel';
 
 import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import { FillableButton, PinIcons } from '../components/fillable-button';
+import {
+  FillableButton,
+  PinIcons
+} from '../components/buttons/fillable-button';
 import {
   Tooltip,
   TooltipContent,
