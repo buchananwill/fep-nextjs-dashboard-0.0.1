@@ -14,7 +14,10 @@ export function KnowledgeDomainDependencies({
   return workTaskTypeCount > 0 ? (
     <TwoStageClick
       onClick={() =>
-        console.log('Number of tasks associated:', workTaskTypeCount)
+        console.log(
+          '(Not implemented) Number of tasks associated:',
+          workTaskTypeCount
+        )
       }
       standardAppearance={'btn-ghost'}
       primedAppearance={'btn-primary'}

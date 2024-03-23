@@ -46,7 +46,6 @@ export default function ForceSimWrapper<T extends HasNumberIdDto>({
   const ticked = () => {
     const elapsed = Date.now() - lastRenderTimer.current;
     if (elapsed >= 25) {
-      // console.log('Since last render:', elapsed);
       lastRenderTimer.current = Date.now();
       dispatchWithoutControl(currentState + 1);
     }

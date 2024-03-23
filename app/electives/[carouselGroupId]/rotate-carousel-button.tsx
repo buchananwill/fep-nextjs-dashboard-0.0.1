@@ -132,7 +132,6 @@ export function RotateCarouselButton({
           closeModal();
         }}
         onCancel={() => {
-          console.log('Cancelled!');
           closeModal();
         }}
       >

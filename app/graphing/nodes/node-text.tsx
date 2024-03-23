@@ -53,7 +53,6 @@ export default function NodeText<T extends HasNumberIdDto>({
   function handleOnClick() {
     if (!leftCtrlHeld) {
       dispatch({ type: 'toggleSelect', payload: id });
-      console.log('Node:', updatedData);
     }
   }
 

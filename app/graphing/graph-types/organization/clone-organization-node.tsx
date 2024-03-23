@@ -7,8 +7,6 @@ export const NameCharLimit = 255;
 export function cloneOrganizationNode(
   templateNode: DataNode<OrganizationDto>
 ): DataNode<OrganizationDto> {
-  console.log('Attempting to clone...', templateNode);
-
   // if (templateNode === undefined) return undefined
 
   const {

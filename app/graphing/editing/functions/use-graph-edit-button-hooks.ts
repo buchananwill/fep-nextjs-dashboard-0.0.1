@@ -104,7 +104,7 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
             ...l
           }) as DataLink<T>
       );
-      console.log(safeCopyOfLinks, safeCopyOfNodes);
+
       updateNodes(safeCopyOfNodes);
       updateLinks(safeCopyOfLinks);
       dispatchUnsavedGraph(true);

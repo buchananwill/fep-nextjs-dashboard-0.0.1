@@ -1,5 +1,5 @@
 'use client';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import ListDisclosurePanel from '../../components/list-disclosure-panel';
 import { FillableButton, PinIcons } from '../../components/fillable-button';
@@ -44,14 +44,6 @@ function ProviderRoleLabel({
 }) {
   const colorCodingState = useContext(ColorCoding);
   const colorCodingStateElement = colorCodingState[partyName];
-  console.log(
-    'color coding:',
-    colorCodingState,
-    'label: ',
-    partyName,
-    colorCodingStateElement
-  );
-
   const { setHslaColorState } = useContext(HslColorDispatchContext);
   const hslaColorState = useContext(HslColorContext);
 
@@ -60,12 +52,10 @@ function ProviderRoleLabel({
     const darker = BASE_HSL[hueId];
     const base = lighten(darker);
     const lighter = lighten(base);
-    const current = base;
-
     setHslaColorState({
       darker: darker,
       base: base,
-      current: current,
+      current: base,
       lighter: lighter
     });
   }, [setHslaColorState, colorCodingStateElement]);
@@ -82,8 +72,6 @@ function ProviderRoleLabel({
     });
     setHslaColorState(colorState);
   };
-
-  console.log(hslaColorState);
 
   return (
     <Tooltip>

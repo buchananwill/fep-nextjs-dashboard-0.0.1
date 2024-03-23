@@ -91,7 +91,6 @@ export function AddNewCurriculumModelCard({
   };
 
   const handleCancel = () => {
-    console.log('handling cancel');
     dispatch({
       type: 'delete',
       payload: { key: nextModelId, data: {} as WorkProjectSeriesSchemaDto }

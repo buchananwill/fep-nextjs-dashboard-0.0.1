@@ -7,7 +7,7 @@ export default function PendingScheduleEditModal() {
   const { updatePending } = useContext(TimetablesContext);
 
   function cancelUpdate() {
-    console.log('Cancel the update');
+    console.log('Cancel the update - not implemented!');
   }
 
   return (

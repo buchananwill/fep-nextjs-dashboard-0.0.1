@@ -76,7 +76,6 @@ export function useNodeEditing<T extends HasNumberIdDto>(
     const nodes = nodesRef.current;
     const links = linksRef.current;
     if (links && nodes) {
-      console.log('on their way to the database', nodes);
       const linksWithNumberIdRefs = links.map(mapLinksBackToIdRefs);
 
       const updatedGraph: GraphDto<T> = {
@@ -93,9 +92,8 @@ export function useNodeEditing<T extends HasNumberIdDto>(
         deletedClosureIdList: deletedLinkNonTransientIds,
         deletedNodeIdList: deletedNodeNonTransientIds
       };
-      console.log('Putting graph!');
+
       putUpdatedGraph(request).then((r) => {
-        console.log(r);
         if (r.status == 200) {
         }
       });

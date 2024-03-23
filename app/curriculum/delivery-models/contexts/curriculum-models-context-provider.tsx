@@ -65,7 +65,7 @@ export function CurriculumModelsContextProvider({
         setUnsaved({ contextKey: UnsavedCurriculumModelChanges, value: false });
       }
     };
-    console.log('Committing!');
+
     if (deletedModelsIdList.length > 0) {
       deleteCurriculumDeliveryModels(deletedModelsIdList)
         .then((r) => {
@@ -76,7 +76,7 @@ export function CurriculumModelsContextProvider({
             });
             successDelete = true;
           } else {
-            console.log(r.message);
+            console.log('Not implemented:', r.message);
           }
         })
         .finally(clearFlag);
@@ -107,7 +107,6 @@ export function CurriculumModelsContextProvider({
               'z-40 flex items-center border-gray-200 shadow-lg border-2 bg-gray-100 fixed top-16 right-16 p-2 rounded-md hover:bg-gray-50 group cursor-pointer'
             }
             onClick={() => {
-              console.log('Opening commit modal');
               openModal();
             }}
           >

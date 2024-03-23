@@ -40,14 +40,6 @@ export function useSelectiveContextListener<T>(
     currentValue = latestRef.current;
   } catch (e) {
     console.error(e);
-    console.log(
-      'With: ',
-      contextKey,
-      listenerKey,
-      updateRefContext,
-      latestValueRefContext,
-      fallBackValue
-    );
   }
 
   const initialValue =

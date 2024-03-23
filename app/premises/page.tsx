@@ -18,7 +18,7 @@ export default async function PremisesPage({}: {
   const actionResponse = await premisesPromises;
 
   if (actionResponse.status != 200 || actionResponse.data === undefined) {
-    console.log(actionResponse);
+    console.log('Not implemented', actionResponse);
     return <Card>No premises!</Card>;
   }
 

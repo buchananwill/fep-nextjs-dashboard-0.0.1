@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { apiBaseUrl } from '../../api/actions/data-fetching-functions';
+import { API_BASE_URL } from '../../api/main';
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
@@ -7,7 +7,7 @@ export const GET = async (request: NextRequest) => {
   const scheduleId = searchParams.get('scheduleId');
 
   if (scheduleId && studentId) {
-    const fetchURL = `${apiBaseUrl}/get-lesson-enrollments/${scheduleId}?studentId=${studentId}`;
+    const fetchURL = `${API_BASE_URL}/get-lesson-enrollments/${scheduleId}?studentId=${studentId}`;
     try {
       const response = await fetch(fetchURL, {
         next: { revalidate: 120 }
@@ -28,7 +28,7 @@ export const PUT = async (request: NextRequest) => {
 
   // const swapObject = [periodId1, periodId2, scheduleId];
 
-  const fetchURL = `${apiBaseUrl}/swap-periods-in-schedule`;
+  const fetchURL = `${API_BASE_URL}/swap-periods-in-schedule`;
 
   try {
     const response = await fetch(fetchURL, {

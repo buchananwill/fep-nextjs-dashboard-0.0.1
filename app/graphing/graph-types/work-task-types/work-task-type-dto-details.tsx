@@ -74,8 +74,6 @@ export default function WorkTaskTypeDtoDetails({
   const { domainMap, levelMap } = useServiceCategoryContext();
   const editListenerKey = `${WorkTaskTypeDtoDetailsListenerKey}-${id}`;
 
-  console.log(levelMap);
-
   const { incrementSimVersion, nodeListRef, linkListRef } =
     useDirectSimRefEditsDispatch<WorkTaskTypeDto>(editListenerKey);
 
@@ -87,10 +85,9 @@ export default function WorkTaskTypeDtoDetails({
     find.data.knowledgeDomainId = updatedDomain.id;
     find.data.knowledgeDomainName = updatedDomain.name;
     incrementSimVersion();
-    console.log('New id:', id);
   };
   const handleKnowledgeLevelChange = (id: string) => {
-    console.log('New id:', id);
+    console.log('(Not implemented) New id:', id);
   };
 
   return (

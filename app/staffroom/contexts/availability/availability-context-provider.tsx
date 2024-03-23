@@ -29,13 +29,13 @@ export default function AvailabilityContextProvider({
 
   const confirmChanges = () => {
     const { providerAvailability } = reducerState;
-    console.log('sending update...');
+
     updateAvailabilities(providerAvailability).then((r) => {
       if (r.status >= 200 && r.status <= 300) {
-        console.log('Success!');
+        console.log('(Success!');
         dispatch({ type: 'clearUnsavedAvailability' });
       } else {
-        console.log('Failure...');
+        console.log('(Not implemented) Failure...');
       }
     });
     closeModal();

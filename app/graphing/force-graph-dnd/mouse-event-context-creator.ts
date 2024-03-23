@@ -170,7 +170,7 @@ export function useMouseMoveSvgDraggable(
     const trackMouseMove = (event: MouseEvent) => {
       mousePositionRef.current = { x: event.clientX, y: event.clientY };
     };
-    console.log('Re-triggering this effect');
+
     window.addEventListener('mousemove', trackMouseMove);
 
     return () => {
@@ -218,7 +218,6 @@ export function useMouseMoveSvgDraggable(
 
     const elapsed = Date.now() - lastRenderTimer.current;
     if (elapsed >= 25) {
-      // console.log('Since last render:', elapsed);
       lastRenderTimer.current = Date.now();
       const { x, y } = displacementRef;
       const newX = x + e.clientX * svgScale;

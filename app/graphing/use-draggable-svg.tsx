@@ -141,7 +141,6 @@ export function useDraggableSvgElement(uniqueElementKey: string) {
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
-    console.log('Mouse up!', e);
     setMouseDown({ contextKey: svgMouseDownKey, value: false });
     setIsDragging({ contextKey: svgDraggingKey, value: false });
     dispatchUpdate({ contextKey: 'svgDragKey', value: '' });

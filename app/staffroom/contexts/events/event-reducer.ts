@@ -1,9 +1,7 @@
 import { EventsContextObject } from './event-context';
 import { NormalizedInterval } from 'date-fns/types';
 import { produce } from 'immer';
-import { CalendarEvent } from '../../../api/zod-mods';
-import { some } from 'd3-array';
-import { patchEvent } from '../../../actions/calendars';
+import { EventDto } from '../../../api/dtos/EventDtoSchema';
 
 export interface SetEventInterval {
   type: 'setEventInterval';
@@ -14,12 +12,12 @@ export interface SetEventInterval {
 
 export interface SetEvent {
   type: 'setEvent';
-  event: CalendarEvent;
+  event: EventDto;
 }
 
 export interface AddUnSyncedEvent {
   type: 'addUnSyncedEvent';
-  event: CalendarEvent;
+  event: EventDto;
 }
 
 export interface ClearUnSyncedEvents {
@@ -86,14 +84,13 @@ export function EventReducer(state: EventsContextObject, action: EventAction) {
       });
     }
     case 'clearUnSyncedEvents': {
-      console.log('Clearing unSyncedEvents');
       return produce(state, (draft) => {
         draft.unSyncedEvents = [];
       });
     }
     case 'addUnSyncedEvent': {
       const { event } = action;
-      console.log('What have we here?', state, state.unSyncedEvents);
+
       return produce(state, (draft) => {
         if (!state.unSyncedEvents.some((value) => event.id == value)) {
           draft.unSyncedEvents.push(event.id);

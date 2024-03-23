@@ -30,7 +30,6 @@ export function useSelectiveContextManager<T>(
     const listeners = triggerUpdateRef.current[contextKey];
 
     if (!listeners) {
-      console.log('about to log an error:', listeners);
       throw new Error(
         `No listeners found for this context: ${contextKey} with value ${value}`
       );

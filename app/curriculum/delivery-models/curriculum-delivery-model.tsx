@@ -146,7 +146,7 @@ export function AdjustAllocation({
       type: 'update',
       payload: { key: modelId, data: updatedSchema }
     });
-    console.log(updatedSchema, updatedDevAlloc);
+
     setUnsaved(true);
   };
 

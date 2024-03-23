@@ -47,7 +47,6 @@ export function NodeComponent<T extends HasNumberIdDto>({
 
   const handleClick = enableRunnable
     ? () => {
-        console.log('node:', updatedNodeData);
         dispatch({ type: 'toggleSelect', payload: updatedNodeData.id });
       }
     : () => {};
