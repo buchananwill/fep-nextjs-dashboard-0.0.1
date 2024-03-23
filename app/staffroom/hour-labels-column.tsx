@@ -1,6 +1,5 @@
-import TimeColumn from './calendar-view/columns/time-column';
+import TimeColumn from '../components/calendar-view/columns/time-column';
 import HourLabel from './hour-label';
-import React from 'react';
 
 export function HourLabelsColumn() {
   return (

@@ -1,10 +1,7 @@
 'use client';
 import TimeColumn, { useCalendarScaledZoom } from './time-column';
 import React, { useContext } from 'react';
-import {
-  CurryPredicate,
-  Predicate
-} from '../../../components/filters/filter-types';
+import { CurryPredicate, Predicate } from '../../filters/filter-types';
 import { Calendarable, TimespanBlock } from '../blocks/timespan-block';
 
 import DateColumnContextProvider from './date-column-context-provider';

@@ -9,8 +9,8 @@ import { enableMapSet, produce } from 'immer';
 
 import timetablesReducer, { TimetablesState } from './timetables-reducers';
 import {
-  SubjectColorCoding,
-  SubjectColorCodingDispatch,
+  ColorCoding,
+  ColorCodingDispatch,
   SubjectColorCodingState
 } from '../subject-color-coding/context';
 import { LessonCycle } from '../api/state-types';
@@ -32,8 +32,8 @@ export default function TimetablesContextProvider({
     initialState
   );
 
-  const subjectColorCodingState = useContext(SubjectColorCoding);
-  const { setSubjectColorCoding } = useContext(SubjectColorCodingDispatch);
+  const subjectColorCodingState = useContext(ColorCoding);
+  const { setSubjectColorCoding } = useContext(ColorCodingDispatch);
 
   enableMapSet();
 

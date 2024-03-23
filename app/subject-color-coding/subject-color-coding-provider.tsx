@@ -2,8 +2,8 @@
 import React, { ReactNode, useContext, useState } from 'react';
 import {
   ModalColorSelectContext,
-  SubjectColorCoding,
-  SubjectColorCodingDispatch
+  ColorCoding,
+  ColorCodingDispatch
 } from './context';
 import { useColorState } from '../components/color-selector';
 import {
@@ -22,7 +22,7 @@ export default function SubjectColorCodingProvider({
 }: {
   children: ReactNode;
 }) {
-  const context = useContext(SubjectColorCoding);
+  const context = useContext(ColorCoding);
   const [lessonText, setLessonText] = useState<string>('');
 
   const [subjectColorCoding, setSubjectColorCoding] = useState(context);
@@ -43,13 +43,13 @@ export default function SubjectColorCodingProvider({
   };
 
   return (
-    <SubjectColorCoding.Provider value={subjectColorCoding}>
-      <SubjectColorCodingDispatch.Provider
+    <ColorCoding.Provider value={subjectColorCoding}>
+      <ColorCodingDispatch.Provider
         value={{ setSubjectColorCoding: setSubjectColorCoding }}
       >
         <ModalColorSelectContext.Provider
           value={{
-            setLessonText: setLessonText,
+            setModalText: setLessonText,
             openModal: openModal,
             ...modalInitialState
           }}
@@ -65,7 +65,7 @@ export default function SubjectColorCodingProvider({
             {lessonText}
           </ColorSelectModal>
         </ModalColorSelectContext.Provider>
-      </SubjectColorCodingDispatch.Provider>
-    </SubjectColorCoding.Provider>
+      </ColorCodingDispatch.Provider>
+    </ColorCoding.Provider>
   );
 }

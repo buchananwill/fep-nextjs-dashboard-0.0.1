@@ -1,6 +1,7 @@
 import { HueOption } from './hue-selector';
 import { LightnessOption } from './lightness-selector';
 import { createContext, useState } from 'react';
+import { NullHue } from '../contexts/color/color-context';
 
 export interface ColorState {
   hue: HueOption;
@@ -36,12 +37,12 @@ export const LIGHTNESS_OPTIONS: LightnessOption[] = [
 ];
 
 export const defaultColorState = {
-  hue: HUE_OPTIONS[0],
+  hue: NullHue,
   lightness: LIGHTNESS_OPTIONS[1]
 };
 
 export const ColorContext = createContext<ColorState>({
-  hue: HUE_OPTIONS[0],
+  hue: NullHue,
   setHue: (value) => null,
   lightness: LIGHTNESS_OPTIONS[0],
   setLightness: (value) => null

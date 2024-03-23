@@ -28,19 +28,6 @@ export async function createTeacher(
 export async function updateTeachers(
   teacherDtoList: ProviderRoleDto[]
 ): ActionResponsePromise<ProviderRoleDto[]> {
-  // console.log('sending through to backend');
-  // try {
-  //   const teacherResponses = await Promise.all(
-  //     teacherDtoList.map((t) => patchEntityList([t], teachersUrl))
-  //   );
-  //   const combinedArray: ProviderRoleDto[] = teacherResponses
-  //     .map((r) => r.data)
-  //     .filter(isNotUndefined)
-  //     .reduce((prev, curr, index, filteredArray) => [...prev, ...curr], []);
-  //   return successResponse(combinedArray);
-  // } catch (e) {
-  //   return errorResponse(`${e?.toString()}`);
-  // }
   return patchEntityList(teacherDtoList, teachersUrl);
 }
 

@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { AvailabilityDispatchContext } from '../../contexts/availability/availability-context';
+import { AvailabilityDispatchContext } from '../../../staffroom/contexts/availability/availability-context';
 import { BarsArrowDownIcon } from '@heroicons/react/20/solid';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
-import { getStartAndEndDatesAsEpochal } from '../../contexts/availability/get-start-and-end-dates-as-epochal';
+import { getStartAndEndDatesAsEpochal } from '../../../staffroom/contexts/availability/get-start-and-end-dates-as-epochal';
 
 export default function AvailabilityBlock({
   providerAvailability

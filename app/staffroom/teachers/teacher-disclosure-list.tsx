@@ -44,6 +44,13 @@ function ProviderRoleLabel({
 }) {
   const colorCodingState = useContext(ColorCoding);
   const colorCodingStateElement = colorCodingState[partyName];
+  console.log(
+    'color coding:',
+    colorCodingState,
+    'label: ',
+    partyName,
+    colorCodingStateElement
+  );
 
   const { setHslaColorState } = useContext(HslColorDispatchContext);
   const hslaColorState = useContext(HslColorContext);
@@ -75,6 +82,8 @@ function ProviderRoleLabel({
     });
     setHslaColorState(colorState);
   };
+
+  console.log(hslaColorState);
 
   return (
     <Tooltip>
@@ -131,7 +140,7 @@ function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
       </TooltipTrigger>
 
       <StandardTooltipContent>
-        Click to show mechanic in main area.
+        Click to show teacher in main area.
       </StandardTooltipContent>
     </Tooltip>
   );

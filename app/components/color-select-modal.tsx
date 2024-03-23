@@ -1,8 +1,13 @@
-import React, { Fragment, ReactNode, useContext, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+'use client';
+
+import { Fragment, ReactNode, useContext, useEffect, useState } from 'react';
+import { ColorState } from '../contexts/color/color-context';
+import {
+  ColorCoding,
+  ModalColorSelectContext
+} from '../contexts/color-coding/context';
 import ColorSelector, { useColorState } from './color-selector';
-import { ColorState } from './color-context';
-import { ModalColorSelectContext } from '../subject-color-coding/context';
+import { Dialog, Transition } from '@headlessui/react';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
@@ -19,20 +24,32 @@ export function useModal() {
 }
 
 export function ColorSelectModal({
-  onCancel,
-  onClose,
-  onConfirm,
   show,
   children,
-  initialState
+  initialState: { hue, lightness }
 }: {
   show: boolean;
   initialState: ColorState;
-  onClose: () => void;
-  onConfirm: (colorState: ColorState) => void;
-  onCancel: () => void;
+
   children?: ReactNode;
 }) {
+  const { onCancel, onClose, onConfirm, stringKey } = useContext(
+    ModalColorSelectContext
+  );
+
+  const colorCodingState = useContext(ColorCoding);
+
+  const localColorState = useColorState({ hue, lightness });
+  const { setHue, setLightness } = localColorState;
+
+  useEffect(() => {
+    const contextElement = colorCodingState[stringKey];
+    if (contextElement) {
+      setHue(contextElement.hue);
+      setLightness(contextElement.lightness);
+    }
+  }, [stringKey, setHue, setLightness, colorCodingState]);
+
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -64,11 +81,11 @@ export function ColorSelectModal({
                   as="h3"
                   className="max-w-fit text-lg font-medium leading-6 text-gray-900"
                 >
-                  Select Color for {children}
+                  Select Color for {stringKey}
                 </Dialog.Title>
                 <div className="flex mt-2 justify-center">
                   <div className="text-sm text-gray-500">
-                    <ColorSelector colorState={initialState}></ColorSelector>
+                    <ColorSelector colorState={localColorState}></ColorSelector>
                   </div>
                 </div>
 
@@ -78,7 +95,7 @@ export function ColorSelectModal({
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     onClick={() => {
-                      onConfirm(initialState);
+                      onConfirm(localColorState);
                       onClose();
                     }}
                   >

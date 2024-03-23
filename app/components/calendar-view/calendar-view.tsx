@@ -2,12 +2,13 @@
 
 import { MONTHS } from './range/calendar-range-reducers';
 import { DaySubColumnLabel } from './day-sub-column-label';
-import { HourLabelsColumn } from '../hour-labels-column';
+
 import React, { ReactNode, useContext, useEffect, useRef } from 'react';
 
 import { LongIdStringNameTuple } from '../../api/dtos/LongIdStringNameTupleSchema';
 import { createDateMatcher } from './columns/day-column';
 import { DayOfWeekArray } from '../../api/date-and-time';
+import { HourLabelsColumn } from '../../staffroom/hour-labels-column';
 
 export function makeMondayZero(day: number) {
   return (day + 6) % 7;

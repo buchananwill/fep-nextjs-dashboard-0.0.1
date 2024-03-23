@@ -7,21 +7,18 @@ import {
   AvailabilityContext,
   AvailabilityDispatchContext
 } from './availability-context';
-import AvailabilityBlock from '../../calendar-view/blocks/availability-block';
-import { Calendarable } from '../../calendar-view/blocks/timespan-block';
-
-import CalendarRangeContextProvider from '../../calendar-view/range/calendar-range-context-provider';
 
 import { Transition } from '@headlessui/react';
 import { DndContextProvider } from '../../../components/dnd-context-provider';
 import { DragEndEvent } from '@dnd-kit/core';
 
 import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';
-import {
-  createRangeStartingEpochalTime,
-  createRangeStartingMondayThisWeek
-} from '../../calendar-view/range/create-range-starting-monday-this-week';
+
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
+import { createRangeStartingEpochalTime } from '../../../components/calendar-view/range/create-range-starting-monday-this-week';
+import { Calendarable } from '../../../components/calendar-view/blocks/timespan-block';
+import AvailabilityBlock from '../../../components/calendar-view/blocks/availability-block';
+import CalendarRangeContextProvider from '../../../components/calendar-view/range/calendar-range-context-provider';
 
 export function AvailabilityTable() {
   enableMapSet();

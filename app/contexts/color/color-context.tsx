@@ -10,8 +10,9 @@ export interface ColorState {
   setLightness: (value: LightnessOption) => void;
 }
 
+export const NullHue: HueOption = { name: 'Gray', id: 'gray' } as const;
+
 export const HUE_OPTIONS: HueOption[] = [
-  { name: 'Gray', id: 'gray' },
   { name: 'Red', id: 'red' },
   { name: 'Orange', id: 'orange' },
   { name: 'Amber', id: 'amber' },
@@ -75,12 +76,12 @@ export const BASE_HSL: { [key: string]: HSLA } = {
 };
 
 export const defaultColorState = {
-  hue: HUE_OPTIONS[0],
+  hue: NullHue,
   lightness: LIGHTNESS_OPTIONS[1]
 };
 
 export const ColorContext = createContext<ColorState>({
-  hue: HUE_OPTIONS[0],
+  hue: NullHue,
   setHue: (value) => null,
   lightness: LIGHTNESS_OPTIONS[0],
   setLightness: (value) => null

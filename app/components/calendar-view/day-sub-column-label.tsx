@@ -4,10 +4,10 @@ import {
   ModalColorSelectContext
 } from '../../contexts/color-coding/context';
 import React, { useContext } from 'react';
-import { HoverWidth } from '../../components/hover-width/hover-width';
+import { HoverWidth } from '../hover-width/hover-width';
 import { BASE_HSL } from '../../contexts/color/color-context';
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
+import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 import { useCalendarScaledZoom } from './columns/time-column';
 
 export function DaySubColumnLabel({ labelText }: { labelText: string }) {

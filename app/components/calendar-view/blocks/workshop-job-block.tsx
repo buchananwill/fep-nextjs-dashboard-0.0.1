@@ -1,15 +1,16 @@
-import WorkshopJobModal from '../../workshop-job-modal/workshop-job-modal';
 import { Text } from '@tremor/react';
 import React, { useContext, useEffect } from 'react';
 import { ColorCoding } from '../../../contexts/color-coding/context';
 
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { EventsDispatch } from '../../contexts/events/event-context';
-import { TimeDeltaMonitor } from '../../page';
+
 import { Z_ContextDispatch } from '../../../contexts/z-context/z-context';
 import { EventDto } from '../../../api/dtos/EventDtoSchema';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
+import { EventsDispatch } from '../../../staffroom/contexts/events/event-context';
+import { TimeDeltaMonitor } from '../../../staffroom/page';
+import WorkshopJobModal from '../../../staffroom/workshop-job-modal/workshop-job-modal';
 
 export function WorkshopJobBlock({
   workshopJob,

@@ -10,12 +10,7 @@ import {
   ChevronDownIcon
 } from '@heroicons/react/20/solid';
 import { ArithmeticByDays, MONTHS, SetRange } from './calendar-range-reducers';
-import {
-  DatePicker,
-  DateRangePicker,
-  DateRangePickerValue,
-  Title
-} from '@tremor/react';
+import { DateRangePicker, DateRangePickerValue, Title } from '@tremor/react';
 import { interval } from 'date-fns/interval';
 import { Disclosure } from '@headlessui/react';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
@@ -24,9 +19,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../../../components/tooltips/tooltip';
-import TooltipsContext from '../../../components/tooltips/tooltips-context';
-import { StandardTooltipContent } from '../../../components/tooltips/standard-tooltip-content';
+} from '../../tooltips/tooltip';
+import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
 type TooltipOptions =
   | 'minusWeek'
   | 'minusDay'

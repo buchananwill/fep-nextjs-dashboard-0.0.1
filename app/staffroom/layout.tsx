@@ -16,9 +16,10 @@ import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
 import { getAvailabilities } from '../api/actions/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
 import { getCycleModel } from '../api/actions/cycle-model';
-import CalendarRangeContextProvider from './calendar-view/range/calendar-range-context-provider';
+
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
+import CalendarRangeContextProvider from '../components/calendar-view/range/calendar-range-context-provider';
 
 export const dynamic = 'force-dynamic';
 

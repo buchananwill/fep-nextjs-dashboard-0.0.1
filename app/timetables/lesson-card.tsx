@@ -8,8 +8,8 @@ import InteractiveTableCard from '../components/interactive-table-card';
 import { Text } from '@tremor/react';
 import {
   ModalColorSelectContext,
-  SubjectColorCoding,
-  SubjectColorCodingDispatch
+  ColorCoding,
+  ColorCodingDispatch
 } from '../subject-color-coding/context';
 import { current, produce } from 'immer';
 import { useColorState } from '../components/color-selector';
@@ -86,10 +86,10 @@ export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
   const [lesson, setLesson] = useState(freePeriod);
   const [lessonText, setLessonText] = useState('Free');
   const [textColor, setTextColor] = useState(defaultColorState);
-  const subjectColorCoding = useContext(SubjectColorCoding);
-  const { setSubjectColorCoding } = useContext(SubjectColorCodingDispatch);
+  const subjectColorCoding = useContext(ColorCoding);
+  const { setSubjectColorCoding } = useContext(ColorCodingDispatch);
   const {
-    setLessonText: setModalLessonText,
+    setModalText: setModalLessonText,
     openModal,
     setHue,
     setLightness
