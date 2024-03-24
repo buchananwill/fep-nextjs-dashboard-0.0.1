@@ -1,16 +1,9 @@
-import React, {
-  MutableRefObject,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   LatestValueRef,
   UpdateAction,
   UpdateRefInterface
 } from './selective-context-manager';
-import { SchemaBundleKeyPrefix } from '../../curriculum/delivery-models/[yearGroup]/bundles/bundle-editor';
 
 export interface UseSelectiveContextListenerReturn<T> {
   currentState: T;
@@ -86,14 +79,13 @@ export function useSelectiveContextDispatch<T>(
   >,
   dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>
 ) {
-  const { currentState, latestRef, updateTriggers } =
-    useSelectiveContextListener(
-      contextKey,
-      listenerKey,
-      fallBackValue,
-      updateRefContext,
-      latestValueRefContext
-    );
+  const { currentState } = useSelectiveContextListener(
+    contextKey,
+    listenerKey,
+    fallBackValue,
+    updateRefContext,
+    latestValueRefContext
+  );
 
   const dispatch = useContext(dispatchUpdateContext);
 
