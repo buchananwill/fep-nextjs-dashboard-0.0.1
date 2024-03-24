@@ -72,6 +72,7 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
             className="z-20 py-1"
             isPinned={id == userRoleId}
             setPinned={() => handleRadioClick(id)}
+            id={`student:selected:${id}`}
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>
@@ -91,6 +92,7 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
             className="z-20 py-1"
             isPinned={pinnedStudents.has(id)}
             setPinned={() => handlePinnedStudent(id)}
+            id={`student:pinned:${id}`}
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>
@@ -108,6 +110,7 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
             className={`mr-1 py-1`}
             isPinned={false}
             setPinned={() => handleMortarBoardClick(id)}
+            id={`student:highlight-courses:${id}`}
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent>

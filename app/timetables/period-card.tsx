@@ -176,6 +176,7 @@ export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({
         className={`z-20 ${rotationClass}`}
         isPinned={updatePending}
         setPinned={handleSwapClick}
+        id={`lesson-cycle:swapping:${id}`}
       ></FillableButton>
     </InteractiveTableCard>
   );

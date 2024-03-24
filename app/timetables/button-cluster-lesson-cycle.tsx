@@ -45,6 +45,7 @@ const ButtonClusterLessonCycle: ButtonClusterTransformer<LessonCycle> = ({
         className="z-20"
         isPinned={lessonCycleId == id}
         setPinned={() => handleRadioClick(id)}
+        id={`lesson-cycle:selected:${id}`}
       ></FillableButton>
 
       {children}
@@ -53,12 +54,14 @@ const ButtonClusterLessonCycle: ButtonClusterTransformer<LessonCycle> = ({
         className="z-20 px-1"
         isPinned={pinnedLessonCycles.has(id)}
         setPinned={() => handlePinnedLessonCycle(id)}
+        id={`lesson-cycle:pinned:${id}`}
       ></FillableButton>
       <FillableButton
         pinIcon={PinIcons.mortarBoard}
         className={`mr-1`}
         isPinned={highlightedSubjects.has(subject)}
         setPinned={() => handleMortarBoardClick(subject)}
+        id={`lesson-cycle:highlight-matching:${id}`}
       ></FillableButton>
     </div>
   );

@@ -93,6 +93,7 @@ export function SubjectFilters({ lessonCycleList }: Props) {
           className={''}
           isPinned={false}
           setPinned={handleResetMortarBoards}
+          id={`courses:clear-highlighted`}
         ></FillableButton>
       </div>
       {/*<CommitChanges>Commit Changes</CommitChanges>*/}

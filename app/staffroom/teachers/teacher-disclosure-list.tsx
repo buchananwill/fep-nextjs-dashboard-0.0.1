@@ -126,6 +126,7 @@ function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
             pinIcon={PinIcons.arrowLeftCircle}
             isPinned={isPinned}
             setPinned={handlePinClick}
+            id={`teacher:${id}`}
           />
         </div>
       </TooltipTrigger>

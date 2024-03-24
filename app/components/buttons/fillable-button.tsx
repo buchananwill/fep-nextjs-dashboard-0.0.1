@@ -29,12 +29,14 @@ export const FillableButton = ({
   pinIcon,
   isPinned,
   setPinned,
-  className
+  className,
+  id
 }: {
   pinIcon: PinIcons;
   className?: string;
   isPinned: boolean;
   setPinned: Function;
+  id: string;
 }) => {
   return (
     <>
@@ -45,6 +47,7 @@ export const FillableButton = ({
       >
         <input
           type="checkbox"
+          id={id}
           className={`cursor-pointer z-20`}
           checked={isPinned}
           onChange={() => setPinned()}

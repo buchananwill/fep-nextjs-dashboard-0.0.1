@@ -180,6 +180,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
             className={`${highlightText} mr-1 align-middle py-2`}
             isPinned={highlightText != ''}
             setPinned={() => handleMortarBoardClick(courseId)}
+            id={`course:highlight-matching:${courseId}`}
           ></FillableButton>
         </TooltipTrigger>
         <TooltipContent className="">

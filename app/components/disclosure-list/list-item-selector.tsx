@@ -48,6 +48,7 @@ export default function ListItemSelector({
             pinIcon={PinIcons.arrowLeftCircle}
             isPinned={isPinned}
             setPinned={handlePinClick}
+            id={`${itemDescriptor}:${itemId}`}
           />
         </div>
       </TooltipTrigger>
