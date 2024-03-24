@@ -16,7 +16,6 @@ export default function SkillsPage({}: {}) {
   const { providers, workTaskTypes } = useContext(ProviderContext);
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
 
-  const { triggerModal } = useContext(SkillEditContext);
   const firstProvider = providers[0];
 
   if (!firstProvider) {
@@ -41,7 +40,7 @@ export default function SkillsPage({}: {}) {
       labelAccessor={providerRoleNameAccessor}
       ratingListAccessor={workTaskCompetencyDtoListAccessor}
       ratingCategories={workTaskTypes}
-      triggerModal={triggerModal}
+      ratingEditContext={SkillEditContext}
       ratingCategoryDescriptor={'Skill'}
     />
   );

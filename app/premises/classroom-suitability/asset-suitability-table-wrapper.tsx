@@ -70,10 +70,6 @@ export function AssetSuitabilityTableWrapper({
     workTaskTypeMap
   );
 
-  console.log('Rendering table wrapper.');
-
-  const { triggerModal } = useContext(AssetSuitabilityEditContext);
-
   return (
     <RatingTable
       ratingValueAccessor={assetRoleWorkTaskSuitabilityRatingAccessor}
@@ -83,7 +79,7 @@ export function AssetSuitabilityTableWrapper({
       labelAccessor={assetNameAccessor}
       ratingListAccessor={assetRoleWorkTaskSuitabilityDtoListAccessor}
       ratingCategories={workTaskTypeDtos}
-      triggerModal={triggerModal}
+      ratingEditContext={AssetSuitabilityEditContext}
       ratingCategoryDescriptor={'Lesson Type'}
     />
   );

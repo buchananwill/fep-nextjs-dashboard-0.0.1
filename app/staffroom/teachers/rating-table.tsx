@@ -1,10 +1,9 @@
-import { HUE_OPTIONS } from '../../contexts/color/color-context';
-
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
+import { RatingTableCell } from './rating-table-cell';
+import { Context } from 'react';
+import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
 
 export interface AccessorFunction<O, P> {
   (object: O): P;
@@ -30,8 +29,8 @@ export interface RatingTableProps<R, E, C> extends RatingAccessorProps<R> {
   labelAccessor: NameAccessor<E>;
   ratingListAccessor: RatingListAccessor<E, R>;
   ratingCategories: C[];
-  triggerModal: ModalTriggerFunction<R, E>;
   ratingCategoryDescriptor: React.ReactNode;
+  ratingEditContext: Context<RatingEditContext<R, E>>;
 }
 
 export default function RatingTable<
@@ -46,9 +45,11 @@ export default function RatingTable<
   labelAccessor,
   ratingListAccessor,
   ratingCategories,
-  triggerModal,
-  ratingCategoryDescriptor
+  ratingCategoryDescriptor,
+  ratingEditContext
 }: RatingTableProps<R, E, C>) {
+  console.log('rendering rating table');
+
   return (
     <div className="m-2 p-2 border-2 rounded-lg">
       <table className="table-fixed ">
@@ -101,48 +102,20 @@ export default function RatingTable<
                     (cat) => cat.id === ratingCategoryIdAccessor(rating)
                   )
                 )
-                .map((skill) => (
-                  <RatingTableCell key={skill.id}></RatingTableCell>
+                .map((rating) => (
+                  <RatingTableCell
+                    key={rating.id}
+                    ratedElement={ratedElement}
+                    rating={rating}
+                    ratingCategoryLabelAccessor={ratingCategoryLabelAccessor}
+                    ratingEditContext={ratingEditContext}
+                    ratingValueAccessor={ratingValueAccessor}
+                  ></RatingTableCell>
                 ))}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
-}
-
-interface RatingTableCellProps<R, E> {
-  rating: R;
-  ratingValueAccessor: RatingAccessor<R>;
-  ratedElement: E;
-  ratingCategoryLabelAccessor;
-}
-
-function RatingTableCell<R, E>({
-  ratingValueAccessor,
-  rating,
-  ratedElement,
-  triggerModal
-}: RatingTableCellProps<R, E>) {
-  return (
-    <td
-      className={`border bg-${
-        HUE_OPTIONS[ratingValueAccessor(rating)].id
-      }-400 cursor-pointer`}
-      onClick={() => {
-        triggerModal(rating, ratedElement);
-      }}
-    >
-      <Tooltip placement={'bottom'}>
-        <TooltipTrigger>
-          <div className={'px-2'}>{ratingValueAccessor(rating)}</div>
-        </TooltipTrigger>
-
-        <StandardTooltipContent>
-          <strong>{ratingCategoryLabelAccessor(rating)}</strong>: click to edit.
-        </StandardTooltipContent>
-      </Tooltip>
-    </td>
   );
 }

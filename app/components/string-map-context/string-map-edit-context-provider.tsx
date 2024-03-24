@@ -23,6 +23,7 @@ import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-co
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { createContext } from 'preact/compat';
 import { AccessorFunction } from '../../staffroom/teachers/rating-table';
+import { useModal } from '../confirm-action-modal';
 
 export interface StringMapEditContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
@@ -40,7 +41,6 @@ export function StringMapEditContextProvider<T>({
   commitServerAction,
   unsavedChangesEntityKey,
   dispatchContext,
-  entityTypeCommitKey,
   mapContext,
   providerListenerKey,
   children,
@@ -50,12 +50,7 @@ export function StringMapEditContextProvider<T>({
   const MapProvider = mapContext.Provider;
   const EntityReducer = StringMapReducer<T>;
   const [currentModels, dispatch] = useReducer(EntityReducer, initialEntityMap);
-  const { currentState: modalOpen, dispatchUpdate } =
-    useSelectiveContextControllerBoolean(
-      entityTypeCommitKey,
-      providerListenerKey,
-      false
-    );
+
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
       unsavedChangesEntityKey,
@@ -63,11 +58,7 @@ export function StringMapEditContextProvider<T>({
       false
     );
 
-  const handleClose = () => {
-    dispatchUpdate({ contextKey: entityTypeCommitKey, value: false });
-  };
-  const openModal = () =>
-    dispatchUpdate({ contextKey: entityTypeCommitKey, value: true });
+  const { isOpen, closeModal, openModal } = useModal();
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;
@@ -88,14 +79,14 @@ export function StringMapEditContextProvider<T>({
         <UnsavedChangesModal
           unsavedChanges={unsavedChanges}
           handleOpen={() => openModal()}
-          show={modalOpen}
-          onClose={handleClose}
+          show={isOpen}
+          onClose={closeModal}
           onConfirm={() => {
-            handleClose();
+            closeModal();
             handleCommit();
           }}
           onCancel={() => {
-            handleClose();
+            closeModal();
           }}
         >
           <p>Commit updated models to the database?</p>

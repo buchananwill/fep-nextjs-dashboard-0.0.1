@@ -4,7 +4,7 @@ import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { AssetDto } from '../../../api/dtos/AssetDtoSchema';
 
-interface RatingEditContext<R, E> {
+export interface RatingEditContext<R, E> {
   triggerModal: (skill: R, providerRoleDto: E) => void;
 }
 
