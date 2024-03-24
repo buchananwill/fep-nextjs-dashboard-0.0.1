@@ -1,5 +1,5 @@
 import {
-  RatingAccessor,
+  RatingValueAccessor,
   RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor
@@ -8,7 +8,7 @@ import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSc
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 
-export const workTaskCompetencyRatingAccessor: RatingAccessor<
+export const workTaskCompetencyRatingAccessor: RatingValueAccessor<
   WorkTaskCompetencyDto
 > = (wtcDto) => wtcDto.competencyRating;
 export const workTaskCompetencyLabelAccessor: RatingCategoryLabelAccessor<
@@ -24,3 +24,11 @@ export const workTaskCompetencyDtoListAccessor: RatingListAccessor<
   ProviderRoleDto,
   WorkTaskCompetencyDto
 > = (pRole) => pRole.workTaskCompetencyDtoList;
+
+export const SkillEditAccessorFunctions = {
+  elementLabelAccessor: providerRoleNameAccessor,
+  ratingListAccessor: workTaskCompetencyDtoListAccessor,
+  ratingCategoryLabelAccessor: workTaskCompetencyLabelAccessor,
+  ratingValueAccessor: workTaskCompetencyRatingAccessor,
+  ratingCategoryIdAccessor: workTaskCompetencyIdAccessor
+};

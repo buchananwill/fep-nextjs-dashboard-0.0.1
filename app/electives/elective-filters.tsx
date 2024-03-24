@@ -139,6 +139,7 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
               className={''}
               isPinned={false}
               setPinned={handleResetMortarBoards}
+              id={`reset-highlighted-mortar-boards`}
             ></FillableButton>
           </TooltipTrigger>
           <TooltipContent>

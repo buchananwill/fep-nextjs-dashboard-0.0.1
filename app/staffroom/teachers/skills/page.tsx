@@ -35,8 +35,6 @@ export default function SkillsPage({}: {}) {
       ratingCategoryLabelAccessor={workTaskCompetencyLabelAccessor}
       ratingCategoryIdAccessor={workTaskCompetencyIdAccessor}
       ratedElements={filteredProviderRoles}
-      labelAccessor={providerRoleNameAccessor}
-      ratingListAccessor={workTaskCompetencyDtoListAccessor}
       ratingCategories={workTaskTypes}
       ratingEditContext={SkillEditContext}
       ratingCategoryDescriptor={'Skill'}

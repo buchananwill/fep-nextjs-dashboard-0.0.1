@@ -1,8 +1,7 @@
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
-import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { RatingTableCell } from './rating-table-cell';
-import { Context } from 'react';
+import { Context, useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
 import {
   RatingTableHeader,
@@ -14,14 +13,14 @@ export interface AccessorFunction<O, P> {
   (object: O): P;
 }
 
-export type RatingAccessor<T> = AccessorFunction<T, number>;
+export type RatingValueAccessor<T> = AccessorFunction<T, number>;
 export type RatingListAccessor<E, R> = AccessorFunction<E, R[]>;
 export type RatingCategoryLabelAccessor<R> = AccessorFunction<R, string>;
 export type RatingCategoryIdAccessor<R> = AccessorFunction<R, number>;
 
 export interface RatingAccessorProps<R> {
   ratingCategoryLabelAccessor: RatingCategoryLabelAccessor<R>;
-  ratingValueAccessor: RatingAccessor<R>;
+  ratingValueAccessor: RatingValueAccessor<R>;
   ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>;
 }
 
@@ -31,8 +30,6 @@ export interface ModalTriggerFunction<R, E> {
 
 export interface RatingTableProps<R, E, C> extends RatingAccessorProps<R> {
   ratedElements: E[];
-  labelAccessor: NameAccessor<E>;
-  ratingListAccessor: RatingListAccessor<E, R>;
   ratingCategories: C[];
   ratingCategoryDescriptor: React.ReactNode;
   ratingEditContext: Context<RatingEditContext<R, E>>;
@@ -43,17 +40,14 @@ export default function RatingTable<
   E extends HasNumberIdDto,
   C extends HasNumberIdDto & HasNameDto
 >({
-  ratingValueAccessor,
-  ratingCategoryLabelAccessor,
   ratingCategoryIdAccessor,
   ratedElements,
-  labelAccessor,
-  ratingListAccessor,
   ratingCategories,
   ratingCategoryDescriptor,
   ratingEditContext
 }: RatingTableProps<R, E, C>) {
-  console.log('rendering rating table');
+  const { elementLabelAccessor, ratingListAccessor } =
+    useContext(ratingEditContext);
 
   return (
     <RatingTableMain>
@@ -67,7 +61,9 @@ export default function RatingTable<
       <tbody>
         {ratedElements.map((ratedElement) => (
           <tr key={ratedElement.id} className="">
-            <td className="text-sm px-2">{labelAccessor(ratedElement)}</td>
+            <td className="text-sm px-2">
+              {elementLabelAccessor(ratedElement)}
+            </td>
             {ratingListAccessor(ratedElement)
               .filter((rating) =>
                 ratingCategories.some(
@@ -79,9 +75,7 @@ export default function RatingTable<
                   key={rating.id}
                   ratedElement={ratedElement}
                   rating={rating}
-                  ratingCategoryLabelAccessor={ratingCategoryLabelAccessor}
                   ratingEditContext={ratingEditContext}
-                  ratingValueAccessor={ratingValueAccessor}
                 ></RatingTableCell>
               ))}
           </tr>

@@ -14,7 +14,7 @@ import {
   ColorCoding,
   ColorCodingDispatch
 } from '../../../contexts/color-coding/context';
-import { SkillEditContext } from './rating-edit-context';
+import { RatingEditContext, SkillEditContext } from './rating-edit-context';
 
 import ProviderRoleSelectionContextProvider from './provider-role-selection-context-provider';
 import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
@@ -26,6 +26,8 @@ import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits'
 import { RatingEditModal } from './rating-edit-modal';
 import {
   providerRoleNameAccessor,
+  SkillEditAccessorFunctions,
+  workTaskCompetencyDtoListAccessor,
   workTaskCompetencyLabelAccessor,
   workTaskCompetencyRatingAccessor
 } from '../../teachers/skills/rating-table-accessor-functions';
@@ -34,6 +36,7 @@ import {
   UnsavedChangesProps
 } from '../../../components/unsaved-changes-modal';
 import { useRatingEditModal } from './use-rating-edit-modal';
+import { nameAccessor } from '../../../curriculum/delivery-models/[yearGroup]/curriculum-model-name-list-validator';
 
 export default function ProviderRoleContextProvider({
   providerRoleAndTaskData,
@@ -164,7 +167,12 @@ export default function ProviderRoleContextProvider({
   return (
     <ProviderContext.Provider value={providerRoleState}>
       <ProviderRoleSelectionContextProvider>
-        <SkillEditContext.Provider value={{ triggerModal: triggerModal }}>
+        <SkillEditContext.Provider
+          value={{
+            triggerModal: triggerModal,
+            ...SkillEditAccessorFunctions
+          }}
+        >
           {children}
           <UnsavedChangesModal {...transactionalModal} />
 

@@ -150,14 +150,15 @@ function TeacherPanelTransformer(props: { data: ProviderRoleDto }) {
   return (
     <ul className={'divide-y'}>
       {workTaskCompetencyDtoList.map((wtComp, index) => (
-        <li
-          key={`${id}-${wtComp.id}`}
-          className={`text-${getCompetencyColor(
-            wtComp.competencyRating
-          )} pb-1 hover:bg-gray-100 cursor-pointer`}
-          onClick={() => triggerModal(wtComp, data)}
-        >
-          {wtComp.workTaskType} : {wtComp.competencyRating}
+        <li key={`${id}-${wtComp.id}`}>
+          <button
+            className={`text-${getCompetencyColor(
+              wtComp.competencyRating
+            )} pb-1 hover:bg-gray-100 cursor-pointer w-full`}
+            onClick={() => triggerModal(wtComp, data)}
+          >
+            {wtComp.workTaskType} : {wtComp.competencyRating}
+          </button>
         </li>
       ))}
     </ul>

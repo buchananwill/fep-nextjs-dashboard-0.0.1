@@ -1,5 +1,5 @@
 import {
-  RatingAccessor,
+  RatingValueAccessor,
   RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor
@@ -8,7 +8,7 @@ import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 
-export const assetRoleWorkTaskSuitabilityRatingAccessor: RatingAccessor<
+export const assetRoleWorkTaskSuitabilityRatingAccessor: RatingValueAccessor<
   AssetRoleWorkTaskSuitabilityDto
 > = (wtcDto) => wtcDto.suitabilityRating;
 export const assetRoleWorkTaskSuitabilityLabelAccessor: RatingCategoryLabelAccessor<
