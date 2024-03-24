@@ -38,6 +38,12 @@ export function IdAccessor<T extends HasNumberIdDto | HasUuidDto>(element: T) {
   return element.id;
 }
 
+export function IdStringFromNumberAccessor<T extends HasNumberIdDto>(
+  element: T
+): string {
+  return element.id.toString();
+}
+
 export const AssetSuitabilityAccessorFunctions = {
   elementLabelAccessor: assetNameAccessor,
   ratingListAccessor: assetRoleWorkTaskSuitabilityDtoListAccessor,

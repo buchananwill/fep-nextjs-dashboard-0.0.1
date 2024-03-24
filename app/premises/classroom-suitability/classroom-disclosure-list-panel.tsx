@@ -40,14 +40,6 @@ const ClassroomPanelTransformer: PanelTransformer<AssetDto> = ({
 }: TransformerProps<AssetDto>) => {
   const { name } = data;
 
-  // const listItems = useMemo(() => {
-  //   return data.assetRoleWorkTaskSuitabilities.map((suitability) => (
-  //     <li key={suitability.id}>
-  //       {suitability.workTaskTypeName} : {suitability.suitabilityRating}
-  //     </li>
-  //   ));
-  // }, [data]);
-
   return <RatingList data={data} context={AssetSuitabilityEditContext} />;
 };
 
