@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  MutableRefObject,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   LatestValueRef,
   UpdateAction,
@@ -47,14 +41,13 @@ export function useSelectiveContextController<T>(
   >,
   dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>
 ) {
-  const { currentState, latestRef, updateTriggers } =
-    useSelectiveContextListener(
-      contextKey,
-      listenerKey,
-      initialValue,
-      UpdateTriggerRefContext,
-      latestValueRefContext
-    );
+  const { currentState, latestRef } = useSelectiveContextListener(
+    contextKey,
+    listenerKey,
+    initialValue,
+    UpdateTriggerRefContext,
+    latestValueRefContext
+  );
 
   const freshRef = latestRef.current;
 
