@@ -25,10 +25,13 @@ export const workTaskCompetencyDtoListAccessor: RatingListAccessor<
   WorkTaskCompetencyDto
 > = (pRole) => pRole.workTaskCompetencyDtoList;
 
+const providerRoleIdAccessor = (pr: ProviderRoleDto) => pr.id;
+
 export const SkillEditAccessorFunctions = {
   elementLabelAccessor: providerRoleNameAccessor,
   ratingListAccessor: workTaskCompetencyDtoListAccessor,
   ratingCategoryLabelAccessor: workTaskCompetencyLabelAccessor,
   ratingValueAccessor: workTaskCompetencyRatingAccessor,
-  ratingCategoryIdAccessor: workTaskCompetencyIdAccessor
+  ratingCategoryIdAccessor: workTaskCompetencyIdAccessor,
+  elementIdAccessor: providerRoleIdAccessor
 };

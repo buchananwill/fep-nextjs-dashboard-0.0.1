@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Context, useContext, useEffect, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import DisclosureListPanel from '../../components/disclosure-list/disclosure-list-panel';
 import {
@@ -17,9 +17,13 @@ import {
 
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
-import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context';
+import {
+  RatingEditContext,
+  SkillEditContext
+} from '../contexts/providerRoles/rating-edit-context';
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 const competencyColors: { [key: string]: string } = {
   '0': 'gray-200',
@@ -138,31 +142,51 @@ function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
   );
 }
 
-function TeacherPanelTransformer(props: { data: ProviderRoleDto }) {
-  const { data } = props;
-  const { workTaskCompetencyDtoList, id, partyName } = data;
-  const { triggerModal } = useContext(SkillEditContext);
+function getCompetencyColor(competencyRating: number) {
+  return competencyColors[competencyRating.toString()];
+}
 
-  function getCompetencyColor(competencyRating: number) {
-    return competencyColors[competencyRating.toString()];
-  }
-
+function RatingList<R, E>({
+  context,
+  data
+}: {
+  data: E;
+  context: React.Context<RatingEditContext<R, E>>;
+}) {
+  const {
+    ratingListAccessor,
+    elementIdAccessor,
+    ratingCategoryLabelAccessor,
+    ratingCategoryIdAccessor,
+    triggerModal,
+    ratingValueAccessor
+  } = useContext(context);
   return (
     <ul className={'divide-y'}>
-      {workTaskCompetencyDtoList.map((wtComp, index) => (
-        <li key={`${id}-${wtComp.id}`}>
+      {ratingListAccessor(data).map((wtComp, index) => (
+        <li
+          key={`${elementIdAccessor(data)}-${ratingCategoryIdAccessor(wtComp)}`}
+        >
           <button
             className={`text-${getCompetencyColor(
-              wtComp.competencyRating
+              ratingValueAccessor(wtComp)
             )} pb-1 hover:bg-gray-100 cursor-pointer w-full`}
             onClick={() => triggerModal(wtComp, data)}
           >
-            {wtComp.workTaskType} : {wtComp.competencyRating}
+            {ratingCategoryLabelAccessor(wtComp)} :{' '}
+            {ratingValueAccessor(wtComp)}
           </button>
         </li>
       ))}
     </ul>
   );
+}
+
+function TeacherPanelTransformer(props: { data: ProviderRoleDto }) {
+  const { data } = props;
+  const { id } = data;
+
+  return <RatingList data={data} context={SkillEditContext} />;
 }
 
 export default function TeacherDisclosureList() {
