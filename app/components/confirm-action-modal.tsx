@@ -1,17 +1,23 @@
-import React, { Fragment, ReactNode, useRef, useState } from 'react';
+import React, {
+  Fragment,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useEnterPressListener } from './useKeyPressListener';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
-  }
+  }, []);
 
-  function openModal() {
+  const openModal = useCallback(() => {
     setIsOpen(true);
-  }
+  }, []);
 
   return { isOpen, closeModal, openModal };
 }

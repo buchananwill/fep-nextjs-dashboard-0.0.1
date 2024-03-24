@@ -5,12 +5,8 @@ import {
 } from '../../../components/confirm-action-modal';
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { HUE_OPTIONS } from '../../../contexts/color/color-context';
-import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits';
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
-import {
-  RatingAccessorProps,
-  RatingCategoryLabelAccessor
-} from '../../teachers/rating-table';
+import { RatingCategoryLabelAccessor } from '../../teachers/rating-table';
 
 export interface RatingEditModalProps<R, E> extends ConfirmActionModalProps {
   modifySkillValue?: (modifyAmount: number) => void;

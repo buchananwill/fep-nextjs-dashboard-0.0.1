@@ -4,23 +4,24 @@ import { AssetSuitabilityEditContext } from '../staffroom/contexts/providerRoles
 import { PropsWithChildren } from 'react';
 import { useRatingEditModal } from '../staffroom/contexts/providerRoles/use-rating-edit-modal';
 import {
+  assetNameAccessor,
   assetRoleWorkTaskSuitabilityLabelAccessor,
   assetRoleWorkTaskSuitabilityRatingAccessor
 } from './classroom-suitability/rating-table-accessor-functions';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
+const confirmRatingValue = () => {};
 
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
-  const confirmRatingValue = () => {};
+  const { triggerModal, ratingEditModalProps } = useRatingEditModal({
+    confirmRatingValue,
+    ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingAccessor,
+    nameAccessor: assetNameAccessor,
+    ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor
+  });
 
-  const { triggerModal, elementInModal, ratingEditModalProps } =
-    useRatingEditModal({
-      confirmRatingValue,
-      ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingAccessor,
-      nameAccessor: (asset: AssetDto) => asset.name,
-      ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor
-    });
+  console.log('rendering edit context provider');
 
   return (
     <AssetSuitabilityEditContext.Provider value={{ triggerModal }}>

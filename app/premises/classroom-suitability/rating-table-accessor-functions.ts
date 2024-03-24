@@ -7,7 +7,6 @@ import {
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
-import { useMemo } from 'react';
 
 export const assetRoleWorkTaskSuitabilityRatingAccessor: RatingAccessor<
   AssetRoleWorkTaskSuitabilityDto

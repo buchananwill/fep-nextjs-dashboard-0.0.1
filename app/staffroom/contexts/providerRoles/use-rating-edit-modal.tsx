@@ -1,6 +1,6 @@
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { RatingAccessorProps } from '../../teachers/rating-table';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useModal } from '../../../components/confirm-action-modal';
 import { RatingEditModalProps } from './rating-edit-modal';
 import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits';
@@ -20,18 +20,24 @@ export function useRatingEditModal<R, E>({
   const [ratingInModal, setRatingInModal] = useState<R>();
   const [elementInModal, setProviderInModal] = useState<E>();
   const { isOpen, closeModal, openModal } = useModal();
-  const triggerModal = (rating: R, elementWithRating: E) => {
-    setProviderInModal(elementWithRating);
-    setModalRatingValue(ratingValueAccessor(rating));
-    setRatingInModal(rating);
-    openModal();
-  };
 
-  function modifySkillValue(number: number) {
-    const updatedValue = modalRatingValue + number;
-    if (updatedValue > 5 || updatedValue < 0) return;
-    setModalRatingValue(updatedValue);
-  }
+  const triggerModal = useCallback(
+    (rating: R, elementWithRating: E) => {
+      setProviderInModal(elementWithRating);
+      setModalRatingValue(ratingValueAccessor(rating));
+      setRatingInModal(rating);
+      openModal();
+    },
+    [openModal, ratingValueAccessor]
+  );
+
+  const modifySkillValue = useCallback((number: number) => {
+    setModalRatingValue((prevState) => {
+      const updatedValue = prevState + number;
+      if (updatedValue > 5 || updatedValue < 0) return prevState;
+      else return updatedValue;
+    });
+  }, []);
 
   const ratingEditModalProps: RatingEditModalProps<R, E> = {
     show: isOpen,

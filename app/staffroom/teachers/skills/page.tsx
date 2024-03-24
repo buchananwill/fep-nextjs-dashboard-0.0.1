@@ -26,8 +26,6 @@ export default function SkillsPage({}: {}) {
     );
   }
 
-  console.log('Worktask types', workTaskTypes);
-
   const filteredProviderRoles = providers.filter((providerRole) =>
     selectedProviders.some((id) => providerRole.id == id.id)
   );

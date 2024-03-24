@@ -43,6 +43,8 @@ export default async function Page() {
     (workTaskTypeDto) => workTaskTypeDto.id.toString()
   );
 
+  console.log('rendering root page');
+
   return (
     <WorkTaskTypeContextProvider entityMap={wttStringMap}>
       <AssetStringMapContextProvider assetStringMap={assetStringMap}>
@@ -56,7 +58,7 @@ export default async function Page() {
                 </ToolCard.LowerFiveSixths>
               </ToolCard>
             </ToolCardContextProvider>
-            <AssetSuitabilityTableWrapper ratedElements={assetStringMap} />
+            <AssetSuitabilityTableWrapper />
           </div>
         </AssetSuitabilityEditContextProvider>
       </AssetStringMapContextProvider>

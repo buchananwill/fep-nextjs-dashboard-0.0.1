@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, Text } from '@tremor/react';
-import { ChooseCalendarRange } from './calendar-view/range/choose-calendar-range';
+
 import { StaffroomCalenderView } from './staffroom-calender-view';
 import React, {
   useCallback,
@@ -11,8 +11,7 @@ import React, {
   useState
 } from 'react';
 import { EventsContext, EventsDispatch } from './contexts/events/event-context';
-import { Calendarable } from './calendar-view/blocks/timespan-block';
-import { WorkshopJobBlock } from './calendar-view/blocks/workshop-job-block';
+
 import { ProviderContext } from './contexts/providerRoles/provider-context';
 import { PageTitleContext } from '../contexts/page-title/page-title-context';
 import { DndContextProvider } from '../components/dnd-context-provider';
@@ -39,7 +38,10 @@ import {
   ConfirmActionModal,
   ConfirmActionModalProps
 } from '../components/confirm-action-modal';
-import { useCalendarScaledZoom } from './calendar-view/columns/time-column';
+import { Calendarable } from '../components/calendar-view/blocks/timespan-block';
+import { WorkshopJobBlock } from '../components/calendar-view/blocks/workshop-job-block';
+import { ChooseCalendarRange } from '../components/calendar-view/range/choose-calendar-range';
+import { useCalendarScaledZoom } from '../components/calendar-view/columns/time-column';
 
 function getProvider(
   providerRoleId: number,

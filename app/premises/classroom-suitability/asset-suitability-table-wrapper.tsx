@@ -17,11 +17,6 @@ import { isNotNull } from '../../graphing/editing/functions/graph-edits';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { useRatingEditModal } from '../../staffroom/contexts/providerRoles/use-rating-edit-modal';
 import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-edit-modal';
-
-interface AssetSuitabilityTableProps {
-  ratedElements: StringMap<AssetDto>;
-}
-
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 
@@ -43,9 +38,7 @@ export const AssetSelectionListContextKey = 'asset-selection-list';
 
 const workTaskTypeSelectionListContextKey = 'work-task-type-selection-list';
 
-export function AssetSuitabilityTableWrapper({
-  ratedElements
-}: AssetSuitabilityTableProps) {
+export function AssetSuitabilityTableWrapper() {
   const { workTaskTypeMap } = useWorkTaskTypeContext();
   const { assetDtoStringMap } = useAssetStringMapContext();
   const { dispatchUpdate, currentState: selectedAssetList } =
