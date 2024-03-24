@@ -27,7 +27,6 @@ import { useModal } from '../confirm-action-modal';
 
 export interface StringMapEditContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
-  entityTypeCommitKey: string;
   unsavedChangesEntityKey: string;
   providerListenerKey: string;
   commitServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;

@@ -13,6 +13,7 @@ import AssetStringMapContextProvider from '../asset-string-map-context-provider'
 import ToolCardContextProvider from '../../components/tool-card/tool-card-context-provider';
 import ToolCard from '../../components/tool-card/tool-card';
 import { ClassroomDisclosureListPanel } from './classroom-disclosure-list-panel';
+import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-context-provider';
 
 export default async function Page() {
   const premisesPromises: ActionResponsePromise<GraphDto<AssetDto>> =
@@ -45,17 +46,19 @@ export default async function Page() {
   return (
     <WorkTaskTypeContextProvider entityMap={wttStringMap}>
       <AssetStringMapContextProvider assetStringMap={assetStringMap}>
-        <div className={'w-full flex'}>
-          <ToolCardContextProvider>
-            <ToolCard>
-              <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
-              <ToolCard.LowerFiveSixths>
-                <ClassroomDisclosureListPanel />
-              </ToolCard.LowerFiveSixths>
-            </ToolCard>
-          </ToolCardContextProvider>
-          <AssetSuitabilityTableWrapper ratedElements={assetStringMap} />
-        </div>
+        <AssetSuitabilityEditContextProvider>
+          <div className={'w-full flex'}>
+            <ToolCardContextProvider>
+              <ToolCard>
+                <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
+                <ToolCard.LowerFiveSixths>
+                  <ClassroomDisclosureListPanel />
+                </ToolCard.LowerFiveSixths>
+              </ToolCard>
+            </ToolCardContextProvider>
+            <AssetSuitabilityTableWrapper ratedElements={assetStringMap} />
+          </div>
+        </AssetSuitabilityEditContextProvider>
       </AssetStringMapContextProvider>
     </WorkTaskTypeContextProvider>
   );

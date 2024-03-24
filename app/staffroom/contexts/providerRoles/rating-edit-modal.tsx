@@ -30,25 +30,21 @@ export function RatingEditModal<R, E>({
   modalRatingValue,
   ...skillEditTransaction
 }: RatingEditModalProps<R, E>) {
-  if (
-    modifySkillValue === undefined ||
-    elementWithRatingsInModal === undefined ||
-    ratingInModal == undefined
-  )
-    return <></>;
+  console.log('rendering modal');
 
   return (
     <ConfirmActionModal title={'Change Skill Value'} {...skillEditTransaction}>
       <div className="p-2 bg-gray-100 rounded-lg">
         <div className="font-light">
-          {nameAccessor(elementWithRatingsInModal)}:
+          {elementWithRatingsInModal && nameAccessor(elementWithRatingsInModal)}
+          :
         </div>
         <div className="font-light flex py-2">
-          {ratingCategoryLabelAccessor(ratingInModal)}:
+          {ratingInModal && ratingCategoryLabelAccessor(ratingInModal)}:
           <div className="flex col px-2">
             <button
               className="border-2 rounded-md p-1 mx-1 hover:bg-gray-600 hover:text-gray-50"
-              onClick={() => modifySkillValue(-1)}
+              onClick={() => modifySkillValue && modifySkillValue(-1)}
             >
               <MinusIcon className=" h-4 w-4"></MinusIcon>
             </button>
@@ -59,7 +55,7 @@ export function RatingEditModal<R, E>({
             </div>
             <button
               className="border-2 rounded-md p-1 mx-1 hover:bg-gray-600 hover:text-gray-50"
-              onClick={() => modifySkillValue(1)}
+              onClick={() => modifySkillValue && modifySkillValue(1)}
             >
               <PlusIcon className=" h-4 w-4"></PlusIcon>
             </button>
