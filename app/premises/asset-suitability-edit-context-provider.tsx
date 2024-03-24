@@ -6,7 +6,8 @@ import { useRatingEditModal } from '../staffroom/contexts/providerRoles/use-rati
 import {
   assetNameAccessor,
   assetRoleWorkTaskSuitabilityLabelAccessor,
-  assetRoleWorkTaskSuitabilityRatingAccessor
+  assetRoleWorkTaskSuitabilityRatingValueAccessor,
+  AssetSuitabilityAccessorFunctions
 } from './classroom-suitability/rating-table-accessor-functions';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 const confirmRatingValue = () => {};
@@ -16,7 +17,7 @@ export default function AssetSuitabilityEditContextProvider({
 }: PropsWithChildren) {
   const { triggerModal, ratingEditModalProps } = useRatingEditModal({
     confirmRatingValue,
-    ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingAccessor,
+    ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingValueAccessor,
     nameAccessor: assetNameAccessor,
     ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor
   });
@@ -24,7 +25,9 @@ export default function AssetSuitabilityEditContextProvider({
   console.log('rendering edit context provider');
 
   return (
-    <AssetSuitabilityEditContext.Provider value={{ triggerModal }}>
+    <AssetSuitabilityEditContext.Provider
+      value={{ triggerModal, ...AssetSuitabilityAccessorFunctions }}
+    >
       {children}
       {<RatingEditModal {...ratingEditModalProps} />}
     </AssetSuitabilityEditContext.Provider>

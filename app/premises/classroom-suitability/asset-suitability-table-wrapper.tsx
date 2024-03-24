@@ -6,7 +6,7 @@ import {
   assetRoleWorkTaskSuitabilityDtoListAccessor,
   assetRoleWorkTaskSuitabilityIdAccessor,
   assetRoleWorkTaskSuitabilityLabelAccessor,
-  assetRoleWorkTaskSuitabilityRatingAccessor
+  assetRoleWorkTaskSuitabilityRatingValueAccessor
 } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
@@ -65,12 +65,7 @@ export function AssetSuitabilityTableWrapper() {
 
   return (
     <RatingTable
-      ratingValueAccessor={assetRoleWorkTaskSuitabilityRatingAccessor}
-      ratingCategoryLabelAccessor={assetRoleWorkTaskSuitabilityLabelAccessor}
-      ratingCategoryIdAccessor={assetRoleWorkTaskSuitabilityIdAccessor}
       ratedElements={assetDtos}
-      labelAccessor={assetNameAccessor}
-      ratingListAccessor={assetRoleWorkTaskSuitabilityDtoListAccessor}
       ratingCategories={workTaskTypeDtos}
       ratingEditContext={AssetSuitabilityEditContext}
       ratingCategoryDescriptor={'Lesson Type'}

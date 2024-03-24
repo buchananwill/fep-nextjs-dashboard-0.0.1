@@ -28,7 +28,7 @@ export interface ModalTriggerFunction<R, E> {
   (rating: R, ratedElement: E): void;
 }
 
-export interface RatingTableProps<R, E, C> extends RatingAccessorProps<R> {
+export interface RatingTableProps<R, E, C> {
   ratedElements: E[];
   ratingCategories: C[];
   ratingCategoryDescriptor: React.ReactNode;
@@ -40,13 +40,12 @@ export default function RatingTable<
   E extends HasNumberIdDto,
   C extends HasNumberIdDto & HasNameDto
 >({
-  ratingCategoryIdAccessor,
   ratedElements,
   ratingCategories,
   ratingCategoryDescriptor,
   ratingEditContext
 }: RatingTableProps<R, E, C>) {
-  const { elementLabelAccessor, ratingListAccessor } =
+  const { elementLabelAccessor, ratingListAccessor, ratingCategoryIdAccessor } =
     useContext(ratingEditContext);
 
   return (

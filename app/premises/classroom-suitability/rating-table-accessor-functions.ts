@@ -7,8 +7,15 @@ import {
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
+import {
+  providerRoleNameAccessor,
+  workTaskCompetencyDtoListAccessor,
+  workTaskCompetencyIdAccessor,
+  workTaskCompetencyLabelAccessor,
+  workTaskCompetencyRatingAccessor
+} from '../../staffroom/teachers/skills/rating-table-accessor-functions';
 
-export const assetRoleWorkTaskSuitabilityRatingAccessor: RatingValueAccessor<
+export const assetRoleWorkTaskSuitabilityRatingValueAccessor: RatingValueAccessor<
   AssetRoleWorkTaskSuitabilityDto
 > = (wtcDto) => wtcDto.suitabilityRating;
 export const assetRoleWorkTaskSuitabilityLabelAccessor: RatingCategoryLabelAccessor<
@@ -24,3 +31,11 @@ export const assetRoleWorkTaskSuitabilityDtoListAccessor: RatingListAccessor<
   AssetDto,
   AssetRoleWorkTaskSuitabilityDto
 > = (asset) => asset.assetRoleWorkTaskSuitabilities;
+
+export const AssetSuitabilityAccessorFunctions = {
+  elementLabelAccessor: assetNameAccessor,
+  ratingListAccessor: assetRoleWorkTaskSuitabilityDtoListAccessor,
+  ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor,
+  ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingValueAccessor,
+  ratingCategoryIdAccessor: assetRoleWorkTaskSuitabilityIdAccessor
+};

@@ -31,9 +31,6 @@ export default function SkillsPage({}: {}) {
   );
   return (
     <RatingTable
-      ratingValueAccessor={workTaskCompetencyRatingAccessor}
-      ratingCategoryLabelAccessor={workTaskCompetencyLabelAccessor}
-      ratingCategoryIdAccessor={workTaskCompetencyIdAccessor}
       ratedElements={filteredProviderRoles}
       ratingCategories={workTaskTypes}
       ratingEditContext={SkillEditContext}
