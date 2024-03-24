@@ -11,6 +11,8 @@ import DisclosureListPanel, {
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import ListItemSelector from '../../components/disclosure-list/list-item-selector';
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
+import { RatingList } from '../../staffroom/teachers/teacher-disclosure-list';
+import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
 
 export function ClassroomDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
@@ -37,17 +39,16 @@ const ClassroomPanelTransformer: PanelTransformer<AssetDto> = ({
   className
 }: TransformerProps<AssetDto>) => {
   const { name } = data;
-  console.log('Re-rendering panel:', name);
 
-  const listItems = useMemo(() => {
-    return data.assetRoleWorkTaskSuitabilities.map((suitability) => (
-      <li key={suitability.id}>
-        {suitability.workTaskTypeName} : {suitability.suitabilityRating}
-      </li>
-    ));
-  }, [data]);
+  // const listItems = useMemo(() => {
+  //   return data.assetRoleWorkTaskSuitabilities.map((suitability) => (
+  //     <li key={suitability.id}>
+  //       {suitability.workTaskTypeName} : {suitability.suitabilityRating}
+  //     </li>
+  //   ));
+  // }, [data]);
 
-  return <ul>{...listItems}</ul>;
+  return <RatingList data={data} context={AssetSuitabilityEditContext} />;
 };
 
 const ClassroomLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({

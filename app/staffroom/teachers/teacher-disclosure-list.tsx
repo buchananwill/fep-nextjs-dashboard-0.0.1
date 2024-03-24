@@ -146,7 +146,7 @@ function getCompetencyColor(competencyRating: number) {
   return competencyColors[competencyRating.toString()];
 }
 
-function RatingList<R, E>({
+export function RatingList<R, E>({
   context,
   data
 }: {

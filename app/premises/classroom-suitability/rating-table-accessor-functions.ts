@@ -14,6 +14,8 @@ import {
   workTaskCompetencyLabelAccessor,
   workTaskCompetencyRatingAccessor
 } from '../../staffroom/teachers/skills/rating-table-accessor-functions';
+import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { HasUuidDto } from '../../api/dtos/HasUuidDtoSchema';
 
 export const assetRoleWorkTaskSuitabilityRatingValueAccessor: RatingValueAccessor<
   AssetRoleWorkTaskSuitabilityDto
@@ -32,10 +34,15 @@ export const assetRoleWorkTaskSuitabilityDtoListAccessor: RatingListAccessor<
   AssetRoleWorkTaskSuitabilityDto
 > = (asset) => asset.assetRoleWorkTaskSuitabilities;
 
+export function IdAccessor<T extends HasNumberIdDto | HasUuidDto>(element: T) {
+  return element.id;
+}
+
 export const AssetSuitabilityAccessorFunctions = {
   elementLabelAccessor: assetNameAccessor,
   ratingListAccessor: assetRoleWorkTaskSuitabilityDtoListAccessor,
   ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor,
   ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingValueAccessor,
-  ratingCategoryIdAccessor: assetRoleWorkTaskSuitabilityIdAccessor
+  ratingCategoryIdAccessor: assetRoleWorkTaskSuitabilityIdAccessor,
+  elementIdAccessor: IdAccessor<AssetDto>
 };
