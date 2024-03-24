@@ -1,5 +1,6 @@
 import {
   RatingAccessor,
+  RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor
 } from '../../staffroom/teachers/rating-table';
@@ -14,6 +15,9 @@ export const assetRoleWorkTaskSuitabilityRatingAccessor: RatingAccessor<
 export const assetRoleWorkTaskSuitabilityLabelAccessor: RatingCategoryLabelAccessor<
   AssetRoleWorkTaskSuitabilityDto
 > = (wtcDto) => wtcDto.workTaskTypeName;
+export const assetRoleWorkTaskSuitabilityIdAccessor: RatingCategoryIdAccessor<
+  AssetRoleWorkTaskSuitabilityDto
+> = (wtcDto) => wtcDto.workTaskTypeId;
 export const assetNameAccessor: NameAccessor<AssetDto> = (assetDto) =>
   assetDto.name;
 

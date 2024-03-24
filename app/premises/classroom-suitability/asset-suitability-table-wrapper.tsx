@@ -4,6 +4,7 @@ import RatingTable from '../../staffroom/teachers/rating-table';
 import {
   assetNameAccessor,
   assetRoleWorkTaskSuitabilityDtoListAccessor,
+  assetRoleWorkTaskSuitabilityIdAccessor,
   assetRoleWorkTaskSuitabilityLabelAccessor,
   assetRoleWorkTaskSuitabilityRatingAccessor
 } from './rating-table-accessor-functions';
@@ -11,9 +12,11 @@ import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/context
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { isNotNull } from '../../graphing/editing/functions/graph-edits';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
+import { useRatingEditModal } from '../../staffroom/contexts/providerRoles/use-rating-edit-modal';
+import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-edit-modal';
 
 interface AssetSuitabilityTableProps {
   ratedElements: StringMap<AssetDto>;
@@ -67,19 +70,21 @@ export function AssetSuitabilityTableWrapper({
     workTaskTypeMap
   );
 
-  console.log(ratedElements);
-  const triggerModal = () => {};
+  console.log('Rendering table wrapper.');
+
+  const { triggerModal } = useContext(AssetSuitabilityEditContext);
+
   return (
-    <AssetSuitabilityEditContext.Provider value={{ triggerModal }}>
-      <RatingTable
-        ratingValueAccessor={assetRoleWorkTaskSuitabilityRatingAccessor}
-        ratingCategoryAccessor={assetRoleWorkTaskSuitabilityLabelAccessor}
-        ratedElements={assetDtos}
-        labelAccessor={assetNameAccessor}
-        ratingListAccessor={assetRoleWorkTaskSuitabilityDtoListAccessor}
-        ratingCategories={workTaskTypeDtos}
-        triggerModal={triggerModal}
-      />
-    </AssetSuitabilityEditContext.Provider>
+    <RatingTable
+      ratingValueAccessor={assetRoleWorkTaskSuitabilityRatingAccessor}
+      ratingCategoryLabelAccessor={assetRoleWorkTaskSuitabilityLabelAccessor}
+      ratingCategoryIdAccessor={assetRoleWorkTaskSuitabilityIdAccessor}
+      ratedElements={assetDtos}
+      labelAccessor={assetNameAccessor}
+      ratingListAccessor={assetRoleWorkTaskSuitabilityDtoListAccessor}
+      ratingCategories={workTaskTypeDtos}
+      triggerModal={triggerModal}
+      ratingCategoryDescriptor={'Lesson Type'}
+    />
   );
 }

@@ -7,6 +7,7 @@ import { SkillEditContext } from '../../contexts/providerRoles/rating-edit-conte
 import {
   providerRoleNameAccessor,
   workTaskCompetencyDtoListAccessor,
+  workTaskCompetencyIdAccessor,
   workTaskCompetencyLabelAccessor,
   workTaskCompetencyRatingAccessor
 } from './rating-table-accessor-functions';
@@ -26,18 +27,22 @@ export default function SkillsPage({}: {}) {
     );
   }
 
+  console.log('Worktask types', workTaskTypes);
+
   const filteredProviderRoles = providers.filter((providerRole) =>
     selectedProviders.some((id) => providerRole.id == id.id)
   );
   return (
     <RatingTable
       ratingValueAccessor={workTaskCompetencyRatingAccessor}
-      ratingCategoryAccessor={workTaskCompetencyLabelAccessor}
+      ratingCategoryLabelAccessor={workTaskCompetencyLabelAccessor}
+      ratingCategoryIdAccessor={workTaskCompetencyIdAccessor}
       ratedElements={filteredProviderRoles}
       labelAccessor={providerRoleNameAccessor}
       ratingListAccessor={workTaskCompetencyDtoListAccessor}
       ratingCategories={workTaskTypes}
       triggerModal={triggerModal}
+      ratingCategoryDescriptor={'Skill'}
     />
   );
 }

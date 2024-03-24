@@ -1,5 +1,6 @@
 import {
   RatingAccessor,
+  RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor
 } from '../rating-table';
@@ -13,6 +14,9 @@ export const workTaskCompetencyRatingAccessor: RatingAccessor<
 export const workTaskCompetencyLabelAccessor: RatingCategoryLabelAccessor<
   WorkTaskCompetencyDto
 > = (wtcDto) => wtcDto.workTaskType;
+export const workTaskCompetencyIdAccessor: RatingCategoryIdAccessor<
+  WorkTaskCompetencyDto
+> = (wtcDto) => wtcDto.workTaskTypeId;
 export const providerRoleNameAccessor: NameAccessor<ProviderRoleDto> = (
   providerRole
 ) => providerRole.partyName;

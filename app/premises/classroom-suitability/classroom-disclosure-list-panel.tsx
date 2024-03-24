@@ -36,15 +36,18 @@ const ClassroomPanelTransformer: PanelTransformer<AssetDto> = ({
   children,
   className
 }: TransformerProps<AssetDto>) => {
-  return (
-    <ul>
-      {data.assetRoleWorkTaskSuitabilities.map((suitability) => (
-        <li key={suitability.id}>
-          {suitability.workTaskTypeName} : {suitability.suitabilityRating}
-        </li>
-      ))}
-    </ul>
-  );
+  const { name } = data;
+  console.log('Re-rendering panel:', name);
+
+  const listItems = useMemo(() => {
+    return data.assetRoleWorkTaskSuitabilities.map((suitability) => (
+      <li key={suitability.id}>
+        {suitability.workTaskTypeName} : {suitability.suitabilityRating}
+      </li>
+    ));
+  }, [data]);
+
+  return <ul>{...listItems}</ul>;
 };
 
 const ClassroomLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({

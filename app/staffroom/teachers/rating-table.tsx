@@ -13,19 +13,25 @@ export interface AccessorFunction<O, P> {
 export type RatingAccessor<T> = AccessorFunction<T, number>;
 export type RatingListAccessor<E, R> = AccessorFunction<E, R[]>;
 export type RatingCategoryLabelAccessor<R> = AccessorFunction<R, string>;
+export type RatingCategoryIdAccessor<R> = AccessorFunction<R, number>;
+
+export interface RatingAccessorProps<R> {
+  ratingCategoryLabelAccessor: RatingCategoryLabelAccessor<R>;
+  ratingValueAccessor: RatingAccessor<R>;
+  ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>;
+}
 
 export interface ModalTriggerFunction<R, E> {
   (rating: R, ratedElement: E): void;
 }
 
-export interface RatingTableProps<R, E, C> {
-  ratingValueAccessor: RatingAccessor<R>;
-  ratingCategoryAccessor: RatingCategoryLabelAccessor<R>;
+export interface RatingTableProps<R, E, C> extends RatingAccessorProps<R> {
   ratedElements: E[];
   labelAccessor: NameAccessor<E>;
   ratingListAccessor: RatingListAccessor<E, R>;
   ratingCategories: C[];
   triggerModal: ModalTriggerFunction<R, E>;
+  ratingCategoryDescriptor: React.ReactNode;
 }
 
 export default function RatingTable<
@@ -34,12 +40,14 @@ export default function RatingTable<
   C extends HasNumberIdDto & HasNameDto
 >({
   ratingValueAccessor,
-  ratingCategoryAccessor,
+  ratingCategoryLabelAccessor,
+  ratingCategoryIdAccessor,
   ratedElements,
   labelAccessor,
   ratingListAccessor,
   ratingCategories,
-  triggerModal
+  triggerModal,
+  ratingCategoryDescriptor
 }: RatingTableProps<R, E, C>) {
   return (
     <div className="m-2 p-2 border-2 rounded-lg">
@@ -52,7 +60,7 @@ export default function RatingTable<
                   'h-full min-h-max max-h-full flex flex-col items-stretch justify-between'
                 }
               >
-                <div className={'text-right'}>Skill</div>
+                <div className={'text-right'}>{ratingCategoryDescriptor}</div>
                 <div
                   className={
                     'grow divide-y-2 flex flex-col justify-center rotate-45'
@@ -89,36 +97,52 @@ export default function RatingTable<
               <td className="text-sm px-2">{labelAccessor(ratedElement)}</td>
               {ratingListAccessor(ratedElement)
                 .filter((rating) =>
-                  ratingCategories.some((cat) => cat.id === rating.id)
+                  ratingCategories.some(
+                    (cat) => cat.id === ratingCategoryIdAccessor(rating)
+                  )
                 )
                 .map((skill) => (
-                  <td
-                    className={`border bg-${
-                      HUE_OPTIONS[ratingValueAccessor(skill)].id
-                    }-400 cursor-pointer`}
-                    key={skill.id}
-                    onClick={() => {
-                      triggerModal(skill, ratedElement);
-                    }}
-                  >
-                    <Tooltip placement={'bottom'}>
-                      <TooltipTrigger>
-                        <div className={'px-2'}>
-                          {ratingValueAccessor(skill)}
-                        </div>
-                      </TooltipTrigger>
-
-                      <StandardTooltipContent>
-                        <strong>{ratingCategoryAccessor(skill)}</strong>: click
-                        to edit.
-                      </StandardTooltipContent>
-                    </Tooltip>
-                  </td>
+                  <RatingTableCell key={skill.id}></RatingTableCell>
                 ))}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+  );
+}
+
+interface RatingTableCellProps<R, E> {
+  rating: R;
+  ratingValueAccessor: RatingAccessor<R>;
+  ratedElement: E;
+  ratingCategoryLabelAccessor;
+}
+
+function RatingTableCell<R, E>({
+  ratingValueAccessor,
+  rating,
+  ratedElement,
+  triggerModal
+}: RatingTableCellProps<R, E>) {
+  return (
+    <td
+      className={`border bg-${
+        HUE_OPTIONS[ratingValueAccessor(rating)].id
+      }-400 cursor-pointer`}
+      onClick={() => {
+        triggerModal(rating, ratedElement);
+      }}
+    >
+      <Tooltip placement={'bottom'}>
+        <TooltipTrigger>
+          <div className={'px-2'}>{ratingValueAccessor(rating)}</div>
+        </TooltipTrigger>
+
+        <StandardTooltipContent>
+          <strong>{ratingCategoryLabelAccessor(rating)}</strong>: click to edit.
+        </StandardTooltipContent>
+      </Tooltip>
+    </td>
   );
 }
