@@ -21,6 +21,7 @@ import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context'
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
 import { RatingList } from './rating-list';
+import { useWorkTaskCompetencyListController } from '../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
 
 const lighten = (hslObject: HSLA): HSLA => {
   const { h, s, l, a } = hslObject;
@@ -31,7 +32,7 @@ const lighten = (hslObject: HSLA): HSLA => {
 };
 
 function ProviderRoleLabel({
-  data: { partyName, knowledgeDomainName, id },
+  data: { partyName, knowledgeDomainName, id, workTaskCompetencyDtoList },
   children
 }: {
   data: ProviderRoleDto;
@@ -42,6 +43,12 @@ function ProviderRoleLabel({
   const colorCodingStateElement = colorCodingState[partyName];
   const { setHslaColorState } = useContext(HslColorDispatchContext);
   const hslaColorState = useContext(HslColorContext);
+
+  useWorkTaskCompetencyListController({
+    contextKey: `${id}`,
+    listenerKey: `teacher-label`,
+    initialValue: workTaskCompetencyDtoList
+  });
 
   useEffect(() => {
     const hueId = colorCodingStateElement?.hue.id || 'gray';

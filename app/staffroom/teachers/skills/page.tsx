@@ -6,11 +6,17 @@ import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provi
 import { SkillEditContext } from '../../contexts/providerRoles/rating-edit-context';
 import {
   providerRoleNameAccessor,
+  SkillEditAccessorFunctions,
   workTaskCompetencyDtoListAccessor,
   workTaskCompetencyIdAccessor,
   workTaskCompetencyLabelAccessor,
   workTaskCompetencyRatingAccessor
 } from './rating-table-accessor-functions';
+import { RatingTableBody } from '../../../premises/classroom-suitability/rating-table-body';
+import {
+  IdAccessor,
+  IdStringFromNumberAccessor
+} from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 
 export default function SkillsPage({}: {}) {
   const { providers, workTaskTypes } = useContext(ProviderContext);
@@ -34,6 +40,14 @@ export default function SkillsPage({}: {}) {
       ratedElements={filteredProviderRoles}
       ratingCategories={workTaskTypes}
       ratingCategoryDescriptor={'Skill'}
-    ></RatingTable>
+    >
+      <RatingTableBody
+        elementsWithRatings={filteredProviderRoles}
+        listAccessor={SkillEditAccessorFunctions.ratingListAccessor}
+        elementIdAccessor={IdStringFromNumberAccessor}
+        elementLabelAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
+        ratingEditContext={SkillEditContext}
+      />
+    </RatingTable>
   );
 }
