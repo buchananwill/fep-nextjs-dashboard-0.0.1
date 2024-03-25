@@ -54,10 +54,6 @@ export function RatingTableCell<R, E>({
   } = useContext(ratingEditContext);
 
   const cachedFunction = useRatingEditModalTrigger({
-    elementIdAccessor: elementIdAccessor,
-    ratedElement: ratedElement,
-    ratingCategoryIdAccessor: ratingCategoryIdAccessor,
-    rating: rating,
     listenerKey: `cell:${elementIdAccessor(
       ratedElement
     )}-${ratingCategoryIdAccessor(rating)}`

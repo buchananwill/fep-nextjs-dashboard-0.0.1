@@ -6,6 +6,7 @@ import SelectiveContextManagerStringList from './selective-context-manager-strin
 import SelectiveContextManagerNumberList from './selective-context-manager-number-list';
 import SelectiveContextManagerFunction from './selective-context-manager-function';
 import AssetSuitabilityListSelectiveContextProvider from './typed/asset-suitability-list-selective-context-provider';
+import WorkTaskCompetencyListSelectiveContextProvider from './typed/work-task-competency-list-selective-context-provider';
 
 export default function SelectiveContextCollection({
   children
@@ -18,7 +19,9 @@ export default function SelectiveContextCollection({
             <SelectiveContextManagerNumberList>
               <SelectiveContextManagerFunction>
                 <AssetSuitabilityListSelectiveContextProvider>
-                  {children}
+                  <WorkTaskCompetencyListSelectiveContextProvider>
+                    {children}
+                  </WorkTaskCompetencyListSelectiveContextProvider>
                 </AssetSuitabilityListSelectiveContextProvider>
               </SelectiveContextManagerFunction>
             </SelectiveContextManagerNumberList>

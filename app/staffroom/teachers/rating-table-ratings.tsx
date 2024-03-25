@@ -14,12 +14,12 @@ export function RatingTableRatings<R, E>({
 }) {
   const {
     ratingCategoryIdAccessor,
-    useRatingListListenerHook,
+    useRatingListDispatchHook,
     elementIdAccessor
   } = useContext(ratingEditContext);
   const listKey = `${elementIdAccessor(ratedElement)}`;
   const listenerKey = `${listKey}-ratings`;
-  const { currentState } = useRatingListListenerHook(
+  const { currentState } = useRatingListDispatchHook(
     listKey,
     listenerKey,
     EmptyNumberIdArray as R[]

@@ -4,7 +4,7 @@ import {
   ProviderRoleAndTaskData,
   ProviderRoleContextInterface
 } from './provider-context';
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
@@ -37,6 +37,10 @@ import {
 import { useRatingEditModal } from './use-rating-edit-modal';
 import { nameAccessor } from '../../../curriculum/delivery-models/[yearGroup]/curriculum-model-name-list-validator';
 import { isNotUndefined } from '../../../api/main';
+import {
+  useWorkTaskCompetencyListDispatch,
+  useWorkTaskCompetencyListListener
+} from '../../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
 
 export default function ProviderRoleContextProvider({
   providerRoleAndTaskData,
@@ -104,35 +108,32 @@ export default function ProviderRoleContextProvider({
 
   const { setColorCoding } = useContext(ColorCodingDispatch);
 
-  const confirmSkillValue = (
-    skillInModal: WorkTaskCompetencyDto,
-    providerRoleDtoInModal: ProviderRoleDto,
-    modalSkillValue: number
-  ) => {
-    const updatedProviderState = produce(providerRoleDtos, (draft) => {
-      const modifiedProvider = draft.find(
-        (mechanic) => mechanic.id == providerRoleDtoInModal.id
-      );
-      if (modifiedProvider) {
-        const modifiedSkill = modifiedProvider.workTaskCompetencyDtoList.find(
-          (skill) => skill.workTaskTypeId == skillInModal?.workTaskTypeId
-        );
-        if (modifiedSkill) {
-          modifiedSkill.competencyRating = modalSkillValue;
-        }
-      }
-    });
-    setProviderRoles(updatedProviderState);
-    setUnsavedChanges(true);
-  };
-
-  const { triggerModal, ratingEditModalProps, elementInModal } =
-    useRatingEditModal<WorkTaskCompetencyDto, ProviderRoleDto>({
-      confirmRatingValue: confirmSkillValue,
-      ratingValueAccessor: workTaskCompetencyRatingAccessor,
-      ratingCategoryLabelAccessor: workTaskCompetencyLabelAccessor,
-      nameAccessor: providerRoleNameAccessor
-    });
+  const confirmSkillValue = useCallback(
+    (
+      skillInModal: WorkTaskCompetencyDto,
+      providerRoleDtoInModal: ProviderRoleDto,
+      modalSkillValue: number
+    ) => {
+      setProviderRoles((prevState) => {
+        return produce(prevState, (draft) => {
+          const modifiedProvider = draft.find(
+            (mechanic) => mechanic.id == providerRoleDtoInModal.id
+          );
+          if (modifiedProvider) {
+            const modifiedSkill =
+              modifiedProvider.workTaskCompetencyDtoList.find(
+                (skill) => skill.workTaskTypeId == skillInModal?.workTaskTypeId
+              );
+            if (modifiedSkill) {
+              modifiedSkill.competencyRating = modalSkillValue;
+            }
+          }
+        });
+      });
+      setUnsavedChanges(true);
+    },
+    []
+  );
 
   useEffect(() => {
     const unColorCodedMechanics: string[] = [];
@@ -169,14 +170,22 @@ export default function ProviderRoleContextProvider({
       <ProviderRoleSelectionContextProvider>
         <SkillEditContext.Provider
           value={{
-            triggerModal: triggerModal,
+            useRatingListDispatchHook: useWorkTaskCompetencyListDispatch,
+            confirmRatingValue: confirmSkillValue,
             ...SkillEditAccessorFunctions
           }}
         >
           {children}
           <UnsavedChangesModal {...transactionalModal} />
 
-          {elementInModal && <RatingEditModal {...ratingEditModalProps} />}
+          <RatingEditModal
+            confirmRatingValue={confirmSkillValue}
+            nameAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
+            ratingCategoryLabelAccessor={
+              SkillEditAccessorFunctions.ratingCategoryLabelAccessor
+            }
+            ratingValueAccessor={SkillEditAccessorFunctions.ratingValueAccessor}
+          />
         </SkillEditContext.Provider>
       </ProviderRoleSelectionContextProvider>
     </ProviderContext.Provider>

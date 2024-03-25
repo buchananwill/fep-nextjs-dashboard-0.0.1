@@ -42,17 +42,6 @@ const suitabilityListSetter = (
     draft.assetRoleWorkTaskSuitabilities = list;
   });
 };
-
-interface RatingEditModalWrapperProps<R, E> {
-  confirmRatingValue: ConfirmRatingValue<R, E>;
-}
-
-function RatingEditModalWrapper<R, E>(
-  props: { children: ReactNode } & RatingEditModalWrapperProps<R, E>
-) {
-  return;
-}
-
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
@@ -73,7 +62,7 @@ export default function AssetSuitabilityEditContextProvider({
     <AssetSuitabilityEditContext.Provider
       value={{
         confirmRatingValue: confirmRatingValue,
-        useRatingListListenerHook: useAssetSuitabilityListDispatch,
+        useRatingListDispatchHook: useAssetSuitabilityListDispatch,
         ...AssetSuitabilityAccessorFunctions
       }}
     >

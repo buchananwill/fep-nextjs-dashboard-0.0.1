@@ -22,7 +22,7 @@ export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
   elementLabelAccessor: NameAccessor<E>;
   elementIdAccessor: AccessorFunction<E, string | number>;
   ratingListAccessor: RatingListAccessor<E, R>;
-  useRatingListListenerHook: UseSelectiveContextListener<R[]>;
+  useRatingListDispatchHook: UseSelectiveContextDispatch<R[]>;
   confirmRatingValue: ConfirmRatingValue<R, E>;
 }
 
@@ -34,7 +34,7 @@ const defaultContext: RatingEditContext<any, any> = {
   ratingListAccessor: (object) => EmptyNumberIdArray,
   elementLabelAccessor: (object) => '',
   elementIdAccessor: (object) => NaN,
-  useRatingListListenerHook: () => MockReturn
+  useRatingListDispatchHook: () => MockReturn
 };
 
 export const SkillEditContext = createContext<

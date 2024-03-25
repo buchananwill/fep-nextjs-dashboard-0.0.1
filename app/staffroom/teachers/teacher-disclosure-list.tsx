@@ -135,7 +135,13 @@ function TeacherPanelTransformer(props: { data: ProviderRoleDto }) {
   const { data } = props;
   const { id } = data;
 
-  return <RatingList data={data} context={SkillEditContext} />;
+  return (
+    <RatingList
+      data={data}
+      context={SkillEditContext}
+      ratingList={data.workTaskCompetencyDtoList}
+    />
+  );
 }
 
 export default function TeacherDisclosureList() {

@@ -33,8 +33,7 @@ export default function SkillsPage({}: {}) {
     <RatingTable
       ratedElements={filteredProviderRoles}
       ratingCategories={workTaskTypes}
-      ratingEditContext={SkillEditContext}
       ratingCategoryDescriptor={'Skill'}
-    />
+    ></RatingTable>
   );
 }
