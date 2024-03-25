@@ -1,7 +1,7 @@
 'use client';
 import { RatingEditModal } from '../staffroom/contexts/providerRoles/rating-edit-modal';
 import { AssetSuitabilityEditContext } from '../staffroom/contexts/providerRoles/rating-edit-context';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { useRatingEditModal } from '../staffroom/contexts/providerRoles/use-rating-edit-modal';
 import {
   assetNameAccessor,
@@ -20,7 +20,10 @@ import {
 } from './asset-string-map-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { produce } from 'immer';
-import { useConfirmRatingValueFunction } from './use-confirm-rating-value-function';
+import {
+  ConfirmRatingValue,
+  useConfirmRatingValueFunction
+} from './use-confirm-rating-value-function';
 import { useAssetSuitabilityListDispatch } from '../components/selective-context/typed/asset-suitability-list-selective-context-provider';
 
 const suitabilityRatingSetter = (
@@ -40,6 +43,16 @@ const suitabilityListSetter = (
   });
 };
 
+interface RatingEditModalWrapperProps<R, E> {
+  confirmRatingValue: ConfirmRatingValue<R, E>;
+}
+
+function RatingEditModalWrapper<R, E>(
+  props: { children: ReactNode } & RatingEditModalWrapperProps<R, E>
+) {
+  return;
+}
+
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
@@ -54,25 +67,28 @@ export default function AssetSuitabilityEditContextProvider({
     'asset-suitability-edit-context'
   );
 
-  const { triggerModal, ratingEditModalProps } = useRatingEditModal({
-    confirmRatingValue,
-    ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingValueAccessor,
-    nameAccessor: assetNameAccessor,
-    ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor
-  });
-
   console.log('rendering edit context');
 
   return (
     <AssetSuitabilityEditContext.Provider
       value={{
-        triggerModal,
+        confirmRatingValue: confirmRatingValue,
         useRatingListListenerHook: useAssetSuitabilityListDispatch,
         ...AssetSuitabilityAccessorFunctions
       }}
     >
-      {children}
-      <RatingEditModal {...ratingEditModalProps} />
+      <RatingEditModal
+        confirmRatingValue={confirmRatingValue}
+        ratingValueAccessor={
+          AssetSuitabilityAccessorFunctions.ratingValueAccessor
+        }
+        ratingCategoryLabelAccessor={
+          AssetSuitabilityAccessorFunctions.ratingCategoryLabelAccessor
+        }
+        nameAccessor={AssetSuitabilityAccessorFunctions.elementLabelAccessor}
+      >
+        {children}
+      </RatingEditModal>
     </AssetSuitabilityEditContext.Provider>
   );
 }

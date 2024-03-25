@@ -23,7 +23,7 @@ export function useRatingEditModal<R, E>({
   const { isOpen, closeModal, openModal } = useModal();
 
   const triggerModal = useCallback(
-    (rating: R, elementWithRating: E) => {
+    ({ elementWithRating, rating }: { rating: R; elementWithRating: E }) => {
       setProviderInModal(elementWithRating);
       setModalRatingValue(ratingValueAccessor(rating));
       setRatingInModal(rating);
@@ -40,7 +40,7 @@ export function useRatingEditModal<R, E>({
     });
   }, []);
 
-  const ratingEditModalProps: RatingEditModalProps<R, E> = {
+  return {
     show: isOpen,
     onConfirm: () => {
       if (isNotUndefined(ratingInModal) && isNotUndefined(elementInModal)) {
@@ -54,7 +54,7 @@ export function useRatingEditModal<R, E>({
     modalRatingValue,
     ratingInModal,
     modifySkillValue,
+    triggerModal,
     ...ratingModalProps
   };
-  return { ratingEditModalProps, triggerModal, elementInModal };
 }

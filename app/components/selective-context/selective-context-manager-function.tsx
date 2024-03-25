@@ -19,8 +19,10 @@ import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
 
 // This wrapper function is necessary in order to use state to store functions of the type T => T. Otherwise, it automatically tries to call such functions.
 export interface GenericFunctionWrapper<T, U> {
-  function: GenericFunction<T, U>;
+  cachedFunction: GenericFunction<T, U>;
 }
+
+export const ObjectPlaceholder = {};
 
 export default function SelectiveContextManagerFunction({
   children

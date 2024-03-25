@@ -16,17 +16,18 @@ import {
   UseSelectiveContextDispatch,
   UseSelectiveContextListener
 } from '../../../components/selective-context/use-selective-context-listener';
+import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
-  triggerModal: (skill: R, providerRoleDto: E) => void;
   elementLabelAccessor: NameAccessor<E>;
   elementIdAccessor: AccessorFunction<E, string | number>;
   ratingListAccessor: RatingListAccessor<E, R>;
   useRatingListListenerHook: UseSelectiveContextListener<R[]>;
+  confirmRatingValue: ConfirmRatingValue<R, E>;
 }
 
 const defaultContext: RatingEditContext<any, any> = {
-  triggerModal: () => {},
+  confirmRatingValue: () => {},
   ratingValueAccessor: (object) => NaN,
   ratingCategoryLabelAccessor: (object) => '',
   ratingCategoryIdAccessor: (object) => NaN,

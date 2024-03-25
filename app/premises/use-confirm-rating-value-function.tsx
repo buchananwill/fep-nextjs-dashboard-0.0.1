@@ -12,6 +12,10 @@ import { UseSelectiveContextDispatch } from '../components/selective-context/use
 
 const emptyArray: any[] = [];
 
+export interface ConfirmRatingValue<R, E> {
+  (rating: R, elementWithRatings: E, updatedValue: number): void;
+}
+
 export function useConfirmRatingValueFunction<R, E>(
   useSelectiveDispatchHook: UseSelectiveContextDispatch<R[]>,
   ratingListAccessor: RatingListAccessor<E, R>,
@@ -21,7 +25,7 @@ export function useConfirmRatingValueFunction<R, E>(
   elementStringIdAccessor: AccessorFunction<E, string>,
   unsavedChangesContextKey: string,
   unsavedChangesListenerKey: string
-) {
+): ConfirmRatingValue<R, E> {
   const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
     unsavedChangesContextKey,
     unsavedChangesListenerKey,

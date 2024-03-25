@@ -34,11 +34,11 @@ export function NodeEditorDisclosure<T extends HasNumberIdDto>({}: {
   propCloneFunction?: CloneFunction<DataNode<T>>;
 }) {
   const {
-    currentFunction: { function: cloneFunction }
+    currentFunction: { cachedFunction: cloneFunction }
   } = useSelectiveContextListenerFunction<DataNode<T>, DataNode<T>>(
     NodeCloneFunctionKey,
     ListenerKey,
-    { function: FallBackCloneFunction }
+    { cachedFunction: FallBackCloneFunction }
   );
 
   // const { isTrue: showNodeEditing } = useSelectiveContextListenerBoolean(

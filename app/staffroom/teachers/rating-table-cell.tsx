@@ -5,8 +5,15 @@ import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
 import {
   RatingValueAccessor,
-  RatingCategoryLabelAccessor
+  RatingCategoryLabelAccessor,
+  AccessorFunction
 } from './rating-table';
+import {
+  GenericFunctionWrapper,
+  ObjectPlaceholder,
+  useSelectiveContextListenerFunction
+} from '../../components/selective-context/selective-context-manager-function';
+import { RatingEditModalTriggerProps } from '../contexts/providerRoles/rating-edit-modal';
 
 interface RatingTableCellProps<R, E> {
   rating: R;
@@ -16,13 +23,45 @@ interface RatingTableCellProps<R, E> {
   ratingEditContext: Context<RatingEditContext<R, E>>;
 }
 
+export function useRatingEditModalTrigger<E, R>({
+  listenerKey
+}: {
+  listenerKey: string;
+}) {
+  const {
+    currentFunction: { cachedFunction }
+  } = useSelectiveContextListenerFunction<
+    RatingEditModalTriggerProps<R, E>,
+    void
+  >(
+    'prepare-rating-modal',
+    listenerKey,
+    ObjectPlaceholder as GenericFunctionWrapper<any, any>
+  );
+  return cachedFunction;
+}
+
 export function RatingTableCell<R, E>({
   rating,
   ratedElement,
   ratingEditContext
 }: RatingTableCellProps<R, E>) {
-  const { triggerModal, ratingCategoryLabelAccessor, ratingValueAccessor } =
-    useContext(ratingEditContext);
+  const {
+    ratingCategoryLabelAccessor,
+    ratingValueAccessor,
+    elementIdAccessor,
+    ratingCategoryIdAccessor
+  } = useContext(ratingEditContext);
+
+  const cachedFunction = useRatingEditModalTrigger({
+    elementIdAccessor: elementIdAccessor,
+    ratedElement: ratedElement,
+    ratingCategoryIdAccessor: ratingCategoryIdAccessor,
+    rating: rating,
+    listenerKey: `cell:${elementIdAccessor(
+      ratedElement
+    )}-${ratingCategoryIdAccessor(rating)}`
+  });
 
   console.log('rendering table cell');
 
@@ -32,7 +71,7 @@ export function RatingTableCell<R, E>({
         HUE_OPTIONS[ratingValueAccessor(rating)].id
       }-400 cursor-pointer`}
       onClick={() => {
-        triggerModal(rating, ratedElement);
+        cachedFunction({ rating, elementWithRating: ratedElement });
       }}
     >
       <Tooltip placement={'bottom'}>

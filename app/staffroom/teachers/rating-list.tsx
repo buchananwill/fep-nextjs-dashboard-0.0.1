@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
+import { useRatingEditModalTrigger } from './rating-table-cell';
+import { GenericButtonProps } from '../../components/buttons/rename-button';
 
 const competencyColors: { [key: string]: string } = {
   '0': 'gray-200',
@@ -27,26 +29,52 @@ export function RatingList<R, E>({
     elementIdAccessor,
     ratingCategoryLabelAccessor,
     ratingCategoryIdAccessor,
-    triggerModal,
     ratingValueAccessor
   } = useContext(context);
+
   return (
     <ul className={'divide-y'}>
       {ratingList.map((wtComp, index) => (
-        <li
+        <RatingListItem
           key={`${elementIdAccessor(data)}-${ratingCategoryIdAccessor(wtComp)}`}
+          className={`text-${getCompetencyColor(
+            ratingValueAccessor(wtComp)
+          )} pb-1 hover:bg-gray-100 cursor-pointer w-full`}
+          rating={wtComp}
+          elementWithRating={data}
+          uniqueListenerKey={`listItem:${elementIdAccessor(
+            data
+          )}-${ratingCategoryIdAccessor(wtComp)}`}
         >
-          <button
-            className={`text-${getCompetencyColor(
-              ratingValueAccessor(wtComp)
-            )} pb-1 hover:bg-gray-100 cursor-pointer w-full`}
-            onClick={() => triggerModal(wtComp, data)}
-          >
-            {ratingCategoryLabelAccessor(wtComp)} :{' '}
-            {ratingValueAccessor(wtComp)}
-          </button>
-        </li>
+          {ratingCategoryLabelAccessor(wtComp)} : {ratingValueAccessor(wtComp)}
+        </RatingListItem>
       ))}
     </ul>
+  );
+}
+
+function RatingListItem<R, E>({
+  className,
+  rating,
+  elementWithRating,
+  uniqueListenerKey,
+  children
+}: GenericButtonProps & {
+  rating: R;
+  elementWithRating: E;
+  uniqueListenerKey: string;
+}) {
+  const cachedFunction = useRatingEditModalTrigger({
+    listenerKey: uniqueListenerKey
+  });
+  return (
+    <li>
+      <button
+        className={className}
+        onClick={() => cachedFunction({ rating, elementWithRating })}
+      >
+        {children}
+      </button>
+    </li>
   );
 }
