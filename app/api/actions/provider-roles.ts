@@ -4,7 +4,7 @@ import {
   errorResponse,
   successResponse
 } from './actionResponse';
-import { API_BASE_URL } from '../main';
+import { API_BASE_URL, isNotUndefined } from '../main';
 import {
   getWithoutBody,
   patchEntityList,
@@ -13,7 +13,6 @@ import {
 } from './template-actions';
 import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
 import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema';
-import { isNotUndefined } from '../../graphing/editing/functions/graph-edits';
 
 const url = `${API_BASE_URL}/providers`;
 

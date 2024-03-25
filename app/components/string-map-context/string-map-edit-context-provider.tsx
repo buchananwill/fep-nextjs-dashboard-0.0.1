@@ -8,7 +8,9 @@ import React, {
   Context,
   PropsWithChildren,
   ProviderExoticComponent,
-  useReducer
+  useEffect,
+  useReducer,
+  useRef
 } from 'react';
 import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
 import {
@@ -29,7 +31,8 @@ import {
   useSelectiveContextDispatchStringList
 } from '../selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
-import { isNotUndefined } from '../../graphing/editing/functions/graph-edits';
+
+import { isNotUndefined } from '../../api/main';
 
 export interface StringMapEditContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
@@ -55,6 +58,7 @@ export function StringMapEditContextProvider<T>({
   const MapProvider = mapContext.Provider;
   const EntityReducer = StringMapReducer<T>;
   const [currentModels, dispatch] = useReducer(EntityReducer, initialEntityMap);
+  const initialMapRef = useRef(initialEntityMap);
 
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
@@ -70,6 +74,22 @@ export function StringMapEditContextProvider<T>({
   );
 
   const { isOpen, closeModal, openModal } = useModal();
+
+  useEffect(() => {
+    if (initialMapRef.current !== initialEntityMap) {
+      const payloadArray = getPayloadArray(
+        Object.values(currentModels),
+        mapKeyAccessor
+      );
+      dispatch({ type: 'deleteAll', payload: payloadArray });
+      const replacementMap = getPayloadArray(
+        Object.values(initialEntityMap),
+        mapKeyAccessor
+      );
+      dispatch({ type: 'updateAll', payload: replacementMap });
+      initialMapRef.current = initialEntityMap;
+    }
+  }, [currentModels, initialEntityMap, mapKeyAccessor]);
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;

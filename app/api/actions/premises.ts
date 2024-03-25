@@ -7,10 +7,13 @@ import { API_BASE_URL } from '../main';
 
 const premisesUrl = `${API_BASE_URL}/assets/premises`;
 
-export async function fetchPremises(): ActionResponsePromise<
-  GraphDto<AssetDto>
-> {
+export async function getPremises(): ActionResponsePromise<GraphDto<AssetDto>> {
   return await getWithoutBody(`${premisesUrl}/graph`);
+}
+export async function getPremisesWithRoot(
+  rootName: string
+): ActionResponsePromise<GraphDto<AssetDto>> {
+  return await getWithoutBody(`${premisesUrl}/graph/byRootName/${rootName}`);
 }
 
 export async function patchPremises(premises: AssetDto[]) {

@@ -13,11 +13,11 @@ import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
 import { useContext, useMemo } from 'react';
-import { isNotNull } from '../../graphing/editing/functions/graph-edits';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { useRatingEditModal } from '../../staffroom/contexts/providerRoles/use-rating-edit-modal';
 import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-edit-modal';
 import { Card } from '@tremor/react';
+import { isNotNull } from '../../api/main';
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 

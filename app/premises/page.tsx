@@ -1,6 +1,6 @@
 import { Title, Card } from '@tremor/react';
 
-import { fetchPremises } from '../api/actions/premises';
+import { getPremises } from '../api/actions/premises';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { ActionResponsePromise } from '../api/actions/actionResponse';
@@ -13,7 +13,7 @@ export default async function PremisesPage({}: {
   searchParams: { q: string };
 }) {
   const premisesPromises: ActionResponsePromise<GraphDto<AssetDto>> =
-    fetchPremises();
+    getPremises();
 
   const actionResponse = await premisesPromises;
 

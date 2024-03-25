@@ -1,11 +1,14 @@
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import { fetchPremises } from '../../api/actions/premises';
+import { getPremises, getPremisesWithRoot } from '../../api/actions/premises';
 import { Card } from '@tremor/react';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
-import { SECONDARY_EDUCATION_CATEGORY_ID } from '../../api/main';
+import {
+  isNotUndefined,
+  SECONDARY_EDUCATION_CATEGORY_ID
+} from '../../api/main';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../curriculum/delivery-models/contexts/convert-list-to-string-map';
@@ -15,9 +18,17 @@ import ToolCard from '../../components/tool-card/tool-card';
 import { ClassroomDisclosureListPanel } from './classroom-disclosure-list-panel';
 import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-context-provider';
 
-export default async function Page() {
-  const premisesPromises: ActionResponsePromise<GraphDto<AssetDto>> =
-    fetchPremises();
+export default async function Page({
+  searchParams: { rootName }
+}: {
+  searchParams: { rootName: string };
+}) {
+  let premisesPromises: ActionResponsePromise<GraphDto<AssetDto>>;
+  if (isNotUndefined(rootName)) {
+    premisesPromises = getPremisesWithRoot(rootName);
+  } else {
+    premisesPromises = getPremises();
+  }
   const actionResponse = await premisesPromises;
 
   const actionResponseWorkTaskTypes = await getWorkTaskTypes(

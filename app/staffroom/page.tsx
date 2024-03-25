@@ -31,10 +31,6 @@ import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { EventDto } from '../api/dtos/EventDtoSchema';
 import { patchEvents } from '../api/actions/calendars';
 import {
-  isNotNull,
-  isNotUndefined
-} from '../graphing/editing/functions/graph-edits';
-import {
   ConfirmActionModal,
   ConfirmActionModalProps
 } from '../components/confirm-action-modal';
@@ -42,6 +38,7 @@ import { Calendarable } from '../components/calendar-view/blocks/timespan-block'
 import { WorkshopJobBlock } from '../components/calendar-view/blocks/workshop-job-block';
 import { ChooseCalendarRange } from '../components/calendar-view/range/choose-calendar-range';
 import { useCalendarScaledZoom } from '../components/calendar-view/columns/time-column';
+import { isNotNull, isNotUndefined } from '../api/main';
 
 function getProvider(
   providerRoleId: number,

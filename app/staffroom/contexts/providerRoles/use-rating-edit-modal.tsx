@@ -3,7 +3,8 @@ import { RatingAccessorProps } from '../../teachers/rating-table';
 import { useCallback, useState } from 'react';
 import { useModal } from '../../../components/confirm-action-modal';
 import { RatingEditModalProps } from './rating-edit-modal';
-import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits';
+
+import { isNotUndefined } from '../../../api/main';
 
 interface RatingEditModalHookProps<R, E> {
   confirmRatingValue: (rating: R, element: E, updatedValue: number) => void;

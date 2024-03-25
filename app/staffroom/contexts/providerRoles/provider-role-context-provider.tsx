@@ -22,7 +22,6 @@ import { updateTeachers } from '../../../api/actions/provider-roles';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { ConfirmActionModalProps } from '../../../components/confirm-action-modal';
-import { isNotUndefined } from '../../../graphing/editing/functions/graph-edits';
 import { RatingEditModal } from './rating-edit-modal';
 import {
   providerRoleNameAccessor,
@@ -37,6 +36,7 @@ import {
 } from '../../../components/unsaved-changes-modal';
 import { useRatingEditModal } from './use-rating-edit-modal';
 import { nameAccessor } from '../../../curriculum/delivery-models/[yearGroup]/curriculum-model-name-list-validator';
+import { isNotUndefined } from '../../../api/main';
 
 export default function ProviderRoleContextProvider({
   providerRoleAndTaskData,

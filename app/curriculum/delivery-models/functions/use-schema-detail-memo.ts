@@ -1,8 +1,8 @@
 import { StringMap } from '../contexts/string-map-context-creator';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { useMemo } from 'react';
-import { isNotNull } from '../../../graphing/editing/functions/graph-edits';
 import { useCurriculumModelContext } from '../contexts/use-curriculum-model-context';
+import { isNotNull } from '../../../api/main';
 
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 
