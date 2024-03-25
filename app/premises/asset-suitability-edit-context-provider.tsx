@@ -43,8 +43,6 @@ const suitabilityListSetter = (
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
-  const { assetDtoStringMapDispatch } = useAssetStringMapContext();
-
   const confirmRatingValue = useConfirmRatingValueFunction(
     useAssetSuitabilityListDispatch,
     assetRoleWorkTaskSuitabilityDtoListAccessor,
@@ -63,6 +61,8 @@ export default function AssetSuitabilityEditContextProvider({
     ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor
   });
 
+  console.log('rendering edit context');
+
   return (
     <AssetSuitabilityEditContext.Provider
       value={{
@@ -72,7 +72,7 @@ export default function AssetSuitabilityEditContextProvider({
       }}
     >
       {children}
-      {<RatingEditModal {...ratingEditModalProps} />}
+      <RatingEditModal {...ratingEditModalProps} />
     </AssetSuitabilityEditContext.Provider>
   );
 }

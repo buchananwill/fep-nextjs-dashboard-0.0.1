@@ -19,6 +19,7 @@ import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-e
 import { Card } from '@tremor/react';
 import { isNotNull } from '../../api/main';
 import { useAssetSuitabilityListDispatch } from '../../components/selective-context/typed/asset-suitability-list-selective-context-provider';
+import { RatingTableRatings } from '../../staffroom/teachers/rating-table-ratings';
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 
@@ -79,9 +80,23 @@ export function AssetSuitabilityTableWrapper() {
         <RatingTable
           ratedElements={assetDtos}
           ratingCategories={allWorkTaskTypes}
-          ratingEditContext={AssetSuitabilityEditContext}
           ratingCategoryDescriptor={'Lesson Type'}
-        />
+        >
+          {assetDtos.map((ratedElement) => (
+            <tr key={ratedElement.id} className="">
+              <th
+                className="text-sm px-2 sticky left-0 bg-opacity-100 z-10 bg-white"
+                scope={'row'}
+              >
+                {ratedElement.name}
+              </th>
+              <RatingTableRatings
+                ratedElement={ratedElement}
+                ratingEditContext={AssetSuitabilityEditContext}
+              />
+            </tr>
+          ))}
+        </RatingTable>
       </div>
     </Card>
   );

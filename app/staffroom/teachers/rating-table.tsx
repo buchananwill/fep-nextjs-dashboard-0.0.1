@@ -1,6 +1,6 @@
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
-import { Context, useContext } from 'react';
+import { Context, PropsWithChildren, useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
 import {
   RatingTableHeader,
@@ -32,7 +32,6 @@ export interface RatingTableProps<R, E, C> {
   ratedElements: E[];
   ratingCategories: C[];
   ratingCategoryDescriptor: React.ReactNode;
-  ratingEditContext: Context<RatingEditContext<R, E>>;
 }
 
 export default function RatingTable<
@@ -40,14 +39,10 @@ export default function RatingTable<
   E extends HasNumberIdDto,
   C extends HasNumberIdDto & HasNameDto
 >({
-  ratedElements,
   ratingCategories,
   ratingCategoryDescriptor,
-  ratingEditContext
-}: RatingTableProps<R, E, C>) {
-  const { elementLabelAccessor, ratingListAccessor, ratingCategoryIdAccessor } =
-    useContext(ratingEditContext);
-
+  children
+}: RatingTableProps<R, E, C> & PropsWithChildren) {
   return (
     <RatingTableMain>
       <RatingTableHeader ratingCategoryDescriptor={ratingCategoryDescriptor}>
@@ -57,22 +52,7 @@ export default function RatingTable<
           </RatingTableHeaderCell>
         ))}
       </RatingTableHeader>
-      <tbody>
-        {ratedElements.map((ratedElement) => (
-          <tr key={ratedElement.id} className="">
-            <th
-              className="text-sm px-2 sticky left-0 bg-opacity-100 z-10 bg-white"
-              scope={'row'}
-            >
-              {elementLabelAccessor(ratedElement)}
-            </th>
-            <RatingTableRatings
-              ratedElement={ratedElement}
-              ratingEditContext={ratingEditContext}
-            />
-          </tr>
-        ))}
-      </tbody>
+      <tbody>{children}</tbody>
     </RatingTableMain>
   );
 }
