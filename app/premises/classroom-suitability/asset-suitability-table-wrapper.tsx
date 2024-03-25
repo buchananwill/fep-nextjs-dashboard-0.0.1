@@ -17,6 +17,7 @@ import { isNotNull } from '../../graphing/editing/functions/graph-edits';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { useRatingEditModal } from '../../staffroom/contexts/providerRoles/use-rating-edit-modal';
 import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-edit-modal';
+import { Card } from '@tremor/react';
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 
@@ -63,12 +64,24 @@ export function AssetSuitabilityTableWrapper() {
     workTaskTypeMap
   );
 
+  const allWorkTaskTypes = Object.values(workTaskTypeMap).sort((wtt1, wtt2) =>
+    wtt1.name.localeCompare(wtt2.name)
+  );
+
   return (
-    <RatingTable
-      ratedElements={assetDtos}
-      ratingCategories={workTaskTypeDtos}
-      ratingEditContext={AssetSuitabilityEditContext}
-      ratingCategoryDescriptor={'Lesson Type'}
-    />
+    <Card className={'max-w-[75%] max-h-[75vh] p-0'}>
+      <div
+        className={
+          'max-w-full max-h-full overflow-auto box-border border-8 border-transparent'
+        }
+      >
+        <RatingTable
+          ratedElements={assetDtos}
+          ratingCategories={allWorkTaskTypes}
+          ratingEditContext={AssetSuitabilityEditContext}
+          ratingCategoryDescriptor={'Lesson Type'}
+        />
+      </div>
+    </Card>
   );
 }

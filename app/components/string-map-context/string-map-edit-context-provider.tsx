@@ -24,6 +24,12 @@ import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { createContext } from 'preact/compat';
 import { AccessorFunction } from '../../staffroom/teachers/rating-table';
 import { useModal } from '../confirm-action-modal';
+import {
+  useSelectiveContextControllerStringList,
+  useSelectiveContextDispatchStringList
+} from '../selective-context/selective-context-manager-string-list';
+import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
+import { isNotUndefined } from '../../graphing/editing/functions/graph-edits';
 
 export interface StringMapEditContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
@@ -57,12 +63,21 @@ export function StringMapEditContextProvider<T>({
       false
     );
 
+  const { currentState } = useSelectiveContextControllerStringList(
+    unsavedChangesEntityKey,
+    providerListenerKey,
+    EmptyIdArray
+  );
+
   const { isOpen, closeModal, openModal } = useModal();
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;
-    const entityList = Object.values(currentModels as StringMap<T>);
-    commitServerAction(entityList).then((r) => {
+    const updatedEntities = currentState
+      .map((id) => currentModels[id])
+      .filter(isNotUndefined);
+    // const entityList = Object.values(currentModels as StringMap<T>);
+    commitServerAction(updatedEntities).then((r) => {
       if (r.data) {
         const schemas = getPayloadArray(r.data, mapKeyAccessor);
         dispatch({ type: 'updateAll', payload: schemas });

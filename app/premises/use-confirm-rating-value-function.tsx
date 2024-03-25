@@ -6,6 +6,8 @@ import {
 } from '../staffroom/teachers/rating-table';
 import { useSelectiveContextDispatchBoolean } from '../components/selective-context/selective-context-manager-boolean';
 import { useCallback } from 'react';
+import { useSelectiveContextDispatchStringList } from '../components/selective-context/selective-context-manager-string-list';
+import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
 export function useConfirmRatingValueFunction<R, E>(
   dispatch: StringMapDispatch<E>,
@@ -23,6 +25,13 @@ export function useConfirmRatingValueFunction<R, E>(
     false
   );
 
+  const { currentState, dispatchWithoutControl: addIdToUnsavedList } =
+    useSelectiveContextDispatchStringList({
+      contextKey: unsavedChangesContextKey,
+      listenerKey: unsavedChangesListenerKey,
+      initialValue: EmptyIdArray
+    });
+
   return useCallback(
     (rating: R, elementWithRatings: E, updatedValue: number) => {
       const updatedList = ratingListAccessor(elementWithRatings).map(
@@ -33,16 +42,20 @@ export function useConfirmRatingValueFunction<R, E>(
             : ratingDto
       );
       const updatedElement = ratingListSetter(elementWithRatings, updatedList);
+      const idForMap = elementStringIdAccessor(updatedElement);
       dispatch({
         type: 'update',
         payload: {
-          key: elementStringIdAccessor(updatedElement),
+          key: idForMap,
           data: updatedElement
         }
       });
+      addIdToUnsavedList([...currentState, idForMap]);
       dispatchWithoutControl(true);
     },
     [
+      currentState,
+      addIdToUnsavedList,
       dispatch,
       ratingListAccessor,
       ratingCategoryIdAccessor,

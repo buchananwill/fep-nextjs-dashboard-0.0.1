@@ -1,7 +1,7 @@
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import { fetchPremises } from '../../api/actions/request-class-rooms';
+import { fetchPremises } from '../../api/actions/premises';
 import { Card } from '@tremor/react';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
@@ -33,7 +33,15 @@ export default async function Page() {
   if (workTaskTypeDtos === undefined) {
     return <DataNotFoundCard>No lesson types found</DataNotFoundCard>;
   }
-  const assetDtos = actionResponse.data.nodes.map((dn) => dn.data);
+  const assetDtos = actionResponse.data.nodes
+    .map((dn) => dn.data)
+    .map((asset) => {
+      const sortedSuitabilities = asset.assetRoleWorkTaskSuitabilities.sort(
+        (suit1, suit2) =>
+          suit1.workTaskTypeName.localeCompare(suit2.workTaskTypeName)
+      );
+      return { ...asset, assetRoleWorkTaskSuitabilities: sortedSuitabilities };
+    });
 
   const assetStringMap = await convertListToStringMap(assetDtos, (asset) =>
     asset.id.toString()

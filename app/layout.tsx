@@ -1,23 +1,15 @@
 import './globals.css';
 import { enableMapSet } from 'immer';
-
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
-
 import React, { Suspense } from 'react';
-
 import Loading from './loading';
 import TooltipsContextProvider from './components/tooltips/tooltips-context-provider';
 import SubjectColorCodingProvider from './subject-color-coding/subject-color-coding-provider';
-import SelectiveContextManagerBoolean from './components/selective-context/selective-context-manager-boolean';
-import SelectiveContextManagerNumber from './components/selective-context/selective-context-manager-number';
-import SelectiveContextManagerString from './components/selective-context/selective-context-manager-string';
 import KeyListenerManager from './components/key-listener-context/key-listener-manager';
-import SelectiveContextManagerStringList from './components/selective-context/selective-context-manager-string-list';
-import SelectiveContextManagerNumberList from './components/selective-context/selective-context-manager-number-list';
-import SelectiveContextManagerFunction from './components/selective-context/selective-context-manager-function';
 import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
 import ColorCodingProvider from './contexts/color-coding/color-coding-provider';
+import SelectiveContextCollection from './components/selective-context/selective-context-collection';
 
 enableMapSet();
 
@@ -37,34 +29,22 @@ export default async function RootLayout({
       <body className="h-full">
         <AnimationSyncContextProvider>
           <TooltipsContextProvider>
-            <SelectiveContextManagerBoolean>
-              <SelectiveContextManagerNumber>
-                <SelectiveContextManagerString>
-                  <KeyListenerManager>
-                    <SubjectColorCodingProvider>
-                      <SelectiveContextManagerStringList>
-                        <SelectiveContextManagerNumberList>
-                          <SelectiveContextManagerFunction>
-                            <ColorCodingProvider>
-                              <Suspense>
-                                <Nav />
-                              </Suspense>
-                              <main className="p-4 md:p-10 mx-auto max-w-full">
-                                <Suspense fallback={<Loading />}>
-                                  {children}
-                                </Suspense>
-                              </main>
-                              <Analytics />
-                            </ColorCodingProvider>
-                            {/*<Toast />*/}
-                          </SelectiveContextManagerFunction>
-                        </SelectiveContextManagerNumberList>
-                      </SelectiveContextManagerStringList>
-                    </SubjectColorCodingProvider>
-                  </KeyListenerManager>
-                </SelectiveContextManagerString>
-              </SelectiveContextManagerNumber>
-            </SelectiveContextManagerBoolean>
+            <SelectiveContextCollection>
+              <SubjectColorCodingProvider>
+                <KeyListenerManager>
+                  <ColorCodingProvider>
+                    <Suspense>
+                      <Nav />
+                    </Suspense>
+                    <main className="p-4 md:p-10 mx-auto max-w-full">
+                      <Suspense fallback={<Loading />}>{children}</Suspense>
+                    </main>
+                    <Analytics />
+                  </ColorCodingProvider>
+                  {/*<Toast />*/}
+                </KeyListenerManager>
+              </SubjectColorCodingProvider>
+            </SelectiveContextCollection>
           </TooltipsContextProvider>
         </AnimationSyncContextProvider>
       </body>

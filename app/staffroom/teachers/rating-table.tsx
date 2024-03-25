@@ -60,9 +60,12 @@ export default function RatingTable<
       <tbody>
         {ratedElements.map((ratedElement) => (
           <tr key={ratedElement.id} className="">
-            <td className="text-sm px-2">
+            <th
+              className="text-sm px-2 sticky left-0 bg-opacity-100 z-10 bg-white"
+              scope={'row'}
+            >
               {elementLabelAccessor(ratedElement)}
-            </td>
+            </th>
             {ratingListAccessor(ratedElement)
               .filter((rating) =>
                 ratingCategories.some(
