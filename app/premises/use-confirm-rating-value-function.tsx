@@ -60,9 +60,9 @@ export function useConfirmRatingValueFunction<R, E>(
       dispatchWithoutControl(true);
     },
     [
+      dispatch,
       currentState,
       addIdToUnsavedList,
-      useSelectiveDispatchHook,
       ratingListAccessor,
       ratingCategoryIdAccessor,
       ratingValueSetter,

@@ -26,14 +26,12 @@ import {
 } from './use-confirm-rating-value-function';
 import { useAssetSuitabilityListDispatch } from '../components/selective-context/typed/asset-suitability-list-selective-context-provider';
 
-const suitabilityRatingSetter = (
-  assetSuitability: AssetRoleWorkTaskSuitabilityDto,
-  updatedValue: number
-) => {
-  return produce(assetSuitability, (draft) => {
-    draft.suitabilityRating = updatedValue;
-  });
-};
+import { getCurriedProducer } from '../staffroom/contexts/providerRoles/get-curried-producer';
+
+const suitabilityProducer = getCurriedProducer<
+  AssetRoleWorkTaskSuitabilityDto,
+  number
+>((rating, value) => (rating.suitabilityRating = value));
 const suitabilityListSetter = (
   assetDto: AssetDto,
   list: AssetRoleWorkTaskSuitabilityDto[]
@@ -49,7 +47,7 @@ export default function AssetSuitabilityEditContextProvider({
     useAssetSuitabilityListDispatch,
     assetRoleWorkTaskSuitabilityDtoListAccessor,
     assetRoleWorkTaskSuitabilityIdAccessor,
-    suitabilityRatingSetter,
+    suitabilityProducer,
     suitabilityListSetter,
     IdStringFromNumberAccessor,
     UnsavedAssetChanges,

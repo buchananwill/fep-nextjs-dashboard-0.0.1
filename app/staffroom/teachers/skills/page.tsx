@@ -1,6 +1,6 @@
 'use client';
 import RatingTable from '../rating-table';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { ProviderContext } from '../../contexts/providerRoles/provider-context';
 import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provider-role-selection-context';
 import { SkillEditContext } from '../../contexts/providerRoles/rating-edit-context';
@@ -17,14 +17,32 @@ import {
   IdAccessor,
   IdStringFromNumberAccessor
 } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
+import {
+  ProviderRoleStringMapContext,
+  useProviderRoleStringMapContext
+} from '../../contexts/providerRoles/provider-role-string-map-context-creator';
+import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
 
 export default function SkillsPage({}: {}) {
-  const { providers, workTaskTypes } = useContext(ProviderContext);
+  const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
+  const { workTaskTypeMap } = useWorkTaskTypeContext();
 
-  const firstProvider = providers[0];
+  const idList = useMemo(() => {
+    return selectedProviders.map((tuple) => tuple.id);
+  }, [selectedProviders]);
 
-  if (!firstProvider) {
+  const providerRoleDtos = useMemoizedSelectionFromListAndStringMap(
+    idList,
+    providerRoleDtoStringMap
+  );
+
+  const allWorkTaskTypes = Object.values(workTaskTypeMap).sort((wtt1, wtt2) =>
+    wtt1.name.localeCompare(wtt2.name)
+  );
+
+  if (Object.keys(providerRoleDtoStringMap).length === 0) {
     return (
       <div className={'w-full h-fit bg-gray-400 text-black rounded-lg p-2'}>
         No teachers.
@@ -32,17 +50,14 @@ export default function SkillsPage({}: {}) {
     );
   }
 
-  const filteredProviderRoles = providers.filter((providerRole) =>
-    selectedProviders.some((id) => providerRole.id == id.id)
-  );
   return (
     <RatingTable
-      ratedElements={filteredProviderRoles}
-      ratingCategories={workTaskTypes}
+      ratedElements={providerRoleDtos}
+      ratingCategories={allWorkTaskTypes}
       ratingCategoryDescriptor={'Skill'}
     >
       <RatingTableBody
-        elementsWithRatings={filteredProviderRoles}
+        elementsWithRatings={providerRoleDtos}
         listAccessor={SkillEditAccessorFunctions.ratingListAccessor}
         elementIdAccessor={IdStringFromNumberAccessor}
         elementLabelAccessor={SkillEditAccessorFunctions.elementLabelAccessor}

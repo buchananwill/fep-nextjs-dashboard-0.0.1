@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import { ProviderRoleAndTaskData } from './contexts/providerRoles/provider-context';
-import ProviderRoleContextProvider from './contexts/providerRoles/provider-role-context-provider';
+import ProviderRoleSkillEditContextProvider from './contexts/providerRoles/provider-role-skill-edit-context-provider';
 import AvailabilityContextProvider from './contexts/availability/availability-context-provider';
 import { TeachersToolCard } from './teachers-tool-card';
 import ToolCardContextProvider from '../components/tool-card/tool-card-context-provider';
@@ -20,6 +20,14 @@ import { getCycleModel } from '../api/actions/cycle-model';
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../components/calendar-view/range/calendar-range-context-provider';
+import ProviderRoleStringMapContextProvider from './contexts/providerRoles/provider-role-string-map-context-provider';
+import {
+  StringMapReducer,
+  useStringMapReducer
+} from '../curriculum/delivery-models/contexts/string-map-context-creator';
+import { convertListToStringMap } from '../curriculum/delivery-models/contexts/convert-list-to-string-map';
+import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
+import { WorkTaskTypeContextProvider } from '../curriculum/delivery-models/contexts/work-task-type-context-provider';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,26 +46,6 @@ export default async function StaffroomLayout({
       }
     }
   });
-
-  const eventMap = new Map<number, EventDto[]>();
-  const eventsById: { [key: string]: EventDto } = {};
-
-  let veryFirstEvent: EventDto | undefined;
-
-  // for (let { partyId, id } of teacherList) {
-  //   await performApiAction(() => getCalendarEvents(partyId)).then((r) => {
-  //     if (r.data) {
-  //       eventMap.set(id, r.data);
-  //       r.data?.forEach((event) => (eventsById[event.id] = event));
-  //       const firstEvent = r.data[0];
-  //       veryFirstEvent =
-  //         !veryFirstEvent ||
-  //         firstEvent?.eventStart.getTime() < veryFirstEvent.eventStart.getTime()
-  //           ? firstEvent
-  //           : veryFirstEvent;
-  //     }
-  //   });
-  // }
 
   let workTaskTypeDtos: WorkTaskTypeDto[] = [];
 
@@ -87,36 +75,51 @@ export default async function StaffroomLayout({
     if (data) availabilityMap.set(providerRoleDto.id, data);
   }
 
+  teacherList.forEach(
+    (teacher) =>
+      (teacher.workTaskCompetencyDtoList =
+        teacher.workTaskCompetencyDtoList.sort((wtt1, wtt2) =>
+          wtt1.workTaskType.localeCompare(wtt2.workTaskType)
+        ))
+  );
+
+  const providerRoleStringMap = await convertListToStringMap(
+    teacherList,
+    IdStringFromNumberAccessor
+  );
+  const workTaskTypeStringMap = await convertListToStringMap(
+    workTaskTypeDtos,
+    IdStringFromNumberAccessor
+  );
+
   return (
-    <AvailabilityContextProvider
-      initialData={{
-        cycleModel,
-        cycleAvailabilityUnits: availabilityUnits,
-        providerAvailability: availabilityMap,
-        unsavedChanges: false,
-        dndMap: {}
-      }}
-    >
-      <ProviderRoleContextProvider
-        providerRoleAndTaskData={providerRolesAndTaskData}
+    <WorkTaskTypeContextProvider entityMap={workTaskTypeStringMap}>
+      <AvailabilityContextProvider
+        initialData={{
+          cycleModel,
+          cycleAvailabilityUnits: availabilityUnits,
+          providerAvailability: availabilityMap,
+          unsavedChanges: false,
+          dndMap: {}
+        }}
       >
-        <CalendarRangeContextProvider>
-          {/*  <EventsContextProvider*/}
-          {/*    initialContext={{*/}
-          {/*      events: eventMap,*/}
-          {/*      eventsById: eventsById,*/}
-          {/*      unSyncedEvents: []*/}
-          {/*    }}*/}
-          {/*  >*/}
-          <div className="flex w-full px-2">
-            <ToolCardContextProvider>
-              <TeachersToolCard />
-            </ToolCardContextProvider>
-            {children}
-          </div>
-          {/*</EventsContextProvider>*/}
-        </CalendarRangeContextProvider>
-      </ProviderRoleContextProvider>
-    </AvailabilityContextProvider>
+        <ProviderRoleStringMapContextProvider
+          providerRoleStringMap={providerRoleStringMap}
+        >
+          <ProviderRoleSkillEditContextProvider
+            providerRoleAndTaskData={providerRolesAndTaskData}
+          >
+            <CalendarRangeContextProvider>
+              <div className="flex w-full px-2">
+                <ToolCardContextProvider>
+                  <TeachersToolCard />
+                </ToolCardContextProvider>
+                {children}
+              </div>
+            </CalendarRangeContextProvider>
+          </ProviderRoleSkillEditContextProvider>
+        </ProviderRoleStringMapContextProvider>
+      </AvailabilityContextProvider>
+    </WorkTaskTypeContextProvider>
   );
 }

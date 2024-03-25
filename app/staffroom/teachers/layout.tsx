@@ -8,14 +8,6 @@ import {
 import ServiceCategoryContextInit, {
   ServiceCategoriesEmptyArray
 } from '../../work-types/lessons/service-category-context-init';
-import RatingTable from './rating-table';
-import { RatingTableBody } from '../../premises/classroom-suitability/rating-table-body';
-import {
-  assetRoleWorkTaskSuitabilityDtoListAccessor,
-  AssetSuitabilityAccessorFunctions,
-  IdStringFromNumberAccessor
-} from '../../premises/classroom-suitability/rating-table-accessor-functions';
-import { AssetSuitabilityEditContext } from '../contexts/providerRoles/rating-edit-context';
 
 export default async function TeachersLayout({
   children

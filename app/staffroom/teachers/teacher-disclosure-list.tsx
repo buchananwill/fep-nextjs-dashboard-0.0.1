@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import DisclosureListPanel from '../../components/disclosure-list/disclosure-list-panel';
 import {
@@ -21,7 +21,13 @@ import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context'
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
 import { RatingList } from './rating-list';
-import { useWorkTaskCompetencyListController } from '../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
+import {
+  useWorkTaskCompetencyListController,
+  useWorkTaskCompetencyListListener
+} from '../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
+import { EmptySchemasArray } from '../../curriculum/delivery-models/functions/use-schema-detail-memo';
+import { WorkTaskCompetencyDto } from '../../api/dtos/WorkTaskCompetencyDtoSchema';
+import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
 
 const lighten = (hslObject: HSLA): HSLA => {
   const { h, s, l, a } = hslObject;
@@ -138,25 +144,38 @@ function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
   );
 }
 
+export const EmptyArray: any[] = [];
+
 function TeacherPanelTransformer(props: { data: ProviderRoleDto }) {
   const { data } = props;
   const { id } = data;
+  const { currentState } = useWorkTaskCompetencyListListener({
+    contextKey: `${id}`,
+    listenerKey: `teacher-label`,
+    initialValue: EmptyArray as WorkTaskCompetencyDto[]
+  });
 
   return (
     <RatingList
       data={data}
       context={SkillEditContext}
-      ratingList={data.workTaskCompetencyDtoList}
+      ratingList={currentState}
     />
   );
 }
 
 export default function TeacherDisclosureList() {
-  const { providers, workTaskTypes } = useContext(ProviderContext);
+  const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
+
+  const providers = useMemo(() => {
+    return Object.values(providerRoleDtoStringMap).sort((a1, a2) =>
+      a1.name.localeCompare(a2.name)
+    );
+  }, [providerRoleDtoStringMap]);
 
   return (
     <>
-      {providers && (
+      {providerRoleDtoStringMap && (
         <DisclosureListPanel
           data={providers}
           buttonCluster={ProviderRoleButtonCluster}
