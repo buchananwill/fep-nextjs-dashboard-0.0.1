@@ -11,7 +11,6 @@ import {
 import { errorResponse } from '../api/actions/actionResponse';
 import { StringMap } from '../curriculum/delivery-models/contexts/string-map-context-creator';
 import { PropsWithChildren } from 'react';
-import AssetSuitabilityEditContextProvider from './asset-suitability-edit-context-provider';
 import { patchPremises } from '../api/actions/premises';
 
 const Provider = StringMapEditContextProvider<AssetDto>;

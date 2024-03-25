@@ -1,6 +1,5 @@
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
-import { RatingTableCell } from './rating-table-cell';
 import { Context, useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
 import {
@@ -8,6 +7,7 @@ import {
   RatingTableHeaderCell,
   RatingTableMain
 } from './rating-table-components';
+import { RatingTableRatings } from './rating-table-ratings';
 
 export interface AccessorFunction<O, P> {
   (object: O): P;
@@ -66,20 +66,10 @@ export default function RatingTable<
             >
               {elementLabelAccessor(ratedElement)}
             </th>
-            {ratingListAccessor(ratedElement)
-              .filter((rating) =>
-                ratingCategories.some(
-                  (cat) => cat.id === ratingCategoryIdAccessor(rating)
-                )
-              )
-              .map((rating) => (
-                <RatingTableCell
-                  key={rating.id}
-                  ratedElement={ratedElement}
-                  rating={rating}
-                  ratingEditContext={ratingEditContext}
-                ></RatingTableCell>
-              ))}
+            <RatingTableRatings
+              ratedElement={ratedElement}
+              ratingEditContext={ratingEditContext}
+            />
           </tr>
         ))}
       </tbody>

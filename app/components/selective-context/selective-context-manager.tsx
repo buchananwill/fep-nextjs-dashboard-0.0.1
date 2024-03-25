@@ -1,6 +1,13 @@
-import { MutableRefObject, useEffect, useReducer, useRef } from 'react';
+import {
+  Context,
+  Dispatch,
+  MutableRefObject,
+  useEffect,
+  useReducer,
+  useRef
+} from 'react';
 
-export interface UpdateRefInterface<T> {
+export interface ListenerRefInterface<T> {
   [key: string]: SelectiveListeners<T>;
 }
 
@@ -17,10 +24,18 @@ export interface UpdateAction<T> {
   value: T;
 }
 
+export type SelectiveListenersContext<T> = Context<
+  MutableRefObject<ListenerRefInterface<T>>
+>;
+export type SelectiveDispatchContext<T> = Context<Dispatch<UpdateAction<T>>>;
+export type SelectiveValueContext<T> = Context<
+  MutableRefObject<LatestValueRef<T>>
+>;
+
 export function useSelectiveContextManager<T>(
   initialContext: LatestValueRef<T>
 ) {
-  const triggerUpdateRef = useRef({} as UpdateRefInterface<T>);
+  const triggerUpdateRef = useRef({} as ListenerRefInterface<T>);
 
   const latestValueRef = useRef(initialContext);
 

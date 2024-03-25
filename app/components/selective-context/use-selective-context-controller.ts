@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   LatestValueRef,
   UpdateAction,
-  UpdateRefInterface
+  ListenerRefInterface
 } from './selective-context-manager';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
@@ -34,7 +34,7 @@ export function useSelectiveContextController<T>(
   listenerKey: string,
   initialValue: T,
   UpdateTriggerRefContext: React.Context<
-    React.MutableRefObject<UpdateRefInterface<T>>
+    React.MutableRefObject<ListenerRefInterface<T>>
   >,
   latestValueRefContext: React.Context<
     React.MutableRefObject<LatestValueRef<T>>

@@ -18,6 +18,7 @@ import { useRatingEditModal } from '../../staffroom/contexts/providerRoles/use-r
 import { RatingEditModal } from '../../staffroom/contexts/providerRoles/rating-edit-modal';
 import { Card } from '@tremor/react';
 import { isNotNull } from '../../api/main';
+import { useAssetSuitabilityListDispatch } from '../../components/selective-context/typed/asset-suitability-list-selective-context-provider';
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
 

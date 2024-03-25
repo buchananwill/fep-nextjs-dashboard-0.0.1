@@ -11,12 +11,18 @@ import {
 } from '../../teachers/rating-table';
 import { EmptyNumberIdArray } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
+import {
+  MockReturn,
+  UseSelectiveContextDispatch,
+  UseSelectiveContextListener
+} from '../../../components/selective-context/use-selective-context-listener';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
   triggerModal: (skill: R, providerRoleDto: E) => void;
   elementLabelAccessor: NameAccessor<E>;
   elementIdAccessor: AccessorFunction<E, string | number>;
   ratingListAccessor: RatingListAccessor<E, R>;
+  useRatingListListenerHook: UseSelectiveContextListener<R[]>;
 }
 
 const defaultContext: RatingEditContext<any, any> = {
@@ -26,7 +32,8 @@ const defaultContext: RatingEditContext<any, any> = {
   ratingCategoryIdAccessor: (object) => NaN,
   ratingListAccessor: (object) => EmptyNumberIdArray,
   elementLabelAccessor: (object) => '',
-  elementIdAccessor: (object) => NaN
+  elementIdAccessor: (object) => NaN,
+  useRatingListListenerHook: () => MockReturn
 };
 
 export const SkillEditContext = createContext<

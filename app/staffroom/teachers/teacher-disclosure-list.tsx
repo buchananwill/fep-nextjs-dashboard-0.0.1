@@ -1,5 +1,5 @@
 'use client';
-import React, { Context, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import DisclosureListPanel from '../../components/disclosure-list/disclosure-list-panel';
 import {
@@ -17,22 +17,11 @@ import {
 
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
-import {
-  RatingEditContext,
-  SkillEditContext
-} from '../contexts/providerRoles/rating-edit-context';
+import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context';
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { RatingList } from './rating-list';
 
-const competencyColors: { [key: string]: string } = {
-  '0': 'gray-200',
-  '1': 'red-300',
-  '2': 'amber-300',
-  '3': 'amber-400',
-  '4': 'green-300',
-  '5': 'green-500'
-};
 const lighten = (hslObject: HSLA): HSLA => {
   const { h, s, l, a } = hslObject;
   const lighterL = 100 - (100 - l) * 0.5;
@@ -139,46 +128,6 @@ function ProviderRoleButtonCluster({ data }: { data: ProviderRoleDto }) {
         Click to show teacher in main area.
       </StandardTooltipContent>
     </Tooltip>
-  );
-}
-
-function getCompetencyColor(competencyRating: number) {
-  return competencyColors[competencyRating.toString()];
-}
-
-export function RatingList<R, E>({
-  context,
-  data
-}: {
-  data: E;
-  context: React.Context<RatingEditContext<R, E>>;
-}) {
-  const {
-    ratingListAccessor,
-    elementIdAccessor,
-    ratingCategoryLabelAccessor,
-    ratingCategoryIdAccessor,
-    triggerModal,
-    ratingValueAccessor
-  } = useContext(context);
-  return (
-    <ul className={'divide-y'}>
-      {ratingListAccessor(data).map((wtComp, index) => (
-        <li
-          key={`${elementIdAccessor(data)}-${ratingCategoryIdAccessor(wtComp)}`}
-        >
-          <button
-            className={`text-${getCompetencyColor(
-              ratingValueAccessor(wtComp)
-            )} pb-1 hover:bg-gray-100 cursor-pointer w-full`}
-            onClick={() => triggerModal(wtComp, data)}
-          >
-            {ratingCategoryLabelAccessor(wtComp)} :{' '}
-            {ratingValueAccessor(wtComp)}
-          </button>
-        </li>
-      ))}
-    </ul>
   );
 }
 

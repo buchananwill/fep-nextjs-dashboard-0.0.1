@@ -1,8 +1,14 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  Dispatch,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import {
   LatestValueRef,
   UpdateAction,
-  UpdateRefInterface
+  ListenerRefInterface
 } from './selective-context-manager';
 
 export interface UseSelectiveContextListenerReturn<T> {
@@ -15,12 +21,30 @@ export type UseSelectiveContextListener<T> = (
   initialValue: T
 ) => UseSelectiveContextListenerReturn<T>;
 
+export interface UseSelectiveContextDispatchReturn<T> {
+  currentState: T;
+  dispatchWithoutControl: (proposedValue: T) => void;
+  dispatch: Dispatch<UpdateAction<T>>;
+}
+
+export const MockReturn: UseSelectiveContextDispatchReturn<any> = {
+  currentState: {} as any,
+  dispatchWithoutControl: () => {},
+  dispatch: (value) => {}
+};
+
+export type UseSelectiveContextDispatch<T> = (
+  contextKey: string,
+  listenerKey: string,
+  initialValue: T
+) => UseSelectiveContextDispatchReturn<T>;
+
 export function useSelectiveContextListener<T>(
   contextKey: string,
   listenerKey: string,
   fallBackValue: T,
   updateRefContext: React.Context<
-    React.MutableRefObject<UpdateRefInterface<T>>
+    React.MutableRefObject<ListenerRefInterface<T>>
   >,
   latestValueRefContext: React.Context<
     React.MutableRefObject<LatestValueRef<T>>
@@ -72,7 +96,7 @@ export function useSelectiveContextDispatch<T>(
   listenerKey: string,
   fallBackValue: T,
   updateRefContext: React.Context<
-    React.MutableRefObject<UpdateRefInterface<T>>
+    React.MutableRefObject<ListenerRefInterface<T>>
   >,
   latestValueRefContext: React.Context<
     React.MutableRefObject<LatestValueRef<T>>
@@ -93,7 +117,7 @@ export function useSelectiveContextDispatch<T>(
     dispatch({ contextKey, value: proposedValue });
   };
 
-  return { currentState, dispatchWithoutControl };
+  return { currentState, dispatchWithoutControl, dispatch };
 }
 
 export function useSelectiveContextKeyMemo(

@@ -1,16 +1,19 @@
-import { StringMapDispatch } from '../curriculum/delivery-models/contexts/string-map-context-creator';
 import {
   AccessorFunction,
   RatingCategoryIdAccessor,
   RatingListAccessor
 } from '../staffroom/teachers/rating-table';
 import { useSelectiveContextDispatchBoolean } from '../components/selective-context/selective-context-manager-boolean';
-import { useCallback } from 'react';
+import { Dispatch, useCallback } from 'react';
 import { useSelectiveContextDispatchStringList } from '../components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
+import { UpdateAction } from '../components/selective-context/selective-context-manager';
+import { UseSelectiveContextDispatch } from '../components/selective-context/use-selective-context-listener';
+
+const emptyArray: any[] = [];
 
 export function useConfirmRatingValueFunction<R, E>(
-  dispatch: StringMapDispatch<E>,
+  useSelectiveDispatchHook: UseSelectiveContextDispatch<R[]>,
   ratingListAccessor: RatingListAccessor<E, R>,
   ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>,
   ratingValueSetter: (rating: R, value: number) => R,
@@ -32,6 +35,8 @@ export function useConfirmRatingValueFunction<R, E>(
       initialValue: EmptyIdArray
     });
 
+  const { dispatch } = useSelectiveDispatchHook('', '', emptyArray as R[]);
+
   return useCallback(
     (rating: R, elementWithRatings: E, updatedValue: number) => {
       const updatedList = ratingListAccessor(elementWithRatings).map(
@@ -44,11 +49,8 @@ export function useConfirmRatingValueFunction<R, E>(
       const updatedElement = ratingListSetter(elementWithRatings, updatedList);
       const idForMap = elementStringIdAccessor(updatedElement);
       dispatch({
-        type: 'update',
-        payload: {
-          key: idForMap,
-          data: updatedElement
-        }
+        contextKey: idForMap,
+        value: updatedList
       });
       addIdToUnsavedList([...currentState, idForMap]);
       dispatchWithoutControl(true);
@@ -56,7 +58,7 @@ export function useConfirmRatingValueFunction<R, E>(
     [
       currentState,
       addIdToUnsavedList,
-      dispatch,
+      useSelectiveDispatchHook,
       ratingListAccessor,
       ratingCategoryIdAccessor,
       ratingValueSetter,

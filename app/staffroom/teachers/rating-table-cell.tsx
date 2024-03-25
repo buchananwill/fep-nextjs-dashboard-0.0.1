@@ -21,8 +21,12 @@ export function RatingTableCell<R, E>({
   ratedElement,
   ratingEditContext
 }: RatingTableCellProps<R, E>) {
-  const { triggerModal, ratingCategoryLabelAccessor, ratingValueAccessor } =
-    useContext(ratingEditContext);
+  const {
+    triggerModal,
+    ratingCategoryLabelAccessor,
+    ratingValueAccessor,
+    useRatingListListenerHook
+  } = useContext(ratingEditContext);
 
   console.log('rendering table cell');
 

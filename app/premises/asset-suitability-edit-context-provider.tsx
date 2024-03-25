@@ -14,12 +14,14 @@ import {
 } from './classroom-suitability/rating-table-accessor-functions';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import {
+  AssetStringMapDispatchContext,
   UnsavedAssetChanges,
   useAssetStringMapContext
 } from './asset-string-map-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { produce } from 'immer';
 import { useConfirmRatingValueFunction } from './use-confirm-rating-value-function';
+import { useAssetSuitabilityListDispatch } from '../components/selective-context/typed/asset-suitability-list-selective-context-provider';
 
 const suitabilityRatingSetter = (
   assetSuitability: AssetRoleWorkTaskSuitabilityDto,
@@ -44,7 +46,7 @@ export default function AssetSuitabilityEditContextProvider({
   const { assetDtoStringMapDispatch } = useAssetStringMapContext();
 
   const confirmRatingValue = useConfirmRatingValueFunction(
-    assetDtoStringMapDispatch,
+    useAssetSuitabilityListDispatch,
     assetRoleWorkTaskSuitabilityDtoListAccessor,
     assetRoleWorkTaskSuitabilityIdAccessor,
     suitabilityRatingSetter,
@@ -63,7 +65,11 @@ export default function AssetSuitabilityEditContextProvider({
 
   return (
     <AssetSuitabilityEditContext.Provider
-      value={{ triggerModal, ...AssetSuitabilityAccessorFunctions }}
+      value={{
+        triggerModal,
+        useRatingListListenerHook: useAssetSuitabilityListDispatch,
+        ...AssetSuitabilityAccessorFunctions
+      }}
     >
       {children}
       {<RatingEditModal {...ratingEditModalProps} />}
