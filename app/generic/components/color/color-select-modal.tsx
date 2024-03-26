@@ -1,59 +1,58 @@
-import React, {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useRef,
-  useState
-} from 'react';
+'use client';
+
+import { Fragment, ReactNode, useContext, useEffect, useState } from 'react';
+import { ColorState } from '../../contexts/color/color-context';
+import {
+  ColorCoding,
+  ModalColorSelectContext
+} from '../../contexts/color-coding/context';
+import ColorSelector, { useColorState } from './color-selector';
 import { Dialog, Transition } from '@headlessui/react';
-import { useEnterPressListener } from './useKeyPressListener';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
 
-  const closeModal = useCallback(() => {
+  function closeModal() {
     setIsOpen(false);
-  }, []);
+  }
 
-  const openModal = useCallback(() => {
+  function openModal() {
     setIsOpen(true);
-  }, []);
+  }
 
   return { isOpen, closeModal, openModal };
 }
 
-export interface ConfirmActionModalProps {
-  show: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  onCancel: () => void;
-  children?: ReactNode;
-  title?: string;
-  enterToConfirm?: boolean;
-}
-
-export function ConfirmActionModal({
-  onCancel,
-  onClose,
-  onConfirm,
+export function ColorSelectModal({
   show,
   children,
-  title = 'Confirm',
-  enterToConfirm
-}: ConfirmActionModalProps) {
-  const enterAction = enterToConfirm ? onConfirm : () => {};
-  // useEnterPressListener(enterAction);
-  // let confirmButtonRef = useRef(null);
+  initialState: { hue, lightness }
+}: {
+  show: boolean;
+  initialState: ColorState;
+
+  children?: ReactNode;
+}) {
+  const { onCancel, onClose, onConfirm, stringKey } = useContext(
+    ModalColorSelectContext
+  );
+
+  const colorCodingState = useContext(ColorCoding);
+
+  const localColorState = useColorState({ hue, lightness });
+  const { setHue, setLightness } = localColorState;
+
+  useEffect(() => {
+    const contextElement = colorCodingState[stringKey];
+    if (contextElement) {
+      setHue(contextElement.hue);
+      setLightness(contextElement.lightness);
+    }
+  }, [stringKey, setHue, setLightness, colorCodingState]);
 
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50"
-        onClose={onClose}
-        role={'dialog'}
-        // initialFocus={confirmButtonRef}
-      >
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -77,16 +76,16 @@ export function ConfirmActionModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-fit transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="max-w-fit text-lg font-medium leading-6 text-gray-900"
                 >
-                  {title ? title : 'Confirm'}
+                  Select Color for {stringKey}
                 </Dialog.Title>
-                <div className="mt-2">
+                <div className="flex mt-2 justify-center">
                   <div className="text-sm text-gray-500">
-                    {children || <p>Confirm action?</p>}
+                    <ColorSelector colorState={localColorState}></ColorSelector>
                   </div>
                 </div>
 
@@ -95,8 +94,10 @@ export function ConfirmActionModal({
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={onConfirm}
-                    // ref={confirmButtonRef}
+                    onClick={() => {
+                      onConfirm(localColorState);
+                      onClose();
+                    }}
                   >
                     Confirm
                   </button>

@@ -23,13 +23,13 @@ import {
   workTaskCompetencyIdAccessor
 } from '../../teachers/skills/rating-table-accessor-functions';
 
-import { useWorkTaskCompetencyListDispatch } from '../../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
+import { useWorkTaskCompetencyListDispatch } from '../../../contexts/selective-context/work-task-competency-list-selective-context-provider';
 import { useConfirmRatingValueFunction } from '../../../premises/use-confirm-rating-value-function';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
 import { useSelectiveContextListenerReadAll } from '../../../generic/components/selective-context/generic-selective-context-creator';
-import { WorkTaskCompetencyListSelectiveContext } from '../../../components/selective-context/typed/selective-context-creators';
+import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 
 const skillProducer = getCurriedProducer<WorkTaskCompetencyDto, number>(
   (task, value) => (task.competencyRating = value)

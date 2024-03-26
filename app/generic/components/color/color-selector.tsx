@@ -8,13 +8,13 @@ import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
 } from './color-context';
-import TooltipsContext from '../generic/components/tooltips/tooltips-context';
+import TooltipsContext from '../../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../generic/components/tooltips/tooltip';
-import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContentOld } from '../../generic/components/tooltips/standard-tooltip-content-old';
 
 const lessonColors = {
   Free: 'gray-200',

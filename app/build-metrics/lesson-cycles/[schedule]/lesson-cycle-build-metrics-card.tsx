@@ -3,7 +3,7 @@ import { Button, Card } from '@tremor/react';
 import NameIdTupleSelector from '../../../components/dropdown/name-id-tuple-selector';
 import DynamicDimensionTimetable, {
   HeaderTransformer
-} from '../../../components/dynamic-dimension-timetable';
+} from '../../../components/tables/dynamic-dimension-timetable';
 import { BuildMetricPeriodCardTransformer } from './period-card';
 import React from 'react';
 import Link from 'next/link';

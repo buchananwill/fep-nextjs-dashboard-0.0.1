@@ -1,8 +1,8 @@
 'use client';
-import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
+import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
 import { LessonCycleDTO } from '../api/dto-interfaces';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
-import InteractiveTableCard from '../components/interactive-table-card';
+import InteractiveTableCard from '../components/tables/interactive-table-card';
 import {
   TimetablesContext,
   TimetablesDispatchContext

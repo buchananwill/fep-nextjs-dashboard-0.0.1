@@ -27,7 +27,7 @@ import { RatingList } from './rating-list';
 import {
   useWorkTaskCompetencyListController,
   useWorkTaskCompetencyListListener
-} from '../../components/selective-context/typed/work-task-competency-list-selective-context-provider';
+} from '../../contexts/selective-context/work-task-competency-list-selective-context-provider';
 import { EmptySchemasArray } from '../../curriculum/delivery-models/functions/use-schema-detail-memo';
 import { WorkTaskCompetencyDto } from '../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';

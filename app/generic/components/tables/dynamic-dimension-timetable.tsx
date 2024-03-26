@@ -1,5 +1,5 @@
-import { TabularDTO } from '../api/dto-interfaces';
-import { reconstructTableWithDimensions } from '../utils/tables';
+import { TabularDTO } from '../../api/dto-interfaces';
+import { reconstructTableWithDimensions } from '../../utils/tables';
 import React from 'react';
 
 export type HeaderTransformer<H> = React.FC<HeaderTransformerProps<H>>;

@@ -1,5 +1,5 @@
-import { useSelectiveContextDispatchString } from '../selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../selective-context/use-selective-context-listener';
+import { useSelectiveContextDispatchString } from '../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../contexts/selective-context/use-selective-context-listener';
 import {
   ConfirmActionModal,
   ConfirmActionModalProps

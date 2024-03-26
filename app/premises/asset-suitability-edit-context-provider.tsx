@@ -12,11 +12,11 @@ import { UnsavedAssetChanges } from './asset-string-map-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { produce } from 'immer';
 import { useConfirmRatingValueFunction } from './use-confirm-rating-value-function';
-import { useAssetSuitabilityListDispatch } from '../components/selective-context/typed/asset-suitability-list-selective-context-provider';
+import { useAssetSuitabilityListDispatch } from '../contexts/selective-context/asset-suitability-list-selective-context-provider';
 
 import { getCurriedProducer } from '../staffroom/contexts/providerRoles/get-curried-producer';
 import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
-import { AssetSuitabilityListSelectiveContext } from '../components/selective-context/typed/selective-context-creators';
+import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 
 const suitabilityProducer = getCurriedProducer<
   AssetRoleWorkTaskSuitabilityDto,

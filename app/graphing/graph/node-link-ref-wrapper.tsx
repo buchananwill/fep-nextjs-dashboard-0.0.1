@@ -5,7 +5,7 @@ import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { GenericNodeRefContext } from '../nodes/generic-node-context-creator';
 import { GenericLinkRefContext } from '../links/generic-link-context-creator';
 import { GraphViewer } from './graph-viewer';
-import { UnsavedChangesModal } from '../../components/unsaved-changes-modal';
+import { UnsavedChangesModal } from '../../components/modals/unsaved-changes-modal';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export interface UnsavedNodeChangesProps {

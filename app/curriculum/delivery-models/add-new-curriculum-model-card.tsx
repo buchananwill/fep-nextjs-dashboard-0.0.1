@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import {
   ConfirmActionModal,
   useModal
-} from '../../components/confirm-action-modal';
+} from '../../components/modals/confirm-action-modal';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { Listbox } from '@headlessui/react';
 import StringTupleSelector from '../../components/dropdown/string-tuple-selector';
@@ -29,8 +29,8 @@ import {
 import {
   getStepperInterface,
   StepperContext
-} from '../../components/stepper/stepper-context-creator';
-import LandscapeStepper from '../../components/landscape-stepper';
+} from '../../contexts/stepper/stepper-context-creator';
+import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
 
 import { getPayloadArray } from './use-editing-context-dependency';
 import { AccessorFunction } from '../../staffroom/teachers/rating-table';

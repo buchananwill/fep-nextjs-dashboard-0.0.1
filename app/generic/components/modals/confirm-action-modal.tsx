@@ -1,58 +1,59 @@
-'use client';
-
-import { Fragment, ReactNode, useContext, useEffect, useState } from 'react';
-import { ColorState } from '../contexts/color/color-context';
-import {
-  ColorCoding,
-  ModalColorSelectContext
-} from '../contexts/color-coding/context';
-import ColorSelector, { useColorState } from './color-selector';
+import React, {
+  Fragment,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useEnterPressListener } from '../useKeyPressListener';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
-  }
+  }, []);
 
-  function openModal() {
+  const openModal = useCallback(() => {
     setIsOpen(true);
-  }
+  }, []);
 
   return { isOpen, closeModal, openModal };
 }
 
-export function ColorSelectModal({
+export interface ConfirmActionModalProps {
+  show: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  onCancel: () => void;
+  children?: ReactNode;
+  title?: string;
+  enterToConfirm?: boolean;
+}
+
+export function ConfirmActionModal({
+  onCancel,
+  onClose,
+  onConfirm,
   show,
   children,
-  initialState: { hue, lightness }
-}: {
-  show: boolean;
-  initialState: ColorState;
-
-  children?: ReactNode;
-}) {
-  const { onCancel, onClose, onConfirm, stringKey } = useContext(
-    ModalColorSelectContext
-  );
-
-  const colorCodingState = useContext(ColorCoding);
-
-  const localColorState = useColorState({ hue, lightness });
-  const { setHue, setLightness } = localColorState;
-
-  useEffect(() => {
-    const contextElement = colorCodingState[stringKey];
-    if (contextElement) {
-      setHue(contextElement.hue);
-      setLightness(contextElement.lightness);
-    }
-  }, [stringKey, setHue, setLightness, colorCodingState]);
+  title = 'Confirm',
+  enterToConfirm
+}: ConfirmActionModalProps) {
+  const enterAction = enterToConfirm ? onConfirm : () => {};
+  // useEnterPressListener(enterAction);
+  // let confirmButtonRef = useRef(null);
 
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={onClose}
+        role={'dialog'}
+        // initialFocus={confirmButtonRef}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -76,16 +77,16 @@ export function ColorSelectModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-fit transform overflow-visible rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="max-w-fit text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Select Color for {stringKey}
+                  {title ? title : 'Confirm'}
                 </Dialog.Title>
-                <div className="flex mt-2 justify-center">
+                <div className="mt-2">
                   <div className="text-sm text-gray-500">
-                    <ColorSelector colorState={localColorState}></ColorSelector>
+                    {children || <p>Confirm action?</p>}
                   </div>
                 </div>
 
@@ -94,10 +95,8 @@ export function ColorSelectModal({
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-emerald-200 px-4 py-2 text-sm font-medium text-emerald-900 hover:bg-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={() => {
-                      onConfirm(localColorState);
-                      onClose();
-                    }}
+                    onClick={onConfirm}
+                    // ref={confirmButtonRef}
                   >
                     Confirm
                   </button>

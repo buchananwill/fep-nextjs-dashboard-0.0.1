@@ -10,7 +10,7 @@ import {
 import {
   ConfirmActionModal,
   useModal
-} from '../../../components/confirm-action-modal';
+} from '../../../components/modals/confirm-action-modal';
 import {
   deleteCurriculumDeliveryModels,
   putModels

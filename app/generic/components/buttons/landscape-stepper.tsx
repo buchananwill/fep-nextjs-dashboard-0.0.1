@@ -2,7 +2,7 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { Text } from '@tremor/react';
 import React from 'react';
-import { useStepperContext } from './stepper/stepper-context-creator';
+import { useStepperContext } from '../../../contexts/stepper/stepper-context-creator';
 
 export default function LandscapeStepper() {
   const { increment, max, min, decrement, current } = useStepperContext();

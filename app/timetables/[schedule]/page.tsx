@@ -1,9 +1,9 @@
 import React from 'react';
 
-import BigTableCard from '../../components/big-table-card';
+import BigTableCard from '../../components/tables/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
-} from '../../components/dynamic-dimension-timetable';
+} from '../../components/tables/dynamic-dimension-timetable';
 import { PeriodCardTransformer } from '../period-card';
 
 import TimetablesContextProvider from '../timetables-context-provider';

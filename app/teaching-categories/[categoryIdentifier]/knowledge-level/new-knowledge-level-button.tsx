@@ -5,7 +5,7 @@ import { GenericButtonProps } from '../../../components/buttons/rename-button';
 import {
   ConfirmActionModal,
   useModal
-} from '../../../components/confirm-action-modal';
+} from '../../../components/modals/confirm-action-modal';
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
@@ -20,7 +20,7 @@ import { postKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';
-import { PendingOverlay } from '../../../components/pending-overlay';
+import { PendingOverlay } from '../../../generic/components/overlays/pending-overlay';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 

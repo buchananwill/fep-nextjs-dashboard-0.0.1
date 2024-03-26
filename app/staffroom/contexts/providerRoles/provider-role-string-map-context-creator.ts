@@ -1,4 +1,4 @@
-import { createStringMapContext } from '../../../components/string-map-context/context-creator';
+import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 import { AssetDto } from '../../../api/dtos/AssetDtoSchema';
 import { useContext } from 'react';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';

@@ -13,7 +13,7 @@ import {
 } from '../../../api/zod-mods';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { GenericFunctionWrapper } from '../../../generic/components/selective-context/selective-context-manager-function';
-import { useModal } from '../../../components/confirm-action-modal';
+import { useModal } from '../../../components/modals/confirm-action-modal';
 import { useNodeCloneFunction } from './use-node-clone-function';
 import { useRouter } from 'next/navigation';
 import { useGraphEditButtonHooks } from './use-graph-edit-button-hooks';

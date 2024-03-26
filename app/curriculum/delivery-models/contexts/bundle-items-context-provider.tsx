@@ -10,10 +10,10 @@ import {
   StringMapPayload,
   useStringMapReducer
 } from './string-map-context-creator';
-import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
+import { UnsavedChangesModal } from '../../../components/modals/unsaved-changes-modal';
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleEdits } from '../[yearGroup]/bundles/bundle-editor';
-import { useModal } from '../../../components/confirm-action-modal';
+import { useModal } from '../../../components/modals/confirm-action-modal';
 import {
   deleteBundles,
   postBundles,

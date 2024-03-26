@@ -1,10 +1,10 @@
 'use client';
 import { LessonEnrollmentDTO } from '../api/dto-interfaces';
-import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
+import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
 import React, { useContext, useEffect, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
 import { useSearchParams } from 'next/navigation';
-import InteractiveTableCard from '../components/interactive-table-card';
+import InteractiveTableCard from '../components/tables/interactive-table-card';
 import { Text } from '@tremor/react';
 import {
   ModalColorSelectContext,
@@ -12,16 +12,19 @@ import {
   ColorCodingDispatch
 } from '../subject-color-coding/context';
 import { current, produce } from 'immer';
-import { useColorState } from '../components/color-selector';
-import { ColorSelectModal, useModal } from '../components/color-select-modal';
+import { useColorState } from '../components/color/color-selector';
+import {
+  ColorSelectModal,
+  useModal
+} from '../components/color/color-select-modal';
 import {
   ColorState,
   defaultColorState,
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
-} from '../components/color-context';
-import { HueOption } from '../components/hue-selector';
-import { LightnessOption } from '../components/lightness-selector';
+} from '../components/color/color-context';
+import { HueOption } from '../components/color/hue-selector';
+import { LightnessOption } from '../components/color/lightness-selector';
 import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 
 const freePeriod: LessonEnrollmentDTO = {

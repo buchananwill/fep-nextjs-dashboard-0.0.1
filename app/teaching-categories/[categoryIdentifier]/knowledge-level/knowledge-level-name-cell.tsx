@@ -2,7 +2,7 @@
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { RenameModal } from '../../../components/rename-modal/rename-modal';
 import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
-import { useModal } from '../../../components/confirm-action-modal';
+import { useModal } from '../../../components/modals/confirm-action-modal';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import {
   patchKnowledgeDomain,

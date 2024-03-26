@@ -12,7 +12,7 @@ import {
   RenameModal,
   RenameModalWrapperContextKey
 } from '../../../../components/rename-modal/rename-modal';
-import { useModal } from '../../../../components/confirm-action-modal';
+import { useModal } from '../../../../components/modals/confirm-action-modal';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { useSelectiveContextControllerString } from '../../../../generic/components/selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../../../generic/hooks/selective-context/use-selective-context-listener';

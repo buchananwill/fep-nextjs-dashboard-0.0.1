@@ -1,7 +1,7 @@
 'use client';
-import { CellDataTransformer } from '../../../components/dynamic-dimension-timetable';
+import { CellDataTransformer } from '../../../components/tables/dynamic-dimension-timetable';
 import React, { useContext, useState, useTransition } from 'react';
-import InteractiveTableCard from '../../../components/interactive-table-card';
+import InteractiveTableCard from '../../../components/tables/interactive-table-card';
 
 import { Badge } from '@tremor/react';
 import { LessonCycleMetricContext } from './lesson-cycle-metric-context';

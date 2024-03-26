@@ -26,7 +26,7 @@ import { DndMonitorContext } from '@dnd-kit/core/dist/components/DndMonitor';
 import { useCalendarScaledZoom } from '../calendar-view/columns/time-column';
 import { EventDto } from '../../api/dtos/EventDtoSchema';
 import { WorkTaskDto } from '../../api/dtos/WorkTaskDtoSchema';
-import { ConfirmActionModal } from '../../components/confirm-action-modal';
+import { ConfirmActionModal } from '../../components/modals/confirm-action-modal';
 
 function getIconSize(hourHeight: number): string {
   if (hourHeight < 70) return 'h-3 w-3';

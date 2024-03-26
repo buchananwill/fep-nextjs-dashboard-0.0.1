@@ -7,9 +7,9 @@ import {
 } from '@heroicons/react/20/solid';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
-import ProtectedNavigation from '../navbar/protected-navigation';
+import ProtectedNavigation from '../../../navbar/protected-navigation';
 
-import { zeroIndexToOneIndex } from '../api/utils';
+import { zeroIndexToOneIndex } from '../../../api/utils';
 const buttonClassName = 'btn  relative btn-primary btn-outline';
 const svgClassName = 'h-5 w-5 ';
 

@@ -1,6 +1,6 @@
 'use client';
 import { PropsWithChildren, useContext, useReducer, useState } from 'react';
-import { DndContextProvider } from '../dnd-context-provider';
+import { DndContextProvider } from '../../contexts/dnd/dnd-context-provider';
 import {
   TranslationContext,
   TranslationContextInterface,

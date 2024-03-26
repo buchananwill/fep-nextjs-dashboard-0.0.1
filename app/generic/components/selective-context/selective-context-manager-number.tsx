@@ -4,7 +4,7 @@ import {
   ContextRefNumber,
   DispatchUpdateContextNumber,
   UpdateRefContextNumber
-} from '../../../components/selective-context/typed/selective-context-creator';
+} from '../../../contexts/selective-context/selective-context-creator';
 import {
   LatestValueRef,
   useSelectiveContextManager

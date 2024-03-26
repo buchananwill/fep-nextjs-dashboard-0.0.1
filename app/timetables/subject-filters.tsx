@@ -3,8 +3,8 @@ import { Card, Text } from '@tremor/react';
 import { FilterDropdown } from '../components/dropdown/filter-dropdown';
 import { useContext } from 'react';
 
-import Union from '../components/union';
-import Intersection from '../components/intersection';
+import Union from '../components/swaps/union';
+import Intersection from '../components/swaps/intersection';
 
 import {
   FillableButton,

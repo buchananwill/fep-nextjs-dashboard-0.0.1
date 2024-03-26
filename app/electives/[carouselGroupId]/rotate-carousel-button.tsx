@@ -13,8 +13,8 @@ import { StandardTooltipContentOld } from '../../generic/components/tooltips/sta
 import {
   ConfirmActionModal,
   useModal
-} from '../../components/confirm-action-modal';
-import '../../components/custom-component-styles.css';
+} from '../../components/modals/confirm-action-modal';
+import '../../generic/css/custom-component-styles.css';
 
 import { UpdateElectivePreference } from '../elective-reducers';
 import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';

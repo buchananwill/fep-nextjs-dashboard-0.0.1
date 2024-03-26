@@ -29,7 +29,7 @@ import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/cont
 import {
   AssetSuitabilityListSelectiveContext,
   WorkTaskCompetencyListSelectiveContext
-} from '../../../components/selective-context/typed/selective-context-creators';
+} from '../../../contexts/selective-context/selective-context-creators';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();

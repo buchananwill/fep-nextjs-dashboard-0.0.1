@@ -1,7 +1,10 @@
 import { createContext } from 'react';
-import { HueOption } from '../components/hue-selector';
-import { LightnessOption } from '../components/lightness-selector';
-import { HUE_OPTIONS, LIGHTNESS_OPTIONS } from '../components/color-context';
+import { HueOption } from '../components/color/hue-selector';
+import { LightnessOption } from '../components/color/lightness-selector';
+import {
+  HUE_OPTIONS,
+  LIGHTNESS_OPTIONS
+} from '../components/color/color-context';
 import { ColorState, NullHue } from '../contexts/color/color-context';
 import { ColorCodingState } from '../contexts/color-coding/context';
 

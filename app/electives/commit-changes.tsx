@@ -19,7 +19,7 @@ import { StandardTooltipContentOld } from '../generic/components/tooltips/standa
 import {
   ConfirmActionModal,
   useModal
-} from '../components/confirm-action-modal';
+} from '../components/modals/confirm-action-modal';
 
 import { UpdateElectivePreference } from './elective-reducers';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';

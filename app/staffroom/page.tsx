@@ -14,7 +14,7 @@ import { EventsContext, EventsDispatch } from './contexts/events/event-context';
 
 import { ProviderContext } from './contexts/providerRoles/provider-context';
 import { PageTitleContext } from '../contexts/page-title/page-title-context';
-import { DndContextProvider } from '../components/dnd-context-provider';
+import { DndContextProvider } from '../contexts/dnd/dnd-context-provider';
 import { closestCenter, DragEndEvent } from '@dnd-kit/core';
 
 import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
@@ -33,7 +33,7 @@ import { patchEvents } from '../api/actions/calendars';
 import {
   ConfirmActionModal,
   ConfirmActionModalProps
-} from '../components/confirm-action-modal';
+} from '../components/modals/confirm-action-modal';
 import { Calendarable } from '../generic/components/calendar/blocks/timespan-block';
 import { WorkshopJobBlock } from '../generic/components/calendar/blocks/workshop-job-block';
 import { ChooseCalendarRange } from '../generic/components/calendar/range/choose-calendar-range';

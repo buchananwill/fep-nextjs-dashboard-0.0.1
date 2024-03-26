@@ -9,7 +9,7 @@ import {
 } from './availability-context';
 
 import { Transition } from '@headlessui/react';
-import { DndContextProvider } from '../../../components/dnd-context-provider';
+import { DndContextProvider } from '../../../contexts/dnd/dnd-context-provider';
 import { DragEndEvent } from '@dnd-kit/core';
 
 import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';

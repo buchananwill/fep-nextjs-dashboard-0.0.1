@@ -4,8 +4,8 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import { DeliveryAllocationDto } from '../../api/dtos/DeliveryAllocationDtoSchema';
 import React, { Fragment, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
-import LandscapeStepper from '../../components/landscape-stepper';
-import { StepperContext } from '../../components/stepper/stepper-context-creator';
+import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
+import { StepperContext } from '../../contexts/stepper/stepper-context-creator';
 import { TabStyled } from '../../components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
@@ -20,7 +20,7 @@ import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { TwoStageClick } from '../../components/buttons/two-stage-click';
 
-import { PendingOverlay } from '../../components/pending-overlay';
+import { PendingOverlay } from '../../generic/components/overlays/pending-overlay';
 import { DeletedOverlay } from '../../components/overlays/deleted-overlay';
 import { RenameModal } from '../../components/rename-modal/rename-modal';
 import { useRenameCurriculumDeliveryModel } from './use-rename-curriculum-delivery-model';

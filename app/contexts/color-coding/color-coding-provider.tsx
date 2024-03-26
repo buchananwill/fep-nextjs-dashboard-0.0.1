@@ -5,7 +5,7 @@ import {
   ColorCoding,
   ColorCodingDispatch
 } from './context';
-import { useColorState } from '../../components/color-selector';
+import { useColorState } from '../../components/color/color-selector';
 import {
   ColorState,
   defaultColorState,
@@ -15,7 +15,7 @@ import {
 import {
   ColorSelectModal,
   useModal
-} from '../../components/color-select-modal';
+} from '../../components/color/color-select-modal';
 import { produce } from 'immer';
 
 const someSubjects = ['Maths', 'Art', 'Science'];

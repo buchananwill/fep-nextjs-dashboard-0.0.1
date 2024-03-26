@@ -1,10 +1,10 @@
 'use client';
 
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
-import { StringMapEditContextProvider } from '../../../components/string-map-context/string-map-edit-context-provider';
+import { StringMapEditContextProvider } from '../../../contexts/string-map-context/string-map-edit-context-provider';
 import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
 import { PropsWithChildren, useCallback, useContext } from 'react';
-import { WorkTaskCompetencyListSelectiveContext } from '../../../components/selective-context/typed/selective-context-creators';
+import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { updateTeachers } from '../../../api/actions/provider-roles';
 import {
   ProviderChangesProviderListener,

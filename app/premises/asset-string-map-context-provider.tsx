@@ -1,5 +1,5 @@
 'use client';
-import { StringMapEditContextProvider } from '../components/string-map-context/string-map-edit-context-provider';
+import { StringMapEditContextProvider } from '../contexts/string-map-context/string-map-edit-context-provider';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import {
   AssetChangesProviderListener,
@@ -10,7 +10,7 @@ import {
 import { StringMap } from '../curriculum/delivery-models/contexts/string-map-context-creator';
 import { PropsWithChildren, useCallback, useContext } from 'react';
 import { patchPremises } from '../api/actions/premises';
-import { AssetSuitabilityListSelectiveContext } from '../components/selective-context/typed/selective-context-creators';
+import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
 
 const Provider = StringMapEditContextProvider<AssetDto>;

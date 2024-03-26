@@ -15,7 +15,7 @@ import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRo
 import {
   useAssetSuitabilityListController,
   useAssetSuitabilityListListener
-} from '../../components/selective-context/typed/asset-suitability-list-selective-context-provider';
+} from '../../contexts/selective-context/asset-suitability-list-selective-context-provider';
 import { RatingList } from '../../staffroom/teachers/rating-list';
 
 export function ClassroomDisclosureListPanel() {

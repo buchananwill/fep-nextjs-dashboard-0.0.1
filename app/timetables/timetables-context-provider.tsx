@@ -14,9 +14,12 @@ import {
   SubjectColorCodingState
 } from '../subject-color-coding/context';
 import { LessonCycle } from '../api/state-types';
-import { HUE_OPTIONS, LIGHTNESS_OPTIONS } from '../components/color-context';
-import { HueOption } from '../components/hue-selector';
-import { LightnessOption } from '../components/lightness-selector';
+import {
+  HUE_OPTIONS,
+  LIGHTNESS_OPTIONS
+} from '../components/color/color-context';
+import { HueOption } from '../components/color/hue-selector';
+import { LightnessOption } from '../components/color/lightness-selector';
 
 interface Props {
   children: ReactNode;

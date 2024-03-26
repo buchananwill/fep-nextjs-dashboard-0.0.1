@@ -9,8 +9,8 @@ import {
 } from '../components/buttons/fillable-button';
 import { ElectiveFilterContext } from './elective-filter-context';
 
-import InteractiveTableCard from '../components/interactive-table-card';
-import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
+import InteractiveTableCard from '../components/tables/interactive-table-card';
+import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
 import { FilterOption } from '../api/state-types';
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {

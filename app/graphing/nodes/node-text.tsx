@@ -1,5 +1,5 @@
 'use client';
-import { TransitionWrapper } from '../../components/transition-wrapper';
+import { TransitionWrapper } from '../../components/svg/transition-wrapper';
 import React, { ReactElement, useContext, useMemo } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
 import { DataNode } from '../../api/zod-mods';

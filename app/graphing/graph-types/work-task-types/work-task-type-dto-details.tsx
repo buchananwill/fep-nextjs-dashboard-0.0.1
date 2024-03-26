@@ -15,7 +15,7 @@ import {
 } from '../organization/curriculum-delivery-details';
 import { RenameButton } from '../../../components/buttons/rename-button';
 import { RenameModal } from '../../../components/rename-modal/rename-modal';
-import { useModal } from '../../../components/confirm-action-modal';
+import { useModal } from '../../../components/modals/confirm-action-modal';
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useServiceCategoryContext } from '../../../work-types/lessons/use-service-category-context';
 import { node } from 'prop-types';

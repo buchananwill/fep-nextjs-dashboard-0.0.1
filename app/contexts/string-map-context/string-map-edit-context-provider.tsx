@@ -19,13 +19,13 @@ import {
 } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { putWorkTaskTypes } from '../../api/actions/work-task-types';
-import { UnsavedChangesModal } from '../unsaved-changes-modal';
+import { UnsavedChangesModal } from '../../components/modals/unsaved-changes-modal';
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { createContext } from 'preact/compat';
 import { AccessorFunction } from '../../staffroom/teachers/rating-table';
-import { useModal } from '../confirm-action-modal';
+import { useModal } from '../../components/modals/confirm-action-modal';
 import {
   useSelectiveContextControllerStringList,
   useSelectiveContextDispatchStringList

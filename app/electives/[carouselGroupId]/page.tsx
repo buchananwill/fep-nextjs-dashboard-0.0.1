@@ -10,10 +10,10 @@ import { Suspense } from 'react';
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
 import { CellDataAndMetaData, TabularDTO } from '../../api/dto-interfaces';
-import BigTableCard from '../../components/big-table-card';
+import BigTableCard from '../../components/tables/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
-} from '../../components/dynamic-dimension-timetable';
+} from '../../components/tables/dynamic-dimension-timetable';
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
 import { RotateCarouselButton } from './rotate-carousel-button';

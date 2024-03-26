@@ -1,5 +1,5 @@
-import { HueOption } from '../../components/hue-selector';
-import { LightnessOption } from '../../components/lightness-selector';
+import { HueOption } from '../../components/color/hue-selector';
+import { LightnessOption } from '../../components/color/lightness-selector';
 import { createContext, useState } from 'react';
 import { DispatchStateAction } from 'react-day-picker/src/hooks/useControlledValue';
 

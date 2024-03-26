@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import DynamicDimensionTimetable, {
   HeaderTransformer
-} from '../../../components/dynamic-dimension-timetable';
+} from '../../../components/tables/dynamic-dimension-timetable';
 
 import TimetablesContextProvider from '../../timetables-context-provider';
 

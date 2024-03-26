@@ -19,7 +19,7 @@ import {
   SelectiveContext,
   useSelectiveContextListenerReadAll
 } from '../../generic/components/selective-context/generic-selective-context-creator';
-import { AssetSuitabilityListSelectiveContext } from '../../components/selective-context/typed/selective-context-creators';
+import { AssetSuitabilityListSelectiveContext } from '../../contexts/selective-context/selective-context-creators';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 
 export const EmptyNumberIdArray: number[] = [];

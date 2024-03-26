@@ -7,7 +7,7 @@ import {
 import {
   ConfirmActionModalProps,
   useModal
-} from '../../components/confirm-action-modal';
+} from '../../components/modals/confirm-action-modal';
 import { useSelectiveContextKeyMemo } from '../../generic/hooks/selective-context/use-selective-context-listener';
 import {
   RenameModalProps,

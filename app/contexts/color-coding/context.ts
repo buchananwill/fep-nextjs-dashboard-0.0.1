@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { HueOption } from '../../components/hue-selector';
-import { LightnessOption } from '../../components/lightness-selector';
+import { HueOption } from '../../components/color/hue-selector';
+import { LightnessOption } from '../../components/color/lightness-selector';
 import {
   ColorState,
   HUE_OPTIONS,

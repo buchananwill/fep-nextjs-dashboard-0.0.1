@@ -10,7 +10,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import {
   ConfirmActionModal,
   useModal
-} from '../../../components/confirm-action-modal';
+} from '../../../components/modals/confirm-action-modal';
 import { Text } from '@tremor/react';
 import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
 import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';

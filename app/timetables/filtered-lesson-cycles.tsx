@@ -1,6 +1,6 @@
 'use client';
 import { LessonCycle } from '../api/state-types';
-import RightHandToolCard from '../components/right-hand-tool-card';
+import RightHandToolCard from '../components/tool-card/right-hand-tool-card';
 import DisclosureListPanel from '../components/disclosure-list/disclosure-list-panel';
 import { DisclosureButtonLessonCycle } from './disclosure-button-lesson-cycle';
 import ButtonClusterLessonCycle from './button-cluster-lesson-cycle';

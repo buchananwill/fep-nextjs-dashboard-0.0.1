@@ -6,7 +6,7 @@ import {
   AvailabilityDispatchContext
 } from './availability-context';
 
-import { useModal } from '../../../components/color-select-modal';
+import { useModal } from '../../../components/color/color-select-modal';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 import availabilityReducer from './availability-reducer';
@@ -14,7 +14,7 @@ import { updateAvailabilities } from '../../../api/actions/availability';
 import {
   ConfirmActionModal,
   ConfirmActionModalProps
-} from '../../../components/confirm-action-modal';
+} from '../../../components/modals/confirm-action-modal';
 
 export default function AvailabilityContextProvider({
   children,

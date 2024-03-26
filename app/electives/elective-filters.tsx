@@ -3,8 +3,8 @@ import { Card, Text } from '@tremor/react';
 import { FilterDropdown } from '../components/dropdown/filter-dropdown';
 import { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import Union from '../components/union';
-import Intersection from '../components/intersection';
+import Union from '../components/swaps/union';
+import Intersection from '../components/swaps/intersection';
 import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
 import {

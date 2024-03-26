@@ -8,7 +8,7 @@ import {
 } from './use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
-import { UnsavedChangesModal } from '../../../components/unsaved-changes-modal';
+import { UnsavedChangesModal } from '../../../components/modals/unsaved-changes-modal';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
 
