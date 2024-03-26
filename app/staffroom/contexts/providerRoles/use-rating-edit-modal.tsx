@@ -1,10 +1,9 @@
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { RatingAccessorProps } from '../../teachers/rating-table';
 import { useCallback, useState } from 'react';
-import { useModal } from '../../../components/modals/confirm-action-modal';
-import { RatingEditModalProps } from './rating-edit-modal';
 
 import { isNotUndefined } from '../../../api/main';
+import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 
 interface RatingEditModalHookProps<R, E> {
   confirmRatingValue: (rating: R, element: E, updatedValue: number) => void;

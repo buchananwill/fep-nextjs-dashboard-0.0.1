@@ -11,7 +11,7 @@ import { DeleteNodesButton } from '../editing/buttons/delete-nodes-button';
 import { DeleteLinksButton } from '../editing/buttons/delete-links-button';
 import React from 'react';
 import { useSelectiveContextListenerFunction } from '../../generic/components/selective-context/selective-context-manager-function';
-import { GenericFunction } from '../../contexts/selective-context/selective-context-creator';
+import { GenericFunction } from '../../generic/components/selective-context/selective-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import InvertLinksButton from '../editing/buttons/invert-links-button';
 

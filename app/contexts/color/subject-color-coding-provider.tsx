@@ -5,18 +5,17 @@ import {
   ColorCoding,
   ColorCodingDispatch
 } from './subject-color-coding-context';
-import { useColorState } from '../components/color/color-selector';
+
+import { produce } from 'immer';
+import { useColorState } from '../../generic/components/color/color-selector';
 import {
   ColorState,
-  defaultColorState,
-  HUE_OPTIONS,
-  LIGHTNESS_OPTIONS
-} from '../components/color/color-context';
+  defaultColorState
+} from '../../generic/components/color/color-context';
 import {
   ColorSelectModal,
   useModal
-} from '../components/color/color-select-modal';
-import { produce } from 'immer';
+} from '../../generic/components/color/color-select-modal';
 
 const someSubjects = ['Maths', 'Art', 'Science'];
 
@@ -48,23 +47,21 @@ export default function SubjectColorCodingProvider({
   return (
     <ColorCoding.Provider value={subjectColorCoding}>
       <ColorCodingDispatch.Provider
-        value={{ setSubjectColorCoding: setSubjectColorCoding }}
+        value={{ setColorCoding: setSubjectColorCoding }}
       >
         <ModalColorSelectContext.Provider
           value={{
             setModalText: setLessonText,
             openModal: openModal,
+            onCancel: closeModal,
+            onClose: closeModal,
+            onConfirm: handleColorConfirm,
+            stringKey: lessonText,
             ...modalInitialState
           }}
         >
           {children}
-          <ColorSelectModal
-            show={isOpen}
-            initialState={modalInitialState}
-            onClose={closeModal}
-            onConfirm={handleColorConfirm}
-            onCancel={() => closeModal()}
-          >
+          <ColorSelectModal show={isOpen} initialState={modalInitialState}>
             {lessonText}
           </ColorSelectModal>
         </ModalColorSelectContext.Provider>

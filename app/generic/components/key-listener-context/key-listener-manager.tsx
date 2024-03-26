@@ -6,12 +6,10 @@ import {
   SpaceListener
 } from './key-listener-context-creator';
 import {
-  useKeyHeldListener,
   useLeftCtrlHeldListener,
   useShiftHeldListener,
   useSpaceHeldListener
-} from '../useKeyHeldListener';
-import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
+} from '../../hooks/key-listeners/useKeyHeldListener';
 
 export default function KeyListenerManager({ children }: PropsWithChildren) {
   const spaceHeld = useSpaceHeldListener(); //useKeyHeldListener(' ', 'Space');

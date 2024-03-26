@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import HslColorContextProvider from '../../contexts/color/hsl-color-context-provider';
-import { BASE_HSL, HslaColorState } from '../../contexts/color/color-context';
+
 import { DisclosureListItem } from './disclosure-list-item';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { BASE_HSL, HslaColorState } from '../color/color-context';
+import HslColorContextProvider from '../color/hsl-color-context-provider';
 
 export type ButtonClusterTransformer<D> = React.FC<TransformerProps<D>>;
 

@@ -4,7 +4,7 @@ import { ProviderRoleAndTaskData } from './contexts/providerRoles/provider-conte
 import ProviderRoleSkillEditContextProvider from './contexts/providerRoles/provider-role-skill-edit-context-provider';
 import AvailabilityContextProvider from './contexts/availability/availability-context-provider';
 import { TeachersToolCard } from './teachers-tool-card';
-import ToolCardContextProvider from '../components/tool-card/tool-card-context-provider';
+
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { performApiAction } from '../api/actions/performApiAction';
 import { getTeachers } from '../api/actions/provider-roles';
@@ -25,6 +25,7 @@ import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/ra
 import { WorkTaskTypeContextProvider } from '../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { ProviderRoleColorCodingContextProvider } from './provider-role-color-coding-context-provider';
 import ProviderRoleSelectionContextProvider from './contexts/providerRoles/provider-role-selection-context-provider';
+import ToolCardContextProvider from '../generic/components/tool-card/tool-card-context-provider';
 
 export const dynamic = 'force-dynamic';
 

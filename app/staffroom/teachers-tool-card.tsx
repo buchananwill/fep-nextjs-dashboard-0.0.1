@@ -1,8 +1,8 @@
 'use client';
 
 import TeacherDisclosureList from './teachers/teacher-disclosure-list';
-import React, { useContext } from 'react';
-import ToolCard from '../components/tool-card/tool-card';
+import React from 'react';
+import ToolCard from '../generic/components/tool-card/tool-card';
 
 export function TeachersToolCard() {
   return (

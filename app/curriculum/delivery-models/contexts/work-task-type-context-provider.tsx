@@ -8,9 +8,9 @@ import {
 } from './use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
-import { UnsavedChangesModal } from '../../../components/modals/unsaved-changes-modal';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
+import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
 export const WorkTaskTypeChangesProviderListener =

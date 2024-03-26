@@ -7,32 +7,21 @@ import {
 import React, {
   Context,
   PropsWithChildren,
-  ProviderExoticComponent,
   useEffect,
   useReducer,
   useRef
 } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
-import {
-  WorkTaskTypeContext,
-  WorkTaskTypeContextDispatch
-} from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
-import { putWorkTaskTypes } from '../../api/actions/work-task-types';
-import { UnsavedChangesModal } from '../../components/modals/unsaved-changes-modal';
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
-import { createContext } from 'preact/compat';
 import { AccessorFunction } from '../../staffroom/teachers/rating-table';
-import { useModal } from '../../components/modals/confirm-action-modal';
-import {
-  useSelectiveContextControllerStringList,
-  useSelectiveContextDispatchStringList
-} from '../../generic/components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
 import { isNotUndefined } from '../../api/main';
+import { useModal } from '../../generic/components/modals/confirm-action-modal';
+import { UnsavedChangesModal } from '../../generic/components/modals/unsaved-changes-modal';
 
 export interface StringMapEditContextProviderProps<T> {
   initialEntityMap: StringMap<T>;

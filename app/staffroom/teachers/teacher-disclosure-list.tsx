@@ -1,11 +1,6 @@
 'use client';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { ProviderContext } from '../contexts/providerRoles/provider-context';
-import DisclosureListPanel from '../../components/disclosure-list/disclosure-list-panel';
-import {
-  FillableButton,
-  PinIcons
-} from '../../components/buttons/fillable-button';
+
 import { produce } from 'immer';
 import { ColorCoding } from '../../generic/components/color/color-coding-context';
 import {
@@ -28,9 +23,13 @@ import {
   useWorkTaskCompetencyListController,
   useWorkTaskCompetencyListListener
 } from '../../contexts/selective-context/work-task-competency-list-selective-context-provider';
-import { EmptySchemasArray } from '../../curriculum/delivery-models/functions/use-schema-detail-memo';
 import { WorkTaskCompetencyDto } from '../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
+import {
+  FillableButton,
+  PinIcons
+} from '../../generic/components/buttons/fillable-button';
+import DisclosureListPanel from '../../generic/components/disclosure-list/disclosure-list-panel';
 
 const lighten = (hslObject: HSLA): HSLA => {
   const { h, s, l, a } = hslObject;

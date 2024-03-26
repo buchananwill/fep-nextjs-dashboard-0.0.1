@@ -7,23 +7,20 @@ import {
   CurriculumModelsContext,
   CurriculumModelsContextDispatch
 } from './use-curriculum-model-context';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../../components/modals/confirm-action-modal';
+
 import {
   deleteCurriculumDeliveryModels,
   putModels
 } from '../../../api/actions/curriculum-delivery-model';
-import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextListenerBoolean
-} from '../../../generic/components/selective-context/selective-context-manager-boolean';
-import { curriculumDeliveryCommitKey } from '../curriculum-delivery-models';
+import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
 import { useSelectiveContextControllerStringList } from '../../../generic/components/selective-context/selective-context-manager-string-list';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../../generic/components/modals/confirm-action-modal';
 
 export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
 export const DeletedCurriculumModelIdsKey = 'deleted-curriculum-model-id-list';
