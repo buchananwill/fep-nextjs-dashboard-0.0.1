@@ -1,7 +1,4 @@
 import { DayOfWeek, DayOfWeekArray } from './date-and-time';
-
-const MILLISECONDS_PER_DAY = 86_400_000;
-
 export function getDayOfWeekAbr(dayOfWeek: number) {
   return DayOfWeekArray[dayOfWeek].toString().substring(0, 3);
 }
@@ -34,9 +31,4 @@ export interface LocalDate {
   dayOfMonth: number;
   month: number;
   year: number;
-}
-
-export function daysArithmetic(date: Date, days: number): Date {
-  let number = date.getTime() + days * MILLISECONDS_PER_DAY;
-  return new Date(number);
 }

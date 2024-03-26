@@ -27,5 +27,3 @@ export function errorResponse<T>(message: string, data?: T): ActionResponse<T> {
     message
   };
 }
-
-// You can add more functions for other common response patterns if needed

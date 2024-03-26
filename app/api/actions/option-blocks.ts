@@ -1,10 +1,6 @@
 'use server';
 import { API_ACADEMIC_URL } from '../main';
-import {
-  ActionResponsePromise,
-  errorResponse,
-  successResponse
-} from './actionResponse';
+import { ActionResponsePromise } from './actionResponse';
 import { CarouselGroupDto } from '../dtos/CarouselGroupDtoSchema';
 import { getWithoutBody } from './template-actions';
 

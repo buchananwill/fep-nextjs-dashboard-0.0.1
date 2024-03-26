@@ -2,10 +2,7 @@
 import { API_ACADEMIC_URL } from '../main';
 import { LessonCycleDTO } from '../dto-interfaces';
 import { ActionResponsePromise } from './actionResponse';
-import {
-  getWithoutBody,
-  putRequestWithDifferentReturnType
-} from './template-actions';
+import { getWithoutBody } from './template-actions';
 
 export const fetchScheduleIds = async (): ActionResponsePromise<number[]> => {
   const fetchURL = `${API_ACADEMIC_URL}/get-list-of-schedule-ids`;

@@ -3,7 +3,6 @@ import { PeriodDTO } from '../dtos/PeriodDTOSchema';
 import { API_ACADEMIC_URL, API_BASE_URL } from '../main';
 import { getWithoutBody } from './template-actions';
 import { ActionResponsePromise } from './actionResponse';
-import { CycleSubspanDto } from '../dtos/CycleSubspanDtoSchema';
 import { CycleDto } from '../dtos/CycleDtoSchema';
 
 export const fetchAllPeriodsInCycle = async (): ActionResponsePromise<

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { StudentDTO } from '../dtos/StudentDTOSchema';
 import { API_ACADEMIC_URL } from '../main';
 import { getWithoutBody } from './template-actions';

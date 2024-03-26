@@ -1,4 +1,4 @@
-import { HasNumberId, HasUuid, Nameable } from './dto-interfaces';
+import { HasUuid, Nameable } from './dto-interfaces';
 import { FilterType } from '../electives/elective-filter-reducers';
 
 export interface LessonCycle extends Nameable, HasUuid {

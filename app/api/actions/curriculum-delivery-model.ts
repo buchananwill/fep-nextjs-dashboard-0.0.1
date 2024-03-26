@@ -1,9 +1,5 @@
 'use server';
-import {
-  ActionResponsePromise,
-  errorResponse,
-  successResponse
-} from './actionResponse';
+import { ActionResponsePromise } from './actionResponse';
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
 import { API_BASE_URL, Page } from '../main';
 import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
@@ -86,19 +82,6 @@ export async function putOrganizationGraph(
     GraphDto<OrganizationDto>
   >(requestBody, organizationGraphEndpoint);
 }
-
-export async function deleteNodes(
-  idList: number[]
-): ActionResponsePromise<number[]> {
-  return deleteEntities(idList, organizationGraphEndpoint);
-}
-export async function deleteLinks(
-  idList: number[]
-): ActionResponsePromise<number[]> {
-  const linkDeletionEndpoint = `${organizationGraphEndpoint}/relationships`;
-  return deleteEntities(idList, linkDeletionEndpoint);
-}
-
 export async function getCurriculumDeliveries(
   idList: number[]
 ): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {

@@ -28,7 +28,6 @@ export function timeToZeroIndexedEpochalDateTime(
   stringTime: string,
   zeroIndexedDayNumber: number
 ): Date {
-  const time = stringTime.split(':').map(parseTen);
   const plusDays = addDays(zeroIndexedDayNumber);
   return plusDays(timeToDateTime(stringTime));
 }
