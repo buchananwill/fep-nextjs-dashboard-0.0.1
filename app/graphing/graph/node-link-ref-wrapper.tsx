@@ -1,7 +1,6 @@
 'use client';
 import React, { PropsWithChildren } from 'react';
 import { DataLink, DataNode } from '../../api/zod-mods';
-import { OrganizationDto } from '../../api/dtos/OrganizationDtoSchema';
 import { GenericNodeRefContext } from '../nodes/generic-node-context-creator';
 import { GenericLinkRefContext } from '../links/generic-link-context-creator';
 import { GraphViewer } from './graph-viewer';

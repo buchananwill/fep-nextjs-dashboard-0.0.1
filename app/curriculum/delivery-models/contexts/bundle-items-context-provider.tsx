@@ -10,10 +10,10 @@ import {
   StringMapPayload,
   useStringMapReducer
 } from '../../../contexts/string-map-context/string-map-reducer';
-import { UnsavedChangesModal } from '../../../components/modals/unsaved-changes-modal';
+
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleEdits } from '../[yearGroup]/bundles/bundle-editor';
-import { useModal } from '../../../components/modals/confirm-action-modal';
+
 import {
   deleteBundles,
   postBundles,
@@ -24,6 +24,8 @@ import { ActionResponse } from '../../../api/actions/actionResponse';
 import { Card, Title } from '@tremor/react';
 import { useSelectiveContextControllerNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
 import { getPayloadArray } from '../use-editing-context-dependency';
+import { useModal } from '../../../generic/components/modals/confirm-action-modal';
+import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 
 export const StaticDeletedBundleList: number[] = [];
 
@@ -48,14 +50,12 @@ export function BundleItemsContextProvider({
   const { currentState: unsaved, dispatchUpdate: setUnsavedBundles } =
     useSelectiveContextControllerBoolean(UnsavedBundleEdits, 'provider', false);
 
-  const {
-    currentState: deleteBundleIds,
-    dispatchUpdate: dispatchDeleteBundles
-  } = useSelectiveContextControllerNumberList({
-    contextKey: DeletedBundlesList,
-    listenerKey: 'provider',
-    initialValue: StaticDeletedBundleList
-  });
+  const { currentState: deleteBundleIds } =
+    useSelectiveContextControllerNumberList({
+      contextKey: DeletedBundlesList,
+      listenerKey: 'provider',
+      initialValue: StaticDeletedBundleList
+    });
 
   const { isOpen, closeModal, openModal } = useModal();
 
@@ -74,8 +74,8 @@ export function BundleItemsContextProvider({
       const updatedBundles: StringMapPayload<WorkSeriesSchemaBundleLeanDto>[] =
         [];
       const responses: ActionResponse<WorkSeriesSchemaBundleLeanDto[]>[] = [];
-      deleteBundles(deleteBundleIds);
-      postBundles(newBundles)
+      deleteBundles(deleteBundleIds)
+        .then(() => postBundles(newBundles))
         .then((r) => {
           if (r.status >= 200 && r.status < 300 && r.data) {
             getPayloadArray(r.data, (bundle) => bundle.id.toString()).forEach(
@@ -85,7 +85,7 @@ export function BundleItemsContextProvider({
             return;
           }
         })
-        .then((r) => putBundles(existingBundles))
+        .then(() => putBundles(existingBundles))
         .then((r) => {
           if (r.status >= 200 && r.status < 300 && r.data) {
             const payloadArray = getPayloadArray(r.data, (bundle) =>
@@ -94,7 +94,7 @@ export function BundleItemsContextProvider({
             payloadArray.forEach((payload) => updatedBundles.push(payload));
           }
         })
-        .then((r) => {
+        .then(() => {
           dispatch({ type: 'updateAll', payload: updatedBundles });
           setUnsavedBundles({ contextKey: UnsavedBundleEdits, value: false });
           closeModal();

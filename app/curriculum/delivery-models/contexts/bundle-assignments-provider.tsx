@@ -4,17 +4,20 @@ import {
   BundleAssignmentsContext,
   BundleAssignmentsContextDispatch
 } from './use-bundle-assignments-context';
-import { useStringMapReducer } from '../../../contexts/string-map-context/string-map-reducer';
+import {
+  StringMap,
+  useStringMapReducer
+} from '../../../contexts/string-map-context/string-map-reducer';
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../../components/modals/confirm-action-modal';
+
 import { Text } from '@tremor/react';
 import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
 import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';
-import { getPayloadArray } from '../use-editing-context-dependency';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../../generic/components/modals/confirm-action-modal';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -37,7 +40,7 @@ export function BundleAssignmentsProvider({
   bundleAssignments,
   children
 }: {
-  bundleAssignments: { [key: string]: string };
+  bundleAssignments: StringMap<string>;
 } & PropsWithChildren) {
   const [bundleAssignmentState, dispatch] =
     useStringMapReducer(bundleAssignments);

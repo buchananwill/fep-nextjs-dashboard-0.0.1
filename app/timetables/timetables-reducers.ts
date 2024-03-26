@@ -2,7 +2,6 @@ import { produce } from 'immer';
 
 import { FilterType } from '../electives/elective-filter-reducers';
 import { LessonCycle } from '../api/state-types';
-import { ca, hi } from 'date-fns/locale';
 import { LessonEnrollmentDTO } from '../api/dto-interfaces';
 
 interface SetPeriod {
@@ -113,16 +112,12 @@ export default function timetablesReducer(
     case 'setPeriod': {
       const { periodId } = action;
 
-      return produce(timetablesState, (draftUpdate) => {
-        null;
-      });
+      return produce(timetablesState, (draftUpdate) => {});
     }
     case 'setActive': {
       const { studentId, preferencePosition } = action;
 
-      return produce(timetablesState, (draftElectiveState) => {
-        null;
-      });
+      return produce(timetablesState, (draftElectiveState) => {});
     }
 
     case 'setFocusPeriod': {
