@@ -1,11 +1,10 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
 } from '../generic/components/color/color-context';
 import { produce } from 'immer';
-import { LongIdStringNameTuple } from '../api/dtos/LongIdStringNameTupleSchema';
 import {
   ColorCoding,
   ColorCodingDispatch

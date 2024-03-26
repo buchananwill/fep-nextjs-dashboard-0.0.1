@@ -1,19 +1,19 @@
 'use client';
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { HUE_OPTIONS } from '../../../generic/components/color/color-context';
+import { HUE_OPTIONS } from '../color/color-context';
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import {
   RatingCategoryLabelAccessor,
   RatingValueAccessor
-} from '../../teachers/rating-table';
+} from '../../../staffroom/teachers/rating-table';
 import { PropsWithChildren, useMemo } from 'react';
 
 import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
-import { useRatingEditModal } from './use-rating-edit-modal';
+import { useRatingEditModal } from '../../hooks/use-rating-edit-modal';
 
-import { useSelectiveContextControllerFunction } from '../../../generic/components/selective-context/selective-context-manager-function';
-import { ConfirmActionModal } from '../../../generic/components/modals/confirm-action-modal';
+import { useSelectiveContextControllerFunction } from '../selective-context/selective-context-manager-function';
+import { ConfirmActionModal } from './confirm-action-modal';
 
 export interface RatingEditModalProps<R, E> {
   ratingCategoryLabelAccessor: RatingCategoryLabelAccessor<R>;

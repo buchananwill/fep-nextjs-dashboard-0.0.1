@@ -8,14 +8,12 @@ import {
   AccessorFunction,
   RatingAccessorProps,
   RatingListAccessor
-} from '../../teachers/rating-table';
+} from '../../../staffroom/teachers/rating-table';
 import { EmptyNumberIdArray } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
-import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import {
   MockReturn,
-  UseSelectiveContextDispatch,
-  UseSelectiveContextListener
-} from '../../../generic/hooks/selective-context/use-selective-context-listener';
+  UseSelectiveContextDispatch
+} from '../../hooks/selective-context/use-selective-context-listener';
 import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
@@ -28,12 +26,12 @@ export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
 
 const defaultContext: RatingEditContext<any, any> = {
   confirmRatingValue: () => {},
-  ratingValueAccessor: (object) => NaN,
-  ratingCategoryLabelAccessor: (object) => '',
-  ratingCategoryIdAccessor: (object) => NaN,
-  ratingListAccessor: (object) => EmptyNumberIdArray,
-  elementLabelAccessor: (object) => '',
-  elementIdAccessor: (object) => NaN,
+  ratingValueAccessor: () => NaN,
+  ratingCategoryLabelAccessor: () => '',
+  ratingCategoryIdAccessor: () => NaN,
+  ratingListAccessor: () => EmptyNumberIdArray,
+  elementLabelAccessor: () => '',
+  elementIdAccessor: () => NaN,
   useRatingListDispatchHook: () => MockReturn
 };
 

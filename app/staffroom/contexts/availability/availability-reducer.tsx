@@ -83,7 +83,7 @@ export default function availabilityReducer(
       return action.data;
     }
     case 'updateProviderAvailabilities': {
-      return produce(state, (draft) => {
+      return produce(state, () => {
         console.log('Not implemented yet.');
       });
     }

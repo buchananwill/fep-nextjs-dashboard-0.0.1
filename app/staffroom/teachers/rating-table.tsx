@@ -1,7 +1,7 @@
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
 import { Context, PropsWithChildren, useContext } from 'react';
-import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
+import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
 import {
   RatingTableHeader,
   RatingTableHeaderCell,

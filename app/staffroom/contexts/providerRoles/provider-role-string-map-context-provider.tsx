@@ -3,7 +3,7 @@
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { StringMapEditContextProvider } from '../../../contexts/string-map-context/string-map-edit-context-provider';
 import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
-import { PropsWithChildren, useCallback, useContext } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { updateTeachers } from '../../../api/actions/provider-roles';
 import {
@@ -25,9 +25,9 @@ export default function ProviderRoleStringMapContextProvider({
   );
 
   const commitServerAction = useCallback(
-    (changedProviderRoleDtos: ProviderRoleDto[]) => {
-      const providerRoleDtosWithUpdatedLists = changedProviderRoleDtos.map(
-        (providerRoleDto) => {
+    (changedProviderRoleDtoList: ProviderRoleDto[]) => {
+      const providerRoleDtoListWithUpdatedRatingLists =
+        changedProviderRoleDtoList.map((providerRoleDto) => {
           const updatedList = selectiveContextReadAll(
             providerRoleDto.id.toString()
           );
@@ -38,9 +38,8 @@ export default function ProviderRoleStringMapContextProvider({
               ? updatedList
               : providerRoleDto.workTaskCompetencyDtoList
           };
-        }
-      );
-      return updateTeachers(providerRoleDtosWithUpdatedLists);
+        });
+      return updateTeachers(providerRoleDtoListWithUpdatedRatingLists);
     },
     [selectiveContextReadAll]
   );

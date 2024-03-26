@@ -1,6 +1,6 @@
 'use client';
-import { RatingEditModal } from '../staffroom/contexts/providerRoles/rating-edit-modal';
-import { AssetSuitabilityEditContext } from '../staffroom/contexts/providerRoles/rating-edit-context';
+import { RatingEditModal } from '../generic/components/modals/rating-edit-modal';
+import { AssetSuitabilityEditContext } from '../generic/components/modals/rating-edit-context';
 import { PropsWithChildren, ReactNode, useCallback } from 'react';
 import {
   assetRoleWorkTaskSuitabilityIdAccessor,

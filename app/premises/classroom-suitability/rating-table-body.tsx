@@ -4,7 +4,7 @@ import {
 } from '../../staffroom/teachers/rating-table';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { Context } from 'react';
-import { RatingEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
+import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
 import { RatingTableRatings } from '../../staffroom/teachers/rating-table-ratings';
 
 export function RatingTableBody<R, E>({

@@ -6,7 +6,7 @@ import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
-import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
+import { AssetSuitabilityEditContext } from '../../generic/components/modals/rating-edit-context';
 import {
   useAssetSuitabilityListController,
   useAssetSuitabilityListListener

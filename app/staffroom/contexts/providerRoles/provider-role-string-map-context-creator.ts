@@ -1,5 +1,4 @@
 import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
-import { AssetDto } from '../../../api/dtos/AssetDtoSchema';
 import { useContext } from 'react';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 
@@ -13,9 +12,6 @@ const {
 export { ProviderRoleStringMapContext, ProviderRoleStringMapDispatchContext };
 
 export const ProviderChangesProviderListener = 'provider';
-
-export const ProviderCommitKey = 'commit-asset-changes-open';
-
 export function useProviderRoleStringMapContext() {
   const providerRoleDtoStringMap = useContext(ProviderRoleStringMapContext);
   const providerRoleDtoStringMapDispatch = useContext(

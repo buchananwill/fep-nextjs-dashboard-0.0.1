@@ -1,7 +1,5 @@
 'use client';
-
 import { Card, Text } from '@tremor/react';
-
 import { StaffroomCalenderView } from './staffroom-calender-view';
 import React, {
   useCallback,
@@ -11,41 +9,28 @@ import React, {
   useState
 } from 'react';
 import { EventsContext, EventsDispatch } from './contexts/events/event-context';
-
-import { ProviderContext } from './contexts/providerRoles/provider-context';
 import { PageTitleContext } from '../contexts/page-title/page-title-context';
 import { DndContextProvider } from '../contexts/dnd/dnd-context-provider';
 import { closestCenter, DragEndEvent } from '@dnd-kit/core';
-
 import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
 import { addMinutes, differenceInCalendarDays, format } from 'date-fns';
 import { addDays } from 'date-fns/fp';
 import { Transform } from '@dnd-kit/utilities';
-
 import { produce } from 'immer';
-
 import { ClearUnSyncedEvents } from './contexts/events/event-reducer';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
-import { useRouter } from 'next/navigation';
-import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { EventDto } from '../api/dtos/EventDtoSchema';
 import { patchEvents } from '../api/actions/calendars';
-import {
-  ConfirmActionModal,
-  ConfirmActionModalProps
-} from '../components/modals/confirm-action-modal';
 import { Calendarable } from '../generic/components/calendar/blocks/timespan-block';
 import { WorkshopJobBlock } from '../generic/components/calendar/blocks/workshop-job-block';
 import { ChooseCalendarRange } from '../generic/components/calendar/range/choose-calendar-range';
 import { useCalendarScaledZoom } from '../generic/components/calendar/columns/time-column';
-import { isNotNull, isNotUndefined } from '../api/main';
-
-function getProvider(
-  providerRoleId: number,
-  list: ProviderRoleDto[]
-): ProviderRoleDto | undefined {
-  return list.find((mechanicDto) => mechanicDto.id == providerRoleId);
-}
+import { isNotUndefined } from '../api/main';
+import {
+  ConfirmActionModal,
+  ConfirmActionModalProps
+} from '../generic/components/modals/confirm-action-modal';
+import { ProviderRoleStringMapContext } from './contexts/providerRoles/provider-role-string-map-context-creator';
 
 const smallestScheduleDelta = 15;
 export default function Page() {
@@ -56,13 +41,13 @@ export default function Page() {
     setTitle('Workshop Schedule');
   }, [setTitle]);
 
-  const { providers } = useContext(ProviderContext);
+  const providers = useContext(ProviderRoleStringMapContext);
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [pendingEvent, setPendingEvent] = useState<EventDto | null>(null);
   const [awaitingSync, setAwaitingSync] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const appRouterInstance = useRouter();
+
   const isPaused = useRef(false);
 
   const setEvent = useCallback(
@@ -92,13 +77,13 @@ export default function Page() {
   const eventBlocks = new Map<number, Calendarable[]>();
 
   selectedProviders.forEach(({ id, name }) => {
-    const mechanic = getProvider(id, providers);
+    const mechanic = providers[id.toString()];
     if (!mechanic) return;
     const eventsThisMechanic = events.get(id);
     const elements: Calendarable[] =
       eventsThisMechanic?.map((calendarEvent, index) => {
         const { eventStart, eventEnd } = calendarEvent;
-        const calendarable = {
+        return {
           startDate: eventStart.getTime(),
           endDate: eventEnd.getTime(),
           key: calendarEvent.id,
@@ -111,7 +96,6 @@ export default function Page() {
             ></WorkshopJobBlock>
           )
         };
-        return calendarable;
       }) || [];
     eventBlocks.set(id, elements);
   });

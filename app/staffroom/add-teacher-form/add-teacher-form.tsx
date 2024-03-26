@@ -2,25 +2,17 @@
 import React, {
   Fragment,
   PropsWithChildren,
-  useContext,
   useEffect,
   useMemo,
   useState
 } from 'react';
 
 import { Controller, useForm } from 'react-hook-form';
-
 import { Title } from '@tremor/react';
 import { Combobox, Listbox, Transition } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
-
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { ProviderContext } from '../contexts/providerRoles/provider-context';
-import { PageTitleContext } from '../../contexts/page-title/page-title-context';
-
-import { LongIdStringNameTuple } from '../../api/dtos/LongIdStringNameTupleSchema';
 import {
   NewProviderRoleDto,
   NewProviderRoleDtoSchema
@@ -29,13 +21,9 @@ import { PersonDto } from '../../api/dtos/PersonDtoSchema';
 import { TransientIdOffset } from '../../graphing/editing/functions/graph-edits';
 import { performApiAction } from '../../api/actions/performApiAction';
 import { createTeacher } from '../../api/actions/provider-roles';
-import { Overlay } from '../../components/overlays/overlay';
 import { useServiceCategoryContext } from '../../work-types/lessons/use-service-category-context';
-
-const knowledgeDomains: LongIdStringNameTuple[] = [
-  { name: 'Bikes', id: 1 },
-  { name: 'Electric Bikes', id: 2 }
-];
+import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
+import { Overlay } from '../../generic/components/overlays/overlay';
 
 const partyData: PersonDto[] = [
   {
@@ -58,7 +46,7 @@ function ErrorMessage({ children }: PropsWithChildren) {
 }
 
 export default function AddTeacherForm() {
-  const { domainMap, levelMap } = useServiceCategoryContext();
+  const { domainMap } = useServiceCategoryContext();
   const { domainArray } = useMemo(() => {
     const domainArray = Object.values(domainMap);
 
@@ -75,9 +63,10 @@ export default function AddTeacherForm() {
   const [query, setQuery] = useState<string>('');
   const [parties, setParties] = useState<PersonDto[]>([]);
   const [partyEditingDisabled, setPartyEditingDisabled] = useState(false);
-  const { setProviders, providers } = useContext(ProviderContext);
+  const { providerRoleDtoStringMapDispatch } =
+    useProviderRoleStringMapContext();
 
-  const [serverAvailable, setServerAvailable] = useState(true);
+  const [serverAvailable] = useState(true);
 
   const fetchParties = async (query: string) => {
     const matchIgnoreCase = (name: string) =>
@@ -90,7 +79,7 @@ export default function AddTeacherForm() {
   };
 
   useEffect(() => {
-    fetchParties(query);
+    fetchParties(query).then(() => console.log('parties fetched'));
   }, [query]);
 
   const handlePartySelect = async (party: PersonDto | null) => {
@@ -110,9 +99,15 @@ export default function AddTeacherForm() {
   };
 
   async function onSubmit(data: NewProviderRoleDto) {
-    performApiAction(() => createTeacher(data)).then((result) => {
-      if (result.data) setProviders([...providers, result.data]);
-    });
+    performApiAction(() => createTeacher(data)).then(
+      ({ data: dataResponse }) => {
+        if (dataResponse)
+          providerRoleDtoStringMapDispatch({
+            type: 'update',
+            payload: { key: dataResponse.id.toString(), data: dataResponse }
+          });
+      }
+    );
   }
   return (
     <>
@@ -125,7 +120,7 @@ export default function AddTeacherForm() {
             <Controller
               control={control}
               name={'partyId'}
-              render={({ field }) => (
+              render={() => (
                 <Combobox
                   value={selectedParty}
                   onChange={(party) => handlePartySelect(party)}

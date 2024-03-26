@@ -5,9 +5,7 @@ import {
   AvailabilityContextInterface,
   AvailabilityDispatchContext
 } from './availability-context';
-
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
-
 import availabilityReducer from './availability-reducer';
 import { updateAvailabilities } from '../../../api/actions/availability';
 import {

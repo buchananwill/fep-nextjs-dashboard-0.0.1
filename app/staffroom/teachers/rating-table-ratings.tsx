@@ -2,7 +2,7 @@
 
 import { RatingTableCell } from './rating-table-cell';
 import { Context, useContext } from 'react';
-import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
+import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
 import { EmptyNumberIdArray } from '../../premises/classroom-suitability/asset-suitability-table-wrapper';
 
 export function RatingTableRatings<R, E>({

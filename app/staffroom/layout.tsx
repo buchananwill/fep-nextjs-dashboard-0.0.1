@@ -1,10 +1,7 @@
 import React, { ReactNode } from 'react';
-
-import { ProviderRoleAndTaskData } from './contexts/providerRoles/provider-context';
 import ProviderRoleSkillEditContextProvider from './contexts/providerRoles/provider-role-skill-edit-context-provider';
 import AvailabilityContextProvider from './contexts/availability/availability-context-provider';
 import { TeachersToolCard } from './teachers-tool-card';
-
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { performApiAction } from '../api/actions/performApiAction';
 import { getTeachers } from '../api/actions/provider-roles';
@@ -15,7 +12,6 @@ import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
 import { getAvailabilities } from '../api/actions/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
 import { getCycleModel } from '../api/actions/cycle-model';
-
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../generic/components/calendar/range/calendar-range-context-provider';
@@ -54,11 +50,6 @@ export default async function StaffroomLayout({
   if (workTaskTypeDtosOptional) {
     workTaskTypeDtos = workTaskTypeDtosOptional;
   }
-
-  const providerRolesAndTaskData: ProviderRoleAndTaskData = {
-    providerRoles: teacherList,
-    workTaskTypes: workTaskTypeDtos
-  };
   let availabilityUnits: CycleSubspanDto[] = [];
   let cycleModel: CycleDto = CycleModelMock;
   const { data } = await getCycleModel();

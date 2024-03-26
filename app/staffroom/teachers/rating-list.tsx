@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
+import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
 import { useRatingEditModalTrigger } from './rating-table-cell';
 import { GenericButtonProps } from '../../components/buttons/rename-button';
 

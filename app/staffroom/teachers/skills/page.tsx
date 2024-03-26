@@ -1,35 +1,18 @@
 'use client';
 import RatingTable from '../rating-table';
 import { useContext, useMemo } from 'react';
-import { ProviderContext } from '../../contexts/providerRoles/provider-context';
 import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provider-role-selection-context';
-import { SkillEditContext } from '../../contexts/providerRoles/rating-edit-context';
-import {
-  providerRoleNameAccessor,
-  SkillEditAccessorFunctions,
-  workTaskCompetencyDtoListAccessor,
-  workTaskCompetencyIdAccessor,
-  workTaskCompetencyLabelAccessor,
-  workTaskCompetencyRatingAccessor
-} from './rating-table-accessor-functions';
+import { SkillEditContext } from '../../../generic/components/modals/rating-edit-context';
+import { SkillEditAccessorFunctions } from './rating-table-accessor-functions';
 import { RatingTableBody } from '../../../premises/classroom-suitability/rating-table-body';
-import {
-  IdAccessor,
-  IdStringFromNumberAccessor
-} from '../../../premises/classroom-suitability/rating-table-accessor-functions';
-import {
-  ProviderRoleStringMapContext,
-  useProviderRoleStringMapContext
-} from '../../contexts/providerRoles/provider-role-string-map-context-creator';
+import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
+import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
 import {
   useMemoizedSelectionFromListAndStringMap,
   useSelectiveContextRatingListAccessor
 } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import {
-  AssetSuitabilityListSelectiveContext,
-  WorkTaskCompetencyListSelectiveContext
-} from '../../../contexts/selective-context/selective-context-creators';
+import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();

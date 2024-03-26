@@ -4,13 +4,11 @@ import { useContext, useEffect, useState, useTransition } from 'react';
 import { Textarea } from '@tremor/react';
 import { ColorContextButton } from './color-context-button';
 import RunnableContextProvider from './runnable-context-provider';
-import { ProviderContext } from '../contexts/providerRoles/provider-context';
 import { format } from 'date-fns';
 
 import { enableMapSet, produce } from 'immer';
 import {
   Tooltip,
-  TooltipContent,
   TooltipTrigger
 } from '../../generic/components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
@@ -19,14 +17,14 @@ import {
   WrenchIcon
 } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/20/solid';
+import { useDndContext } from '@dnd-kit/core';
 
-import { ZoomScaleContext } from '../calendar-view/zoom/zoom-zoom-context';
-import { DndContext, useDndContext } from '@dnd-kit/core';
-import { DndMonitorContext } from '@dnd-kit/core/dist/components/DndMonitor';
-import { useCalendarScaledZoom } from '../calendar-view/columns/time-column';
 import { EventDto } from '../../api/dtos/EventDtoSchema';
 import { WorkTaskDto } from '../../api/dtos/WorkTaskDtoSchema';
-import { ConfirmActionModal } from '../../components/modals/confirm-action-modal';
+
+import { ProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
+import { useCalendarScaledZoom } from '../../generic/components/calendar/columns/time-column';
+import { ConfirmActionModal } from '../../generic/components/modals/confirm-action-modal';
 
 function getIconSize(hourHeight: number): string {
   if (hourHeight < 70) return 'h-3 w-3';
@@ -35,7 +33,7 @@ function getIconSize(hourHeight: number): string {
   return 'h-6 w-6';
 }
 
-async function getWorkshopTask(eventReasonId: number) {
+async function getWorkshopTask() {
   return null;
 }
 
@@ -52,8 +50,6 @@ export default function WorkshopJobModal({
   const [open, setOpen] = useState(false);
   const {
     eventReasonId,
-    eventReasonType,
-    id,
     name,
     description,
     eventEnd,
@@ -66,14 +62,14 @@ export default function WorkshopJobModal({
   const [editedNotes, setEditedNotes] = useState('');
   const [edited, setEdited] = useState(false);
   const [pending, startTransition] = useTransition();
-  const { providers } = useContext(ProviderContext);
+  const providerRoleDtoStringMap = useContext(ProviderRoleStringMapContext);
 
   const { y } = useCalendarScaledZoom();
   const { active } = useDndContext();
 
   useEffect(() => {
     const getTask = async () => {
-      const task = await getWorkshopTask(eventReasonId);
+      const task = await getWorkshopTask();
       if (task !== null) {
         setWorkshopTask(task);
         // setNotes(task.notes || '');
@@ -93,8 +89,8 @@ export default function WorkshopJobModal({
 
   const iconSize = getIconSize(y);
 
-  const mechanicName =
-    providers.find((mech) => mech.id == ownerRoleId)?.partyName || '';
+  const providerRoleName =
+    providerRoleDtoStringMap[ownerRoleId]?.partyName || '';
 
   const onClick = () => {
     if (!edited) {
@@ -153,7 +149,7 @@ export default function WorkshopJobModal({
         <Tooltip>
           <TooltipTrigger as={'div'} className={' max-h-fit h-fit'}>
             <ColorContextButton
-              contextKey={mechanicName}
+              contextKey={providerRoleName}
               className={'mr-1'}
               disabled={!!active}
             >
@@ -169,7 +165,10 @@ export default function WorkshopJobModal({
       <RunnableContextProvider context={{ callback: toggleComplete }}>
         <Tooltip>
           <TooltipTrigger>
-            <ColorContextButton contextKey={mechanicName} disabled={!!active}>
+            <ColorContextButton
+              contextKey={providerRoleName}
+              disabled={!!active}
+            >
               {workshopTask?.completedDate ? (
                 <CheckIcon className={`${iconSize} leading-[0px]`}></CheckIcon>
               ) : (

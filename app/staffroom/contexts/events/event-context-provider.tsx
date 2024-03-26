@@ -1,14 +1,11 @@
 'use client';
 import {
-  EventsContextObject,
   EventsContext,
+  EventsContextObject,
   EventsDispatch
 } from './event-context';
-import { ReactNode, useEffect, useReducer } from 'react';
+import { ReactNode, useReducer } from 'react';
 import { EventReducer } from './event-reducer';
-import { CalendarEvent } from '../../../api/zod-mods';
-import { patchEvent } from '../../../actions/calendars';
-import { ActionResponsePromise } from '../../../actions/actionResponse';
 
 export default function EventContextProvider({
   initialContext,

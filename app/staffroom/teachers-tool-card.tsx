@@ -1,6 +1,6 @@
 'use client';
 
-import TeacherDisclosureList from './teachers/teacher-disclosure-list';
+import ProviderRoleDisclosureList from './teachers/provider-role-disclosure-list-panel/provider-role-disclosure-list';
 import React from 'react';
 import ToolCard from '../generic/components/tool-card/tool-card';
 
@@ -18,7 +18,7 @@ export function TeachersToolCard() {
       </ToolCard.UpperSixth>
 
       <ToolCard.LowerFiveSixths>
-        <TeacherDisclosureList />
+        <ProviderRoleDisclosureList />
       </ToolCard.LowerFiveSixths>
     </ToolCard>
   );

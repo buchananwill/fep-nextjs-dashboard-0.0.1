@@ -1,7 +1,7 @@
 'use client';
-import { createContext, Dispatch, SetStateAction } from 'react';
+import { createContext, Dispatch } from 'react';
 
-import { AvailabilityAction, ToggleAvailability } from './availability-reducer';
+import { AvailabilityAction } from './availability-reducer';
 import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
 import { CycleSubspanDto } from '../../../api/dtos/CycleSubspanDtoSchema';
 import { CycleDto } from '../../../api/dtos/CycleDtoSchema';

@@ -1,5 +1,5 @@
 'use client';
-import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
+import { AssetSuitabilityEditContext } from '../../generic/components/modals/rating-edit-context';
 import RatingTable, {
   AccessorFunction
 } from '../../staffroom/teachers/rating-table';
