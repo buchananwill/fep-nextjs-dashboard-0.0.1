@@ -6,21 +6,6 @@ import ColorSelector, { useColorState } from './color-selector';
 import { Dialog, Transition } from '@headlessui/react';
 import { ColorCoding, ModalColorSelectContext } from './color-coding-context';
 import { ColorState } from './color-context';
-
-export function useModal() {
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  return { isOpen, closeModal, openModal };
-}
-
 export function ColorSelectModal({
   show,
   children,

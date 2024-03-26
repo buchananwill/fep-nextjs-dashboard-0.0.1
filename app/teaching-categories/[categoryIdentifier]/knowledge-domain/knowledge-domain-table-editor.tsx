@@ -54,7 +54,7 @@ export default async function KnowledgeDomainTableEditor({
         </KnowledgeCategoryTableHeaderCell>
       </KnowledgeCategoryTableHeader>
       <KnowledgeCategoryTableBody>
-        {knowledgeDomains.map((kd, index) => {
+        {knowledgeDomains.map((kd) => {
           return (
             <KnowledgeCategoryTableRow key={kd.id}>
               <KnowledgeCategoryTableCell>

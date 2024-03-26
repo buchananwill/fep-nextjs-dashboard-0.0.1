@@ -1,12 +1,14 @@
 'use client';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
-import { RenameModal } from '../../../components/rename-modal/rename-modal';
+
 import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
-import { useModal } from '../../../components/modals/confirm-action-modal';
+
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { patchKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
+import { useModal } from '../../../generic/components/modals/confirm-action-modal';
+import { RenameModal } from '../../../generic/components/modals/rename-modal';
 
 export function KnowledgeDomainNameCell({
   kd,

@@ -12,13 +12,8 @@ import {
   ColorState,
   defaultColorState
 } from '../../generic/components/color/color-context';
-import {
-  ColorSelectModal,
-  useModal
-} from '../../generic/components/color/color-select-modal';
-
-const someSubjects = ['Maths', 'Art', 'Science'];
-
+import { ColorSelectModal } from '../../generic/components/color/color-select-modal';
+import { useModal } from '../../generic/components/modals/confirm-action-modal';
 export default function SubjectColorCodingProvider({
   children
 }: {

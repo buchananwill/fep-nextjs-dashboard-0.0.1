@@ -7,8 +7,9 @@ import {
 } from './color-coding-context';
 import { useColorState } from './color-selector';
 import { ColorState, defaultColorState } from './color-context';
-import { ColorSelectModal, useModal } from './color-select-modal';
+import { ColorSelectModal } from './color-select-modal';
 import { produce } from 'immer';
+import { useModal } from '../modals/confirm-action-modal';
 export default function ColorCodingProvider({
   children
 }: {

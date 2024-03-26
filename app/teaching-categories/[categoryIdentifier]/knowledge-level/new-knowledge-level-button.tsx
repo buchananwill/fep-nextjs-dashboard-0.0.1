@@ -1,11 +1,7 @@
 'use client';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
-import { GenericButtonProps } from '../../../components/buttons/rename-button';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../../components/modals/confirm-action-modal';
+
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
@@ -21,6 +17,11 @@ import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';
 import { PendingOverlay } from '../../../generic/components/overlays/pending-overlay';
+import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../../generic/components/modals/confirm-action-modal';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 

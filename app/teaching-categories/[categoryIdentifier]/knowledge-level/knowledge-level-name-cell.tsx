@@ -1,17 +1,15 @@
 'use client';
-import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
-import { RenameModal } from '../../../components/rename-modal/rename-modal';
+
 import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
-import { useModal } from '../../../components/modals/confirm-action-modal';
+
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import {
-  patchKnowledgeDomain,
-  patchKnowledgeLevels
-} from '../../../api/actions/service-categories';
+import { patchKnowledgeLevels } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { useEffect, useState } from 'react';
+import { useModal } from '../../../generic/components/modals/confirm-action-modal';
+import { RenameModal } from '../../../generic/components/modals/rename-modal';
 
 export function useValidationUniqueNonEmpty(
   proposedName: string,
@@ -51,7 +49,7 @@ export function KnowledgeLevelNameCell({
 
   const handleRenameKnowledgeLevel = () => {
     const update = { ...kl, name: currentState };
-    patchKnowledgeLevels(serviceCategory, [update]).then((r) => {
+    patchKnowledgeLevels(serviceCategory, [update]).then(() => {
       router.refresh();
       closeModal();
     });

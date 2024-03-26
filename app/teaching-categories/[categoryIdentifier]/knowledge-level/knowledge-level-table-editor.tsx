@@ -1,7 +1,4 @@
-import {
-  getKnowledgeDomains,
-  getKnowledgeLevels
-} from '../../../api/actions/service-categories';
+import { getKnowledgeLevels } from '../../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelNameCell } from './knowledge-level-name-cell';

@@ -1,9 +1,9 @@
 'use client';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
 import { Tab } from '@headlessui/react';
-import { TabStyled } from '../../components/tab-layouts/tab-styled';
-import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
 import { ReactNode } from 'react';
+import { TabStyled } from '../../generic/components/tab-layouts/tab-styled';
+import { TabPanelStyled } from '../../generic/components/tab-layouts/tab-panel-styled';
 
 export function ServiceCategoryEditor({
   metaData: { knowledgeDomainDescriptor, knowledgeLevelDescriptor },

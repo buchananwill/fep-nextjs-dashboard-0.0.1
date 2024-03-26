@@ -1,28 +1,29 @@
 'use client';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
-import { GenericButtonProps } from '../../../components/buttons/rename-button';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../../components/modals/confirm-action-modal';
+
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
 } from '../../../generic/components/selective-context/selective-context-manager-string';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
-import { TextInput, Title } from '@tremor/react';
-import { useEffect, useTransition } from 'react';
+import { Title } from '@tremor/react';
+import { useTransition } from 'react';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { postKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
-import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';
 import { PendingOverlay } from '../../../generic/components/overlays/pending-overlay';
+import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../../generic/components/modals/confirm-action-modal';
+
 const NewKnowledgeDomainContextKey = 'new-knowledge-domain-name';
 
 type NewKnowledgeDomainButtonProps = Omit<GenericButtonProps, 'onClick'> & {
@@ -81,14 +82,12 @@ export function NewKnowledgeDomainButton({
     ''
   );
 
-  const {
-    currentState: confirmedWithoutName,
-    dispatchUpdate: setConfirmWithoutName
-  } = useSelectiveContextControllerBoolean(
-    NewKnowledgeDomainContextKey,
-    'button',
-    false
-  );
+  const { dispatchUpdate: setConfirmWithoutName } =
+    useSelectiveContextControllerBoolean(
+      NewKnowledgeDomainContextKey,
+      'button',
+      false
+    );
 
   const handleNewKnowledgeDomain = () => {
     if (currentState === '') {
