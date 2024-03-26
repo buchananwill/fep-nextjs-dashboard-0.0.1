@@ -2,7 +2,7 @@
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { Grid } from '@tremor/react';
 import { CurriculumDeliveryModel } from './curriculum-delivery-model';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { AddNewCurriculumModelCard } from './add-new-curriculum-model-card';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
@@ -13,12 +13,8 @@ import {
 } from './contexts/curriculum-models-context-provider';
 import { useEditingContextDependency } from './use-editing-context-dependency';
 import { UuidAccessor } from './use-curriculum-delivery-model-and-work-task-dependency';
-import { useSearchParams } from 'next/navigation';
 import { useSelectiveContextDispatchStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { CurriculumModelNameListValidator } from './[yearGroup]/curriculum-model-name-list-validator';
-
-export const curriculumDeliveryCommitKey = 'commit-model-changes-open';
-
 const modelsListenerKey = 'models-component';
 
 export function CurriculumDeliveryModels({
@@ -30,12 +26,11 @@ export function CurriculumDeliveryModels({
 }) {
   const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
 
-  const { currentState: deletedIds, dispatchWithoutControl } =
-    useSelectiveContextDispatchStringList({
-      contextKey: DeletedCurriculumModelIdsKey,
-      listenerKey: modelsListenerKey,
-      initialValue: EmptyIdArray
-    });
+  const {} = useSelectiveContextDispatchStringList({
+    contextKey: DeletedCurriculumModelIdsKey,
+    listenerKey: modelsListenerKey,
+    initialValue: EmptyIdArray
+  });
 
   useEditingContextDependency(modelsPayload, dispatch, UuidAccessor);
 
@@ -59,7 +54,7 @@ export function CurriculumDeliveryModels({
           />
           {Object.values(curriculumModelsMap)
             .filter(({ id }) => modelsInView.includes(id))
-            .map((item, index) => (
+            .map((item) => (
               <CurriculumDeliveryModel key={item.id} model={item} />
             ))}
         </Grid>

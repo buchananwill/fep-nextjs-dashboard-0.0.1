@@ -2,7 +2,7 @@ import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleD
 import {
   StringMap,
   StringMapPayload
-} from '../contexts/string-map-context-creator';
+} from '../../../contexts/string-map-context/string-map-reducer';
 
 export function mapToPartyIdBundleIdRecords(
   bundles: WorkSeriesBundleDeliveryDto[]

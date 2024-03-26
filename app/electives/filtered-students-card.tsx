@@ -1,7 +1,8 @@
 import React from 'react';
 import StudentsDisclosureGroup from './students-disclosure-group';
-import RightHandToolCard from '../components/tool-card/right-hand-tool-card';
+
 import { FilteredStudentCardTitle } from './filtered-student-card-title';
+import RightHandToolCard from '../generic/components/tool-card/right-hand-tool-card';
 
 const FilteredStudentsCard = () => {
   return (

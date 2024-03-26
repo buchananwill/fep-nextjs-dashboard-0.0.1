@@ -1,30 +1,26 @@
 'use client';
-import { Card, Flex, Text, Title } from '@tremor/react';
+import { Card, Flex, Text } from '@tremor/react';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { DeliveryAllocationDto } from '../../api/dtos/DeliveryAllocationDtoSchema';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Tab } from '@headlessui/react';
 import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
 import { StepperContext } from '../../contexts/stepper/stepper-context-creator';
-import { TabStyled } from '../../components/tab-layouts/tab-styled';
-import { TabPanelStyled } from '../../components/tab-layouts/tab-panel-styled';
+
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
-import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextDispatchBoolean,
-  useSelectiveContextListenerBoolean
-} from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
-import { TwoStageClick } from '../../components/buttons/two-stage-click';
 
-import { PendingOverlay } from '../../generic/components/overlays/pending-overlay';
-import { DeletedOverlay } from '../../components/overlays/deleted-overlay';
-import { RenameModal } from '../../components/rename-modal/rename-modal';
 import { useRenameCurriculumDeliveryModel } from './use-rename-curriculum-delivery-model';
 import { useDeleteCurriculumDeliveryModel } from './use-delete-curriculum-delivery-model';
+import { DeletedOverlay } from '../../generic/components/overlays/deleted-overlay';
+import { TwoStageClick } from '../../generic/components/buttons/two-stage-click';
+import { TabStyled } from '../../generic/components/tab-layouts/tab-styled';
+import { TabPanelStyled } from '../../generic/components/tab-layouts/tab-panel-styled';
+import { RenameModal } from '../../generic/components/modals/rename-modal';
 
 const allocationSizes = [1, 2];
 
@@ -35,10 +31,6 @@ export function CurriculumDeliveryModel({
 }: {
   model: WorkProjectSeriesSchemaDto;
 }) {
-  const { workTaskType } = model;
-  const workTaskTypeName = workTaskType.name;
-  const lastColon = workTaskTypeName.lastIndexOf(':');
-  const name = workTaskTypeName.substring(lastColon + 1);
   const listenerKey = `${CurriculumDeliveryModelCardKey}:${model.id}`;
   const { handleDelete, currentState, handleUnDelete } =
     useDeleteCurriculumDeliveryModel(model.id, listenerKey);
@@ -122,7 +114,7 @@ export function AdjustAllocation({
     [workProjectSeriesSchemaDto]
   );
 
-  const { currentState: unsavedChanges, dispatchWithoutControl: setUnsaved } =
+  const { dispatchWithoutControl: setUnsaved } =
     useSelectiveContextDispatchBoolean(
       UnsavedCurriculumModelChanges,
       unsavedChangesListenerId,

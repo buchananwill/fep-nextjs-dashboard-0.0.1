@@ -11,7 +11,7 @@ import {
 import {
   StringMap,
   StringMapReducer
-} from '../../curriculum/delivery-models/contexts/string-map-context-creator';
+} from '../../contexts/string-map-context/string-map-reducer';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';

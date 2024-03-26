@@ -4,18 +4,15 @@ import { ReactNode, useReducer } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { enableMapSet } from 'immer';
 
-import electiveStateReducer, {
-  createElectiveDtoMap,
-  createElectivePreferenceRecords,
-  ElectiveState
-} from './elective-reducers';
-import { usePathname, useSearchParams } from 'next/navigation';
+import electiveStateReducer, { ElectiveState } from './elective-reducers';
 import { FilterType } from './elective-filter-reducers';
 
 import { ElectiveAvailability } from '../api/state-types';
 import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import { createElectivePreferenceRecords } from './create-elective-preference-records';
+import { createElectiveDtoMap } from './create-elective-dto-map';
 
 interface Props {
   electiveDtoList: ElectiveDTO[];
@@ -61,7 +58,6 @@ export default function ElectiveContextProvider({
     modifiedPreferences: createModificationMap(studentList),
     userRoleId: 0
   };
-  const pathname = usePathname();
 
   enableMapSet();
 

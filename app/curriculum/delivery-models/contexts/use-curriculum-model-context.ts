@@ -1,10 +1,5 @@
-import { createContext, Dispatch, useContext } from 'react';
-import {
-  MapDispatch,
-  MapDispatchBatch,
-  StringMap,
-  StringMapDispatch
-} from './string-map-context-creator';
+import { useContext } from 'react';
+import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
 export function useCurriculumModelContext() {
@@ -13,10 +8,7 @@ export function useCurriculumModelContext() {
   return { curriculumModelsMap, dispatch };
 }
 
-export const CurriculumModelsContext = createContext<
-  StringMap<WorkProjectSeriesSchemaDto>
->({} as StringMap<WorkProjectSeriesSchemaDto>);
-
-export const CurriculumModelsContextDispatch = createContext<
-  StringMapDispatch<WorkProjectSeriesSchemaDto>
->(() => {});
+export const {
+  mapContext: CurriculumModelsContext,
+  dispatchContext: CurriculumModelsContextDispatch
+} = createStringMapContext<WorkProjectSeriesSchemaDto>();

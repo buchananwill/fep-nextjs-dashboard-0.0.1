@@ -1,8 +1,5 @@
 import { createContext } from 'react';
-import {
-  StringMap,
-  StringMapDispatch
-} from '../../curriculum/delivery-models/contexts/string-map-context-creator';
+import { StringMap, StringMapDispatch } from './string-map-reducer';
 
 export function createStringMapContext<T>() {
   const mapContext = createContext<StringMap<T>>({});

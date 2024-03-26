@@ -4,20 +4,22 @@ import {
   EmptyIdArray,
   UnsavedCurriculumModelChanges
 } from './contexts/curriculum-models-context-provider';
-import {
-  ConfirmActionModalProps,
-  useModal
-} from '../../components/modals/confirm-action-modal';
+
 import { useSelectiveContextKeyMemo } from '../../generic/hooks/selective-context/use-selective-context-listener';
-import {
-  RenameModalProps,
-  RenameModalWrapperContextKey
-} from '../../components/rename-modal/rename-modal';
+
 import { useSelectiveContextControllerString } from '../../generic/components/selective-context/selective-context-manager-string';
 import { useSelectiveContextListenerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { ValidatorContextKey } from './[yearGroup]/curriculum-model-name-list-validator';
 import { useValidationUniqueNonEmpty } from '../../teaching-categories/[categoryIdentifier]/knowledge-level/knowledge-level-name-cell';
 import { produce } from 'immer';
+import {
+  ConfirmActionModalProps,
+  useModal
+} from '../../generic/components/modals/confirm-action-modal';
+import {
+  RenameModalProps,
+  RenameModalWrapperContextKey
+} from '../../generic/components/modals/rename-modal';
 
 export function useRenameCurriculumDeliveryModel(
   modelId: string,

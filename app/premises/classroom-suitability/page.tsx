@@ -11,7 +11,7 @@ import {
 } from '../../api/main';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
-import { convertListToStringMap } from '../../curriculum/delivery-models/contexts/convert-list-to-string-map';
+import { convertListToStringMap } from '../../contexts/string-map-context/convert-list-to-string-map';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
 
 import { AssetDisclosureListPanel } from './asset-disclosure-list-panel';

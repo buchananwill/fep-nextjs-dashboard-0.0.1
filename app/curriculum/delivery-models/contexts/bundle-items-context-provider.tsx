@@ -9,7 +9,7 @@ import {
   StringMap,
   StringMapPayload,
   useStringMapReducer
-} from './string-map-context-creator';
+} from '../../../contexts/string-map-context/string-map-reducer';
 import { UnsavedChangesModal } from '../../../components/modals/unsaved-changes-modal';
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleEdits } from '../[yearGroup]/bundles/bundle-editor';

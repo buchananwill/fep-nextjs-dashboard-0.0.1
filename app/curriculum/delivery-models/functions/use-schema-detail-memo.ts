@@ -1,4 +1,3 @@
-import { StringMap } from '../contexts/string-map-context-creator';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { useMemo } from 'react';
 import { useCurriculumModelContext } from '../contexts/use-curriculum-model-context';
@@ -7,7 +6,7 @@ import { isNotNull } from '../../../api/main';
 export const EmptySchemasArray = [] as WorkProjectSeriesSchemaDto[];
 
 export function useSchemaDetailMemo(schemaIdList: string[]) {
-  const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
+  const { curriculumModelsMap } = useCurriculumModelContext();
 
   const { schemas } = useMemo(() => {
     const schemas = schemaIdList

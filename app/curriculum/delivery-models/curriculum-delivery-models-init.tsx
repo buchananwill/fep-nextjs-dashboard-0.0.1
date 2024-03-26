@@ -6,11 +6,10 @@ import {
 } from './use-curriculum-delivery-model-and-work-task-dependency';
 
 export function CurriculumDeliveryModelsInit({
-  children,
   taskTypeList,
   workProjectSeriesSchemaDtos
 }: PropsWithChildren & CurriculumDeliveryModelEditingProps) {
-  const b = useCurriculumDeliveryModelAndWorkTaskDependency(
+  const {} = useCurriculumDeliveryModelAndWorkTaskDependency(
     workProjectSeriesSchemaDtos,
     taskTypeList
   );

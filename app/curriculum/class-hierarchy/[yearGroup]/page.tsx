@@ -1,8 +1,8 @@
 import {
-  getBundles,
   getBundleDeliveriesByOrgType,
-  getSchemasByIdList,
-  getOrganizationGraphByOrganizationType
+  getBundles,
+  getOrganizationGraphByOrganizationType,
+  getSchemasByIdList
 } from '../../../api/actions/curriculum-delivery-model';
 import { Card } from '@tremor/react';
 
@@ -11,7 +11,7 @@ import ForceGraphPage from '../../../graphing/force-graph-page';
 import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundle-items-context-provider';
 
 import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
-import { StringMap } from '../../delivery-models/contexts/string-map-context-creator';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
@@ -22,13 +22,11 @@ import React from 'react';
 const emptyBundles = {} as StringMap<string>;
 
 export default async function Page({
-  params: { yearGroup },
-  searchParams
+  params: { yearGroup }
 }: {
   params: {
     yearGroup: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   // await getOrganizationGraph();
   const bundleDeliveries = await getBundleDeliveriesByOrgType(yearGroup);
@@ -42,11 +40,7 @@ export default async function Page({
   );
   const workTaskTypeDtos = taskTypesResponse.data;
 
-  const {
-    status: statusGraph,
-    data: dataGraph,
-    message: messageGraph
-  } = actionResponseOrganizationGraph;
+  const { data: dataGraph } = actionResponseOrganizationGraph;
 
   const {
     status,

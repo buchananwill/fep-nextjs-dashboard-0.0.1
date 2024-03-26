@@ -13,7 +13,7 @@ import {
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useServiceCategoryContext } from '../../../work-types/lessons/use-service-category-context';
 import { Listbox } from '@headlessui/react';
-import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { useDirectSimRefEditsDispatch } from '../../editing/functions/use-graph-edit-button-hooks';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 

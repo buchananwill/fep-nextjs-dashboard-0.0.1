@@ -35,17 +35,14 @@ import { useModal } from '../../../../generic/components/modals/confirm-action-m
 import { RenameButton } from '../../../../generic/components/buttons/rename-button';
 import { TwoStageClick } from '../../../../generic/components/buttons/two-stage-click';
 import { TabStyled } from '../../../../generic/components/tab-layouts/tab-styled';
+import { EmptyArray } from '../../../../api/main';
+import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
 
 export const BundleEditorKey = 'bundles-editor';
 
 export const UnsavedBundleEdits = `Unsaved-${BundleEditorKey}`;
 
 export const SchemaBundleKeyPrefix = 'schema-bundle';
-
-export const StaticSchemaIdList: string[] = [];
-
-export const StaticTransientBundleIdList: number[] = [];
-
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,
   bun2: WorkSeriesSchemaBundleLeanDto
@@ -66,7 +63,7 @@ const TotalPeriodBadgeColors: { [key in BadgeRange]: Color } = {
 export function BundleEditor({
   schemaOptions
 }: {
-  schemaOptions: { [key: string]: string };
+  schemaOptions: StringMap<string>;
 }) {
   const { bundleItemsMap, dispatch: updateBundles } = useBundleItemsContext();
 
@@ -76,10 +73,6 @@ export function BundleEditor({
       .map((entry) => entry[1]);
   }, [bundleItemsMap]);
 
-  const bundleIds = useMemo(
-    () => sortedBundleList.map(({ id }) => id.toString()),
-    [sortedBundleList]
-  );
   const schemaBundles = useMemo(() => {
     return sortedBundleList.map((dto) => dto.workProjectSeriesSchemaIds);
   }, [sortedBundleList]);
@@ -96,24 +89,21 @@ export function BundleEditor({
     BundleEditorKey
   );
 
-  const { currentState: unsaved, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(
-      UnsavedBundleEdits,
-      BundleEditorKey,
-      false
-    );
+  const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
+    UnsavedBundleEdits,
+    BundleEditorKey,
+    false
+  );
 
   const { currentState, dispatchUpdate: dispatchRenameLocally } =
     useSelectiveContextControllerString(contextKeyMemo, BundleEditorKey);
 
-  const {
-    dispatchUpdate: updateTransientBundleIds,
-    currentState: transientBundleIds
-  } = useSelectiveContextControllerNumberList({
-    contextKey: `${BundleEditorKey}:unsaved-bundles`,
-    initialValue: StaticTransientBundleIdList,
-    listenerKey: BundleEditorKey
-  });
+  const { currentState: transientBundleIds } =
+    useSelectiveContextControllerNumberList({
+      contextKey: `${BundleEditorKey}:unsaved-bundles`,
+      initialValue: EmptyArray,
+      listenerKey: BundleEditorKey
+    });
 
   const {
     currentState: deleteBundles,
@@ -222,7 +212,6 @@ export function BundleEditor({
     dispatchWithoutControl(true);
   };
 
-  const activeBundle = sortedBundleList[activeTab];
   const { name: nameOfBundle } = sortedBundleList[activeTab];
   return (
     <Card>
@@ -256,7 +245,7 @@ export function BundleEditor({
                 flexGrow: 1
               }}
             >
-              {sortedBundleList.map((bundleFromList, index) => {
+              {sortedBundleList.map((bundleFromList) => {
                 const { name, workProjectSeriesSchemaIds } = bundleFromList;
                 const workProjectSeriesSchemaDtos =
                   workProjectSeriesSchemaIds.map(

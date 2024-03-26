@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import { updateElectiveAssignments } from './api/request-elective-preferences';
+import { updateElectiveAssignments } from './api/update-elective-preferences';
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
@@ -12,7 +12,6 @@ import {
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 
 import { UpdateElectivePreference } from './elective-reducers';
-import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 import {
   ConfirmActionModal,
   useModal
@@ -53,22 +52,20 @@ const CommitChanges = ({ children }: Props) => {
     setCommitPending(true);
 
     const response = await updateElectiveAssignments(electiveState);
-    if (response) {
-      const updatedAssignments: ElectivePreferenceDTO[] = await response.json();
-      updatedAssignments.forEach((preference) => {
-        const dispatchRequest: UpdateElectivePreference = {
-          type: 'updateElectivePreference',
-          electivePreference: preference
-        };
-        dispatch(dispatchRequest);
-      });
-    }
 
-    setCommitPending(false);
-
-    dispatch({
-      type: 'clearModifications'
+    response.forEach((preference) => {
+      const dispatchRequest: UpdateElectivePreference = {
+        type: 'updateElectivePreference',
+        electivePreference: preference
+      };
+      dispatch(dispatchRequest);
     });
+    if (response.length > 0) {
+      setCommitPending(false);
+      dispatch({
+        type: 'clearModifications'
+      });
+    } else console.error('No update information in response.');
   }
 
   const spinner = commitPending ? (

@@ -1,4 +1,4 @@
-import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
+import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
 import { useMemo } from 'react';
 import { isNotNull } from '../../api/main';
 

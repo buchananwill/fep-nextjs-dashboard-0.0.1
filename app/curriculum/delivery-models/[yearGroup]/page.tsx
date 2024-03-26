@@ -9,10 +9,9 @@ import {
 import { CurriculumDeliveryModels } from '../curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
 import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
-import { StringMap } from '../contexts/string-map-context-creator';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { WorkTaskTypeInit } from './workTaskTypeInit';
-import { CurriculumModelNameListValidator } from './curriculum-model-name-list-validator';
 
 export default async function Page({
   params: { yearGroup },
@@ -37,11 +36,7 @@ export default async function Page({
   const taskTypesResponse = await getWorkTaskTypes(2, parseInt(yearGroup));
 
   const { status, data, message } = curriculumDeliveryModelSchemas;
-  const {
-    status: taskTypesStatus,
-    data: taskTypeList,
-    message: taskTypeMessage
-  } = taskTypesResponse;
+  const { data: taskTypeList } = taskTypesResponse;
   if (data === undefined || taskTypeList === undefined) {
     return <Card>No schemas found!</Card>;
   }

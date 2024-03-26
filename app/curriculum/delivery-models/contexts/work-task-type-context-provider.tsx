@@ -1,5 +1,8 @@
 'use client';
-import { StringMap, StringMapReducer } from './string-map-context-creator';
+import {
+  StringMap,
+  StringMapReducer
+} from '../../../contexts/string-map-context/string-map-reducer';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import {

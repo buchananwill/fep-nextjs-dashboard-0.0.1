@@ -2,7 +2,7 @@ import { createContext, Dispatch, useContext } from 'react';
 import {
   StringMap,
   StringMapDispatch
-} from '../../curriculum/delivery-models/contexts/string-map-context-creator';
+} from '../../contexts/string-map-context/string-map-reducer';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';

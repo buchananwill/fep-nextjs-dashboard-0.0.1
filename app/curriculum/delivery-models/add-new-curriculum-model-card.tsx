@@ -6,7 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
-import { StringMap } from './contexts/string-map-context-creator';
+import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { AdjustAllocation } from './curriculum-delivery-model';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';

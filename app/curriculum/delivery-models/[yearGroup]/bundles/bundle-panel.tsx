@@ -1,8 +1,9 @@
 import React, { ReactNode, useMemo } from 'react';
-import { TabPanelStyled } from '../../../../components/tab-layouts/tab-panel-styled';
+
 import { SchemaBundleKeyPrefix, UnsavedBundleEdits } from './bundle-editor';
 import { useSelectiveContextDispatchBoolean } from '../../../../generic/components/selective-context/selective-context-manager-boolean';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
+import { TabPanelStyled } from '../../../../generic/components/tab-layouts/tab-panel-styled';
 
 function OptionChooserItem({
   children,
@@ -85,8 +86,11 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     });
   };
 
-  const { currentState: unsaved, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(UnsavedBundleEdits, panelKey, false);
+  const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
+    UnsavedBundleEdits,
+    panelKey,
+    false
+  );
 
   if (bundleItemsMapElement === undefined) {
     return <div>No state to render!</div>;
@@ -97,7 +101,6 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
       <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
         <div className={'w-full'}>
           {bundleItemsMapElement.workProjectSeriesSchemaIds.map((schemaId) => {
-            const name = schemaOptions[schemaId];
             return (
               <OptionChooserItem
                 key={`${bundleId}:${schemaId}`}

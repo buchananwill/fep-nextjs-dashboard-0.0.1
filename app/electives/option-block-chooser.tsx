@@ -2,9 +2,8 @@
 
 import { ElectiveAvailability } from '../api/state-types';
 import { matchCarouselOrdinal } from './checkElectiveAssignments';
-import React, { startTransition, useContext } from 'react';
+import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import { usePathname, useRouter } from 'next/navigation';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 interface OptionBlockChooserParams {
@@ -21,20 +20,6 @@ export function OptionBlockChooser({
 }: OptionBlockChooserParams) {
   const dispatch = useContext(ElectiveDispatchContext);
   const { electiveAvailability, electiveDtoMap } = useContext(ElectiveContext);
-  const pathname = usePathname();
-  const { replace } = useRouter();
-  //
-  // const setUnsaved = (state: boolean) => {
-  //   if (state) {
-  //     const params = new URLSearchParams(window.location.search);
-  //
-  //     // params.set('unsaved', 'true');
-  //
-  //     // startTransition(() => {
-  //     //   replace(`${pathname}?${params.toString()}`, { scroll: false });
-  //     // });
-  //   }
-  // };
 
   function handleAssignmentChange(
     studentId: number,

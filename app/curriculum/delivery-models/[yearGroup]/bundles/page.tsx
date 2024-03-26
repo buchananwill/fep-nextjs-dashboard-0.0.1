@@ -7,7 +7,7 @@ import { Card } from '@tremor/react';
 import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
-import { StringMap } from '../../contexts/string-map-context-creator';
+import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
 import { getWorkTaskTypes } from '../../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
 
@@ -20,7 +20,7 @@ export default async function Page({
   params: {
     yearGroup: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: StringMap<string | string[] | undefined>;
 }) {
   const { page, size } = searchParams;
   const curriculumDeliveryModelSchemas =
@@ -38,7 +38,7 @@ export default async function Page({
   const schemaIdList = data.content.map((schema) => schema.id);
 
   const schemasIdsAndNames = data.content.reduce(
-    (prev, curr, currentIndex) => {
+    (prev, curr) => {
       return { ...prev, [curr.id]: curr.name };
     },
     {} as { [key: string]: string }
@@ -53,7 +53,7 @@ export default async function Page({
     return <Card>No bundles found!</Card>;
   }
 
-  const { content, last, first, number, totalPages } = data;
+  const { content } = data;
 
   const bundleLeanDtos = actionResponse.data;
 

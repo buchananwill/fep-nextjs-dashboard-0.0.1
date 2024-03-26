@@ -2,7 +2,7 @@
 
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { StringMapEditContextProvider } from '../../../contexts/string-map-context/string-map-edit-context-provider';
-import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { updateTeachers } from '../../../api/actions/provider-roles';

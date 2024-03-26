@@ -3,7 +3,7 @@ import {
   StringMap,
   StringMapDispatch,
   StringMapReducer
-} from '../../curriculum/delivery-models/contexts/string-map-context-creator';
+} from './string-map-reducer';
 import React, {
   Context,
   PropsWithChildren,

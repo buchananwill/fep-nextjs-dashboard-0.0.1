@@ -2,7 +2,7 @@ import {
   MapDispatch,
   MapDispatchBatch,
   StringMapPayload
-} from './contexts/string-map-context-creator';
+} from '../../contexts/string-map-context/string-map-reducer';
 import { useEffect } from 'react';
 
 export function getPayloadArray<T>(

@@ -1,5 +1,5 @@
-import { AccessorFunction } from '../../../generic/components/tables/rating/rating-table';
-import { StringMap } from './string-map-context-creator';
+import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
+import { StringMap } from './string-map-reducer';
 
 export async function convertListToStringMap<T>(
   list: T[],

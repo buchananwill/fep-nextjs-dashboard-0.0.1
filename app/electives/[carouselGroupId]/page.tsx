@@ -1,5 +1,4 @@
 import { Text, Title } from '@tremor/react';
-import { fetchCarouselGroupWithAllStudents } from '../api/request-elective-preferences';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import FilteredStudentsCard from '../filtered-students-card';
@@ -14,12 +13,13 @@ import { CellDataAndMetaData, TabularDTO } from '../../api/dto-interfaces';
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
 import { RotateCarouselButton } from './rotate-carousel-button';
-import { YearGroupWithElectivesDTO } from '../../api/dtos/YearGroupWithElectivesDTOSchema';
 import { ElectiveDTO } from '../../api/dtos/ElectiveDTOSchema';
 import BigTableCard from '../../generic/components/tables/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../generic/components/tables/dynamic-dimension-timetable';
+import { fetchCarouselGroupWithAllStudents } from '../../api/actions/fetch-carousel-group-with-all-students';
+import { isNotUndefined } from '../../api/main';
 
 interface Props {
   params: { carouselGroupId: string };
@@ -31,21 +31,9 @@ interface Props {
 export const dynamic = 'force-dynamic';
 
 export default async function ElectivesPage({
-  params: { carouselGroupId },
-  searchParams: { cacheSetting }
+  params: { carouselGroupId }
 }: Props) {
-  // const yearGroupAsNumber = parseInt(carouselGroupId);
-
-  let requestCacheValue: RequestCache;
-  if (cacheSetting === 'reload') {
-    requestCacheValue = 'reload';
-  } else if (cacheSetting === 'noCache') {
-    requestCacheValue = 'no-cache';
-  } else {
-    requestCacheValue = 'default';
-  }
-
-  const yearGroupElectiveData: YearGroupWithElectivesDTO =
+  const { data: yearGroupElectiveData } =
     await fetchCarouselGroupWithAllStudents(carouselGroupId);
 
   // Initialize with empty arrays or nulls
@@ -53,9 +41,8 @@ export default async function ElectivesPage({
   let electiveAvailability: ElectiveAvailability = {};
   let optionBlocksTabularDTO: TabularDTO<ElectiveDTO, ElectiveDTO>;
 
-  if (yearGroupElectiveData !== null) {
+  if (isNotUndefined(yearGroupElectiveData)) {
     const {
-      id,
       carouselRows,
       carouselColumns: carouselCols,
       studentDTOList,

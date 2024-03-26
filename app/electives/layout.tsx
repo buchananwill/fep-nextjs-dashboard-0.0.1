@@ -1,7 +1,6 @@
-import React, { Suspense } from 'react';
-import Loading from '../loading';
+import React from 'react';
 
-const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 export default async function ElectivesPage({
   children

@@ -1,6 +1,5 @@
-import React, { startTransition, useContext } from 'react';
+import React, { useContext } from 'react';
 import { ElectiveDispatchContext } from './elective-context';
-import { usePathname, useRouter } from 'next/navigation';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 
 export function ToggleElectivePreferenceActive({
@@ -11,20 +10,6 @@ export function ToggleElectivePreferenceActive({
   electivePreference: ElectivePreferenceDTO;
 }) {
   const dispatch = useContext(ElectiveDispatchContext);
-  const { replace } = useRouter();
-  const pathname = usePathname();
-
-  // const setUnsaved = (state: boolean) => {
-  //   if (state) {
-  //     // const params = new URLSearchParams(window.location.search);
-  //
-  //     // params.set('unsaved', 'true');
-  //
-  //     // startTransition(() => {
-  //     //   replace(`${pathname}?${params.toString()}`, { scroll: false });
-  //     // });
-  //   }
-  // };
 
   function handleToggleClick(studentId: number, preferencePosition: number) {
     dispatch({
@@ -46,7 +31,6 @@ export function ToggleElectivePreferenceActive({
           electivePreference.userRoleId,
           electivePreference.preferencePosition
         );
-        // setUnsaved(true);
       }}
     ></input>
   );

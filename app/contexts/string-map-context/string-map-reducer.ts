@@ -3,7 +3,7 @@ import { Draft, produce } from 'immer';
 
 export interface StringMapPayload<D> {
   key: string;
-  data: D;
+  data?: D;
 }
 
 export interface StringMap<D> {
@@ -56,7 +56,7 @@ export function StringMapReducer<D>(
     case 'deleteAll': {
       return produce(state, (draft) => {
         payload.forEach((model) => {
-          const { key, data } = model;
+          const { key } = model;
           delete draft[key];
         });
       });

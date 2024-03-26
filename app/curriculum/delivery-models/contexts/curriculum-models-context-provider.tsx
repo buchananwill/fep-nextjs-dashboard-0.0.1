@@ -1,7 +1,10 @@
 'use client';
 
-import { StringMap, StringMapReducer } from './string-map-context-creator';
-import React, { PropsWithChildren, useEffect, useReducer } from 'react';
+import {
+  StringMap,
+  StringMapReducer
+} from '../../../contexts/string-map-context/string-map-reducer';
+import React, { PropsWithChildren, useReducer } from 'react';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import {
   CurriculumModelsContext,

@@ -1,6 +1,6 @@
 import { checkAssignment } from './checkElectiveAssignments';
 import React, { useContext } from 'react';
-import { PanelTransformer } from '../components/disclosure-list/disclosure-list-panel';
+
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { OptionBlockChooser } from './option-block-chooser';
 import { ToggleElectivePreferenceActive } from './toggle-elective-preference-active';
@@ -12,6 +12,7 @@ import {
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
+import { PanelTransformer } from '../generic/components/disclosure-list/disclosure-list-panel';
 
 export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
   data: { id, name }

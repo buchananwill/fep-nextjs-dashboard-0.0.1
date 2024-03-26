@@ -17,14 +17,12 @@ export function useDeleteCurriculumDeliveryModel(
       listenerKey,
       initialValue: EmptyIdArray
     });
-  const {
-    currentState: unsavedChanges,
-    dispatchWithoutControl: setUnsavedChanges
-  } = useSelectiveContextDispatchBoolean(
-    UnsavedCurriculumModelChanges,
-    listenerKey,
-    false
-  );
+  const { dispatchWithoutControl: setUnsavedChanges } =
+    useSelectiveContextDispatchBoolean(
+      UnsavedCurriculumModelChanges,
+      listenerKey,
+      false
+    );
   const handleDelete = useMemo(() => {
     return function () {
       dispatchWithoutControl([...currentState, modelId]);

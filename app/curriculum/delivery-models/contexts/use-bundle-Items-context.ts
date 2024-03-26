@@ -1,10 +1,10 @@
-import { createContext, Dispatch, useContext } from 'react';
+import { createContext, useContext } from 'react';
 import {
-  MapDispatch,
   StringMap,
   StringMapDispatch
-} from './string-map-context-creator';
+} from '../../../contexts/string-map-context/string-map-reducer';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 
 export const BundleItemsContext = createContext<
   StringMap<WorkSeriesSchemaBundleLeanDto>
@@ -12,6 +12,8 @@ export const BundleItemsContext = createContext<
 export const BundleItemsContextDispatch = createContext<
   StringMapDispatch<WorkSeriesSchemaBundleLeanDto>
 >(() => {});
+
+createStringMapContext();
 
 export function useBundleItemsContext() {
   const workSeriesSchemaBundleLeanDtoStringMap = useContext(BundleItemsContext);

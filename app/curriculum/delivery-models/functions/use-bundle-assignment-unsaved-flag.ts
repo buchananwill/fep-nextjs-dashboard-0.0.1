@@ -12,11 +12,10 @@ export function useBundleAssignmentUnsavedFlag(
     const selectiveListenerKey = `${selectiveContextKey}:${id}`;
     return { selectiveContextKey, selectiveListenerKey };
   }, [assignmentOptional, id]);
-  const { currentState: unsaved, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(
-      UnsavedBundleAssignmentsKey,
-      selectiveListenerKey,
-      false
-    );
+  const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
+    UnsavedBundleAssignmentsKey,
+    selectiveListenerKey,
+    false
+  );
   return dispatchWithoutControl;
 }

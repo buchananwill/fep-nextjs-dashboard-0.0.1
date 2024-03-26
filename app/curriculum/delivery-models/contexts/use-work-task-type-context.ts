@@ -1,12 +1,6 @@
-import { createContext, Dispatch, useContext } from 'react';
-import {
-  MapDispatch,
-  MapDispatchBatch,
-  StringMap,
-  StringMapDispatch
-} from './string-map-context-creator';
-import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
+import { useContext } from 'react';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
+import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 
 export function useWorkTaskTypeContext() {
   const workTaskTypeMap = useContext(WorkTaskTypeContext);
@@ -14,10 +8,7 @@ export function useWorkTaskTypeContext() {
   return { workTaskTypeMap, dispatch };
 }
 
-export const WorkTaskTypeContext = createContext<StringMap<WorkTaskTypeDto>>(
-  {} as StringMap<WorkTaskTypeDto>
-);
-
-export const WorkTaskTypeContextDispatch = createContext<
-  StringMapDispatch<WorkTaskTypeDto>
->(() => {});
+export const {
+  dispatchContext: WorkTaskTypeContextDispatch,
+  mapContext: WorkTaskTypeContext
+} = createStringMapContext<WorkTaskTypeDto>();

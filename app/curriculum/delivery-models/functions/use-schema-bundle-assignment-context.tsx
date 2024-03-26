@@ -1,7 +1,7 @@
-import { useSingleBundleAssignment } from '../contexts/use-bundle-assignments-context';
 import { useSchemaIdsFromBundleItemsContext } from './use-schema-ids-from-bundle-items-context';
 import { useBundleAssignmentUnsavedFlag } from './use-bundle-assignment-unsaved-flag';
 import { useSchemaDetailMemo } from './use-schema-detail-memo';
+import { useSingleBundleAssignment } from '../contexts/use-single-bundle-assignment';
 
 export function useSchemaBundleAssignmentContext(id: number) {
   const { assignmentOptional, setAssignment } = useSingleBundleAssignment(

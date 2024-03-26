@@ -11,7 +11,7 @@ import { filterStudentList } from './filter-student-list';
 import DisclosureListPanel from '../generic/components/disclosure-list/disclosure-list-panel';
 
 export default function StudentsDisclosureGroup() {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const electiveState = useContext(ElectiveContext);
   const electiveFilterState = useContext(ElectiveFilterContext);
