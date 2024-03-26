@@ -1,7 +1,8 @@
+'use server';
 import { NextRequest } from 'next/server';
-import { API_BASE_URL } from '../../api/main';
+import { API_BASE_URL } from '../main';
 
-export const GET = async (request: NextRequest) => {
+export const getLessonEnrollments = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
   const studentId = searchParams.get('studentId');
   const scheduleId = searchParams.get('scheduleId');
@@ -23,7 +24,7 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-export const PUT = async (request: NextRequest) => {
+export const putPeriodSwap = async (request: NextRequest) => {
   const requestArray = await request.json();
 
   // const swapObject = [periodId1, periodId2, scheduleId];

@@ -15,7 +15,6 @@ import {
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
-import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 
 export interface ServiceCategoryContextProviderProps extends PropsWithChildren {
   serviceCategories: StringMap<ServiceCategoryDto>;

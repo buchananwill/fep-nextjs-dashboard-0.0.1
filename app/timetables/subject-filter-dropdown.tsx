@@ -1,26 +1,12 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
-
-// For example, using TypeScript enum
-export enum CacheSetting {
-  Default = 'default',
-  Reload = 'reload',
-  NoCache = 'noCache'
-}
-
-// Or, using object as a map
-export const colorSettings: Record<CacheSetting, string> = {
-  [CacheSetting.Default]: 'emerald',
-  [CacheSetting.Reload]: 'orange',
-  [CacheSetting.NoCache]: 'red'
-};
 
 function summariseFilterSelections(selectedFilters: string[]) {
   if (Array.isArray(selectedFilters) && selectedFilters.length > 0) {
@@ -43,10 +29,6 @@ export function SubjectFilterDropdown({
   const dispatch = useContext(TimetablesDispatchContext);
   const { highlightedSubjectsList } = useContext(TimetablesContext);
 
-  // useEffect(() => {
-  //
-  // }, [subjectFilters, dispatch, filterReducerType]);
-
   function handleOnChange(selection: string[]) {
     dispatch({
       type: 'setFilterPending',
@@ -57,8 +39,6 @@ export function SubjectFilterDropdown({
       type: filterReducerType,
       subjects: selection
     });
-
-    // setSubjectFilters(selection);
   }
 
   return (
@@ -67,7 +47,6 @@ export function SubjectFilterDropdown({
         value={highlightedSubjectsList}
         onChange={handleOnChange}
         multiple
-        // className={`btn bg-${color}-400 hover:bg-${color}-500 normal-case text-xs w-fit h-min min-h-0 p-2 my-0 mx-2`}
       >
         <div className=" relative mt-1">
           <Listbox.Button

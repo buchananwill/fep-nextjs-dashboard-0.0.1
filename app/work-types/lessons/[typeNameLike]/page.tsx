@@ -5,19 +5,14 @@ import { getWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
 import {
   getAllKnowledgeDomains,
-  getAllKnowledgeLevels,
-  getKnowledgeDomains,
-  getKnowledgeLevels
+  getAllKnowledgeLevels
 } from '../../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
-import { SECONDARY_EDUCATION_CATEGORY_ID } from '../../../api/main';
 import ServiceCategoryContextInit, {
   ServiceCategoriesEmptyArray
 } from '../service-category-context-init';
-import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 
 export const dynamic = 'force-dynamic';
-const paramsMock = ['Maths', 'Year 13', 'all'];
 
 export default async function LessonTypesPage({
   params: { typeNameLike }

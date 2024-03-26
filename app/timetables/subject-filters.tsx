@@ -1,22 +1,19 @@
 'use client';
 import { Card, Text } from '@tremor/react';
-import { FilterDropdown } from '../components/dropdown/filter-dropdown';
 import { useContext } from 'react';
 
-import Union from '../components/swaps/union';
-import Intersection from '../components/swaps/intersection';
-
-import {
-  FillableButton,
-  PinIcons
-} from '../components/buttons/fillable-button';
-import { FilterOption, LessonCycle } from '../api/state-types';
-import { FilterType } from '../electives/elective-filter-reducers';
+import { LessonCycle } from '../api/state-types';
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
 import { SubjectFilterDropdown } from './subject-filter-dropdown';
+import Union from '../generic/components/swaps/union';
+import Intersection from '../generic/components/swaps/intersection';
+import {
+  FillableButton,
+  PinIcons
+} from '../generic/components/buttons/fillable-button';
 
 interface Props {
   lessonCycleList: LessonCycle[];
@@ -42,7 +39,7 @@ function createDistinctFilterOptions(lessonCycleList: LessonCycle[]): string[] {
 }
 
 export function SubjectFilters({ lessonCycleList }: Props) {
-  const { filterType, highlightedSubjects } = useContext(TimetablesContext);
+  const { filterType } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
 
   const distinctCourses = createDistinctFilterOptions(lessonCycleList);

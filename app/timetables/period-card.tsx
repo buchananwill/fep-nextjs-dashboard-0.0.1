@@ -1,85 +1,26 @@
 'use client';
-import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
-import { LessonCycleDTO } from '../api/dto-interfaces';
+
 import React, { useContext, useEffect, useState, useTransition } from 'react';
-import InteractiveTableCard from '../components/tables/interactive-table-card';
+
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
 import { Badge } from '@tremor/react';
-import { LessonCycle } from '../api/state-types';
+
+import { convertDtoToState } from './build-timetables-state';
+import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
+import { CellDataTransformer } from '../generic/components/tables/dynamic-dimension-timetable';
+import InteractiveTableCard from '../generic/components/tables/interactive-table-card';
 import {
   FillableButton,
   PinIcons
-} from '../components/buttons/fillable-button';
-import { convertDtoToState } from './build-timetables-state';
-import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
-
-function countConcurrency(
-  highlightedSubjects: Set<string>,
-  periodId: number | null,
-  map: Map<number, Set<string>>,
-  lessonCycleMap: Map<string, LessonCycle>
-) {
-  let concurrency = 0;
-  if (!periodId) return concurrency;
-  const setOrUndefined = map.get(periodId);
-  if (!setOrUndefined) return concurrency;
-  setOrUndefined.forEach((lessonCycleId) => {
-    const lessonCycle = lessonCycleMap.get(lessonCycleId);
-    if (
-      lessonCycle &&
-      (highlightedSubjects.has(lessonCycle.subject) ||
-        highlightedSubjects.size == 0)
-    )
-      concurrency++;
-  });
-  return concurrency;
-}
-
-function getBadgeColor(concurrency: number) {
-  switch (concurrency) {
-    case 0:
-      return 'gray';
-    case 1:
-      return 'emerald';
-    case 2:
-      return 'yellow';
-    case 3:
-      return 'orange';
-    case 4:
-      return 'red';
-    case 5:
-      return 'pink';
-    default:
-      return 'purple';
-  }
-}
-
-async function swapPeriods(
-  periodId: number,
-  scheduleId: number
-): Promise<LessonCycleDTO[]> {
-  const response = await fetch('api', {
-    method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify([periodId, periodId, scheduleId])
-  }); //PUT(periodId, periodId, scheduleId);
-
-  return await response.json();
-}
+} from '../generic/components/buttons/fillable-button';
+import { swapPeriods } from '../api/actions/timetables';
+import { countConcurrency, getBadgeColor } from './count-concurrency';
 
 export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({
-  data: { id, startTime, description }
+  data: { id, description }
 }) => {
   const {
     focusPeriodId,
@@ -91,7 +32,7 @@ export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({
     updatePending
   } = useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const handleCardClick = (periodId: number | null) => {
     startTransition(() => {

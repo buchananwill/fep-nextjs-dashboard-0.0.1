@@ -1,6 +1,5 @@
 'use client';
 
-import { ServiceCategoryContextProviderProps } from './service-category-context-provider';
 import { useEditingContextDependency } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { useServiceCategoryContext } from './use-service-category-context';
 import { PropsWithChildren } from 'react';
