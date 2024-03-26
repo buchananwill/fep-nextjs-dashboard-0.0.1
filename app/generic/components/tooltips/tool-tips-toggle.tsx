@@ -1,8 +1,6 @@
 'use client';
 import { Text } from '@tremor/react';
-import React, { useContext } from 'react';
-
-import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
+import React from 'react';
 import { useTooltipsContext } from './tooltips-context-provider';
 
 const ToolTipsToggle = () => {

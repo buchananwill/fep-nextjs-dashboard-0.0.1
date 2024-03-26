@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
+import { RatingEditContext } from './rating-edit-context';
 import { useRatingEditModalTrigger } from './rating-table-cell';
-import { GenericButtonProps } from '../../components/buttons/rename-button';
+import { GenericButtonProps } from '../../buttons/rename-button';
 
 const competencyColors: { [key: string]: string } = {
   '0': 'gray-200',
@@ -34,7 +34,7 @@ export function RatingList<R, E>({
 
   return (
     <ul className={'divide-y'}>
-      {ratingList.map((wtComp, index) => (
+      {ratingList.map((wtComp) => (
         <RatingListItem
           key={`${elementIdAccessor(data)}-${ratingCategoryIdAccessor(wtComp)}`}
           className={`text-${getCompetencyColor(

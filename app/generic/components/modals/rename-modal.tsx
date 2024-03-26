@@ -1,11 +1,11 @@
-import { useSelectiveContextDispatchString } from '../../generic/components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../contexts/selective-context/use-selective-context-listener';
+import { TextInput } from '@tremor/react';
+import { useEffect, useRef } from 'react';
 import {
   ConfirmActionModal,
   ConfirmActionModalProps
-} from '../confirm-action-modal';
-import { TextInput } from '@tremor/react';
-import { useEffect, useRef } from 'react';
+} from './confirm-action-modal';
+import { useSelectiveContextKeyMemo } from '../../hooks/selective-context/use-selective-context-listener';
+import { useSelectiveContextDispatchString } from '../selective-context/selective-context-manager-string';
 
 export const RenameModalWrapperContextKey = 'rename-modal-wrapper';
 export const RenameModalWrapperListener = `${RenameModalWrapperContextKey}:listener`;

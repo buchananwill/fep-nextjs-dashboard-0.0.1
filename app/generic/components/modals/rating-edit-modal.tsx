@@ -6,7 +6,7 @@ import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curric
 import {
   RatingCategoryLabelAccessor,
   RatingValueAccessor
-} from '../../../staffroom/teachers/rating-table';
+} from '../tables/rating/rating-table';
 import { PropsWithChildren, useMemo } from 'react';
 
 import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';

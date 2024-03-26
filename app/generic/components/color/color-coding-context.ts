@@ -28,7 +28,7 @@ export const ColorCodingDispatch = createContext<ColorCodingDispatchState>({
 });
 
 export const ModalColorSelectContext = createContext<ModalColorSelect>({
-  setModalText: (text) => {},
+  setModalText: () => {},
   stringKey: '',
   openModal: () => {},
   onCancel: () => {},

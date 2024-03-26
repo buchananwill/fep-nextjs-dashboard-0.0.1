@@ -3,18 +3,11 @@ import { Text } from '@tremor/react';
 
 function Union({
   size,
-  className,
   children
 }: {
   size: number;
-  className: string;
   children: React.ReactNode;
 }) {
-  const circles = [
-    { cx: '67.181', cy: '100.034' },
-    { cx: '139.108', cy: '100.034' }
-  ];
-
   return (
     <div className="w-full flex flex-row items-center justify-between align-middle grow">
       <Text className="inline p-0 mr-1 grow-0">

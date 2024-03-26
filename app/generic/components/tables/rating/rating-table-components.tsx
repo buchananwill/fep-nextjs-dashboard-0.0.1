@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 export function RatingTableHeaderCell({ children }: PropsWithChildren) {
   return (
@@ -21,7 +21,7 @@ export function RatingTableHeader({
   ratingCategoryDescriptor,
   children
 }: {
-  ratingCategoryDescriptor: React.ReactNode;
+  ratingCategoryDescriptor: ReactNode;
 } & PropsWithChildren) {
   return (
     <thead className="text-sm sticky top-0 bg-opacity-100 bg-white z-20">

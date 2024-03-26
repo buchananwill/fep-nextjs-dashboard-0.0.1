@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import { SkillEditContext } from '../../../generic/components/modals/rating-edit-context';
+import { SkillEditContext } from '../../../generic/components/tables/rating/rating-edit-context';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { RatingEditModal } from '../../../generic/components/modals/rating-edit-modal';

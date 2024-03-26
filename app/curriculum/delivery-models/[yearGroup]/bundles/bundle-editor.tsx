@@ -2,17 +2,13 @@
 import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { Badge, Card, Color, Title } from '@tremor/react';
 import { Tab } from '@headlessui/react';
-import { TabStyled } from '../../../../components/tab-layouts/tab-styled';
+
 import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
 import { usePathname } from 'next/navigation';
 import { BundlePanel } from './bundle-panel';
-import {
-  RenameModal,
-  RenameModalWrapperContextKey
-} from '../../../../components/rename-modal/rename-modal';
-import { useModal } from '../../../../components/modals/confirm-action-modal';
+
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { useSelectiveContextControllerString } from '../../../../generic/components/selective-context/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../../../generic/hooks/selective-context/use-selective-context-listener';
@@ -24,14 +20,21 @@ import {
   useSelectiveContextDispatchNumberList
 } from '../../../../generic/components/selective-context/selective-context-manager-number-list';
 import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
-import { TwoStageClick } from '../../../../components/buttons/two-stage-click';
+
 import {
   DeletedBundlesList,
   StaticDeletedBundleList
 } from '../../contexts/bundle-items-context-provider';
-import { RenameButton } from '../../../../components/buttons/rename-button';
 
 import { sumAllSchemas } from '../../functions/sum-delivery-allocations';
+import {
+  RenameModal,
+  RenameModalWrapperContextKey
+} from '../../../../generic/components/modals/rename-modal';
+import { useModal } from '../../../../generic/components/modals/confirm-action-modal';
+import { RenameButton } from '../../../../generic/components/buttons/rename-button';
+import { TwoStageClick } from '../../../../generic/components/buttons/two-stage-click';
+import { TabStyled } from '../../../../generic/components/tab-layouts/tab-styled';
 
 export const BundleEditorKey = 'bundles-editor';
 

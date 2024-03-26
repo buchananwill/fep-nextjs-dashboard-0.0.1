@@ -6,7 +6,7 @@ import {
 } from '../../timetables-context';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 import { LessonEnrollmentDTO } from '../../../api/dtos/LessonEnrollmentDTOSchema';
-import StringTupleSelector from '../../../generic/components/dropdown/string-tuple-selector';
+import TupleSelector from '../../../generic/components/dropdown/tuple-selector';
 
 const noSelection = { name: '', id: '' };
 
@@ -48,7 +48,7 @@ export function StudentTimetableSelector({
     setListSelection(find);
   }, [listSelection, studentId, setListSelection, selectionList]);
   return (
-    <StringTupleSelector
+    <TupleSelector
       selectedState={listSelection}
       selectionList={selectionList}
       updateSelectedState={updateStudentTimetable}

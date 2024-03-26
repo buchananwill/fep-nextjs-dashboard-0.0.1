@@ -104,12 +104,12 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
               onChange={(e) => handleUnionIntersection(e.target.value)}
             />
             <div className="swap-off ">
-              <Union size={48} className={''}>
+              <Union size={48}>
                 <span>Match {filterType}</span>
               </Union>
             </div>
             <div className="swap-on">
-              <Intersection size={48} className={''}>
+              <Intersection size={48}>
                 <span>Match {filterType}</span>
               </Intersection>
             </div>

@@ -1,31 +1,20 @@
 'use client';
-import { Card, Text } from '@tremor/react';
+import { Card } from '@tremor/react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import React, { useMemo, useState } from 'react';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../components/modals/confirm-action-modal';
+
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
-import { Listbox } from '@headlessui/react';
-import StringTupleSelector from '../../components/dropdown/string-tuple-selector';
+
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { StringMap } from './contexts/string-map-context-creator';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { randomUUID } from 'node:crypto';
 import { AdjustAllocation } from './curriculum-delivery-model';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import {
-  useSelectiveContextControllerBoolean,
-  useSelectiveContextDispatchBoolean
-} from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
-import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  postModels,
-  putModels
-} from '../../api/actions/curriculum-delivery-model';
+import { useRouter } from 'next/navigation';
+import { postModels } from '../../api/actions/curriculum-delivery-model';
 import {
   getStepperInterface,
   StepperContext
@@ -33,7 +22,12 @@ import {
 import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
 
 import { getPayloadArray } from './use-editing-context-dependency';
-import { AccessorFunction } from '../../staffroom/teachers/rating-table';
+import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../generic/components/modals/confirm-action-modal';
+import TupleSelector from '../../generic/components/dropdown/tuple-selector';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
 
@@ -66,7 +60,7 @@ export function AddNewCurriculumModelCard({
   const [revertUnsaved, setRevertUnsaved] = useState(true);
   const appRouterInstance = useRouter();
   const [teacherBandwidth, setTeacherBandwidth] = useState(1);
-  const [modelName, setModelName] = useState('New Model');
+
   const [studentToTeacherRatio, setStudentToTeacherRatio] = useState(30);
 
   const { currentState, dispatchWithoutControl } =
@@ -150,12 +144,12 @@ export function AddNewCurriculumModelCard({
         title={'Add New Curriculum Model'}
       >
         <div className={'h-60 flex flex-col gap-2 divide-y'}>
-          <StringTupleSelector
+          <TupleSelector
             selectedState={newModelTaskType}
             selectionList={taskTypeSelectionList}
             updateSelectedState={setNewModelTaskType}
             selectionDescriptor={'Select Type'}
-          ></StringTupleSelector>
+          ></TupleSelector>
           <AdjustAllocation modelId={nextModelId}></AdjustAllocation>
           <div className={'w-full pt-2 items-center gap-1 grid-cols-2 grid'}>
             Teacher bandwidth:{' '}

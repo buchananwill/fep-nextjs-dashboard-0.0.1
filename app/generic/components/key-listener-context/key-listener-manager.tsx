@@ -1,5 +1,5 @@
 'use client';
-import { PropsWithChildren, useContext, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import {
   LeftCtrlListener,
   LeftShiftListener,

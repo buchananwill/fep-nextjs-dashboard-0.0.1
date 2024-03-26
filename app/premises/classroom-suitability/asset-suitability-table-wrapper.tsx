@@ -1,8 +1,8 @@
 'use client';
-import { AssetSuitabilityEditContext } from '../../generic/components/modals/rating-edit-context';
+import { AssetSuitabilityEditContext } from '../../generic/components/tables/rating/rating-edit-context';
 import RatingTable, {
   AccessorFunction
-} from '../../staffroom/teachers/rating-table';
+} from '../../generic/components/tables/rating/rating-table';
 import {
   AssetSuitabilityAccessorFunctions,
   IdStringFromNumberAccessor
@@ -20,6 +20,7 @@ import {
 import { AssetSuitabilityListSelectiveContext } from '../../contexts/selective-context/selective-context-creators';
 import { useMemoizedSelectionFromListAndStringMap } from './use-memoized-selection-from-list-and-string-map';
 import { EmptyArray } from '../../api/main';
+
 const assetSuitabilityTableWrapperListenerKey =
   'asset-suitability-table-wrapper';
 

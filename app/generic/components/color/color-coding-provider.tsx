@@ -1,15 +1,16 @@
 'use client';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 import {
-  ModalColorSelectContext,
   ColorCoding,
-  ColorCodingDispatch
+  ColorCodingDispatch,
+  ModalColorSelectContext
 } from './color-coding-context';
 import { useColorState } from './color-selector';
 import { ColorState, defaultColorState } from './color-context';
 import { ColorSelectModal } from './color-select-modal';
 import { produce } from 'immer';
 import { useModal } from '../modals/confirm-action-modal';
+
 export default function ColorCodingProvider({
   children
 }: {

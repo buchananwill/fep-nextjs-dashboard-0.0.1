@@ -1,14 +1,7 @@
 'use client';
 import { useContext } from 'react';
-import {
-  ZoomScaleContext,
-  ZoomScaleDispatch,
-  ZoomScaleDispatchInterface
-} from './zoom-scale-context';
-import {
-  ZoomContext,
-  ZoomDispatchContext
-} from './zoom-context';
+import { ZoomScaleContext, ZoomScaleDispatch } from './zoom-scale-context';
+import { ZoomContext, ZoomDispatchContext } from './zoom-context';
 import ZoomButton from './zoom-button';
 
 export default function ZoomBothAxes({

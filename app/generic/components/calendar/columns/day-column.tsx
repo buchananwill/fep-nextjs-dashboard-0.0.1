@@ -1,14 +1,12 @@
 'use client';
 import TimeColumn, { useCalendarScaledZoom } from './time-column';
-import React, { useContext } from 'react';
-import {
-  CurryPredicate,
-  Predicate
-} from '../../../../components/filters/filter-types';
+import React from 'react';
+
 import { Calendarable, TimespanBlock } from '../blocks/timespan-block';
 
 import DateColumnContextProvider from './date-column-context-provider';
 import CalendarIdContextProvider from '../blocks/calendar-id-context-provider';
+import { CurryPredicate, Predicate } from '../../filters/filter-types';
 
 export const createDateMatcher: CurryPredicate<Date> = (date: Date) => {
   return (dateToMatch: Date) => {

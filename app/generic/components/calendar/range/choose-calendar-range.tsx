@@ -15,11 +15,7 @@ import { interval } from 'date-fns/interval';
 import { Disclosure } from '@headlessui/react';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import ZoomBothAxes from '../../zoom/zoom-both-axes';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '../../tooltips/tooltip';
+import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
 import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
 type TooltipOptions =
   | 'minusWeek'

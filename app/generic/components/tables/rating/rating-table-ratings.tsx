@@ -2,8 +2,8 @@
 
 import { RatingTableCell } from './rating-table-cell';
 import { Context, useContext } from 'react';
-import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
-import { EmptyArray } from '../../api/main';
+import { RatingEditContext } from './rating-edit-context';
+import { EmptyArray } from '../../../../api/main';
 
 export function RatingTableRatings<R, E>({
   ratedElement,

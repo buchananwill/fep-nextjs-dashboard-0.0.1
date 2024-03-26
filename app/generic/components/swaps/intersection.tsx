@@ -3,11 +3,9 @@ import { Text } from '@tremor/react';
 
 function Intersection({
   size,
-  className,
   children
 }: {
   size: number;
-  className: string;
   children: React.ReactNode;
 }) {
   return (

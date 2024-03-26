@@ -1,5 +1,5 @@
 'use client';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import {
   ContextRefNumber,
   DispatchUpdateContextNumber,
@@ -79,7 +79,7 @@ export const useSelectiveContextDispatchNumber: UseSelectiveContextDispatch<
 export const useSelectiveContextListenerNumber: UseSelectiveContextListener<
   number
 > = (contextKey: string, listenerKey: string, fallbackValue?: number) => {
-  const { currentState, latestRef } = useSelectiveContextListener(
+  const { currentState } = useSelectiveContextListener(
     contextKey,
     listenerKey,
     fallbackValue || (1 as number),

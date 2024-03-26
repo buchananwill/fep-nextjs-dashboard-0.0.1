@@ -1,10 +1,11 @@
 import { CalendarIdContext } from './calendar-id-context';
+import { ReactNode } from 'react';
 
 export default function CalendarIdContextProvider({
   children,
   calendarId
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   calendarId: number;
 }) {
   return (

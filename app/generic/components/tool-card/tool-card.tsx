@@ -1,6 +1,5 @@
 import { Card } from '@tremor/react';
-import React, { useState } from 'react';
-import ToolCardContextProvider from './tool-card-context-provider';
+import React from 'react';
 
 interface Props {
   children: React.ReactNode;

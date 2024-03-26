@@ -11,13 +11,18 @@ import { useSelectiveContextListenerBoolean } from '../generic/components/select
 
 const paginationUnsavedListenerKey = ':pagination';
 
-interface Props {
+interface Props
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   onConfirm: () => void;
   children: ReactNode;
   isActive?: boolean;
   requestConfirmation?: boolean;
   unsavedContextKey?: string;
   unsavedListenerKey?: string;
+  className?: string;
 }
 
 function useSelectiveListenerKey(
@@ -30,14 +35,7 @@ function useSelectiveListenerKey(
 }
 
 const ProtectedNavigation = forwardRef<HTMLButtonElement, Props>(
-  function ProtectedNavigation(
-    props: Props &
-      React.DetailedHTMLProps<
-        React.ButtonHTMLAttributes<HTMLButtonElement>,
-        HTMLButtonElement
-      >,
-    ref
-  ) {
+  function ProtectedNavigation(props: Props, ref) {
     const {
       onConfirm,
       children,

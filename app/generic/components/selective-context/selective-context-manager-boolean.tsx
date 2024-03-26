@@ -70,7 +70,7 @@ export function useSelectiveContextListenerBoolean(
   listenerKey: string,
   fallbackValue: boolean
 ) {
-  const { currentState, latestRef } = useSelectiveContextListener(
+  const { currentState } = useSelectiveContextListener(
     contextKey,
     listenerKey,
     fallbackValue,

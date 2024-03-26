@@ -30,7 +30,7 @@ export interface UseSelectiveContextDispatchReturn<T> {
 export const MockReturn: UseSelectiveContextDispatchReturn<any> = {
   currentState: {} as any,
   dispatchWithoutControl: () => {},
-  dispatch: (value) => {}
+  dispatch: () => {}
 };
 
 export type UseSelectiveContextDispatch<T> = (

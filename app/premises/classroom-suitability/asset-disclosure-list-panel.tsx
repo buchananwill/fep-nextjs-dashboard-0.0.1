@@ -3,12 +3,12 @@ import { useMemo } from 'react';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
-import { AssetSuitabilityEditContext } from '../../generic/components/modals/rating-edit-context';
+import { AssetSuitabilityEditContext } from '../../generic/components/tables/rating/rating-edit-context';
 import {
   useAssetSuitabilityListController,
   useAssetSuitabilityListListener
 } from '../../contexts/selective-context/asset-suitability-list-selective-context-provider';
-import { RatingList } from '../../staffroom/teachers/rating-list';
+import { RatingList } from '../../generic/components/tables/rating/rating-list';
 import DisclosureListPanel, {
   ButtonClusterTransformer,
   DisclosureLabelTransformer,

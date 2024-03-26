@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';

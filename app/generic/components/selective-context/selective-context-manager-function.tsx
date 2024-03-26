@@ -15,7 +15,6 @@ import {
   useSelectiveContextDispatch,
   useSelectiveContextListener
 } from '../../hooks/selective-context/use-selective-context-listener';
-import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 
 // This wrapper function is necessary in order to use state to store functions of the type T => T. Otherwise, it automatically tries to call such functions.
 export interface GenericFunctionWrapper<T, U> {
@@ -81,7 +80,7 @@ export function useSelectiveContextListenerFunction<T, U>(
   listenerKey: string,
   fallBackValue: GenericFunctionWrapper<T, U>
 ) {
-  const { currentState, latestRef } = useSelectiveContextListener<
+  const { currentState } = useSelectiveContextListener<
     GenericFunctionWrapper<T, U>
   >(
     contextKey,

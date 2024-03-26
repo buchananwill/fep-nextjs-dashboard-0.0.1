@@ -3,8 +3,6 @@ import { interval } from 'date-fns/interval';
 import { createLocalDate } from '../../../../api/local-date';
 import {
   DayOfWeekArray,
-  DayOfWeekObject,
-  PROJECT_EPOCH_DATE_TIME,
   PROJECT_EPOCH_DATE_TIME_MONDAY
 } from '../../../../api/date-and-time';
 import { addMinutes } from 'date-fns';
@@ -28,10 +26,8 @@ export function createRangeStartingMondayThisWeek() {
 }
 export function createRangeStartingEpochalTime(
   length: number,
-  dayZero: string
+  dayZero: string // TODO: Allow different cycle day zero.
 ) {
-  let dayZeroIndex = 0;
-
   const startDateTime = PROJECT_EPOCH_DATE_TIME_MONDAY;
 
   const addedDays = addDays(length - 1);

@@ -1,7 +1,7 @@
 import {
   AccessorFunction,
   RatingCategoryIdAccessor
-} from '../staffroom/teachers/rating-table';
+} from '../generic/components/tables/rating/rating-table';
 import { useSelectiveContextDispatchBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
 import { useCallback } from 'react';
 import { useSelectiveContextDispatchStringList } from '../generic/components/selective-context/selective-context-manager-string-list';

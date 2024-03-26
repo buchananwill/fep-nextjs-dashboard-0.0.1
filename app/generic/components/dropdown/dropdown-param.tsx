@@ -1,11 +1,7 @@
 'use client';
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment, useEffect, useRef, useState, useTransition } from 'react';
-import {
-  ArrowRightIcon,
-  CheckIcon,
-  ChevronDownIcon
-} from '@heroicons/react/20/solid';
+import { Fragment, useTransition } from 'react';
+import { ArrowRightIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface DropdownParamProps {
@@ -18,7 +14,7 @@ export default function DropdownParam({
   currentSelection
 }: DropdownParamProps) {
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const { push } = useRouter();
 
   const setScheduleParam = (param: string) => {

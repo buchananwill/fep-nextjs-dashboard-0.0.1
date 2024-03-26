@@ -3,7 +3,7 @@ import {
   RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor
-} from '../rating-table';
+} from '../../../generic/components/tables/rating/rating-table';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';

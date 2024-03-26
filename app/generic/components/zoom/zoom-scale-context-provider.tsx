@@ -1,12 +1,12 @@
 'use client';
 
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
-  ZoomScaleContext,
-  ZoomScaleDispatchInterface,
   defaultZoomScale,
+  ZoomScaleContext,
   ZoomScaleContextInterface,
-  ZoomScaleDispatch
+  ZoomScaleDispatch,
+  ZoomScaleDispatchInterface
 } from './zoom-scale-context';
 
 export default function ZoomScaleContextProvider({
@@ -47,6 +47,3 @@ export default function ZoomScaleContextProvider({
   );
 }
 
-export const useZoomScaleContext = () => {
-  return useContext(ZoomScaleContext);
-};

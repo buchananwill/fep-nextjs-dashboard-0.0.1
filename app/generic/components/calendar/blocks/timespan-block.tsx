@@ -7,12 +7,10 @@ import { useMemoizedNormalizedInterval } from './use-memoized-normalized-interva
 import { useCalendarScaledZoom } from '../columns/time-column';
 
 export function TimespanBlock({
-  // interval: { end, start },
   children,
   startDate,
   endDate
 }: {
-  // interval: NormalizedInterval;
   startDate: number;
   endDate: number;
   children: ReactNode;
@@ -28,12 +26,12 @@ export function TimespanBlock({
     [zIndex, setZIndex]
   );
 
-  function eventPositionTop(startDateTime: Date, endDateTime: Date) {
+  function eventPositionTop(startDateTime: Date) {
     return startDateTime.getHours() * y + startDateTime.getMinutes() * (y / 60);
   }
 
   function eventPositionBottom(startDateTime: Date, endDateTime: Date) {
-    let start = eventPositionTop(startDateTime, endDateTime);
+    let start = eventPositionTop(startDateTime);
     let end =
       MINUTES_IN_DAY -
       (endDateTime.getHours() * y + endDateTime.getMinutes() * (y / 60));
@@ -46,7 +44,7 @@ export function TimespanBlock({
       className={` p-0 m-0 absolute select-none ${zIndex} overflow-visible`}
       style={{
         width: `${x - 4}px`,
-        inset: `${eventPositionTop(start, end)}px 2px ${eventPositionBottom(
+        inset: `${eventPositionTop(start)}px 2px ${eventPositionBottom(
           start,
           end
         )}px 2px`
@@ -78,16 +76,4 @@ export interface Calendarable {
   endDate: number;
   colorKey: string;
   content: React.JSX.Element;
-}
-
-export function generateTimespanBlock({
-  startDate,
-  endDate,
-  content
-}: Calendarable) {
-  return (
-    <TimespanBlock startDate={startDate} endDate={endDate}>
-      {content}
-    </TimespanBlock>
-  );
 }

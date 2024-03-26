@@ -1,14 +1,14 @@
 'use client';
 
-import { Fragment, ReactNode, useContext, useEffect, useState } from 'react';
+import { Fragment, ReactNode, useContext, useEffect } from 'react';
 
 import ColorSelector, { useColorState } from './color-selector';
 import { Dialog, Transition } from '@headlessui/react';
 import { ColorCoding, ModalColorSelectContext } from './color-coding-context';
 import { ColorState } from './color-context';
+
 export function ColorSelectModal({
   show,
-  children,
   initialState: { hue, lightness }
 }: {
   show: boolean;

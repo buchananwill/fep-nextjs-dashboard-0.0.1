@@ -1,4 +1,4 @@
-import { AccessorFunction } from '../../../staffroom/teachers/rating-table';
+import { AccessorFunction } from '../../../generic/components/tables/rating/rating-table';
 import { StringMap } from './string-map-context-creator';
 
 export async function convertListToStringMap<T>(

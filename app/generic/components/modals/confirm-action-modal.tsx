@@ -1,12 +1,5 @@
-import React, {
-  Fragment,
-  ReactNode,
-  useCallback,
-  useRef,
-  useState
-} from 'react';
+import React, { Fragment, ReactNode, useCallback, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useEnterPressListener } from '../useKeyPressListener';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);
@@ -38,10 +31,8 @@ export function ConfirmActionModal({
   onConfirm,
   show,
   children,
-  title = 'Confirm',
-  enterToConfirm
+  title = 'Confirm'
 }: ConfirmActionModalProps) {
-  const enterAction = enterToConfirm ? onConfirm : () => {};
   // useEnterPressListener(enterAction);
   // let confirmButtonRef = useRef(null);
 

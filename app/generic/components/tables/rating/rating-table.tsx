@@ -1,13 +1,11 @@
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
-import { Context, PropsWithChildren, useContext } from 'react';
-import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
+import { HasNumberIdDto } from '../../../../api/dtos/HasNumberIdDtoSchema';
+import { HasNameDto } from '../../../../api/dtos/HasNameDtoSchema';
+import { PropsWithChildren, ReactNode } from 'react';
 import {
   RatingTableHeader,
   RatingTableHeaderCell,
   RatingTableMain
 } from './rating-table-components';
-import { RatingTableRatings } from './rating-table-ratings';
 
 export interface AccessorFunction<O, P> {
   (object: O): P;
@@ -23,15 +21,10 @@ export interface RatingAccessorProps<R> {
   ratingValueAccessor: RatingValueAccessor<R>;
   ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>;
 }
-
-export interface ModalTriggerFunction<R, E> {
-  (rating: R, ratedElement: E): void;
-}
-
 export interface RatingTableProps<R, E, C> {
   ratedElements: E[];
   ratingCategories: C[];
-  ratingCategoryDescriptor: React.ReactNode;
+  ratingCategoryDescriptor: ReactNode;
 }
 
 export default function RatingTable<

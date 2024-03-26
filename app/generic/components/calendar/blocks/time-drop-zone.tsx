@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import { CalendarIdContext } from './calendar-id-context';
 
@@ -16,19 +16,12 @@ export function TimeDropZone({
   children?: React.ReactNode;
 }) {
   const calendarId = useContext(CalendarIdContext);
-  const memoKey = useMemo(() => {
+  useMemo(() => {
     return `${calendarId}#${start}:${end}`;
   }, [calendarId, start, end]);
-
-  // const { isOver, setNodeRef, active } = useDroppable({ id: memoKey });
-
   return (
     <div
-      className={`border-0 border-t border-gray-300 even:border-dashed relative ${
-        false
-          ? 'bg-emerald-300 animate-pulse outline-2 outline outline-gray-500 rounded-lg outline-offset-2 z-10'
-          : ''
-      }`}
+      className={`border-0 border-t border-gray-300 even:border-dashed relative`}
       style={{ height: `${zoneHeight}px`, width: `${zoneWidth}px` }}
     >
       {children}

@@ -2,6 +2,7 @@ import { HueOption } from './hue-selector';
 import { LightnessOption } from './lightness-selector';
 import { createContext } from 'react';
 import { DispatchStateAction } from 'react-day-picker/src/hooks/useControlledValue';
+import { darken, lighten } from './lightness-functions';
 
 export interface ColorState {
   hue: HueOption;
@@ -82,25 +83,10 @@ export const defaultColorState = {
 
 export const ColorContext = createContext<ColorState>({
   hue: NullHue,
-  setHue: (value) => null,
+  setHue: () => null,
   lightness: LIGHTNESS_OPTIONS[0],
-  setLightness: (value) => null
+  setLightness: () => null
 });
-
-const lighten = (hslObject: HSLA): HSLA => {
-  const { h, s, l, a } = hslObject;
-  const lighterL = 100 - (100 - l) * 0.5;
-
-  const lighterHSL = `hsl(${h}, ${s}%, ${lighterL}%, ${a})`;
-  return { ...hslObject, l: lighterL, cssHSLA: lighterHSL };
-};
-
-const darken = (hslObject: HSLA): HSLA => {
-  const { h, s, l, a } = hslObject;
-  const darkerL = l / 2;
-  const darkerHSL = `hsl(${h}, ${s}%, ${darkerL}%, ${a})`;
-  return { ...hslObject, l: darkerL, cssHSLA: darkerHSL };
-};
 
 const defaultHslColorState: HslaColorState = {
   base: BASE_HSL['gray'],
@@ -112,5 +98,5 @@ const defaultHslColorState: HslaColorState = {
 export const HslColorContext =
   createContext<HslaColorState>(defaultHslColorState);
 export const HslColorDispatchContext = createContext<HslaColorStateDispatch>({
-  setHslaColorState: (state) => {}
+  setHslaColorState: () => {}
 });

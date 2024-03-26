@@ -1,4 +1,4 @@
-import React, { Fragment, JSX } from 'react';
+import React from 'react';
 import { Tab } from '@headlessui/react';
 
 export function TabStyled({ children }: { children: string }) {

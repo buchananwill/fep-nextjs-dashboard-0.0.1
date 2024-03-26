@@ -70,7 +70,7 @@ export const useSelectiveContextDispatchNumberList: UseSelectiveContextDispatch<
 export const useSelectiveContextListenerNumberList: UseSelectiveContextListener<
   number[]
 > = (contextKey: string, listenerKey: string, fallbackValue: number[]) => {
-  const { currentState, latestRef } = useSelectiveContextListener(
+  const { currentState } = useSelectiveContextListener(
     contextKey,
     listenerKey,
     fallbackValue,

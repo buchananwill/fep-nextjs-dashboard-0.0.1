@@ -7,7 +7,7 @@ import React, {
   useState
 } from 'react';
 import { HourTransformer } from '../blocks/hour-block';
-import { addHours, addMinutes, Interval } from 'date-fns';
+import { addHours, addMinutes } from 'date-fns';
 import { interval } from 'date-fns/interval';
 import { TimeDropZone } from '../blocks/time-drop-zone';
 import { ZoomScaleContext } from '../../zoom/zoom-scale-context';

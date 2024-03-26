@@ -1,8 +1,8 @@
 'use client';
-import RatingTable from '../rating-table';
+import RatingTable from '../../../generic/components/tables/rating/rating-table';
 import { useContext, useMemo } from 'react';
 import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provider-role-selection-context';
-import { SkillEditContext } from '../../../generic/components/modals/rating-edit-context';
+import { SkillEditContext } from '../../../generic/components/tables/rating/rating-edit-context';
 import { SkillEditAccessorFunctions } from './rating-table-accessor-functions';
 import { RatingTableBody } from '../../../generic/components/tables/rating/rating-table-body';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';

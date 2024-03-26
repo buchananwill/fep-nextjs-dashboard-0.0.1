@@ -3,7 +3,7 @@
 import { MONTHS } from './range/calendar-range-reducers';
 import { DaySubColumnLabel } from './columns/day-sub-column-label';
 
-import React, { ReactNode, useContext, useEffect, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 
 import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
 import { createDateMatcher } from './columns/day-column';

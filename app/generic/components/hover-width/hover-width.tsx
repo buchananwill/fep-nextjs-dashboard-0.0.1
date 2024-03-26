@@ -15,7 +15,7 @@ export function HoverWidth({
   className?: string;
   style?: {};
 }) {
-  const [width, setWidth] = useState(initialWidth);
+  const [, setWidth] = useState(initialWidth);
   const [isWide, setIsWide] = useState(false);
   const wide = maxWidth ? maxWidth : 200;
   const toggle = () => {

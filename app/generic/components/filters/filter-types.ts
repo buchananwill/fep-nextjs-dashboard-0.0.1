@@ -58,7 +58,7 @@ export function packageRequest<T>(
   defaultValue: boolean = true
 ): PredicateProducer<T> {
   if (request.predicateProducerList.length == 0)
-    return packagePredicate((element) => defaultValue);
+    return packagePredicate(() => defaultValue);
   return () => reducePredicates(request);
 }
 

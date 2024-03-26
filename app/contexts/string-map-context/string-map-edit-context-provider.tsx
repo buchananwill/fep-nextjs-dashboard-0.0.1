@@ -15,7 +15,7 @@ import { useSelectiveContextControllerBoolean } from '../../generic/components/s
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
-import { AccessorFunction } from '../../staffroom/teachers/rating-table';
+import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { useSelectiveContextControllerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 

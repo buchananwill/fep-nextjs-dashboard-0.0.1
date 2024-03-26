@@ -1,5 +1,5 @@
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
-import { RatingAccessorProps } from '../../staffroom/teachers/rating-table';
+import { RatingAccessorProps } from '../components/tables/rating/rating-table';
 import { useCallback, useState } from 'react';
 
 import { isNotUndefined } from '../../api/main';

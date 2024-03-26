@@ -1,9 +1,10 @@
 import { TabularDTO } from '../../../api/dto-interfaces';
 import { reconstructTableWithDimensions } from '../../../utils/tables';
+import { FC } from 'react';
 
-export type HeaderTransformer<H> = React.FC<HeaderTransformerProps<H>>;
+export type HeaderTransformer<H> = FC<HeaderTransformerProps<H>>;
 
-export type CellDataTransformer<D> = React.FC<CellDataTransformerProps<D>>;
+export type CellDataTransformer<D> = FC<CellDataTransformerProps<D>>;
 
 interface CellDataTransformerProps<D> {
   data: D;
@@ -17,7 +18,6 @@ interface Props<H, D> {
   tableContents: TabularDTO<H, D>;
   headerTransformer: HeaderTransformer<H>;
   cellDataTransformer: CellDataTransformer<D>;
-  className?: string;
 }
 
 export default function DynamicDimensionTimetable<H, D>({
@@ -28,8 +28,7 @@ export default function DynamicDimensionTimetable<H, D>({
     numberOfRows
   },
   headerTransformer: HeaderTransformerComponent,
-  cellDataTransformer: CellTransformerComponent,
-  className
+  cellDataTransformer: CellTransformerComponent
 }: Props<H, D>) {
   const mainTable = reconstructTableWithDimensions<D>(
     cellDataAndMetaData,
