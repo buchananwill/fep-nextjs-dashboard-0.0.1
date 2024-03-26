@@ -4,16 +4,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
 import { useSearchParams } from 'next/navigation';
 import { Text } from '@tremor/react';
-import {
-  ModalColorSelectContext,
-  ColorCoding,
-  ColorCodingDispatch
-} from '../contexts/color/subject-color-coding-context';
+
 import { produce } from 'immer';
 import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 import { CellDataTransformer } from '../generic/components/tables/dynamic-dimension-timetable';
 import { defaultColorState } from '../generic/components/color/color-context';
 import InteractiveTableCard from '../generic/components/tables/interactive-table-card';
+import {
+  ColorCoding,
+  ColorCodingDispatch,
+  ModalColorSelectContext
+} from '../generic/components/color/color-coding-context';
 
 export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
   data

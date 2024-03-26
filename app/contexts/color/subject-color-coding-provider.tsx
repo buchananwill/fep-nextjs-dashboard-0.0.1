@@ -1,10 +1,5 @@
 'use client';
 import React, { ReactNode, useContext, useState } from 'react';
-import {
-  ModalColorSelectContext,
-  ColorCoding,
-  ColorCodingDispatch
-} from './subject-color-coding-context';
 
 import { produce } from 'immer';
 import { useColorState } from '../../generic/components/color/color-selector';
@@ -14,6 +9,11 @@ import {
 } from '../../generic/components/color/color-context';
 import { ColorSelectModal } from '../../generic/components/color/color-select-modal';
 import { useModal } from '../../generic/components/modals/confirm-action-modal';
+import {
+  ColorCoding,
+  ColorCodingDispatch,
+  ModalColorSelectContext
+} from '../../generic/components/color/color-coding-context';
 export default function SubjectColorCodingProvider({
   children
 }: {

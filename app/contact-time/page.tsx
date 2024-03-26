@@ -1,6 +1,8 @@
 import SubjectContactTime from './all-subjects-scatterchart';
 import { fetchAllSubjectsContactTime } from '../api/actions/request-subject-contact-time-metrics';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SubjectsContactTime() {
   const actionResponse = await fetchAllSubjectsContactTime();
 

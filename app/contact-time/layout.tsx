@@ -1,11 +1,7 @@
 import React, { Suspense } from 'react';
 import Loading from '../loading';
-import { fetchAllSubjectsContactTime } from '../api/actions/request-subject-contact-time-metrics';
-import { CacheSetting } from '../components/dropdown/filter-dropdown';
 
-const dynamic = 'force-dynamic';
-
-export default async function SubjectsPage({
+export default async function Layout({
   children
 }: {
   children: React.ReactNode;

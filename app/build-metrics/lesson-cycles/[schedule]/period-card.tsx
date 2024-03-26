@@ -1,11 +1,12 @@
 'use client';
-import { CellDataTransformer } from '../../../components/tables/dynamic-dimension-timetable';
-import React, { useContext, useState, useTransition } from 'react';
-import InteractiveTableCard from '../../../components/tables/interactive-table-card';
+
+import React, { useContext } from 'react';
 
 import { Badge } from '@tremor/react';
 import { LessonCycleMetricContext } from './lesson-cycle-metric-context';
 import { PeriodDTO } from '../../../api/dtos/PeriodDTOSchema';
+import { CellDataTransformer } from '../../../generic/components/tables/dynamic-dimension-timetable';
+import InteractiveTableCard from '../../../generic/components/tables/interactive-table-card';
 
 function getColorGrade(cost: number, bound: number) {
   return (Math.round((cost * 6) / bound) + 1) * 100;
@@ -27,14 +28,10 @@ function getBadgeAndTextColor(cost: number, range: number[]) {
 
 export const BuildMetricPeriodCardTransformer: CellDataTransformer<
   PeriodDTO
-> = ({ data: { id, startTime, description } }) => {
-  const [isPending, startTransition] = useTransition();
-
+> = ({ data: { id, description } }) => {
   const { costMap, range } = useContext(LessonCycleMetricContext);
 
-  const handleCardClick = (periodId: number | null) => {};
-
-  const [cycleIds, setCycleIds] = useState<Set<string>>(new Set());
+  const handleCardClick = () => {};
 
   const periodAvailabilityCost = costMap.get(id) || 0;
 
@@ -47,7 +44,7 @@ export const BuildMetricPeriodCardTransformer: CellDataTransformer<
     >
       <div
         className="flex w-full h-full justify-between pr-2"
-        onClick={() => handleCardClick(id)}
+        onClick={() => handleCardClick()}
       >
         <p> {description}</p>
         <Badge className={badgeColor}>{periodAvailabilityCost}</Badge>

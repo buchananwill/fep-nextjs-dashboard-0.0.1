@@ -2,24 +2,6 @@
 import { Card, DonutChart, Grid, Title } from '@tremor/react';
 import React from 'react';
 
-interface PerSubjectDonutData {
-  subjectName: string;
-}
-
-const cities = [
-  {
-    name: 'Year 13',
-    sales: 110
-  },
-  {
-    name: 'Year 7',
-    sales: 36
-  }
-];
-
-const valueFormatter = (number: number) =>
-  `$ ${new Intl.NumberFormat('us').format(number).toString()}`;
-
 export const PerSubjectDonut = ({
   data
 }: {

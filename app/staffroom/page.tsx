@@ -9,7 +9,6 @@ import React, {
   useState
 } from 'react';
 import { EventsContext, EventsDispatch } from './contexts/events/event-context';
-import { PageTitleContext } from '../contexts/page-title/page-title-context';
 import { DndContextProvider } from '../contexts/dnd/dnd-context-provider';
 import { closestCenter, DragEndEvent } from '@dnd-kit/core';
 import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
@@ -36,10 +35,6 @@ const smallestScheduleDelta = 15;
 export default function Page() {
   const { events, eventsById, unSyncedEvents } = useContext(EventsContext);
   const dispatch = useContext(EventsDispatch);
-  const { setTitle } = useContext(PageTitleContext);
-  useEffect(() => {
-    setTitle('Workshop Schedule');
-  }, [setTitle]);
 
   const providers = useContext(ProviderRoleStringMapContext);
   const { selectedProviders } = useContext(ProviderRoleSelectionContext);

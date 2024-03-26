@@ -16,7 +16,6 @@ export default async function LessonCycleBuildMetrics({
 }) {
   const allPeriodsInCycle = await getFormattedPeriodsInCycle();
 
-  const scheduleId = parseInt(schedule);
   const response = await getLessonCycleMetricsWithInfinityCosts(schedule);
 
   const availableLessonCycleMetrics = response.data;

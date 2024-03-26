@@ -19,22 +19,20 @@ export default function SubjectContactTime({
     const filteredSubjects = allItems.filter(
       (subject) => subject && subject.perTeacher && isFinite(subject.perTeacher)
     );
-    const maxSize = filteredSubjects.reduce(
+    filteredSubjects.reduce(
       (max, subjectDTO) =>
         subjectDTO.perTeacher && subjectDTO.perTeacher > max
           ? subjectDTO.perTeacher
           : max,
       0
     );
-    const minSize = filteredSubjects.reduce(
+    filteredSubjects.reduce(
       (min, subjectDTO) =>
         subjectDTO.perTeacher && subjectDTO.perTeacher < min
           ? subjectDTO.perTeacher
           : min,
       1000
     );
-    const sizeRange = [minSize, maxSize];
-
     if (filteredSubjects.length > 0) {
       return (
         <Card className="mt-8">
