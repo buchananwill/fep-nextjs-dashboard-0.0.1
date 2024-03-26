@@ -14,7 +14,7 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
+} from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';

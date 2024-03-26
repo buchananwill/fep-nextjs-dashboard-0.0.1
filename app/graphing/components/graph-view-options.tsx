@@ -1,11 +1,14 @@
 'use client';
 import { GraphToggle, GraphToggleProps } from './graph-toggle';
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
+import {
+  Tooltip,
+  TooltipTrigger
+} from '../../generic/components/tooltips/tooltip';
+import { SelectiveContextRangeSlider } from '../../generic/components/selective-context/selective-context-range-slider';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GraphContext } from '../graph/graph-context-creator';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import { DefaultGraphZoom, MaxGraphZoom } from '../graph/graph';
 
 const graphToggles: GraphToggleProps[] = [

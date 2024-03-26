@@ -1,10 +1,13 @@
 'use client';
 import React, { useContext } from 'react';
 import { GraphContext } from '../graph/graph-context-creator';
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { SelectiveContextDispatcherBoolean } from '../../components/selective-context/selective-context-dispatcher-boolean';
-import { StandardTooltipContentOld } from '../../components/tooltips/standard-tooltip-content-old';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import {
+  Tooltip,
+  TooltipTrigger
+} from '../../generic/components/tooltips/tooltip';
+import { SelectiveContextDispatcherBoolean } from '../../generic/components/selective-context/selective-context-dispatcher-boolean';
+import { StandardTooltipContentOld } from '../../generic/components/tooltips/standard-tooltip-content-old';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 
 export interface GraphToggleProps {
   toggleKey: string;

@@ -6,7 +6,7 @@ import {
   SelectiveListenersContext,
   SelectiveValueContext,
   useSelectiveContextManager
-} from '../selective-context-manager';
+} from './selective-context-manager';
 
 export interface GenericSelectiveContextProps<T> {
   listenerRefContext: SelectiveListenersContext<T>;

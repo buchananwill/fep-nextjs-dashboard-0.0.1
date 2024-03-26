@@ -5,17 +5,17 @@ import {
   DispatchUpdateContextFunction,
   GenericFunction,
   UpdateRefContextFunction
-} from './selective-context-creator';
+} from '../../../components/selective-context/typed/selective-context-creator';
 import {
   LatestValueRef,
   useSelectiveContextManager
 } from './selective-context-manager';
-import { useSelectiveContextController } from './use-selective-context-controller';
+import { useSelectiveContextController } from '../../hooks/selective-context/use-selective-context-controller';
 import {
   useSelectiveContextDispatch,
   useSelectiveContextListener
-} from './use-selective-context-listener';
-import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
+} from '../../hooks/selective-context/use-selective-context-listener';
+import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 
 // This wrapper function is necessary in order to use state to store functions of the type T => T. Otherwise, it automatically tries to call such functions.
 export interface GenericFunctionWrapper<T, U> {

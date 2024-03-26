@@ -5,7 +5,7 @@ import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 
 import { useDraggable } from '@dnd-kit/core';
 import { useDragToTranslate } from '../../components/draggable-to-translate/draggable-to-translate';
-import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import GraphViewOptions from '../components/graph-view-options';
 import NodeInteractionProvider from '../nodes/node-interaction-context';
 import {
@@ -27,7 +27,7 @@ import {
   NodeEditorDisclosure,
   ShowNodeEditingKey
 } from '../nodes/node-editor-disclosure';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { ShowForceAdjustmentsKey } from './show-force-adjustments';
 
 export const DefaultGraphZoom = 100;

@@ -1,5 +1,5 @@
 'use client';
-import { useSelectiveContextControllerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 export default function NodePositionsTracker() {

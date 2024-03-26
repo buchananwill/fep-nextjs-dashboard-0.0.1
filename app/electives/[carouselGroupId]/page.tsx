@@ -4,7 +4,7 @@ import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
 import FilteredStudentsCard from '../filtered-students-card';
 import ElectiveContextProvider from '../elective-context-provider';
-import ToolTipsToggle from '../../components/tooltips/tool-tips-toggle';
+import ToolTipsToggle from '../../generic/components/tooltips/tool-tips-toggle';
 import { Suspense } from 'react';
 
 import { ElectiveFilters } from '../elective-filters';

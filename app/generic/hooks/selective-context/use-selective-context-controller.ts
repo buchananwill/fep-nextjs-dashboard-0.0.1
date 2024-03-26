@@ -3,7 +3,7 @@ import {
   LatestValueRef,
   UpdateAction,
   ListenerRefInterface
-} from './selective-context-manager';
+} from '../../components/selective-context/selective-context-manager';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export interface UseSelectiveContextParams<T> {

@@ -12,13 +12,13 @@ import { ElectiveFilterContext } from './elective-filter-context';
 import InteractiveTableCard from '../components/interactive-table-card';
 import { CellDataTransformer } from '../components/dynamic-dimension-timetable';
 import { FilterOption } from '../api/state-types';
-import TooltipsContext from '../components/tooltips/tooltips-context';
+import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../components/tooltips/tooltip';
-import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+} from '../generic/components/tooltips/tooltip';
+import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 

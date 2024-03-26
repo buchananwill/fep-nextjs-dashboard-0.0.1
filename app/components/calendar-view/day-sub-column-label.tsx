@@ -6,8 +6,11 @@ import {
 import React, { useContext } from 'react';
 import { HoverWidth } from '../hover-width/hover-width';
 import { BASE_HSL } from '../../contexts/color/color-context';
-import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
-import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
+import {
+  Tooltip,
+  TooltipTrigger
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import { useCalendarScaledZoom } from './columns/time-column';
 
 export function DaySubColumnLabel({ labelText }: { labelText: string }) {

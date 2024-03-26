@@ -1,10 +1,10 @@
-import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import {
   DeletedCurriculumModelIdsKey,
   EmptyIdArray,
   UnsavedCurriculumModelChanges
 } from './contexts/curriculum-models-context-provider';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { useMemo } from 'react';
 
 export function useDeleteCurriculumDeliveryModel(

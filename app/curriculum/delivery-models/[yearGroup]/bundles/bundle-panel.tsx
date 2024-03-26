@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 import { TabPanelStyled } from '../../../../components/tab-layouts/tab-panel-styled';
 import { SchemaBundleKeyPrefix, UnsavedBundleEdits } from './bundle-editor';
-import { useSelectiveContextDispatchBoolean } from '../../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../../generic/components/selective-context/selective-context-manager-boolean';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 
 function OptionChooserItem({

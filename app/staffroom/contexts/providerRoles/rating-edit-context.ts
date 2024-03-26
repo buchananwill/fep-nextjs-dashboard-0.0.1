@@ -15,7 +15,7 @@ import {
   MockReturn,
   UseSelectiveContextDispatch,
   UseSelectiveContextListener
-} from '../../../components/selective-context/use-selective-context-listener';
+} from '../../../generic/hooks/selective-context/use-selective-context-listener';
 import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {

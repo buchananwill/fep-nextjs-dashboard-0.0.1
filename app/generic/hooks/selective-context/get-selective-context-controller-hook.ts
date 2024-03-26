@@ -2,8 +2,8 @@
 import {
   useSelectiveContextController,
   UseSelectiveContextParams
-} from '../use-selective-context-controller';
-import { GenericSelectiveContextProps } from './generic-selective-context-manager';
+} from './use-selective-context-controller';
+import { GenericSelectiveContextProps } from '../../components/selective-context/generic-selective-context-manager';
 
 export function getSelectiveContextControllerHook<T>({
   dispatchContext,

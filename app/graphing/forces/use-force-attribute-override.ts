@@ -1,7 +1,7 @@
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextDispatchNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { useGraphName } from '../graph/graph-context-creator';
 import { useEffect, useRef, useState } from 'react';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 
 export function useForceAttributeOverride(attribute: string, value: number) {
   const graphName = useGraphName();

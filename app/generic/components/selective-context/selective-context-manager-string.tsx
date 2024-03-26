@@ -7,7 +7,7 @@ import {
   DispatchUpdateContextString,
   UpdateRefContextNumber,
   UpdateRefContextString
-} from './selective-context-creator';
+} from '../../../components/selective-context/typed/selective-context-creator';
 import {
   LatestValueRef,
   useSelectiveContextManager
@@ -16,11 +16,11 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextListenerBoolean
 } from './selective-context-manager-boolean';
-import { useSelectiveContextController } from './use-selective-context-controller';
+import { useSelectiveContextController } from '../../hooks/selective-context/use-selective-context-controller';
 import {
   useSelectiveContextDispatch,
   useSelectiveContextListener
-} from './use-selective-context-listener';
+} from '../../hooks/selective-context/use-selective-context-listener';
 
 export default function SelectiveContextManagerString({
   children

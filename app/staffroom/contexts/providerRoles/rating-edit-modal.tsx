@@ -19,7 +19,7 @@ import {
   assetRoleWorkTaskSuitabilityLabelAccessor,
   assetRoleWorkTaskSuitabilityRatingValueAccessor
 } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
-import { useSelectiveContextControllerFunction } from '../../../components/selective-context/selective-context-manager-function';
+import { useSelectiveContextControllerFunction } from '../../../generic/components/selective-context/selective-context-manager-function';
 
 export interface RatingEditModalProps<R, E> {
   ratingCategoryLabelAccessor: RatingCategoryLabelAccessor<R>;

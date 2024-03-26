@@ -13,7 +13,7 @@ import {
   SelectiveListenersContext,
   SelectiveValueContext,
   UpdateAction
-} from '../selective-context-manager';
+} from './selective-context-manager';
 
 export function createSelectiveContext<T>(): SelectiveContext<T> {
   const latestValueRefContext = createContext<

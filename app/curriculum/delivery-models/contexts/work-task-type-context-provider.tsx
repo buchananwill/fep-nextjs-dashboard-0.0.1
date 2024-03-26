@@ -1,7 +1,7 @@
 'use client';
 import { StringMap, StringMapReducer } from './string-map-context-creator';
 import React, { PropsWithChildren, useReducer } from 'react';
-import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   WorkTaskTypeContext,
   WorkTaskTypeContextDispatch

@@ -1,5 +1,5 @@
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   EmptyIdArray,
   UnsavedCurriculumModelChanges
@@ -8,13 +8,13 @@ import {
   ConfirmActionModalProps,
   useModal
 } from '../../components/confirm-action-modal';
-import { useSelectiveContextKeyMemo } from '../../components/selective-context/use-selective-context-listener';
+import { useSelectiveContextKeyMemo } from '../../generic/hooks/selective-context/use-selective-context-listener';
 import {
   RenameModalProps,
   RenameModalWrapperContextKey
 } from '../../components/rename-modal/rename-modal';
-import { useSelectiveContextControllerString } from '../../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextListenerStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerString } from '../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextListenerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { ValidatorContextKey } from './[yearGroup]/curriculum-model-name-list-validator';
 import { useValidationUniqueNonEmpty } from '../../teaching-categories/[categoryIdentifier]/knowledge-level/knowledge-level-name-cell';
 import { produce } from 'immer';

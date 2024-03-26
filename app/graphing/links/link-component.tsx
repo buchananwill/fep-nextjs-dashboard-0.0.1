@@ -8,10 +8,10 @@ import {
 } from '../nodes/node-interaction-context';
 import { BASE_HSL } from '../../contexts/color/color-context';
 import * as d3 from 'd3';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
-import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useSineLutContext } from '../../contexts/animation-sync-context/animation-sync-context-creator';
 

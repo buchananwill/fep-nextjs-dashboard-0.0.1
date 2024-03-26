@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { SchemaBundleKeyPrefix } from '../[yearGroup]/bundles/bundle-editor';
-import { useSelectiveContextDispatchBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedBundleAssignmentsKey } from '../contexts/bundle-assignments-provider';
 
 export function useBundleAssignmentUnsavedFlag(

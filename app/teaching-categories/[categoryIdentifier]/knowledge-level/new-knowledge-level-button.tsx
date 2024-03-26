@@ -9,13 +9,13 @@ import {
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
-} from '../../../components/selective-context/selective-context-manager-string';
+} from '../../../generic/components/selective-context/selective-context-manager-string';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { TextInput, Title } from '@tremor/react';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../../../components/selective-context/selective-context-manager-boolean';
+} from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { postKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';

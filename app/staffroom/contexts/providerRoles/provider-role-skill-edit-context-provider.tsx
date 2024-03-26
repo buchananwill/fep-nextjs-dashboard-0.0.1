@@ -28,7 +28,7 @@ import { useConfirmRatingValueFunction } from '../../../premises/use-confirm-rat
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
-import { useSelectiveContextListenerReadAll } from '../../../components/selective-context/generic/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../../../generic/components/selective-context/generic-selective-context-creator';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../components/selective-context/typed/selective-context-creators';
 
 const skillProducer = getCurriedProducer<WorkTaskCompetencyDto, number>(

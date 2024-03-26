@@ -19,7 +19,7 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
+} from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {

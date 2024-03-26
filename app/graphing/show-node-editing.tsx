@@ -2,7 +2,7 @@
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../components/selective-context/selective-context-manager-boolean';
+} from '../generic/components/selective-context/selective-context-manager-boolean';
 import { ShowNodeEditingKey } from './nodes/node-editor-disclosure';
 import {
   ControllerKey,

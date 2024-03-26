@@ -2,13 +2,13 @@
 import { DisclosureLabelTransformer } from '../components/disclosure-list/disclosure-list-panel';
 
 import React, { useContext } from 'react';
-import TooltipsContext from '../components/tooltips/tooltips-context';
+import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../components/tooltips/tooltip';
-import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+} from '../generic/components/tooltips/tooltip';
+import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 
 export const ButtonStudent: DisclosureLabelTransformer<StudentDTO> = ({

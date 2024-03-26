@@ -15,7 +15,7 @@ import { useConfirmRatingValueFunction } from './use-confirm-rating-value-functi
 import { useAssetSuitabilityListDispatch } from '../components/selective-context/typed/asset-suitability-list-selective-context-provider';
 
 import { getCurriedProducer } from '../staffroom/contexts/providerRoles/get-curried-producer';
-import { useSelectiveContextListenerReadAll } from '../components/selective-context/generic/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
 import { AssetSuitabilityListSelectiveContext } from '../components/selective-context/typed/selective-context-creators';
 
 const suitabilityProducer = getCurriedProducer<

@@ -5,7 +5,7 @@ import {
   BundleAssignmentsContextDispatch
 } from './use-bundle-assignments-context';
 import { useStringMapReducer } from './string-map-context-creator';
-import { useSelectiveContextControllerBoolean } from '../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import {
   ConfirmActionModal,

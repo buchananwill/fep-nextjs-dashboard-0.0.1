@@ -8,7 +8,7 @@ import {
 } from './generic-node-context-creator';
 import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 // Good start - clear name and type generic

@@ -2,11 +2,11 @@
 
 import React, { useContext, useEffect } from 'react';
 import { ForceGraphAttributesDto } from '../../api/dtos/ForceGraphAttributesDtoSchema';
-import { SelectiveContextRangeSlider } from '../../components/selective-context/selective-context-range-slider';
+import { SelectiveContextRangeSlider } from '../../generic/components/selective-context/selective-context-range-slider';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextListenerBoolean
-} from '../../components/selective-context/selective-context-manager-boolean';
+} from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { GraphContext } from '../graph/graph-context-creator';
 import {
   forceAttributesInitial,

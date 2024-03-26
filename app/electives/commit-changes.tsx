@@ -9,13 +9,13 @@ import React, {
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { updateElectiveAssignments } from './api/request-elective-preferences';
-import TooltipsContext from '../components/tooltips/tooltips-context';
+import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../components/tooltips/tooltip';
-import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+} from '../generic/components/tooltips/tooltip';
+import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import {
   ConfirmActionModal,
   useModal

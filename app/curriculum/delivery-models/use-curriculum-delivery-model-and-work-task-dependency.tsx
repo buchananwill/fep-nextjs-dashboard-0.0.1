@@ -2,7 +2,7 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useEditingContextDependency } from './use-editing-context-dependency';
 import { HasUuidDto } from '../../api/dtos/HasUuidDtoSchema';

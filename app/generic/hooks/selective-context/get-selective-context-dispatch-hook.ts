@@ -1,10 +1,10 @@
 'use client';
-import { GenericSelectiveContextProps } from './generic-selective-context-manager';
+import { GenericSelectiveContextProps } from '../../components/selective-context/generic-selective-context-manager';
 
 import {
   UseSelectiveContextDispatch,
   useSelectiveContextDispatch
-} from '../use-selective-context-listener';
+} from './use-selective-context-listener';
 
 export default function getSelectiveContextDispatchHook<T>({
   latestValueRefContext,

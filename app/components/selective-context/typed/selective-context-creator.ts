@@ -3,8 +3,8 @@ import {
   LatestValueRef,
   UpdateAction,
   ListenerRefInterface
-} from './selective-context-manager';
-import { GenericFunctionWrapper } from './selective-context-manager-function';
+} from '../../../generic/components/selective-context/selective-context-manager';
+import { GenericFunctionWrapper } from '../../../generic/components/selective-context/selective-context-manager-function';
 
 export const ContextRefBoolean = createContext<
   MutableRefObject<LatestValueRef<boolean>>

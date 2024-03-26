@@ -5,7 +5,7 @@ import { CurriculumDeliveryModel } from './curriculum-delivery-model';
 import React, { useEffect, useMemo } from 'react';
 import { AddNewCurriculumModelCard } from './add-new-curriculum-model-card';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   DeletedCurriculumModelIdsKey,
   EmptyIdArray,
@@ -14,7 +14,7 @@ import {
 import { useEditingContextDependency } from './use-editing-context-dependency';
 import { UuidAccessor } from './use-curriculum-delivery-model-and-work-task-dependency';
 import { useSearchParams } from 'next/navigation';
-import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { CurriculumModelNameListValidator } from './[yearGroup]/curriculum-model-name-list-validator';
 
 export const curriculumDeliveryCommitKey = 'commit-model-changes-open';

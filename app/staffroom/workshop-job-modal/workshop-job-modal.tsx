@@ -12,8 +12,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import {
   QuestionMarkCircleIcon,
   WrenchIcon

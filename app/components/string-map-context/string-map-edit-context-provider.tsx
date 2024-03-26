@@ -12,7 +12,7 @@ import React, {
   useReducer,
   useRef
 } from 'react';
-import { useSelectiveContextControllerBoolean } from '../selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   WorkTaskTypeContext,
   WorkTaskTypeContextDispatch
@@ -29,7 +29,7 @@ import { useModal } from '../confirm-action-modal';
 import {
   useSelectiveContextControllerStringList,
   useSelectiveContextDispatchStringList
-} from '../selective-context/selective-context-manager-string-list';
+} from '../../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
 import { isNotUndefined } from '../../api/main';

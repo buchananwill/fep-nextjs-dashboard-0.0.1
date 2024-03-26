@@ -1,4 +1,4 @@
-import { createSelectiveContext } from '../generic/generic-selective-context-creator';
+import { createSelectiveContext } from '../../../generic/components/selective-context/generic-selective-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 

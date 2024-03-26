@@ -19,8 +19,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../../tooltips/tooltip';
-import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
+} from '../../../generic/components/tooltips/tooltip';
+import { StandardTooltipContent } from '../../../generic/components/tooltips/standard-tooltip-content';
 type TooltipOptions =
   | 'minusWeek'
   | 'minusDay'

@@ -1,9 +1,9 @@
 import {
   useSelectiveContextControllerNumber,
   useSelectiveContextListenerNumber
-} from '../components/selective-context/selective-context-manager-number';
-import { useSelectiveContextControllerString } from '../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextControllerBoolean } from '../components/selective-context/selective-context-manager-boolean';
+} from '../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerString } from '../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useRootSvgContext } from './root-svg-context';
 

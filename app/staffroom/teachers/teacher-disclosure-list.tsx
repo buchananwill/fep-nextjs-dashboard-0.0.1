@@ -15,8 +15,11 @@ import {
   HslColorDispatchContext
 } from '../../contexts/color/color-context';
 
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import {
+  Tooltip,
+  TooltipTrigger
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import { SkillEditContext } from '../contexts/providerRoles/rating-edit-context';
 import { ProviderRoleSelectionContext } from '../contexts/providerRoles/provider-role-selection-context';
 import { ProviderRoleDto } from '../../api/dtos/ProviderRoleDtoSchema';

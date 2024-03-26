@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { classNames } from '../utils/class-names';
 import { useSearchParams } from 'next/navigation';
-import { useSelectiveContextListenerBoolean } from '../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
 const paginationUnsavedListenerKey = ':pagination';

@@ -7,13 +7,13 @@ import {
   useGenericGraphRefs,
   useGenericNodeContext
 } from './generic-node-context-creator';
-import { useSelectiveContextListenerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   LeftCtrlListener,
   LeftShiftListener
 } from '../../components/key-listener-context/key-listener-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 
 export default function NodeText<T extends HasNumberIdDto>({

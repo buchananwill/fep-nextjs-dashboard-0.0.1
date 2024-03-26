@@ -1,5 +1,5 @@
 'use client';
-import { useSelectiveContextControllerBoolean } from '../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { useContext, useEffect, useMemo } from 'react';
 import { GraphContext } from './graph-context-creator';
 

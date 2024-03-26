@@ -2,7 +2,7 @@
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ReactNode, useEffect, useMemo } from 'react';
 import { useCurriculumModelContext } from '../contexts/use-curriculum-model-context';
-import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../contexts/curriculum-models-context-provider';
 
 export const ValidatorContextKey = 'curriculum-model-name-list-validator';

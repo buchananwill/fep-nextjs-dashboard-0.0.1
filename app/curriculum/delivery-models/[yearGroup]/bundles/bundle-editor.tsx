@@ -14,15 +14,15 @@ import {
 } from '../../../../components/rename-modal/rename-modal';
 import { useModal } from '../../../../components/confirm-action-modal';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
-import { useSelectiveContextControllerString } from '../../../../components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../../../components/selective-context/use-selective-context-listener';
+import { useSelectiveContextControllerString } from '../../../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../../generic/hooks/selective-context/use-selective-context-listener';
 import { produce } from 'immer';
 import { TrashIcon } from '@heroicons/react/20/solid';
-import { useSelectiveContextDispatchBoolean } from '../../../../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../../generic/components/selective-context/selective-context-manager-boolean';
 import {
   useSelectiveContextControllerNumberList,
   useSelectiveContextDispatchNumberList
-} from '../../../../components/selective-context/selective-context-manager-number-list';
+} from '../../../../generic/components/selective-context/selective-context-manager-number-list';
 import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
 import { TwoStageClick } from '../../../../components/buttons/two-stage-click';
 import {

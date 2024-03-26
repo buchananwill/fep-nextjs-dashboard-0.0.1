@@ -1,7 +1,7 @@
 import { DataNode } from '../../api/zod-mods';
 import NodeText from '../nodes/node-text';
 import React, { useContext } from 'react';
-import { useSelectiveContextListenerNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { GraphContext } from '../graph/graph-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 

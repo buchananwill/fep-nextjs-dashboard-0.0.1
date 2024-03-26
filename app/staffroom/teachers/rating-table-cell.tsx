@@ -1,13 +1,16 @@
 import { Context, useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
 import { HUE_OPTIONS } from '../../contexts/color/color-context';
-import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
+import {
+  Tooltip,
+  TooltipTrigger
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import {
   GenericFunctionWrapper,
   ObjectPlaceholder,
   useSelectiveContextListenerFunction
-} from '../../components/selective-context/selective-context-manager-function';
+} from '../../generic/components/selective-context/selective-context-manager-function';
 import { RatingEditModalTriggerProps } from '../contexts/providerRoles/rating-edit-modal';
 
 interface RatingTableCellProps<R, E> {

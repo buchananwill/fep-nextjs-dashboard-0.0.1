@@ -1,10 +1,10 @@
 import { createContext, useContext, useMemo } from 'react';
-import { useSelectiveContextDispatchNumber } from '../../components/selective-context/selective-context-manager-number';
+import { useSelectiveContextDispatchNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import {
   UseSelectiveContextController,
   UseSelectiveContextDispatch
-} from '../../components/selective-context/use-selective-context-controller';
-import { UseSelectiveContextListener } from '../../components/selective-context/use-selective-context-listener';
+} from '../../generic/hooks/selective-context/use-selective-context-controller';
+import { UseSelectiveContextListener } from '../../generic/hooks/selective-context/use-selective-context-listener';
 
 export type GraphSelectiveContext =
   | 'version'

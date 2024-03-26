@@ -3,13 +3,13 @@ import {
   RatingCategoryIdAccessor,
   RatingListAccessor
 } from '../staffroom/teachers/rating-table';
-import { useSelectiveContextDispatchBoolean } from '../components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
 import { Dispatch, useCallback } from 'react';
-import { useSelectiveContextDispatchStringList } from '../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchStringList } from '../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
-import { UpdateAction } from '../components/selective-context/selective-context-manager';
-import { UseSelectiveContextDispatch } from '../components/selective-context/use-selective-context-listener';
-import { SelectiveContextReadAll } from '../components/selective-context/generic/generic-selective-context-creator';
+import { UpdateAction } from '../generic/components/selective-context/selective-context-manager';
+import { UseSelectiveContextDispatch } from '../generic/hooks/selective-context/use-selective-context-listener';
+import { SelectiveContextReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
 import { isNotUndefined } from '../api/main';
 
 const emptyArray: any[] = [];

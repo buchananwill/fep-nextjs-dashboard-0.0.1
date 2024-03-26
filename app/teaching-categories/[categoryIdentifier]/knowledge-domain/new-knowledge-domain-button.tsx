@@ -9,7 +9,7 @@ import {
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
-} from '../../../components/selective-context/selective-context-manager-string';
+} from '../../../generic/components/selective-context/selective-context-manager-string';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { TextInput, Title } from '@tremor/react';
@@ -17,7 +17,7 @@ import { useEffect, useTransition } from 'react';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../../../components/selective-context/selective-context-manager-boolean';
+} from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { postKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';

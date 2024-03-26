@@ -8,7 +8,7 @@ import {
   IdStringFromNumberAccessor
 } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
 import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
 import { useCallback, useMemo } from 'react';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
@@ -18,7 +18,7 @@ import { RatingTableBody } from './rating-table-body';
 import {
   SelectiveContext,
   useSelectiveContextListenerReadAll
-} from '../../components/selective-context/generic/generic-selective-context-creator';
+} from '../../generic/components/selective-context/generic-selective-context-creator';
 import { AssetSuitabilityListSelectiveContext } from '../../components/selective-context/typed/selective-context-creators';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 

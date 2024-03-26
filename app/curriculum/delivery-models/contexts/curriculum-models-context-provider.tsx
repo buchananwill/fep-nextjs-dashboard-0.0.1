@@ -18,12 +18,12 @@ import {
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextListenerBoolean
-} from '../../../components/selective-context/selective-context-manager-boolean';
+} from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { curriculumDeliveryCommitKey } from '../curriculum-delivery-models';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
-import { useSelectiveContextControllerStringList } from '../../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../../generic/components/selective-context/selective-context-manager-string-list';
 
 export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
 export const DeletedCurriculumModelIdsKey = 'deleted-curriculum-model-id-list';

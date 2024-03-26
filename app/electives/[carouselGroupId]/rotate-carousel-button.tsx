@@ -3,13 +3,13 @@ import { Button, NumberInput } from '@tremor/react';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from '../elective-context';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
-import TooltipsContext from '../../components/tooltips/tooltips-context';
+import TooltipsContext from '../../generic/components/tooltips/tooltips-context';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../../components/tooltips/tooltip';
-import { StandardTooltipContentOld } from '../../components/tooltips/standard-tooltip-content-old';
+} from '../../generic/components/tooltips/tooltip';
+import { StandardTooltipContentOld } from '../../generic/components/tooltips/standard-tooltip-content-old';
 import {
   ConfirmActionModal,
   useModal

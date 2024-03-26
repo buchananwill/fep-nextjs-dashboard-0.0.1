@@ -21,9 +21,9 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../components/tooltips/tooltip';
-import TooltipsContext from '../components/tooltips/tooltips-context';
-import { StandardTooltipContentOld } from '../components/tooltips/standard-tooltip-content-old';
+} from '../generic/components/tooltips/tooltip';
+import TooltipsContext from '../generic/components/tooltips/tooltips-context';
+import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 
 interface Props {
