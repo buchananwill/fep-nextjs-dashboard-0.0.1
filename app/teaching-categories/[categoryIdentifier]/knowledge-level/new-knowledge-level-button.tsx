@@ -20,7 +20,7 @@ import { postKnowledgeLevel } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';
-import { PendingOverlay } from './pending-overlay';
+import { PendingOverlay } from '../../../components/pending-overlay';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 

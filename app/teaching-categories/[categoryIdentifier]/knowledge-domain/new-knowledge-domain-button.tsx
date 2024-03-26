@@ -22,7 +22,7 @@ import { postKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';
-import { PendingOverlay } from '../knowledge-level/pending-overlay';
+import { PendingOverlay } from '../../../components/pending-overlay';
 const NewKnowledgeDomainContextKey = 'new-knowledge-domain-name';
 
 type NewKnowledgeDomainButtonProps = Omit<GenericButtonProps, 'onClick'> & {

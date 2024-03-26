@@ -20,7 +20,7 @@ import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { TwoStageClick } from '../../components/buttons/two-stage-click';
 
-import { PendingOverlay } from '../../teaching-categories/[categoryIdentifier]/knowledge-level/pending-overlay';
+import { PendingOverlay } from '../../components/pending-overlay';
 import { DeletedOverlay } from '../../components/overlays/deleted-overlay';
 import { RenameModal } from '../../components/rename-modal/rename-modal';
 import { useRenameCurriculumDeliveryModel } from './use-rename-curriculum-delivery-model';
