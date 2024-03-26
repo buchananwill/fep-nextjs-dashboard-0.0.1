@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode } from 'react';
 
 import { ProviderRoleAndTaskData } from './contexts/providerRoles/provider-context';
 import ProviderRoleSkillEditContextProvider from './contexts/providerRoles/provider-role-skill-edit-context-provider';
@@ -8,7 +8,6 @@ import ToolCardContextProvider from '../components/tool-card/tool-card-context-p
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { performApiAction } from '../api/actions/performApiAction';
 import { getTeachers } from '../api/actions/provider-roles';
-import { EventDto } from '../api/dtos/EventDtoSchema';
 import { WorkTaskTypeDto } from '../api/dtos/WorkTaskTypeDtoSchema';
 import { getWorkTaskTypes } from '../api/actions/work-task-types';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
@@ -21,13 +20,11 @@ import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../components/calendar-view/range/calendar-range-context-provider';
 import ProviderRoleStringMapContextProvider from './contexts/providerRoles/provider-role-string-map-context-provider';
-import {
-  StringMapReducer,
-  useStringMapReducer
-} from '../curriculum/delivery-models/contexts/string-map-context-creator';
 import { convertListToStringMap } from '../curriculum/delivery-models/contexts/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
 import { WorkTaskTypeContextProvider } from '../curriculum/delivery-models/contexts/work-task-type-context-provider';
+import { ProviderRoleColorCodingContextProvider } from './provider-role-color-coding-context-provider';
+import ProviderRoleSelectionContextProvider from './contexts/providerRoles/provider-role-selection-context-provider';
 
 export const dynamic = 'force-dynamic';
 
@@ -106,18 +103,20 @@ export default async function StaffroomLayout({
         <ProviderRoleStringMapContextProvider
           providerRoleStringMap={providerRoleStringMap}
         >
-          <ProviderRoleSkillEditContextProvider
-            providerRoleAndTaskData={providerRolesAndTaskData}
-          >
-            <CalendarRangeContextProvider>
-              <div className="flex w-full px-2">
-                <ToolCardContextProvider>
-                  <TeachersToolCard />
-                </ToolCardContextProvider>
-                {children}
-              </div>
-            </CalendarRangeContextProvider>
-          </ProviderRoleSkillEditContextProvider>
+          <ProviderRoleSelectionContextProvider>
+            <ProviderRoleSkillEditContextProvider>
+              <ProviderRoleColorCodingContextProvider>
+                <CalendarRangeContextProvider>
+                  <div className="flex w-full px-2">
+                    <ToolCardContextProvider>
+                      <TeachersToolCard />
+                    </ToolCardContextProvider>
+                    {children}
+                  </div>
+                </CalendarRangeContextProvider>
+              </ProviderRoleColorCodingContextProvider>
+            </ProviderRoleSkillEditContextProvider>
+          </ProviderRoleSelectionContextProvider>
         </ProviderRoleStringMapContextProvider>
       </AvailabilityContextProvider>
     </WorkTaskTypeContextProvider>

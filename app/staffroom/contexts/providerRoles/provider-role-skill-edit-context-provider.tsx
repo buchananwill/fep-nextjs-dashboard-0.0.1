@@ -28,6 +28,8 @@ import { useConfirmRatingValueFunction } from '../../../premises/use-confirm-rat
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
+import { useSelectiveContextListenerReadAll } from '../../../components/selective-context/generic/generic-selective-context-creator';
+import { WorkTaskCompetencyListSelectiveContext } from '../../../components/selective-context/typed/selective-context-creators';
 
 const skillProducer = getCurriedProducer<WorkTaskCompetencyDto, number>(
   (task, value) => (task.competencyRating = value)
@@ -39,26 +41,17 @@ const skillListProducer = getCurriedProducer<
 >((providerRole, list) => (providerRole.workTaskCompetencyDtoList = list));
 
 export default function ProviderRoleSkillEditContextProvider({
-  providerRoleAndTaskData,
   children
 }: {
-  providerRoleAndTaskData: ProviderRoleAndTaskData;
   children: ReactNode;
 }) {
-  const [selectedProviderRoles, setSelectedProviderRoles] = useState<
-    LongIdStringNameTuple[]
-  >([]);
-  const [providerRoleDtos, setProviderRoles] = useState(
-    providerRoleAndTaskData.providerRoles
+  const selectiveContextReadAll = useSelectiveContextListenerReadAll(
+    WorkTaskCompetencyListSelectiveContext
   );
-
-  const colorCodingState = useContext(ColorCoding);
-
-  const { setColorCoding } = useContext(ColorCodingDispatch);
 
   const confirmRatingValue = useConfirmRatingValueFunction(
     useWorkTaskCompetencyListDispatch,
-    workTaskCompetencyDtoListAccessor,
+    selectiveContextReadAll,
     workTaskCompetencyIdAccessor,
     skillProducer,
     skillListProducer,
@@ -67,56 +60,24 @@ export default function ProviderRoleSkillEditContextProvider({
     'provider'
   );
 
-  useEffect(() => {
-    const unColorCodedMechanics: string[] = [];
-
-    providerRoleDtos.forEach(({ partyName }) => {
-      if (!colorCodingState[partyName]) {
-        unColorCodedMechanics.push(partyName);
-      }
-    });
-    let currentState = colorCodingState;
-    if (unColorCodedMechanics.length > 0) {
-      for (let unColorCodedMechanic of unColorCodedMechanics) {
-        const nextHueIndex =
-          (Object.keys(currentState).length + 1) % HUE_OPTIONS.length;
-
-        currentState = produce(currentState, (draft) => {
-          draft[unColorCodedMechanic] = {
-            hue: HUE_OPTIONS[nextHueIndex],
-            lightness: LIGHTNESS_OPTIONS[1]
-          };
-        });
-      }
-      setColorCoding(currentState);
-    }
-  }, [
-    colorCodingState,
-    selectedProviderRoles,
-    providerRoleDtos,
-    setColorCoding
-  ]);
-
   return (
-    <ProviderRoleSelectionContextProvider>
-      <SkillEditContext.Provider
-        value={{
-          useRatingListDispatchHook: useWorkTaskCompetencyListDispatch,
-          confirmRatingValue: confirmRatingValue,
-          ...SkillEditAccessorFunctions
-        }}
-      >
-        {children}
+    <SkillEditContext.Provider
+      value={{
+        useRatingListDispatchHook: useWorkTaskCompetencyListDispatch,
+        confirmRatingValue: confirmRatingValue,
+        ...SkillEditAccessorFunctions
+      }}
+    >
+      {children}
 
-        <RatingEditModal
-          confirmRatingValue={confirmRatingValue}
-          nameAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
-          ratingCategoryLabelAccessor={
-            SkillEditAccessorFunctions.ratingCategoryLabelAccessor
-          }
-          ratingValueAccessor={SkillEditAccessorFunctions.ratingValueAccessor}
-        />
-      </SkillEditContext.Provider>
-    </ProviderRoleSelectionContextProvider>
+      <RatingEditModal
+        confirmRatingValue={confirmRatingValue}
+        nameAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
+        ratingCategoryLabelAccessor={
+          SkillEditAccessorFunctions.ratingCategoryLabelAccessor
+        }
+        ratingValueAccessor={SkillEditAccessorFunctions.ratingValueAccessor}
+      />
+    </SkillEditContext.Provider>
   );
 }

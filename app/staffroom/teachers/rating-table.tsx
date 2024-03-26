@@ -14,7 +14,7 @@ export interface AccessorFunction<O, P> {
 }
 
 export type RatingValueAccessor<T> = AccessorFunction<T, number>;
-export type RatingListAccessor<E, R> = AccessorFunction<E, R[]>;
+export type RatingListAccessor<E, R> = AccessorFunction<E, R[] | undefined>;
 export type RatingCategoryLabelAccessor<R> = AccessorFunction<R, string>;
 export type RatingCategoryIdAccessor<R> = AccessorFunction<R, number>;
 

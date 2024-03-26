@@ -8,26 +8,35 @@ import {
   UnsavedAssetChanges
 } from './asset-string-map-context-creator';
 import { StringMap } from '../curriculum/delivery-models/contexts/string-map-context-creator';
-import { PropsWithChildren, useContext } from 'react';
+import { PropsWithChildren, useCallback, useContext } from 'react';
 import { patchPremises } from '../api/actions/premises';
 import { AssetSuitabilityListSelectiveContext } from '../components/selective-context/typed/selective-context-creators';
+import { useSelectiveContextListenerReadAll } from '../components/selective-context/generic/generic-selective-context-creator';
 
 const Provider = StringMapEditContextProvider<AssetDto>;
 export default function AssetStringMapContextProvider({
   assetStringMap,
   children
 }: { assetStringMap: StringMap<AssetDto> } & PropsWithChildren) {
-  const mutableRefObject = useContext(
-    AssetSuitabilityListSelectiveContext.latestValueRefContext
+  const selectiveContextReadAll = useSelectiveContextListenerReadAll(
+    AssetSuitabilityListSelectiveContext
   );
-  const commitServerAction = (changedAssetDtos: AssetDto[]) => {
-    const latestLists = mutableRefObject.current;
-    const assetDtosWithUpdatedLists = changedAssetDtos.map((assetDto) => ({
-      ...assetDto,
-      assetRoleWorkTaskSuitabilities: latestLists[assetDto.id.toString()]
-    }));
-    return patchPremises(assetDtosWithUpdatedLists);
-  };
+  const commitServerAction = useCallback(
+    (changedAssetDtos: AssetDto[]) => {
+      const assetDtosWithUpdatedLists = changedAssetDtos.map((assetDto) => {
+        const newVar = selectiveContextReadAll(assetDto.id.toString());
+        return {
+          ...assetDto,
+          assetRoleWorkTaskSuitabilities:
+            newVar !== undefined
+              ? newVar
+              : assetDto.assetRoleWorkTaskSuitabilities
+        };
+      });
+      return patchPremises(assetDtosWithUpdatedLists);
+    },
+    [selectiveContextReadAll]
+  );
 
   return (
     <Provider

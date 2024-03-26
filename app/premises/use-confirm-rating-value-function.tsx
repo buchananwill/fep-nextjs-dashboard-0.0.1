@@ -9,6 +9,8 @@ import { useSelectiveContextDispatchStringList } from '../components/selective-c
 import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 import { UpdateAction } from '../components/selective-context/selective-context-manager';
 import { UseSelectiveContextDispatch } from '../components/selective-context/use-selective-context-listener';
+import { SelectiveContextReadAll } from '../components/selective-context/generic/generic-selective-context-creator';
+import { isNotUndefined } from '../api/main';
 
 const emptyArray: any[] = [];
 
@@ -18,7 +20,7 @@ export interface ConfirmRatingValue<R, E> {
 
 export function useConfirmRatingValueFunction<R, E>(
   useSelectiveDispatchHook: UseSelectiveContextDispatch<R[]>,
-  ratingListAccessor: RatingListAccessor<E, R>,
+  ratingListAccessor: SelectiveContextReadAll<R[]>,
   ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>,
   ratingValueSetter: (rating: R, value: number) => R,
   ratingListSetter: (elementWithRatings: E, list: R[]) => E,
@@ -43,12 +45,14 @@ export function useConfirmRatingValueFunction<R, E>(
 
   return useCallback(
     (rating: R, elementWithRatings: E, updatedValue: number) => {
-      const updatedList = ratingListAccessor(elementWithRatings).map(
-        (ratingDto) =>
-          ratingCategoryIdAccessor(ratingDto) ===
-          ratingCategoryIdAccessor(rating)
-            ? ratingValueSetter(ratingDto, updatedValue)
-            : ratingDto
+      const ratingList = ratingListAccessor(
+        elementStringIdAccessor(elementWithRatings)
+      );
+      if (!isNotUndefined(ratingList)) return;
+      const updatedList = ratingList.map((ratingDto) =>
+        ratingCategoryIdAccessor(ratingDto) === ratingCategoryIdAccessor(rating)
+          ? ratingValueSetter(ratingDto, updatedValue)
+          : ratingDto
       );
       const updatedElement = ratingListSetter(elementWithRatings, updatedList);
       const idForMap = elementStringIdAccessor(updatedElement);

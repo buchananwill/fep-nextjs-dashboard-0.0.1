@@ -25,8 +25,6 @@ export function RatingTableRatings<R, E>({
     EmptyNumberIdArray as R[]
   );
 
-  console.log('rendering ratings array');
-
   return (
     <>
       {currentState.map((rating) => (

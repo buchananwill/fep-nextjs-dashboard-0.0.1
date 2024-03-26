@@ -21,8 +21,15 @@ import {
   ProviderRoleStringMapContext,
   useProviderRoleStringMapContext
 } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
-import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import {
+  useMemoizedSelectionFromListAndStringMap,
+  useSelectiveContextRatingListAccessor
+} from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
+import {
+  AssetSuitabilityListSelectiveContext,
+  WorkTaskCompetencyListSelectiveContext
+} from '../../../components/selective-context/typed/selective-context-creators';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
@@ -42,6 +49,11 @@ export default function SkillsPage({}: {}) {
     wtt1.name.localeCompare(wtt2.name)
   );
 
+  const selectiveContextListAccessor = useSelectiveContextRatingListAccessor(
+    WorkTaskCompetencyListSelectiveContext,
+    IdStringFromNumberAccessor
+  );
+
   if (Object.keys(providerRoleDtoStringMap).length === 0) {
     return (
       <div className={'w-full h-fit bg-gray-400 text-black rounded-lg p-2'}>
@@ -58,7 +70,7 @@ export default function SkillsPage({}: {}) {
     >
       <RatingTableBody
         elementsWithRatings={providerRoleDtos}
-        listAccessor={SkillEditAccessorFunctions.ratingListAccessor}
+        listAccessor={selectiveContextListAccessor}
         elementIdAccessor={IdStringFromNumberAccessor}
         elementLabelAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
         ratingEditContext={SkillEditContext}

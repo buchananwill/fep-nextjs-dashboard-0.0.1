@@ -4,11 +4,6 @@ import { HUE_OPTIONS } from '../../contexts/color/color-context';
 import { Tooltip, TooltipTrigger } from '../../components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../components/tooltips/standard-tooltip-content';
 import {
-  RatingValueAccessor,
-  RatingCategoryLabelAccessor,
-  AccessorFunction
-} from './rating-table';
-import {
   GenericFunctionWrapper,
   ObjectPlaceholder,
   useSelectiveContextListenerFunction
@@ -58,8 +53,6 @@ export function RatingTableCell<R, E>({
       ratedElement
     )}-${ratingCategoryIdAccessor(rating)}`
   });
-
-  console.log('rendering table cell');
 
   return (
     <td

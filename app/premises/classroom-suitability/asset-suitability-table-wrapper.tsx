@@ -1,19 +1,26 @@
 'use client';
 import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
-import RatingTable from '../../staffroom/teachers/rating-table';
+import RatingTable, {
+  AccessorFunction
+} from '../../staffroom/teachers/rating-table';
 import {
-  assetRoleWorkTaskSuitabilityDtoListAccessor,
   AssetSuitabilityAccessorFunctions,
   IdStringFromNumberAccessor
 } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { useSelectiveContextControllerNumberList } from '../../components/selective-context/selective-context-manager-number-list';
 import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { Card } from '@tremor/react';
 import { isNotNull } from '../../api/main';
 import { RatingTableBody } from './rating-table-body';
+import {
+  SelectiveContext,
+  useSelectiveContextListenerReadAll
+} from '../../components/selective-context/generic/generic-selective-context-creator';
+import { AssetSuitabilityListSelectiveContext } from '../../components/selective-context/typed/selective-context-creators';
+import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 
 export const EmptyNumberIdArray: number[] = [];
 export const StaticNumberIdArray: number[] = [20];
@@ -36,6 +43,19 @@ export const AssetSelectionListContextKey = 'asset-selection-list';
 
 const workTaskTypeSelectionListContextKey = 'work-task-type-selection-list';
 
+export function useSelectiveContextRatingListAccessor<R, E>(
+  context: SelectiveContext<R[]>,
+  keyAccessor: AccessorFunction<E, string>
+) {
+  const selectiveContextReadAll = useSelectiveContextListenerReadAll(context);
+
+  return useCallback(
+    (elementWithRatings: E) =>
+      selectiveContextReadAll(keyAccessor(elementWithRatings)),
+    [selectiveContextReadAll, keyAccessor]
+  );
+}
+
 export function AssetSuitabilityTableWrapper() {
   const { workTaskTypeMap } = useWorkTaskTypeContext();
   const { assetDtoStringMap } = useAssetStringMapContext();
@@ -45,6 +65,10 @@ export function AssetSuitabilityTableWrapper() {
       listenerKey: assetSuitabilityTableWrapperListenerKey,
       initialValue: EmptyNumberIdArray
     });
+  const selectiveContextListAccessor = useSelectiveContextRatingListAccessor(
+    AssetSuitabilityListSelectiveContext,
+    IdStringFromNumberAccessor
+  );
 
   const { currentState: selectedWorkTaskTypeList } =
     useSelectiveContextControllerNumberList({
@@ -79,7 +103,7 @@ export function AssetSuitabilityTableWrapper() {
         >
           <RatingTableBody
             elementsWithRatings={assetDtos}
-            listAccessor={assetRoleWorkTaskSuitabilityDtoListAccessor}
+            listAccessor={selectiveContextListAccessor}
             elementIdAccessor={IdStringFromNumberAccessor}
             elementLabelAccessor={
               AssetSuitabilityAccessorFunctions.elementLabelAccessor
