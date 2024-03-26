@@ -1,11 +1,8 @@
 import { createContext } from 'react';
-import { HueOption } from '../../components/color/hue-selector';
-import { LightnessOption } from '../../components/color/lightness-selector';
-import {
-  ColorState,
-  HUE_OPTIONS,
-  LIGHTNESS_OPTIONS
-} from '../color/color-context';
+
+import { ColorState } from './color-context';
+import { HueOption } from './hue-selector';
+import { LightnessOption } from './lightness-selector';
 
 export interface ColorCodingState {
   [key: string]: { hue: HueOption; lightness: LightnessOption };

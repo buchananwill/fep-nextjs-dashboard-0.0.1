@@ -17,9 +17,9 @@ export default function HslColorContextProvider({
   setState?: HslaColorStateDispatch;
 }) {
   const [hslaColorState, setHslaColorState] = useState(initialState);
-  const propDisaptch = setState?.setHslaColorState;
-  const stateValue = propDisaptch ? initialState : hslaColorState;
-  const setStateValue = propDisaptch ? propDisaptch : setHslaColorState;
+  const propDispatch = setState?.setHslaColorState;
+  const stateValue = propDispatch ? initialState : hslaColorState;
+  const setStateValue = propDispatch ? propDispatch : setHslaColorState;
 
   return (
     <HslColorContext.Provider value={stateValue}>

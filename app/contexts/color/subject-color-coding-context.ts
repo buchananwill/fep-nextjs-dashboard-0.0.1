@@ -1,12 +1,9 @@
 import { createContext } from 'react';
-import { HueOption } from '../components/color/hue-selector';
-import { LightnessOption } from '../components/color/lightness-selector';
-import {
-  HUE_OPTIONS,
-  LIGHTNESS_OPTIONS
-} from '../components/color/color-context';
-import { ColorState, NullHue } from '../contexts/color/color-context';
-import { ColorCodingState } from '../contexts/color-coding/context';
+
+import { ColorState } from '../../generic/components/color/color-context';
+import { ColorCodingState } from '../../generic/components/color/color-coding-context';
+import { HueOption } from '../../generic/components/color/hue-selector';
+import { LightnessOption } from '../../generic/components/color/lightness-selector';
 
 export interface SubjectColorCodingState {
   [key: string]: { hue: HueOption; lightness: LightnessOption };

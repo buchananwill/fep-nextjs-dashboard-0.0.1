@@ -4,7 +4,7 @@ import {
   ConfirmActionModalProps
 } from '../../../components/modals/confirm-action-modal';
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { HUE_OPTIONS } from '../../../contexts/color/color-context';
+import { HUE_OPTIONS } from '../../../generic/components/color/color-context';
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import {
   RatingCategoryLabelAccessor,

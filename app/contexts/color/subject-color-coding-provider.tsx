@@ -4,7 +4,7 @@ import {
   ModalColorSelectContext,
   ColorCoding,
   ColorCodingDispatch
-} from './context';
+} from './subject-color-coding-context';
 import { useColorState } from '../components/color/color-selector';
 import {
   ColorState,

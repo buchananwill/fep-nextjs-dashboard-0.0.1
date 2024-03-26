@@ -7,13 +7,13 @@ import {
   PinIcons
 } from '../../components/buttons/fillable-button';
 import { produce } from 'immer';
-import { ColorCoding } from '../../contexts/color-coding/context';
+import { ColorCoding } from '../../generic/components/color/color-coding-context';
 import {
   BASE_HSL,
   HSLA,
   HslColorContext,
   HslColorDispatchContext
-} from '../../contexts/color/color-context';
+} from '../../generic/components/color/color-context';
 
 import {
   Tooltip,

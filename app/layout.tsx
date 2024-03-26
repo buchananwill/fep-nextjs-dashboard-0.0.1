@@ -5,10 +5,10 @@ import Nav from './navbar/nav';
 import React, { Suspense } from 'react';
 import Loading from './loading';
 import TooltipsContextProvider from './generic/components/tooltips/tooltips-context-provider';
-import SubjectColorCodingProvider from './subject-color-coding/subject-color-coding-provider';
+import SubjectColorCodingProvider from './contexts/color/subject-color-coding-provider';
 import KeyListenerManager from './components/key-listener-context/key-listener-manager';
 import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
-import ColorCodingProvider from './contexts/color-coding/color-coding-provider';
+import ColorCodingProvider from './generic/components/color/color-coding-provider';
 import SelectiveContextCollection from './generic/components/selective-context/selective-context-collection';
 
 enableMapSet();

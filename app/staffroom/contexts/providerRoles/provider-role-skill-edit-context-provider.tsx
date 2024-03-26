@@ -4,12 +4,12 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
-} from '../../../contexts/color/color-context';
+} from '../../../generic/components/color/color-context';
 import { produce } from 'immer';
 import {
   ColorCoding,
   ColorCodingDispatch
-} from '../../../contexts/color-coding/context';
+} from '../../../generic/components/color/color-coding-context';
 import { SkillEditContext } from './rating-edit-context';
 
 import ProviderRoleSelectionContextProvider from './provider-role-selection-context-provider';

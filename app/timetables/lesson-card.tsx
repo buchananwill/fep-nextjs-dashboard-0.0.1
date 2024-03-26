@@ -10,7 +10,7 @@ import {
   ModalColorSelectContext,
   ColorCoding,
   ColorCodingDispatch
-} from '../subject-color-coding/context';
+} from '../contexts/color/subject-color-coding-context';
 import { current, produce } from 'immer';
 import { useColorState } from '../components/color/color-selector';
 import {

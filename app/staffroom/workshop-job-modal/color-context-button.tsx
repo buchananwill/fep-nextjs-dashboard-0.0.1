@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode, useContext } from 'react';
 import { RunnableContext } from './runnable-context';
-import { ColorCoding } from '../../contexts/color-coding/context';
+import { ColorCoding } from '../../generic/components/color/color-coding-context';
 
 interface ColorContextButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   HUE_OPTIONS,
   LIGHTNESS_OPTIONS
-} from '../contexts/color/color-context';
+} from '../generic/components/color/color-context';
 import { produce } from 'immer';
 import { LongIdStringNameTuple } from '../api/dtos/LongIdStringNameTupleSchema';
 import {
   ColorCoding,
   ColorCodingDispatch
-} from '../contexts/color-coding/context';
+} from '../generic/components/color/color-coding-context';
 import { useProviderRoleStringMapContext } from './contexts/providerRoles/provider-role-string-map-context-creator';
 
 export function ProviderRoleColorCodingContextProvider({

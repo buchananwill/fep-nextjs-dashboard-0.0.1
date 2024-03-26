@@ -1,5 +1,4 @@
 import { Listbox, Transition } from '@headlessui/react';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment, useContext } from 'react';
 import { ColorContext } from './color-context';
 import { ArrowDownCircleIcon } from '@heroicons/react/24/solid';

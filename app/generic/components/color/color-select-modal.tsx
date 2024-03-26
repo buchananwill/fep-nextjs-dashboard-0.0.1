@@ -1,13 +1,11 @@
 'use client';
 
 import { Fragment, ReactNode, useContext, useEffect, useState } from 'react';
-import { ColorState } from '../../contexts/color/color-context';
-import {
-  ColorCoding,
-  ModalColorSelectContext
-} from '../../contexts/color-coding/context';
+
 import ColorSelector, { useColorState } from './color-selector';
 import { Dialog, Transition } from '@headlessui/react';
+import { ColorCoding, ModalColorSelectContext } from './color-coding-context';
+import { ColorState } from './color-context';
 
 export function useModal() {
   let [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { Context, useContext } from 'react';
 import { RatingEditContext } from '../contexts/providerRoles/rating-edit-context';
-import { HUE_OPTIONS } from '../../contexts/color/color-context';
+import { HUE_OPTIONS } from '../../generic/components/color/color-context';
 import {
   Tooltip,
   TooltipTrigger

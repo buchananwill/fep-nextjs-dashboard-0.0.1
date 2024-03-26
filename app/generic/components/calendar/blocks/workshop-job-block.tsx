@@ -1,6 +1,6 @@
 import { Text } from '@tremor/react';
 import React, { useContext, useEffect } from 'react';
-import { ColorCoding } from '../../../../contexts/color-coding/context';
+import { ColorCoding } from '../../color/color-coding-context';
 
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';

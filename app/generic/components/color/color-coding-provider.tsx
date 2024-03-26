@@ -4,22 +4,11 @@ import {
   ModalColorSelectContext,
   ColorCoding,
   ColorCodingDispatch
-} from './context';
-import { useColorState } from '../../components/color/color-selector';
-import {
-  ColorState,
-  defaultColorState,
-  HUE_OPTIONS,
-  LIGHTNESS_OPTIONS
-} from '../color/color-context';
-import {
-  ColorSelectModal,
-  useModal
-} from '../../components/color/color-select-modal';
+} from './color-coding-context';
+import { useColorState } from './color-selector';
+import { ColorState, defaultColorState } from './color-context';
+import { ColorSelectModal, useModal } from './color-select-modal';
 import { produce } from 'immer';
-
-const someSubjects = ['Maths', 'Art', 'Science'];
-
 export default function ColorCodingProvider({
   children
 }: {
@@ -56,7 +45,6 @@ export default function ColorCodingProvider({
             onConfirm: handleColorConfirm,
             onCancel: () => closeModal(),
             onClose: closeModal
-            // ...modalInitialState
           }}
         >
           {children}

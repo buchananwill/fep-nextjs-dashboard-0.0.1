@@ -2,10 +2,10 @@
 import {
   ColorCoding,
   ModalColorSelectContext
-} from '../../../../contexts/color-coding/context';
+} from '../../color/color-coding-context';
 import React, { useContext } from 'react';
 import { HoverWidth } from '../../hover-width/hover-width';
-import { BASE_HSL } from '../../../../contexts/color/color-context';
+import { BASE_HSL } from '../../color/color-context';
 import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
 import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
 import { useCalendarScaledZoom } from './time-column';

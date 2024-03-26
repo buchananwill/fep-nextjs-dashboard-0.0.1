@@ -6,7 +6,7 @@ import {
   useNodeInteractionContext,
   useNodeSelectedListener
 } from '../nodes/node-interaction-context';
-import { BASE_HSL } from '../../contexts/color/color-context';
+import { BASE_HSL } from '../../generic/components/color/color-context';
 import * as d3 from 'd3';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';

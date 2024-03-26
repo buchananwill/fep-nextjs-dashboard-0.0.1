@@ -12,7 +12,7 @@ import {
   ColorCoding,
   ColorCodingDispatch,
   SubjectColorCodingState
-} from '../subject-color-coding/context';
+} from '../contexts/color/subject-color-coding-context';
 import { LessonCycle } from '../api/state-types';
 import {
   HUE_OPTIONS,
