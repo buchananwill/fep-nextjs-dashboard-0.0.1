@@ -1,14 +1,11 @@
 import React from 'react';
 import DraggableRect from './draggable-rect';
-import {
-  useDraggableSvgElement,
-  useDraggableSvgRoot
-} from '../graphing/use-draggable-svg';
+import { useDraggableSvgRoot } from '../graphing/use-draggable-svg';
 
 const width = 1800;
 const height = 1200;
 
-export function ExampleSvgCanvas(props: {}) {
+export function ExampleSvgCanvas({}: {}) {
   const { svgRef, handleMouseUp, handleMouseMove } =
     useDraggableSvgRoot('test-svg-root');
 

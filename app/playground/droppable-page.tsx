@@ -3,7 +3,6 @@
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   useDraggable,
   useDroppable
 } from '@dnd-kit/core';
@@ -14,7 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 function Draggable({ children }: PropsWithChildren) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { listeners, setNodeRef, transform } = useDraggable({
     id: 'draggable'
   });
   const style = transform

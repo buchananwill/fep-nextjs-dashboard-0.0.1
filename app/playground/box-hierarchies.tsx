@@ -2,13 +2,6 @@
 import { Card, Title } from '@tremor/react';
 import React, { useState } from 'react';
 import { DndContext, useDraggable } from '@dnd-kit/core';
-
-interface ClassBox {
-  id: string;
-  length: number; // determine by the curriculum models
-  width: number; // determined by the number of child classes
-}
-
 function getUnitRow(length: number, keys: string[]) {
   const units: React.JSX.Element[] = [];
   for (let i = 0; i < length; i++) {
@@ -59,7 +52,7 @@ function BoxUnit({ dragId }: { dragId: string }) {
   const { listeners, setNodeRef, isDragging, active, transform } = useDraggable(
     { id: dragId }
   );
-  const [fillColor, setFillColor] = useState('bg-gray-100');
+  const [fillColor] = useState('bg-gray-100');
 
   const style = transform
     ? {
