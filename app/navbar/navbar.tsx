@@ -11,14 +11,10 @@ import ProtectedNavigation from './protected-navigation';
 import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import useSWR, { Fetcher } from 'swr';
 
 import { getOptionBlocks } from '../api/actions/option-blocks';
-
-import { CarouselGroupDto } from '../api/dtos/CarouselGroupDtoSchema';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
-import { OrganizationTypeDto } from '../api/dtos/OrganizationTypeDtoSchema';
 import { getOrganizationTypes } from '../api/actions/curriculum-delivery-model';
 import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';
 

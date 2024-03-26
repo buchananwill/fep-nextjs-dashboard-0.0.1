@@ -3,14 +3,9 @@ import { Badge, Color, Text } from '@tremor/react';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
-import {
-  FillableButton,
-  PinIcons
-} from '../components/buttons/fillable-button';
+
 import { ElectiveFilterContext } from './elective-filter-context';
 
-import InteractiveTableCard from '../components/tables/interactive-table-card';
-import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
 import { FilterOption } from '../api/state-types';
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import {
@@ -21,6 +16,12 @@ import {
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import { CellDataTransformer } from '../generic/components/tables/dynamic-dimension-timetable';
+import InteractiveTableCard from '../generic/components/tables/interactive-table-card';
+import {
+  FillableButton,
+  PinIcons
+} from '../generic/components/buttons/fillable-button';
 
 const aLevelClassLimitInt = 25;
 

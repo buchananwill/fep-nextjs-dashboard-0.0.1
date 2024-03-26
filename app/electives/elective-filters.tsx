@@ -1,22 +1,14 @@
 'use client';
 import { Card, Text } from '@tremor/react';
-import { FilterDropdown } from '../components/dropdown/filter-dropdown';
+
 import { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import Union from '../components/swaps/union';
-import Intersection from '../components/swaps/intersection';
+
 import { FilterType } from './elective-filter-reducers';
 import CommitChanges from './commit-changes';
-import {
-  FillableButton,
-  PinIcons
-} from '../components/buttons/fillable-button';
 
 import { FilterOption } from '../api/state-types';
-import {
-  ElectiveFilterContext,
-  ElectiveFilterDispatchContext
-} from './elective-filter-context';
+import { ElectiveFilterDispatchContext } from './elective-filter-context';
 import {
   Tooltip,
   TooltipContent,
@@ -25,6 +17,13 @@ import {
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { ElectiveDTO } from '../api/dtos/ElectiveDTOSchema';
+import { FilterDropdown } from '../generic/components/dropdown/filter-dropdown';
+import Union from '../generic/components/swaps/union';
+import Intersection from '../generic/components/swaps/intersection';
+import {
+  FillableButton,
+  PinIcons
+} from '../generic/components/buttons/fillable-button';
 
 interface Props {
   electiveDTOList: ElectiveDTO[];
@@ -58,8 +57,7 @@ function createDistinctFilterOptions(
 export function ElectiveFilters({ electiveDTOList }: Props) {
   const { filterType, highlightedCourses } = useContext(ElectiveContext);
   const dispatch = useContext(ElectiveDispatchContext);
-  const filterDispatch = useContext(ElectiveFilterDispatchContext);
-
+  useContext(ElectiveFilterDispatchContext);
   const distinctCourses = createDistinctFilterOptions(electiveDTOList);
 
   const { showTooltips } = useContext(TooltipsContext);

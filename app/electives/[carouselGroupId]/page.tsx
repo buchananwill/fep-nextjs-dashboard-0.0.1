@@ -1,4 +1,4 @@
-import { Button, Text, Title } from '@tremor/react';
+import { Text, Title } from '@tremor/react';
 import { fetchCarouselGroupWithAllStudents } from '../api/request-elective-preferences';
 import { compileElectiveAvailability } from '../checkElectiveAssignments';
 
@@ -10,15 +10,16 @@ import { Suspense } from 'react';
 import { ElectiveFilters } from '../elective-filters';
 import ElectiveFilterContextProvider from '../elective-filter-context-provider';
 import { CellDataAndMetaData, TabularDTO } from '../../api/dto-interfaces';
-import BigTableCard from '../../components/tables/big-table-card';
-import DynamicDimensionTimetable, {
-  HeaderTransformer
-} from '../../components/tables/dynamic-dimension-timetable';
+
 import ElectiveCard from '../elective-card';
 import { ElectiveAvailability } from '../../api/state-types';
 import { RotateCarouselButton } from './rotate-carousel-button';
 import { YearGroupWithElectivesDTO } from '../../api/dtos/YearGroupWithElectivesDTOSchema';
 import { ElectiveDTO } from '../../api/dtos/ElectiveDTOSchema';
+import BigTableCard from '../../generic/components/tables/big-table-card';
+import DynamicDimensionTimetable, {
+  HeaderTransformer
+} from '../../generic/components/tables/dynamic-dimension-timetable';
 
 interface Props {
   params: { carouselGroupId: string };

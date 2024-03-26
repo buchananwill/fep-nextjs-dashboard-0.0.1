@@ -1,11 +1,6 @@
-import { ButtonClusterTransformer } from '../components/disclosure-list/disclosure-list-panel';
-
 import React, { useContext } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
-import {
-  FillableButton,
-  PinIcons
-} from '../components/buttons/fillable-button';
+
 import {
   Tooltip,
   TooltipContent,
@@ -14,10 +9,14 @@ import {
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
+import { ButtonClusterTransformer } from '../generic/components/disclosure-list/disclosure-list-panel';
+import {
+  FillableButton,
+  PinIcons
+} from '../generic/components/buttons/fillable-button';
 
 export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
   data: { id },
-  className,
   children
 }) => {
   const {

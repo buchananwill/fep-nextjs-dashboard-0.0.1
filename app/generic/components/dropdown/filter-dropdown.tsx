@@ -2,32 +2,17 @@
 import { Listbox, Transition } from '@headlessui/react';
 import React, { Fragment, useContext } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { FilterOption } from '../../../api/state-types';
+import { ElectivePreferenceDTO } from '../../../api/dtos/ElectivePreferenceDTOSchema';
+import { ElectiveFilterState } from '../../../electives/elective-filter-reducers';
 import {
   ElectiveContext,
   ElectiveDispatchContext
-} from '../../electives/elective-context';
-
+} from '../../../electives/elective-context';
 import {
   ElectiveFilterContext,
   ElectiveFilterDispatchContext
-} from '../../electives/elective-filter-context';
-import { ElectiveFilterState } from '../../electives/elective-filter-reducers';
-import { FilterOption } from '../../api/state-types';
-import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
-
-// For example, using TypeScript enum
-export enum CacheSetting {
-  Default = 'default',
-  Reload = 'reload',
-  NoCache = 'noCache'
-}
-
-// Or, using object as a map
-export const colorSettings: Record<CacheSetting, string> = {
-  [CacheSetting.Default]: 'emerald',
-  [CacheSetting.Reload]: 'orange',
-  [CacheSetting.NoCache]: 'red'
-};
+} from '../../../electives/elective-filter-context';
 
 function summariseFilterSelections(
   selectedFilters:

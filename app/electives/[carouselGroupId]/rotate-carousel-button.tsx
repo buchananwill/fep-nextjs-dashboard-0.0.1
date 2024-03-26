@@ -10,14 +10,15 @@ import {
   TooltipTrigger
 } from '../../generic/components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../../generic/components/tooltips/standard-tooltip-content-old';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../../components/modals/confirm-action-modal';
+
 import '../../generic/css/custom-component-styles.css';
 
 import { UpdateElectivePreference } from '../elective-reducers';
 import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../../generic/components/modals/confirm-action-modal';
 
 export type direction = 'LEFT' | 'RIGHT';
 

@@ -1,14 +1,15 @@
 import { FilterOption } from '../api/state-types';
 
-import genericPredicateFactorySupplier from './elective-filters/elective-preference-factory-supplier';
-import {
-  packageRequest,
-  PredicateFactory,
-  PredicateRequest
-} from '../components/filters/filter-types';
+import genericPredicateProducer from './elective-filters/elective-preference-factory-supplier';
+
 import { FilterType } from './elective-filter-reducers';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
+import {
+  packageRequest,
+  PredicateProducer,
+  PredicateRequest
+} from '../generic/components/filters/filter-types';
 
 export function filterStudentList(
   courseFilters: FilterOption<string>[],
@@ -29,17 +30,18 @@ export function filterStudentList(
   }
 
   const coursePredicateFactoryList = courseFilters.map(({ URI }) =>
-    genericPredicateFactorySupplier(
+    genericPredicateProducer(
       electivePreferences,
       ({ courseId, active }) => active && URI == courseId
     )
   );
 
-  const carouselOptionPredicateFactoryList: PredicateFactory<StudentDTO>[] = [];
+  const carouselOptionPredicateFactoryList: PredicateProducer<StudentDTO>[] =
+    [];
 
   for (let number of carouselOptionIdSet) {
     carouselOptionPredicateFactoryList.push(
-      genericPredicateFactorySupplier(
+      genericPredicateProducer(
         electivePreferences,
         ({ assignedCarouselOptionId, active }) =>
           active && assignedCarouselOptionId == number
@@ -47,7 +49,7 @@ export function filterStudentList(
     );
   }
 
-  const pinnedStudentsPredicateFactory = genericPredicateFactorySupplier(
+  const pinnedStudentsPredicateFactory = genericPredicateProducer(
     electivePreferences,
     (preference) => pinnedStudents.has(preference.userRoleId)
   );
@@ -57,7 +59,7 @@ export function filterStudentList(
   const coursesAndOptionsRequest: PredicateRequest<StudentDTO> = {
     id: 0,
     name: 'Test',
-    predicateFactoryList: [
+    predicateProducerList: [
       ...coursePredicateFactoryList,
       ...carouselOptionPredicateFactoryList
     ],
@@ -67,7 +69,7 @@ export function filterStudentList(
   const pinnedRequest: PredicateRequest<StudentDTO> = {
     id: 1,
     name: 'Pinned Test',
-    predicateFactoryList: [pinnedStudentsPredicateFactory],
+    predicateProducerList: [pinnedStudentsPredicateFactory],
     operator: 'AND',
     inversion: true
   };
@@ -79,7 +81,7 @@ export function filterStudentList(
   const notPinnedAndOtherFilter: PredicateRequest<StudentDTO> = {
     id: 2,
     name: 'Not Pinned and is Filtered',
-    predicateFactoryList: [pinnedFactoryInverted, requestAsFactory],
+    predicateProducerList: [pinnedFactoryInverted, requestAsFactory],
     operator: 'AND'
   };
 

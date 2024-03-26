@@ -1,4 +1,4 @@
-import { HasNumberId, Nameable } from '../../api/dto-interfaces';
+import { HasNumberId, Nameable } from '../../../api/dto-interfaces';
 
 export type Predicate<T> = (element: T) => boolean;
 

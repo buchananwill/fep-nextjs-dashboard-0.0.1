@@ -1,12 +1,6 @@
 'use client';
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useState,
-  useTransition
-} from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { updateElectiveAssignments } from './api/request-elective-preferences';
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
@@ -16,23 +10,21 @@ import {
   TooltipTrigger
 } from '../generic/components/tooltips/tooltip';
 import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
-import {
-  ConfirmActionModal,
-  useModal
-} from '../components/modals/confirm-action-modal';
 
 import { UpdateElectivePreference } from './elective-reducers';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import {
+  ConfirmActionModal,
+  useModal
+} from '../generic/components/modals/confirm-action-modal';
 
 interface Props {
   children: React.ReactNode;
 }
 
 const CommitChanges = ({ children }: Props) => {
-  const [transitionPending, startTransition] = useTransition();
   const [commitPending, setCommitPending] = useState(false);
-  const { replace } = useRouter();
-  const pathname = usePathname();
+
   const { showTooltips } = useContext(TooltipsContext);
   let { isOpen, closeModal, openModal } = useModal();
   const electiveState = useContext(ElectiveContext);
@@ -77,16 +69,13 @@ const CommitChanges = ({ children }: Props) => {
     dispatch({
       type: 'clearModifications'
     });
-
-    // replace(redirectUrl, { scroll: false });
   }
 
-  const spinner =
-    commitPending || transitionPending ? (
-      <span className="absolute loading loading-spinner loading-lg"></span>
-    ) : (
-      <></>
-    );
+  const spinner = commitPending ? (
+    <span className="absolute loading loading-spinner loading-lg"></span>
+  ) : (
+    <></>
+  );
 
   return (
     <div className="indicator mx-2">
