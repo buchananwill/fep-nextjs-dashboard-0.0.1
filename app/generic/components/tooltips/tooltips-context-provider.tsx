@@ -4,12 +4,12 @@ import TooltipsContext, { TooltipsState } from './tooltips-context';
 
 export default function TooltipsContextProvider({
   children,
-  disabled
+  startDisabled
 }: {
   children: ReactNode;
-  disabled?: boolean;
+  startDisabled?: boolean;
 }) {
-  const enabled = !disabled;
+  const enabled = !startDisabled;
 
   const [showTooltips, setShowTooltips] = useState(enabled);
 

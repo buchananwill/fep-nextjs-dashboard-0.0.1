@@ -20,6 +20,7 @@ import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
 import { OrganizationTypeDto } from '../api/dtos/OrganizationTypeDtoSchema';
 import { getOrganizationTypes } from '../api/actions/curriculum-delivery-model';
+import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';
 
 interface DropdownItem {
   name: string;
@@ -41,9 +42,6 @@ const premisesDropdown = [{ name: 'Graph Overview', href: '' }];
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
-
-// const fetcher: Fetcher<CarouselGroupDto[]> = () =>
-//   getOptionBlocks().then((res) => (res.data ? res.data : []));
 
 export default function Navbar({
   user,
@@ -193,11 +191,12 @@ export default function Navbar({
     <Disclosure as="menu" className="bg-white shadow-sm">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-24 justify-between py-1">
-              <div className="flex grow">
+              <div className="flex grow gap-2">
+                <ToolTipsToggle />
                 <SvgLogo isPending={isPending} />
-                <div className="-my-px mx-3 grid grid-cols-6 gap-x-2 w-full">
+                <div className="-my-px grid grid-cols-6 gap-x-2 w-full">
                   {navigation.map((dropdownLabel, index) => (
                     <div
                       key={`label-${dropdownLabel.name}`}

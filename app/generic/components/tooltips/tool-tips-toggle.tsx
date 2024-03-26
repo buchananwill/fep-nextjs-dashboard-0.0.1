@@ -10,7 +10,7 @@ const ToolTipsToggle = () => {
 
   return (
     <label className="flex items-center">
-      <Text className={'text-gray-200'}>Tool tips:</Text>
+      <Text className={'text-gray-200'}>Tooltips:</Text>
       <input
         type="checkbox"
         name="tool-tips"

@@ -13,10 +13,11 @@ import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../curriculum/delivery-models/contexts/convert-list-to-string-map';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
-import ToolCardContextProvider from '../../components/tool-card/tool-card-context-provider';
-import ToolCard from '../../components/tool-card/tool-card';
+
 import { ClassroomDisclosureListPanel } from './classroom-disclosure-list-panel';
 import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-context-provider';
+import ToolCardContextProvider from '../../generic/components/tool-card/tool-card-context-provider';
+import ToolCard from '../../generic/components/tool-card/tool-card';
 
 export default async function Page({
   searchParams: { rootName }

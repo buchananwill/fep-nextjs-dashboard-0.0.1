@@ -1,12 +1,11 @@
-import { classNames } from '../../utils/class-names';
 import {
   Card,
-  CardProps,
   Color,
   HorizontalPosition,
   VerticalPosition
 } from '@tremor/react';
 import React from 'react';
+import { classNames } from '../../../utils/class-names';
 
 export default function InteractiveTableCard({
   children,

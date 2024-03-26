@@ -1,15 +1,10 @@
 'use client';
-import { useContext, useEffect, useMemo } from 'react';
-import { ToolCardContext } from '../../components/tool-card/tool-card-context';
+import { useMemo } from 'react';
+
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
-import DisclosureListPanel, {
-  ButtonClusterTransformer,
-  DisclosureLabelTransformer,
-  PanelTransformer,
-  TransformerProps
-} from '../../components/disclosure-list/disclosure-list-panel';
+
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import ListItemSelector from '../../components/disclosure-list/list-item-selector';
+
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
 import { AssetSuitabilityEditContext } from '../../staffroom/contexts/providerRoles/rating-edit-context';
 import {
@@ -17,6 +12,13 @@ import {
   useAssetSuitabilityListListener
 } from '../../contexts/selective-context/asset-suitability-list-selective-context-provider';
 import { RatingList } from '../../staffroom/teachers/rating-list';
+import DisclosureListPanel, {
+  ButtonClusterTransformer,
+  DisclosureLabelTransformer,
+  PanelTransformer,
+  TransformerProps
+} from '../../generic/components/disclosure-list/disclosure-list-panel';
+import ListItemSelector from '../../generic/components/disclosure-list/list-item-selector';
 
 export function ClassroomDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
@@ -31,7 +33,7 @@ export function ClassroomDisclosureListPanel() {
     <DisclosureListPanel
       panelTransformer={ClassroomPanelTransformer}
       disclosureLabelTransformer={ClassroomLabelTransformer}
-      buttonCluster={ButtonClusterTransformer}
+      buttonCluster={buttonClusterTransformer}
       data={assetDtoList}
     />
   );
@@ -71,7 +73,7 @@ const ClassroomLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
   return <>{data.name}</>;
 };
 
-const ButtonClusterTransformer: ButtonClusterTransformer<AssetDto> = ({
+const buttonClusterTransformer: ButtonClusterTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
   return (

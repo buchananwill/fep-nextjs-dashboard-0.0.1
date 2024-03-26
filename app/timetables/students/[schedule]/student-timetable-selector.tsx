@@ -1,23 +1,13 @@
 'use client';
-import NameIdTupleSelector from '../../../components/dropdown/name-id-tuple-selector';
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useState,
-  useTransition
-} from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
-import { CheckIcon } from '@heroicons/react/20/solid';
+
+import { useContext, useEffect, useState, useTransition } from 'react';
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from '../../timetables-context';
-import { useSearchParams } from 'next/navigation';
-import { LessonEnrollmentDTO } from '../../../api/dto-interfaces';
-import StringTupleSelector from '../../../components/dropdown/string-tuple-selector';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
+import { LessonEnrollmentDTO } from '../../../api/dtos/LessonEnrollmentDTOSchema';
+import StringTupleSelector from '../../../generic/components/dropdown/string-tuple-selector';
 
 const noSelection = { name: '', id: '' };
 

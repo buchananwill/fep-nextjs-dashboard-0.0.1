@@ -1,31 +1,22 @@
 'use client';
 import { LessonEnrollmentDTO } from '../api/dto-interfaces';
-import { CellDataTransformer } from '../components/tables/dynamic-dimension-timetable';
+
 import React, { useContext, useEffect, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
 import { useSearchParams } from 'next/navigation';
-import InteractiveTableCard from '../components/tables/interactive-table-card';
+
 import { Text } from '@tremor/react';
 import {
   ModalColorSelectContext,
   ColorCoding,
   ColorCodingDispatch
 } from '../contexts/color/subject-color-coding-context';
-import { current, produce } from 'immer';
-import { useColorState } from '../components/color/color-selector';
-import {
-  ColorSelectModal,
-  useModal
-} from '../components/color/color-select-modal';
-import {
-  ColorState,
-  defaultColorState,
-  HUE_OPTIONS,
-  LIGHTNESS_OPTIONS
-} from '../components/color/color-context';
-import { HueOption } from '../components/color/hue-selector';
-import { LightnessOption } from '../components/color/lightness-selector';
+import { produce } from 'immer';
+
 import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
+import { CellDataTransformer } from '../generic/components/tables/dynamic-dimension-timetable';
+import { defaultColorState } from '../generic/components/color/color-context';
+import InteractiveTableCard from '../generic/components/tables/interactive-table-card';
 
 const freePeriod: LessonEnrollmentDTO = {
   id: NaN,
@@ -33,70 +24,21 @@ const freePeriod: LessonEnrollmentDTO = {
   lessonCycleId: '',
   userRoleId: NaN
 };
-
-function getTextStyling(lessonText: string): { color: string } {
-  switch (lessonText) {
-    case 'Free': {
-      return { color: 'gray-200' };
-    }
-    case 'German':
-    case 'French':
-    case 'Computing':
-    case 'Classical Civ':
-    case 'Latin': {
-      return { color: 'blue-400' };
-    }
-    case 'Maths': {
-      return { color: 'fuchsia-400' };
-    }
-    case 'Physics':
-    case 'Biology':
-    case 'Chemistry': {
-      return { color: 'emerald-400' };
-    }
-    case 'English': {
-      return { color: 'yellow-600' };
-    }
-    case 'Art':
-    case 'Design And T': {
-      return { color: 'lime-500' };
-    }
-    case 'Geography':
-    case 'History': {
-      return { color: 'orange-400' };
-    }
-    case 'Registration': {
-      return { color: 'gray-300' };
-    }
-    case 'Games':
-    case 'Pe': {
-      return { color: 'teal-400' };
-    }
-    default: {
-      return { color: 'red-400' };
-    }
-  }
-}
-
 export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
   data
 }) => {
   const { studentTimetables, lessonCycleMap, studentId } =
     useContext(TimetablesContext);
   const { id } = data;
-  const readonlyURLSearchParams = useSearchParams();
-  const student = readonlyURLSearchParams?.get('id');
+  useSearchParams();
   const [lesson, setLesson] = useState(freePeriod);
   const [lessonText, setLessonText] = useState('Free');
   const [textColor, setTextColor] = useState(defaultColorState);
   const subjectColorCoding = useContext(ColorCoding);
-  const { setSubjectColorCoding } = useContext(ColorCodingDispatch);
-  const {
-    setModalText: setModalLessonText,
-    openModal,
-    setHue,
-    setLightness
-  } = useContext(ModalColorSelectContext);
+  const { setColorCoding } = useContext(ColorCodingDispatch);
+  const { setModalText: setModalLessonText, openModal } = useContext(
+    ModalColorSelectContext
+  );
 
   useEffect(() => {
     const timetables = studentTimetables.get(studentId);
@@ -128,21 +70,19 @@ export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
       const subjectColorCodingState = produce(subjectColorCoding, (draft) => {
         draft[lessonText] = defaultColorState;
       });
-      setSubjectColorCoding(subjectColorCodingState);
+      setColorCoding(subjectColorCodingState);
       updatedTextColor = defaultColorState;
     } else {
       updatedTextColor = subjectColorCodingElement;
     }
     setTextColor(updatedTextColor);
-  }, [setSubjectColorCoding, lessonText, setTextColor, subjectColorCoding]);
+  }, [lessonText, setTextColor, subjectColorCoding, setColorCoding]);
 
   const { hue, lightness } = textColor;
 
   const classNameStyling = `text-xs font-medium text-${hue.id}-${lightness.id}`;
 
   const handleCardClick = () => {
-    setHue(hue);
-    setLightness(lightness);
     setModalLessonText(lessonText);
     openModal();
   };

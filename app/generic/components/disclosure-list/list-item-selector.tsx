@@ -1,12 +1,9 @@
-import {
-  Tooltip,
-  TooltipTrigger
-} from '../../generic/components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import React from 'react';
 import { FillableButton, PinIcons } from '../buttons/fillable-button';
-import { useSelectiveContextDispatchNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
-import { EmptyNumberIdArray } from '../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import { useSelectiveContextDispatchNumberList } from '../selective-context/selective-context-manager-number-list';
+import { EmptyNumberIdArray } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
+import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 
 export default function ListItemSelector({
   itemDescriptor,

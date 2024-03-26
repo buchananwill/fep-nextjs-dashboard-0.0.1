@@ -1,15 +1,9 @@
 import React, { ReactNode } from 'react';
-
-import DynamicDimensionTimetable, {
-  HeaderTransformer
-} from '../../../components/tables/dynamic-dimension-timetable';
-
 import TimetablesContextProvider from '../../timetables-context-provider';
-
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
 import { Card, Text, Title } from '@tremor/react';
-import DropdownParam from '../../../components/dropdown/dropdown-param';
+
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
 import fetchAllStudents from '../../../api/actions/student-search';
@@ -20,6 +14,10 @@ import {
   fetchAllLessonCycles,
   fetchScheduleIds
 } from '../../../api/actions/timetables';
+import DropdownParam from '../../../generic/components/dropdown/dropdown-param';
+import DynamicDimensionTimetable, {
+  HeaderTransformer
+} from '../../../generic/components/tables/dynamic-dimension-timetable';
 
 export const dynamic = 'force-dynamic';
 

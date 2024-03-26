@@ -29,7 +29,7 @@ export default async function RootLayout({
     <html lang="en" className="h-full bg-gray-50" data-theme={'light'}>
       <body className="h-full">
         <AnimationSyncContextProvider>
-          <TooltipsContextProvider>
+          <TooltipsContextProvider startDisabled={true}>
             <SelectiveContextCollection>
               <SubjectColorCodingProvider>
                 <KeyListenerManager>
