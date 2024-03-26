@@ -1,8 +1,8 @@
 'use client';
 import React, { ReactNode, useMemo, useState } from 'react';
 
-import DepthContextProvider from '../../../contexts/z-context/z-context-provider';
-import { Z_INDEX } from '../../../contexts/z-context/z-context';
+import DepthContextProvider from '../../../../contexts/z-context/z-context-provider';
+import { Z_INDEX } from '../../../../contexts/z-context/z-context';
 import { useMemoizedNormalizedInterval } from './use-memoized-normalized-interval';
 import { useCalendarScaledZoom } from '../columns/time-column';
 

@@ -10,10 +10,10 @@ import { HourTransformer } from '../blocks/hour-block';
 import { addHours, addMinutes, Interval } from 'date-fns';
 import { interval } from 'date-fns/interval';
 import { TimeDropZone } from '../blocks/time-drop-zone';
-import { ZoomScaleContext } from '../scale/zoom-scale-context';
+import { ZoomScaleContext } from '../../zoom/zoom-scale-context';
 import { NormalizedInterval } from 'date-fns/types';
 import { useDroppable } from '@dnd-kit/core';
-import { PROJECT_EPOCH_DATE_TIME_MONDAY } from '../../../api/date-and-time';
+import { PROJECT_EPOCH_DATE_TIME_MONDAY } from '../../../../api/date-and-time';
 import { scaleToCalendarZoomX, scaleToCalendarZoomY } from '../calendar-view';
 
 const FALLBACK_DATE = PROJECT_EPOCH_DATE_TIME_MONDAY;

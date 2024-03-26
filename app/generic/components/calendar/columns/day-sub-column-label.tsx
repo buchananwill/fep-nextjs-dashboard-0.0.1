@@ -2,16 +2,13 @@
 import {
   ColorCoding,
   ModalColorSelectContext
-} from '../../contexts/color-coding/context';
+} from '../../../../contexts/color-coding/context';
 import React, { useContext } from 'react';
-import { HoverWidth } from '../hover-width/hover-width';
-import { BASE_HSL } from '../../contexts/color/color-context';
-import {
-  Tooltip,
-  TooltipTrigger
-} from '../../generic/components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
-import { useCalendarScaledZoom } from './columns/time-column';
+import { HoverWidth } from '../../hover-width/hover-width';
+import { BASE_HSL } from '../../../../contexts/color/color-context';
+import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
+import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
+import { useCalendarScaledZoom } from './time-column';
 
 export function DaySubColumnLabel({ labelText }: { labelText: string }) {
   const colorCodingState = useContext(ColorCoding);

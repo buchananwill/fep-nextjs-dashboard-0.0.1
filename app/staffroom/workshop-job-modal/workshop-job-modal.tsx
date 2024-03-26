@@ -20,7 +20,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
-import { ZoomScaleContext } from '../calendar-view/scale/zoom-scale-context';
+import { ZoomScaleContext } from '../calendar-view/zoom/zoom-zoom-context';
 import { DndContext, useDndContext } from '@dnd-kit/core';
 import { DndMonitorContext } from '@dnd-kit/core/dist/components/DndMonitor';
 import { useCalendarScaledZoom } from '../calendar-view/columns/time-column';

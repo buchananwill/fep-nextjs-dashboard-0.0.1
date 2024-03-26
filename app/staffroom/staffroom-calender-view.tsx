@@ -1,12 +1,12 @@
 'use client';
 import React, { useContext } from 'react';
 import { ProviderRoleSelectionContext } from './contexts/providerRoles/provider-role-selection-context';
-import { Calendarable } from '../components/calendar-view/blocks/timespan-block';
-import { CalendarRangeContext } from '../components/calendar-view/range/calendar-range-context';
+import { Calendarable } from '../generic/components/calendar/blocks/timespan-block';
+import { CalendarRangeContext } from '../generic/components/calendar/range/calendar-range-context';
 import { eachDayOfInterval } from 'date-fns';
-import { useCalendarScaledZoom } from '../components/calendar-view/columns/time-column';
-import CalendarView from '../components/calendar-view/calendar-view';
-import DayColumn from '../components/calendar-view/columns/day-column';
+import { useCalendarScaledZoom } from '../generic/components/calendar/columns/time-column';
+import CalendarView from '../generic/components/calendar/calendar-view';
+import DayColumn from '../generic/components/calendar/columns/day-column';
 
 export function StaffroomCalenderView({
   eventBlocks

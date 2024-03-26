@@ -14,13 +14,13 @@ import { DateRangePicker, DateRangePickerValue, Title } from '@tremor/react';
 import { interval } from 'date-fns/interval';
 import { Disclosure } from '@headlessui/react';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
-import ZoomBothAxes from '../scale/zoom-both-axes';
+import ZoomBothAxes from '../../zoom/zoom-both-axes';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '../../../generic/components/tooltips/tooltip';
-import { StandardTooltipContent } from '../../../generic/components/tooltips/standard-tooltip-content';
+} from '../../tooltips/tooltip';
+import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
 type TooltipOptions =
   | 'minusWeek'
   | 'minusDay'
@@ -31,7 +31,7 @@ type TooltipOptions =
 const tooltips: { [key: string]: string } = {
   minusWeek: 'Back one week.',
   minusDay: 'Back one day.',
-  adjustRange: 'Click to select date range or adjust scale.',
+  adjustRange: 'Click to select date range or adjust zoom.',
   plusWeek: 'Forward one week.',
   plusDay: 'Forward one day.'
 };

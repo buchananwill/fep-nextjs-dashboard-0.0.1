@@ -15,10 +15,10 @@ import { DragEndEvent } from '@dnd-kit/core';
 import { ProviderRoleSelectionContext } from '../providerRoles/provider-role-selection-context';
 
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
-import { createRangeStartingEpochalTime } from '../../../components/calendar-view/range/create-range-starting-monday-this-week';
-import { Calendarable } from '../../../components/calendar-view/blocks/timespan-block';
-import AvailabilityBlock from '../../../components/calendar-view/blocks/availability-block';
-import CalendarRangeContextProvider from '../../../components/calendar-view/range/calendar-range-context-provider';
+import { createRangeStartingEpochalTime } from '../../../generic/components/calendar/range/create-range-starting-monday-this-week';
+import { Calendarable } from '../../../generic/components/calendar/blocks/timespan-block';
+import AvailabilityBlock from '../../../generic/components/calendar/blocks/availability-block';
+import CalendarRangeContextProvider from '../../../generic/components/calendar/range/calendar-range-context-provider';
 
 export function AvailabilityTable() {
   enableMapSet();

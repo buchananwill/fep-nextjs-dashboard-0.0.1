@@ -1,12 +1,12 @@
 import { addDays } from 'date-fns/fp';
 import { interval } from 'date-fns/interval';
-import { createLocalDate } from '../../../api/local-date';
+import { createLocalDate } from '../../../../api/local-date';
 import {
   DayOfWeekArray,
   DayOfWeekObject,
   PROJECT_EPOCH_DATE_TIME,
   PROJECT_EPOCH_DATE_TIME_MONDAY
-} from '../../../api/date-and-time';
+} from '../../../../api/date-and-time';
 import { addMinutes } from 'date-fns';
 
 const MinutesInADay = 24 * 60;

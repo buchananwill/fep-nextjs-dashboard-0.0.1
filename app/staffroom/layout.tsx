@@ -18,7 +18,7 @@ import { getCycleModel } from '../api/actions/cycle-model';
 
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
-import CalendarRangeContextProvider from '../components/calendar-view/range/calendar-range-context-provider';
+import CalendarRangeContextProvider from '../generic/components/calendar/range/calendar-range-context-provider';
 import ProviderRoleStringMapContextProvider from './contexts/providerRoles/provider-role-string-map-context-provider';
 import { convertListToStringMap } from '../curriculum/delivery-models/contexts/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';

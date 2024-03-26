@@ -7,7 +7,7 @@ import {
 import { ReactNode, useReducer } from 'react';
 import calendarRangeReducers from './calendar-range-reducers';
 import { NormalizedInterval } from 'date-fns/types';
-import ZoomScaleContextProvider from '../scale/zoom-scale-context-provider';
+import ZoomScaleContextProvider from '../../zoom/zoom-scale-context-provider';
 import { createRangeStartingMondayThisWeek } from './create-range-starting-monday-this-week';
 
 export default function CalendarRangeContextProvider({

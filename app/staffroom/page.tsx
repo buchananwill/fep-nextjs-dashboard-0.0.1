@@ -34,10 +34,10 @@ import {
   ConfirmActionModal,
   ConfirmActionModalProps
 } from '../components/confirm-action-modal';
-import { Calendarable } from '../components/calendar-view/blocks/timespan-block';
-import { WorkshopJobBlock } from '../components/calendar-view/blocks/workshop-job-block';
-import { ChooseCalendarRange } from '../components/calendar-view/range/choose-calendar-range';
-import { useCalendarScaledZoom } from '../components/calendar-view/columns/time-column';
+import { Calendarable } from '../generic/components/calendar/blocks/timespan-block';
+import { WorkshopJobBlock } from '../generic/components/calendar/blocks/workshop-job-block';
+import { ChooseCalendarRange } from '../generic/components/calendar/range/choose-calendar-range';
+import { useCalendarScaledZoom } from '../generic/components/calendar/columns/time-column';
 import { isNotNull, isNotUndefined } from '../api/main';
 
 function getProvider(
@@ -241,7 +241,7 @@ export default function Page() {
   );
 
   // Convert the draggable delta Y to minutes,
-  // accounting for the view scale
+  // accounting for the view zoom
   // and a gentle curve favouring rounding towards the original value.
 
   async function handleDragEnd(dragEndEvent: DragEndEvent) {

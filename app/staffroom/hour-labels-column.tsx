@@ -1,4 +1,4 @@
-import TimeColumn from '../components/calendar-view/columns/time-column';
+import TimeColumn from '../generic/components/calendar/columns/time-column';
 import HourLabel from './hour-label';
 
 export function HourLabelsColumn() {

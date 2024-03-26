@@ -1,5 +1,5 @@
 import React from 'react';
-import { HourTransformerProps } from '../components/calendar-view/blocks/hour-block';
+import { HourTransformerProps } from '../generic/components/calendar/blocks/hour-block';
 
 export default function HourLabel({ hour }: HourTransformerProps) {
   return (
