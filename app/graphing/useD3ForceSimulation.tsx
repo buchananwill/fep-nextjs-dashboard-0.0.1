@@ -5,7 +5,6 @@ import { Simulation } from 'd3';
 
 import { useForceAttributeListeners } from '../api/dtos/ForceGraphAttributesDtoSchema';
 import {
-  getGridX,
   getHorizontalParentsToChildrenLayout,
   updateForceX
 } from './forces/force-x';
@@ -42,25 +41,15 @@ export function useD3ForceSimulation<T extends HasNumberIdDto>(
   uniqueGraphName: string
 ) {
   const forceAttributeListeners = useForceAttributeListeners(uniqueGraphName);
-  const {
-    contextKey,
-    listenerKey,
-    contextAlterKey,
-    listenerAlterKey,
-    mountedListenerKey,
-    mountedKey
-  } = useMemo(() => {
-    const contextAlterKey = `${uniqueGraphName}-version`;
-    const listenerAlterKey = `${uniqueGraphName}-force-sim`;
-    return {
-      contextKey: `${uniqueGraphName}-ready`,
-      listenerKey: `${uniqueGraphName}-force-sim`,
-      listenerAlterKey,
-      contextAlterKey,
-      mountedKey: `${uniqueGraphName}-mounted`,
-      mountedListenerKey: `${uniqueGraphName}-mounted-force-sim`
-    };
-  }, [uniqueGraphName]);
+  const { contextKey, listenerKey, mountedListenerKey, mountedKey } =
+    useMemo(() => {
+      return {
+        contextKey: `${uniqueGraphName}-ready`,
+        listenerKey: `${uniqueGraphName}-force-sim`,
+        mountedKey: `${uniqueGraphName}-mounted`,
+        mountedListenerKey: `${uniqueGraphName}-mounted-force-sim`
+      };
+    }, [uniqueGraphName]);
 
   const { isTrue: isReady } = useSelectiveContextListenerBoolean(
     contextKey,

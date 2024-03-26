@@ -1,23 +1,18 @@
 'use client';
 import ForceSimWrapper from '../force-sim-wrapper';
-import React, { PropsWithChildren, ReactNode, useMemo } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 
 import { useDraggable } from '@dnd-kit/core';
-import { useDragToTranslate } from '../../components/draggable-to-translate/draggable-to-translate';
+
 import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import GraphViewOptions from '../components/graph-view-options';
 import NodeInteractionProvider from '../nodes/node-interaction-context';
-import {
-  useGenericGraphRefs,
-  useGenericNodeContext
-} from '../nodes/generic-node-context-creator';
-import { useGenericLinkContext } from '../links/generic-link-context-creator';
+import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
 import {
   DraggablePositionContext,
   IsDraggingContext,
-  MouseDownDispatchContext,
-  useMouseMoveSvgDraggable
+  MouseDownDispatchContext
 } from '../force-graph-dnd/mouse-event-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGraphName } from './graph-context-creator';
@@ -29,6 +24,8 @@ import {
 } from '../nodes/node-editor-disclosure';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import { ShowForceAdjustmentsKey } from './show-force-adjustments';
+import { useDragToTranslate } from '../../generic/components/draggable-to-translate/draggable-to-translate';
+import { useMouseMoveSvgDraggable } from '../force-graph-dnd/use-mouse-move-svg-draggable';
 
 export const DefaultGraphZoom = 100;
 export const MaxGraphZoom = 200;
@@ -56,7 +53,7 @@ export default function Graph<T extends HasNumberIdDto>({
     titleAccessor
   );
 
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { listeners, setNodeRef, transform } = useDraggable({
     id: 'draggable'
   });
   const { currentState } = useSelectiveContextListenerNumber(

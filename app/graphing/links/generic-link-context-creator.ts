@@ -5,7 +5,7 @@ import React, {
   SetStateAction,
   useContext
 } from 'react';
-import { DataLink, DataNode } from '../../api/zod-mods';
+import { DataLink } from '../../api/zod-mods';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 // Define the interface as generic

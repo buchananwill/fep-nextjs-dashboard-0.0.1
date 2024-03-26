@@ -1,5 +1,4 @@
 import { DataLink } from '../../api/zod-mods';
-import { ProductComponentDto } from '../../api/dtos/ProductComponentDtoSchema';
 import { LinkComponent } from '../links/link-component';
 import React from 'react';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';

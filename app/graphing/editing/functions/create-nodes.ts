@@ -1,6 +1,7 @@
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { DataNode } from '../../../api/zod-mods';
-import { CloneFunction, Relation } from '../buttons/add-nodes-button';
+import { Relation } from '../buttons/add-nodes-button';
+import { CloneFunction } from '../buttons/clone-function';
 
 export interface CreateNodeParams<T extends HasNumberIdDto> {
   startIdAt: number;

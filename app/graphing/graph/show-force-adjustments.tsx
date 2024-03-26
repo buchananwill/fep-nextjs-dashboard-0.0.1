@@ -21,12 +21,11 @@ export function ShowForceAdjustments() {
 
 export function useForceAdjustments(show: boolean) {
   const graphName = useGraphName();
-  const { currentState, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(
-      ShowForceAdjustmentsKey,
-      graphName,
-      show
-    );
+  const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
+    ShowForceAdjustmentsKey,
+    graphName,
+    show
+  );
   useEffect(() => {
     dispatchWithoutControl(show);
   }, [show, dispatchWithoutControl]);

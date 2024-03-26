@@ -2,7 +2,6 @@ import { useSelectiveContextControllerNumber } from '../../../generic/components
 import { useGraphSelectiveContextController } from '../../graph/graph-context-creator';
 import { TransientIdOffset } from './graph-edits';
 import { useSelectiveContextControllerNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
-import { useMemo } from 'react';
 import { useDirectSimRefEditsController } from './use-graph-edit-button-hooks';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 
@@ -57,6 +56,5 @@ export function useGraphEditRootContext() {
     useSelectiveContextControllerNumberList
   );
 
-  const { incrementSimVersion, linkListRef, nodeListRef } =
-    useDirectSimRefEditsController<OrganizationDto>('root-graph-page');
+  useDirectSimRefEditsController<OrganizationDto>('root-graph-page');
 }

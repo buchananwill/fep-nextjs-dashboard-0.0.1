@@ -1,11 +1,10 @@
-import { DataLink, DataNode, GraphDto } from '../../api/zod-mods';
-import { Predicate } from '../../components/filters/filter-types';
 import { ClosureDto } from '../../api/dtos/ClosureDtoSchema';
 import { useMemo } from 'react';
+import { Predicate } from '../../generic/components/filters/filter-types';
 
-export function useFilteredLinkMemo<T>(
+export function useFilteredLinkMemo(
   closureList: ClosureDto[],
-  closurePredicate: Predicate<ClosureDto> = (c) => c.value == 1
+  closurePredicate: Predicate<ClosureDto> = (c: ClosureDto) => c.value == 1
 ) {
   const filteredLinks = useMemo(
     () =>

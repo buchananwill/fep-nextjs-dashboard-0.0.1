@@ -10,7 +10,7 @@ export default function MountedTracker({}: {}) {
     [uniqueGraphName]
   );
 
-  const { currentState, dispatchUpdate } = useSelectiveContextControllerBoolean(
+  const { dispatchUpdate } = useSelectiveContextControllerBoolean(
     mountedKey,
     mountedKey,
     true

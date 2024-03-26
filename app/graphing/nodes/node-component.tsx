@@ -1,18 +1,13 @@
 'use client';
-import { DataNode } from '../../api/zod-mods';
-import React, { ReactNode, useContext, useMemo } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
-import {
-  GenericNodeRefContext,
-  useGenericNodeContext
-} from './generic-node-context-creator';
-import { useForceGraphDndElement } from '../force-graph-dnd/mouse-event-context-creator';
-import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { GenericNodeRefContext } from './generic-node-context-creator';
 import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
+import { useForceGraphDndElement } from '../force-graph-dnd/use-force-graph-dnd-element';
 
 // Good start - clear name and type generic
-export function NodeComponent<T extends HasNumberIdDto>({
+export function NodeComponent({
   gProps,
   enableRunnable,
   nodeIndex,
@@ -25,9 +20,7 @@ export function NodeComponent<T extends HasNumberIdDto>({
   children?: ReactNode;
   nodeId: number;
 }) {
-  const { nodes } = useGenericNodeContext<T>();
-  // const updatedNodeData = nodes[nodeIndex];
-  const { dispatch, hover, selected } = useNodeInteractionContext();
+  const { dispatch } = useNodeInteractionContext();
   const nodeDragKey = `node-${nodeId}`;
 
   useSelectiveContextListenerNumber(NodePositionsKey, nodeDragKey, 0);
@@ -43,7 +36,7 @@ export function NodeComponent<T extends HasNumberIdDto>({
     return null;
   const updatedNodeData = nodesRef?.current[nodeIndex];
 
-  const { x, y, distanceFromRoot, data } = updatedNodeData; // Only x and y are necessarily relevant
+  const { x, y, distanceFromRoot } = updatedNodeData; // Only x and y are necessarily relevant
 
   const handleClick = enableRunnable
     ? () => {

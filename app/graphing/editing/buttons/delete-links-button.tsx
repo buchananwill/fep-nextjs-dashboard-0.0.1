@@ -1,9 +1,8 @@
 import { GraphEditButton } from './graph-edit-button';
 import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { deleteLinks } from '../functions/graph-edits';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { resetLinks } from './add-nodes-button';
 
 const deleteLinksKey = 'delete-links';
 

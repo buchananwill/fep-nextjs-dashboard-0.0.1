@@ -1,30 +1,15 @@
 import React, { useMemo } from 'react';
-import { DataLink, DataNode } from '../../../api/zod-mods';
+import { DataNode } from '../../../api/zod-mods';
 import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
 import { GraphEditButton } from './graph-edit-button';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { SimulationLinkDatum } from 'd3';
-import { ClosureDto } from '../../../api/dtos/ClosureDtoSchema';
 import { createNodes } from '../functions/create-nodes';
 import { createLinks } from '../functions/create-links';
+import { CloneFunction } from './clone-function';
 
 export type Relation = 'sibling' | 'child';
 
 const addNodesButton = `add-nodes-button`;
-
-export interface CloneFunction<T extends HasNumberIdDto> {
-  (object: T): T;
-}
-
-export function resetLinks<T extends HasNumberIdDto>(
-  allUpdatedLinks: DataLink<T>[]
-): (SimulationLinkDatum<DataNode<T>> & ClosureDto)[] {
-  return [...allUpdatedLinks].map((link, index) => {
-    const source = link.source as DataNode<T>;
-    const target = link.target as DataNode<T>;
-    return { ...link, source: source.id, target: target.id, index };
-  });
-}
 
 export function AddNodesButton<T extends HasNumberIdDto>({
   children,

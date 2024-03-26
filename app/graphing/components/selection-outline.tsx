@@ -1,8 +1,6 @@
 import { PropsWithChildren } from 'react';
-import { DataNode } from '../../api/zod-mods';
-import { useNodeSelectedListener } from '../nodes/node-interaction-context';
 
-export default function SelectionOutline<T>({
+export default function SelectionOutline({
   showOutline,
   children
 }: PropsWithChildren & { showOutline: boolean }) {

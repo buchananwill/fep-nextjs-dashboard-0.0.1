@@ -34,7 +34,6 @@ export function createLinks<T extends HasNumberIdDto>({
         );
         linksAsChild
           .map((l, index) => {
-            const currentLinkId = nextLinkId;
             nextLinkId++;
             return {
               ...l,

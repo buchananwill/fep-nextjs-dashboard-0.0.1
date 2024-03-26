@@ -1,10 +1,6 @@
 'use client';
-import { DataLink, DataNode } from '../../../api/zod-mods';
-import { ProductComponentStateDto } from '../../../api/dtos/ProductComponentStateDtoSchema';
-import React, { Fragment, PropsWithChildren, useContext } from 'react';
-import { GenericNodeContext } from '../../nodes/generic-node-context-creator';
-import { GenericLinkContext } from '../../links/generic-link-context-creator';
-import { index } from 'd3';
+import { DataNode } from '../../../api/zod-mods';
+import React, { Fragment, PropsWithChildren } from 'react';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import {
@@ -13,15 +9,13 @@ import {
   NodeDetailsListBoxOption,
   NodeDetailsListBoxOptions
 } from '../organization/curriculum-delivery-details';
-import { RenameButton } from '../../../components/buttons/rename-button';
-import { RenameModal } from '../../../components/rename-modal/rename-modal';
-import { useModal } from '../../../components/modals/confirm-action-modal';
+
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useServiceCategoryContext } from '../../../work-types/lessons/use-service-category-context';
-import { node } from 'prop-types';
 import { Listbox } from '@headlessui/react';
 import { StringMap } from '../../../curriculum/delivery-models/contexts/string-map-context-creator';
 import { useDirectSimRefEditsDispatch } from '../../editing/functions/use-graph-edit-button-hooks';
+import { RenameModal } from '../../../generic/components/modals/rename-modal';
 
 const WorkTaskTypeDtoDetailsListenerKey = 'work-task-type-details';
 
@@ -64,7 +58,6 @@ export default function WorkTaskTypeDtoDetails({
 }) {
   const { id, data } = node;
   const {
-    name,
     serviceCategoryKnowledgeDomainDescriptor,
     serviceCategoryKnowledgeLevelDescriptor,
     knowledgeDomainId,
@@ -74,7 +67,7 @@ export default function WorkTaskTypeDtoDetails({
   const { domainMap, levelMap } = useServiceCategoryContext();
   const editListenerKey = `${WorkTaskTypeDtoDetailsListenerKey}-${id}`;
 
-  const { incrementSimVersion, nodeListRef, linkListRef } =
+  const { incrementSimVersion, nodeListRef } =
     useDirectSimRefEditsDispatch<WorkTaskTypeDto>(editListenerKey);
 
   const handleKnowledgeDomainChange = (domainId: string) => {

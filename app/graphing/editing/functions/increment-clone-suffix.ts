@@ -1,7 +1,6 @@
 import { NameCharLimit } from '../../graph-types/organization/clone-organization-node';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
-import { produce } from 'immer';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 const CloneSuffixPattern = /\(\d+\)$/;
 

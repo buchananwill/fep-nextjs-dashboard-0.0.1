@@ -13,9 +13,9 @@ import {
   forceAttributesMax,
   forceAttributesMin
 } from './force-attributes-meta-data';
-import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
+
 import { ShowForceAdjustmentsKey } from '../graph/show-force-adjustments';
-import { ShowNodeEditingKey } from '../nodes/node-editor-disclosure';
+import { DisclosureThatGrowsOpen } from '../../generic/components/disclosures/disclosure-that-grows-open';
 
 export default function GraphForceAdjustment() {
   const { uniqueGraphName } = useContext(GraphContext);
@@ -28,11 +28,6 @@ export default function GraphForceAdjustment() {
 
   const { isTrue: show } = useSelectiveContextListenerBoolean(
     ShowForceAdjustmentsKey,
-    'graph-adjuster',
-    false
-  );
-  const { isTrue: showEditNodes } = useSelectiveContextListenerBoolean(
-    ShowNodeEditingKey,
     'graph-adjuster',
     false
   );

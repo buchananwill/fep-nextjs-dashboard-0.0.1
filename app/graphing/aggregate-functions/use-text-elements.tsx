@@ -5,8 +5,6 @@ import { useSelectiveContextListenerNumber } from '../../generic/components/sele
 import { GraphContext } from '../graph/graph-context-creator';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
-const log5 = Math.log(5);
-
 interface TextPosition {
   plate: { x: number; y: number };
   text: { x: number; y: number };

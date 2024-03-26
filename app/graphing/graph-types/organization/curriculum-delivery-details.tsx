@@ -1,19 +1,16 @@
 'use client';
 import { DataNode } from '../../../api/zod-mods';
-import React, { forwardRef, Fragment, PropsWithChildren } from 'react';
+import React, { forwardRef, Fragment } from 'react';
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import {
-  _internal_ComponentListboxOptions,
-  Listbox,
-  ListboxOptionsProps
-} from '@headlessui/react';
+import { Listbox } from '@headlessui/react';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
-import { RenameModal } from '../../../components/rename-modal/rename-modal';
+
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functions/use-sum-all-schemas-memo';
 import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
-import { GenericButtonProps } from '../../../components/buttons/rename-button';
+import { RenameModal } from '../../../generic/components/modals/rename-modal';
+import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
 
 export const LeftCol =
   'text-xs w-full text-center h-full flex items-center justify-center';

@@ -6,7 +6,6 @@ import {
   TooltipTrigger
 } from '../../generic/components/tooltips/tooltip';
 import { SelectiveContextDispatcherBoolean } from '../../generic/components/selective-context/selective-context-dispatcher-boolean';
-import { StandardTooltipContentOld } from '../../generic/components/tooltips/standard-tooltip-content-old';
 import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 
 export interface GraphToggleProps {

@@ -15,7 +15,7 @@ export function getModulusGridY<T extends HasNumberIdDto>(
   ) => number
 ) {
   return d3
-    .forceY((d: DataNode<T>, i) => {
+    .forceY((_d: DataNode<T>, i) => {
       if (i == undefined || isNaN(i)) return height / 2;
       else return (i * spacing) % height;
     })

@@ -18,23 +18,15 @@ import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
-import {
-  deleteLinks,
-  deleteNodes,
-  putOrganizationGraph
-} from '../../../api/actions/curriculum-delivery-model';
+import { putOrganizationGraph } from '../../../api/actions/curriculum-delivery-model';
 import { deDuplicateNames } from '../../editing/functions/increment-clone-suffix';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
+
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
-
-export interface GraphTypeProps<T extends HasNumberIdDto> {
-  graphData: GraphDto<T>;
-}
-
-const cloneFunctionWrapper = { function: cloneOrganizationNode };
+const cloneFunctionWrapper = { cachedFunction: cloneOrganizationNode };
 
 export function getGraphUpdaterWithNameDeDuplication<
   T extends HasNumberIdDto & HasNameDto
@@ -75,14 +67,14 @@ export default function CurriculumDeliveryGraph({
 }: PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();
 
-  const { bundleAssignmentsMap, dispatch } = useBundleAssignmentsContext();
+  const { dispatch } = useBundleAssignmentsContext();
 
   const bundlesInNodeOrder = nodes.map((node) => {
     const found = bundles.find((delivery) => delivery.partyId === node.id);
     if (found) return found;
   });
 
-  const { bundleAssignments, initialPayload } = useMemo(() => {
+  const { initialPayload } = useMemo(() => {
     return mapToPartyIdBundleIdRecords(bundles);
   }, [bundles]);
 
@@ -114,7 +106,7 @@ export default function CurriculumDeliveryGraph({
   );
 
   const nodeDetailElements: NodePayload<OrganizationDto>[] = nodes.map(
-    (node, index) => {
+    (node) => {
       return {
         node: node,
         payload: (

@@ -14,9 +14,6 @@ export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
   payload: React.JSX.Element;
 }
-
-const uniqueGraphName = 'party-dto-graph';
-
 export default function ForceGraphPage<T extends HasNumberIdDto>({
   dataGraph: graphDto,
   graphName,

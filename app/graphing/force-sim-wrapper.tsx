@@ -1,24 +1,13 @@
 'use client';
 
-import React, { ReactNode, useContext, useMemo, useRef, useState } from 'react';
-import { DataLink, DataNode } from '../api/zod-mods';
+import React, { ReactNode, useContext, useRef, useState } from 'react';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
-import {
-  GenericLinkRefContext,
-  useGenericLinkContext
-} from './links/generic-link-context-creator';
-import {
-  GenericNodeRefContext,
-  useGenericNodeContext
-} from './nodes/generic-node-context-creator';
-import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
-import {
-  useSelectiveContextDispatchNumber,
-  useSelectiveContextListenerNumber
-} from '../generic/components/selective-context/selective-context-manager-number';
+import { GenericLinkRefContext } from './links/generic-link-context-creator';
+import { GenericNodeRefContext } from './nodes/generic-node-context-creator';
+import { useSelectiveContextDispatchNumber } from '../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from './graph-types/organization/curriculum-delivery-graph';
 
-export default function ForceSimWrapper<T extends HasNumberIdDto>({
+export default function ForceSimWrapper({
   linkElements,
   nodeElements,
   textElements,

@@ -1,5 +1,5 @@
 'use client';
-import { TransitionWrapper } from '../../components/svg/transition-wrapper';
+
 import React, { ReactElement, useContext, useMemo } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
 import { DataNode } from '../../api/zod-mods';
@@ -8,13 +8,12 @@ import {
   useGenericNodeContext
 } from './generic-node-context-creator';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
-import {
-  LeftCtrlListener,
-  LeftShiftListener
-} from '../../components/key-listener-context/key-listener-context-creator';
+
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
+import { LeftCtrlListener } from '../../generic/components/key-listener-context/key-listener-context-creator';
+import { TransitionWrapper } from '../../generic/components/svg/transition-wrapper';
 
 export default function NodeText<T extends HasNumberIdDto>({
   textIndex,
@@ -23,7 +22,6 @@ export default function NodeText<T extends HasNumberIdDto>({
   textIndex: number;
   children?: ReactElement<SVGElement>;
 }) {
-  const shiftHeld = useContext(LeftShiftListener);
   const leftCtrlHeld = useContext(LeftCtrlListener);
   const { uniqueGraphName } = useGenericNodeContext<DataNode<T>>();
   const { nodeListRef } = useGenericGraphRefs();
@@ -31,7 +29,7 @@ export default function NodeText<T extends HasNumberIdDto>({
     () => `node-text-${textIndex}-${uniqueGraphName}`,
     [textIndex, uniqueGraphName]
   );
-  const { selected, hover, dispatch } = useNodeInteractionContext();
+  const { selected, hover } = useNodeInteractionContext();
 
   useSelectiveContextListenerNumber(NodePositionsKey, listenerKey, 0);
 
@@ -48,14 +46,7 @@ export default function NodeText<T extends HasNumberIdDto>({
   const updatedData = nodeListRef.current[textIndex];
 
   const { id } = updatedData;
-  const show = shiftHeld || hover === id || selected.includes(id);
-
-  function handleOnClick() {
-    if (!leftCtrlHeld) {
-      dispatch({ type: 'toggleSelect', payload: id });
-    }
-  }
-
+  const show = leftCtrlHeld || hover === id || selected.includes(id);
   return (
     <TransitionWrapper trigger={show}>
       {(style) => (
@@ -67,10 +58,6 @@ export default function NodeText<T extends HasNumberIdDto>({
             transitionProperty: 'opacity'
           }}
           transform={`translate(${updatedData.x}, ${updatedData.y})`}
-          // onMouseEnter={() => dispatch({ type: 'setHover', payload: id })}
-          // onMouseLeave={() => dispatch({ type: 'setHover', payload: null })}
-          // onClick={() => handleOnClick()}
-          // className={'select-none cursor-pointer'}
           pointerEvents="none"
         >
           <circle
@@ -79,7 +66,6 @@ export default function NodeText<T extends HasNumberIdDto>({
             r={20}
             strokeWidth={2}
             className={`fill-white stroke-emerald-200 opacity-50 `}
-            // fill={'white'}
           ></circle>
           <circle
             cx={0}
@@ -96,7 +82,7 @@ export default function NodeText<T extends HasNumberIdDto>({
 
           <g>
             {(hover === id ||
-              shiftHeld ||
+              leftCtrlHeld ||
               (selected.includes(id) && pinTextToSelected)) &&
               children &&
               children}

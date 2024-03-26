@@ -2,10 +2,7 @@
 import { DataLink, DataNode } from '../../api/zod-mods';
 import React from 'react';
 import { useGenericLinkContext } from './generic-link-context-creator';
-import {
-  useNodeInteractionContext,
-  useNodeSelectedListener
-} from '../nodes/node-interaction-context';
+import { useNodeSelectedListener } from '../nodes/node-interaction-context';
 import { BASE_HSL } from '../../generic/components/color/color-context';
 import * as d3 from 'd3';
 import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
@@ -26,7 +23,7 @@ export function LinkComponent<T extends HasNumberIdDto>({
 }) {
   const { uniqueGraphName } = useGenericLinkContext<T>();
   const { linkListRef } = useGenericGraphRefs();
-  const { selected } = useNodeInteractionContext();
+
   const listenerKey = `link-${linkData.closureType}-${linkData.id}`;
 
   useSelectiveContextListenerNumber(NodePositionsKey, listenerKey, 0);

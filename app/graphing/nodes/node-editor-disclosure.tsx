@@ -1,26 +1,22 @@
 'use client';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import {
-  AddNodesButton,
-  CloneFunction
-} from '../editing/buttons/add-nodes-button';
+import { AddNodesButton } from '../editing/buttons/add-nodes-button';
 import { DataNode } from '../../api/zod-mods';
-import { DisclosureThatGrowsOpen } from '../../components/disclosures/disclosure-that-grows-open';
+
 import AddLinksButton from '../editing/buttons/add-links-button';
 import { DeleteNodesButton } from '../editing/buttons/delete-nodes-button';
 import { DeleteLinksButton } from '../editing/buttons/delete-links-button';
 import React from 'react';
 import { useSelectiveContextListenerFunction } from '../../generic/components/selective-context/selective-context-manager-function';
-import { GenericFunction } from '../../generic/components/selective-context/selective-context-creator';
-import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 import InvertLinksButton from '../editing/buttons/invert-links-button';
+import { DisclosureThatGrowsOpen } from '../../generic/components/disclosures/disclosure-that-grows-open';
+import { CloneFunction } from '../editing/buttons/clone-function';
 
 export function FallBackCloneFunction<T extends HasNumberIdDto>(
   original: DataNode<T>
 ): DataNode<T> {
   const { data } = original;
   const clonedData = { ...data };
-  const clone = { ...original, data: clonedData };
   return { ...original, data: clonedData };
 }
 

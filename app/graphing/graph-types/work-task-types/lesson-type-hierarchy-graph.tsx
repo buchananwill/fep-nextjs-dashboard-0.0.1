@@ -9,8 +9,6 @@ import { getGraphUpdaterWithNameDeDuplication } from '../organization/curriculum
 import { putWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import { CloneFunctionWrapper } from './clone-work-task-type';
 import { NodePayload } from '../../force-graph-page';
-import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
-import CurriculumDeliveryDetails from '../organization/curriculum-delivery-details';
 import React from 'react';
 import WorkTaskTypeDtoDetails from './work-task-type-dto-details';
 import NodeDetails from '../../components/node-details';
@@ -39,7 +37,7 @@ export function LessonTypeHierarchyGraph() {
   );
 
   const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] =
-    nodesRef.current.map((node, index) => {
+    nodesRef.current.map((node) => {
       return {
         node: node,
         payload: (

@@ -1,12 +1,10 @@
 import { useGraphEditButtonHooks } from '../functions/use-graph-edit-button-hooks';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { GraphEditButton } from './graph-edit-button';
-import { channel } from 'node:diagnostics_channel';
-import { deleteLinks } from '../functions/graph-edits';
 import { DataLink, DataNode } from '../../../api/zod-mods';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { resetLinks } from './add-nodes-button';
 import { createLinks } from '../functions/create-links';
+
 const InvertLinksKey = 'invert-links';
 
 export default function InvertLinksButton<T extends HasNumberIdDto>({
@@ -35,9 +33,7 @@ export default function InvertLinksButton<T extends HasNumberIdDto>({
   // Only operates on links where both nodes are selected.
   const handleInvertLinks = () => {
     if (!checkForSelectedNodes(2)) return;
-    const nodesFilteredForSelection = nodeListRef.current.filter((n) =>
-      selected.includes(n.id)
-    );
+
     if (linkListRef.current.length == 0) return;
 
     const linksToKeep: DataLink<T>[] = [];

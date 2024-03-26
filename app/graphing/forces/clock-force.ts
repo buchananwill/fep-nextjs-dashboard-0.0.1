@@ -21,16 +21,16 @@ export function useClockForce<T extends HasNumberIdDto>(
     const anglePerChild = (Math.PI * 2) / firstChildren.length;
     const childClockPositions = firstChildren.map((childNode, index) => {
       const radius = 30;
-      const xCoord = width / 2 + radius * Math.cos(anglePerChild * index);
-      const yCoord = height / 2 + radius * Math.sin(anglePerChild * index);
+      const xCoordinate = width / 2 + radius * Math.cos(anglePerChild * index);
+      const yCoordinate = height / 2 + radius * Math.sin(anglePerChild * index);
       return {
         id: childNode.id,
-        x: xCoord,
-        y: yCoord
+        x: xCoordinate,
+        y: yCoordinate
       };
     });
 
-    const xForcePos = (nodeElement: SimulationNodeDatum, index: number) => {
+    const xForcePos = (nodeElement: SimulationNodeDatum) => {
       const completeNode = nodeElement as DataNode<T>;
       const find = childClockPositions.find(
         (child) => child.id == completeNode.id
@@ -38,7 +38,7 @@ export function useClockForce<T extends HasNumberIdDto>(
       return find?.x || 0;
     };
 
-    const yForcePos = (nodeElement: SimulationNodeDatum, index: number) => {
+    const yForcePos = (nodeElement: SimulationNodeDatum) => {
       const completeNode = nodeElement as DataNode<T>;
       const find = childClockPositions.find(
         (child) => child.id == completeNode.id
@@ -46,11 +46,7 @@ export function useClockForce<T extends HasNumberIdDto>(
       return find?.y || 0;
     };
 
-    const positionForceStrength = (
-      nodeElement: SimulationNodeDatum,
-      index: number,
-      data: SimulationNodeDatum[]
-    ) => {
+    const positionForceStrength = (nodeElement: SimulationNodeDatum) => {
       const completeNode = nodeElement as DataNode<T>;
       return childClockPositions.some((child) => child.id == completeNode.id)
         ? centreStrength

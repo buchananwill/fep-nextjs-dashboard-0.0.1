@@ -1,6 +1,5 @@
 'use client';
 import { GraphDto } from '../../api/zod-mods';
-import DraggableToTranslate from '../../components/draggable-to-translate/draggable-to-translate';
 
 import Graph from './graph';
 import React, { PropsWithChildren, useReducer, useState } from 'react';
@@ -8,14 +7,15 @@ import {
   ForceGraphDraggable,
   ForceGraphDraggableContext,
   ForceGraphDraggableDispatch,
-  ForceGraphMouseActionReducer,
   ForceGraphMouseButtonEventsContext,
   ForceGraphMouseButtonEventsDispatch
 } from '../force-graph-dnd/mouse-event-context-creator';
 import { useGraphEditRootContext } from '../editing/functions/use-graph-edit-root-context';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import DraggableToTranslate from '../../generic/components/draggable-to-translate/draggable-to-translate';
+import { ForceGraphMouseActionReducer } from '../force-graph-dnd/force-graph-mouse-action-reducer';
 
-export function GraphViewer<T extends HasNumberIdDto, U>({
+export function GraphViewer<T extends HasNumberIdDto>({
   textList,
   titleList,
   children

@@ -15,4 +15,4 @@ function cloneWorkTaskType(
   };
 }
 
-export const CloneFunctionWrapper = { function: cloneWorkTaskType };
+export const CloneFunctionWrapper = { cachedFunction: cloneWorkTaskType };

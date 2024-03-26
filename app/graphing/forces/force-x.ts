@@ -2,9 +2,7 @@ import * as D3 from 'd3';
 import * as d3 from 'd3';
 import { Simulation } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
-import { negativeLogTen } from './math-functions';
 import { updateForce } from './force-link';
-import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getGridX(
@@ -12,7 +10,7 @@ export function getGridX(
   spacing: number = 30,
   strength: number
 ) {
-  return D3.forceX((d, index) => {
+  return D3.forceX((_d, index) => {
     if (index == undefined || isNaN(index)) return width / 2;
     else return index * spacing;
   }).strength(strength);
@@ -40,7 +38,7 @@ export function getHorizontalParentsToChildrenLayout<T extends HasNumberIdDto>(
   const spacing = width / (rootDistances.size + 1);
   const distancesInOrder: number[] = [...rootDistances.values()];
   distancesInOrder.sort((a, b) => a - b);
-  return D3.forceX((d, index) => {
+  return D3.forceX((d) => {
     return (
       distancesInOrder.indexOf((d as DataNode<T>).distanceFromRoot) * spacing
     );

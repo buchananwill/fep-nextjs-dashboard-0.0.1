@@ -2,17 +2,13 @@ import {
   useGenericGraphRefs,
   useGenericNodeContext
 } from '../../nodes/generic-node-context-creator';
-import {
-  getNodeId,
-  useNodeInteractionContext
-} from '../../nodes/node-interaction-context';
+import { useNodeInteractionContext } from '../../nodes/node-interaction-context';
 import { useContext, useMemo, useState } from 'react';
 import {
-  useGraphSelectiveContextDispatch,
-  useGraphSelectiveContextNumberDispatch,
-  useGraphSelectiveContextKey,
   GraphContext,
-  useGraphName
+  useGraphSelectiveContextDispatch,
+  useGraphSelectiveContextKey,
+  useGraphSelectiveContextNumberDispatch
 } from '../../graph/graph-context-creator';
 import {
   useSelectiveContextControllerNumber,
@@ -23,11 +19,11 @@ import { TransientIdOffset } from './graph-edits';
 import { useSelectiveContextKeyMemo } from '../../../generic/hooks/selective-context/use-selective-context-listener';
 import { useSelectiveContextDispatchBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
 import { UnsavedNodeDataContextKey } from '../../graph-types/organization/curriculum-delivery-graph';
-import { CurriculumDetailsListenerKey } from '../../graph-types/organization/curriculum-delivery-details';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericLinkContext } from '../../links/generic-link-context-creator';
 import { DataLink, DataNode } from '../../../api/zod-mods';
-import { resetLinks } from '../buttons/add-nodes-button';
+
+import { resetLinks } from '../buttons/reset-links';
 
 export function useGraphVersionKeys<T extends HasNumberIdDto>(
   listenerKey: string
@@ -75,14 +71,12 @@ export function useDirectSimRefEditsDispatch<T extends HasNumberIdDto>(
     uniqueGraphName
   );
 
-  const {
-    currentState: unsavedGraph,
-    dispatchWithoutControl: dispatchUnsavedGraph
-  } = useSelectiveContextDispatchBoolean(
-    unsavedGraphContextKey,
-    buttonListenerKey,
-    false
-  );
+  const { dispatchWithoutControl: dispatchUnsavedGraph } =
+    useSelectiveContextDispatchBoolean(
+      unsavedGraphContextKey,
+      buttonListenerKey,
+      false
+    );
 
   const { currentState: simVersion, dispatchWithoutControl } =
     useSelectiveContextDispatchNumber({
@@ -118,7 +112,6 @@ export function useGraphEditButtonHooks<T extends HasNumberIdDto>(
   buttonListenerKey: string
 ) {
   const { selected } = useNodeInteractionContext();
-  const graphName = useGraphName();
 
   const { incrementSimVersion, nodeListRef, linkListRef } =
     useDirectSimRefEditsDispatch<T>(buttonListenerKey);

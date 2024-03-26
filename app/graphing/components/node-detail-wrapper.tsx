@@ -1,5 +1,5 @@
 'use client';
-import React, { PropsWithChildren, useContext } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DataNode } from '../../api/zod-mods';
@@ -17,7 +17,7 @@ export function NodeDetailWrapper<T extends HasNumberIdDto>({
   children,
   node
 }: { label: string; node: DataNode<T> } & PropsWithChildren) {
-  const { dispatch, hover, selected } = useNodeInteractionContext();
+  const { dispatch } = useNodeInteractionContext();
   const isSelected = useNodeSelectedListener(node.id);
 
   const handleDispatch = () => {

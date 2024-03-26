@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 import { Simulation, SimulationNodeDatum } from 'd3';
 import { DataLink, DataNode } from '../../api/zod-mods';
 import { updateForce } from './force-link';
-import { useNormalizeForceRange } from '../components/force-attributes-meta-data';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 
 export function getForceManyBody(
