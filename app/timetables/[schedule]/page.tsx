@@ -1,19 +1,11 @@
 import React from 'react';
-
-import BigTableCard from '../../components/tables/big-table-card';
-import DynamicDimensionTimetable, {
-  HeaderTransformer
-} from '../../components/tables/dynamic-dimension-timetable';
 import { PeriodCardTransformer } from '../period-card';
-
 import TimetablesContextProvider from '../timetables-context-provider';
 import { FilteredLessonCycles } from '../filtered-lesson-cycles';
-
 import { buildTimetablesState } from '../build-timetables-state';
 import PendingScheduleEditionModal from '../pending-schedule-edit-modal';
 import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
-import DropdownParam from '../../components/dropdown/dropdown-param';
 import Link from 'next/link';
 import { PeriodDTO } from '../../api/dtos/PeriodDTOSchema';
 import { fetchAllPeriodsInCycle } from '../../api/actions/cycle-model';
@@ -21,17 +13,26 @@ import {
   fetchAllLessonCycles,
   fetchScheduleIds
 } from '../../api/actions/timetables';
+import { isNotUndefined } from '../../api/main';
+import { DataNotFoundCard } from '../students/[schedule]/page';
+import DropdownParam from '../../generic/components/dropdown/dropdown-param';
+import BigTableCard from '../../generic/components/tables/big-table-card';
+import DynamicDimensionTimetable, {
+  HeaderTransformer
+} from '../../generic/components/tables/dynamic-dimension-timetable';
 
 export const dynamic = 'force-dynamic';
 
 export default async function TimetablesPage({
   params: { schedule },
-  searchParams
+  searchParams: { q }
 }: {
   params: { schedule: string };
   searchParams: { q: string };
 }) {
-  const allPeriodsInCycle = await fetchAllPeriodsInCycle();
+  const { data: allPeriodsInCycle } = await fetchAllPeriodsInCycle();
+  if (!isNotUndefined(allPeriodsInCycle))
+    return <DataNotFoundCard>No periods found.</DataNotFoundCard>;
 
   allPeriodsInCycle.headerData = allPeriodsInCycle.headerData.map(
     (label) =>
@@ -45,10 +46,14 @@ export default async function TimetablesPage({
     return <Text>No schedules found.</Text>;
   }
 
-  const scheduleIds = await fetchScheduleIds();
+  const { data: scheduleIds } = await fetchScheduleIds();
+  if (!isNotUndefined(scheduleIds))
+    return <DataNotFoundCard>Schedules not found.</DataNotFoundCard>;
   const filteredIds = scheduleIds.map((value) => value.toString());
 
-  const allLessonCycles = await fetchAllLessonCycles(scheduleId);
+  const { data: allLessonCycles } = await fetchAllLessonCycles(scheduleId);
+  if (!isNotUndefined(allLessonCycles))
+    return <DataNotFoundCard>Lesson Cycles not found.</DataNotFoundCard>;
 
   const { initialState, lessonCycleArray } = buildTimetablesState(
     allPeriodsInCycle,
@@ -61,7 +66,7 @@ export default async function TimetablesPage({
       <div className="flex w-full items-baseline grow-0 mb-2">
         <Title>Schedule Version Id: {scheduleId}</Title>
         <Text className="mx-2">Schedule Layout</Text>
-        <DropdownParam paramOptions={filteredIds} />
+        <DropdownParam paramOptions={filteredIds} currentSelection={q} />
       </div>
       <SubjectFilters lessonCycleList={lessonCycleArray}></SubjectFilters>
       <div className="flex w-full items-top justify-between pt-4  select-none">

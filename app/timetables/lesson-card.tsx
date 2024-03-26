@@ -1,10 +1,8 @@
 'use client';
 import { LessonEnrollmentDTO } from '../api/dto-interfaces';
-
 import React, { useContext, useEffect, useState } from 'react';
 import { TimetablesContext } from './timetables-context';
 import { useSearchParams } from 'next/navigation';
-
 import { Text } from '@tremor/react';
 import {
   ModalColorSelectContext,
@@ -12,18 +10,11 @@ import {
   ColorCodingDispatch
 } from '../contexts/color/subject-color-coding-context';
 import { produce } from 'immer';
-
 import { PeriodDTO } from '../api/dtos/PeriodDTOSchema';
 import { CellDataTransformer } from '../generic/components/tables/dynamic-dimension-timetable';
 import { defaultColorState } from '../generic/components/color/color-context';
 import InteractiveTableCard from '../generic/components/tables/interactive-table-card';
 
-const freePeriod: LessonEnrollmentDTO = {
-  id: NaN,
-  periodId: NaN,
-  lessonCycleId: '',
-  userRoleId: NaN
-};
 export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
   data
 }) => {
@@ -101,4 +92,11 @@ export const LessonCardTransformer: CellDataTransformer<PeriodDTO> = ({
       </InteractiveTableCard>
     </>
   );
+};
+
+const freePeriod: LessonEnrollmentDTO = {
+  id: NaN,
+  periodId: NaN,
+  lessonCycleId: '',
+  userRoleId: NaN
 };

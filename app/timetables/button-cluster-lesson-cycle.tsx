@@ -1,16 +1,17 @@
 'use client';
 import React, { useContext } from 'react';
 
-import { ButtonClusterTransformer } from '../components/disclosure-list/disclosure-list-panel';
 import { LessonCycle } from '../api/state-types';
-import {
-  FillableButton,
-  PinIcons
-} from '../components/buttons/fillable-button';
+
 import {
   TimetablesContext,
   TimetablesDispatchContext
 } from './timetables-context';
+import { ButtonClusterTransformer } from '../generic/components/disclosure-list/disclosure-list-panel';
+import {
+  FillableButton,
+  PinIcons
+} from '../generic/components/buttons/fillable-button';
 
 const ButtonClusterLessonCycle: ButtonClusterTransformer<LessonCycle> = ({
   children,

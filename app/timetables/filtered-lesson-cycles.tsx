@@ -1,20 +1,20 @@
 'use client';
 import { LessonCycle } from '../api/state-types';
-import RightHandToolCard from '../components/tool-card/right-hand-tool-card';
-import DisclosureListPanel from '../components/disclosure-list/disclosure-list-panel';
+
 import { DisclosureButtonLessonCycle } from './disclosure-button-lesson-cycle';
 import ButtonClusterLessonCycle from './button-cluster-lesson-cycle';
 import { PanelTransformerConcrete } from './panel-transformer-lesson-cycle';
 import React, { useContext } from 'react';
 import { TimetablesContext } from './timetables-context';
+import RightHandToolCard from '../generic/components/tool-card/right-hand-tool-card';
+import DisclosureListPanel from '../generic/components/disclosure-list/disclosure-list-panel';
 
 function filterLessonCycles(
   data: LessonCycle[],
   pinnedLessonCycles: Set<string>,
   focusPeriodId: number,
   periodIdToLessonCycleMap: Map<number, Set<string>>,
-  cycleDayFocusId: number,
-  lessonCycleMap: Map<string, LessonCycle>
+  cycleDayFocusId: number
 ) {
   const setFromMap = periodIdToLessonCycleMap.get(focusPeriodId);
 
@@ -24,9 +24,6 @@ function filterLessonCycles(
     cycleDayFocusId < 0
   )
     return [];
-
-  const filteredLessonCycles: LessonCycle[] = [];
-
   const cyclesToAdd = new Set<string>();
 
   pinnedLessonCycles.forEach((cycleId) => cyclesToAdd.add(cycleId));
@@ -38,12 +35,10 @@ function filterLessonCycles(
 
 export function FilteredLessonCycles({ data }: { data: LessonCycle[] }) {
   const {
-    filterPending,
     pinnedLessonCycles,
     focusPeriodId,
     periodIdToLessonCycleMap,
-    cycleDayFocusId,
-    lessonCycleMap
+    cycleDayFocusId
   } = useContext(TimetablesContext);
 
   const filteredLessonCycles = filterLessonCycles(
@@ -51,8 +46,7 @@ export function FilteredLessonCycles({ data }: { data: LessonCycle[] }) {
     pinnedLessonCycles,
     focusPeriodId,
     periodIdToLessonCycleMap,
-    cycleDayFocusId,
-    lessonCycleMap
+    cycleDayFocusId
   );
 
   return (

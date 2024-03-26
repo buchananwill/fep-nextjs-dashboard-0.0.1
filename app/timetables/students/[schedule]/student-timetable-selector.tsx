@@ -1,6 +1,5 @@
 'use client';
-
-import { useContext, useEffect, useState, useTransition } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   TimetablesContext,
   TimetablesDispatchContext
@@ -20,7 +19,6 @@ export function StudentTimetableSelector({
     useContext(TimetablesContext);
   const dispatch = useContext(TimetablesDispatchContext);
   const [listSelection, setListSelection] = useState(noSelection);
-  const [pending, startTransition] = useTransition();
 
   const updateStudentTimetable = async (value: NameIdStringTuple) => {
     const numberId = parseInt(value.id);
@@ -49,9 +47,6 @@ export function StudentTimetableSelector({
       noSelection;
     setListSelection(find);
   }, [listSelection, studentId, setListSelection, selectionList]);
-
-  const selectionDescriptor = 'Student: ';
-
   return (
     <StringTupleSelector
       selectedState={listSelection}

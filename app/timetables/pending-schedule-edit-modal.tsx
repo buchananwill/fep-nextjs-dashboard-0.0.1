@@ -1,6 +1,6 @@
 'use client';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext } from 'react';
 import { TimetablesContext } from './timetables-context';
 
 export default function PendingScheduleEditModal() {

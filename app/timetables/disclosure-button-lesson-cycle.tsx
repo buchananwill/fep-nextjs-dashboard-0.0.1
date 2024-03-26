@@ -1,9 +1,8 @@
 'use client';
-import { ButtonClusterTransformer } from '../components/disclosure-list/disclosure-list-panel';
+
 import { LessonCycle } from '../api/state-types';
-import { Disclosure } from '@headlessui/react';
 import React from 'react';
-import { Text } from '@tremor/react';
+import { ButtonClusterTransformer } from '../generic/components/disclosure-list/disclosure-list-panel';
 
 export const DisclosureButtonLessonCycle: ButtonClusterTransformer<
   LessonCycle
