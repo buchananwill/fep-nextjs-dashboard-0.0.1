@@ -1,10 +1,7 @@
 'use client';
 import { useMemo } from 'react';
-
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
-
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
 import { AssetSuitabilityEditContext } from '../../generic/components/modals/rating-edit-context';
 import {
@@ -20,7 +17,7 @@ import DisclosureListPanel, {
 } from '../../generic/components/disclosure-list/disclosure-list-panel';
 import ListItemSelector from '../../generic/components/disclosure-list/list-item-selector';
 
-export function ClassroomDisclosureListPanel() {
+export function AssetDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
 
   const assetDtoList = useMemo(() => {
@@ -31,25 +28,22 @@ export function ClassroomDisclosureListPanel() {
 
   return (
     <DisclosureListPanel
-      panelTransformer={ClassroomPanelTransformer}
-      disclosureLabelTransformer={ClassroomLabelTransformer}
-      buttonCluster={buttonClusterTransformer}
+      panelTransformer={AssetPanelTransformer}
+      disclosureLabelTransformer={AssetLabelTransformer}
+      buttonCluster={AssetButtonClusterTransformer}
       data={assetDtoList}
     />
   );
 }
 
-const ClassroomPanelTransformer: PanelTransformer<AssetDto> = ({
-  data,
-  children,
-  className
+const AssetPanelTransformer: PanelTransformer<AssetDto> = ({
+  data
 }: TransformerProps<AssetDto>) => {
-  const { name } = data;
-
+  const { id, assetRoleWorkTaskSuitabilities } = data;
   const { currentState: suitabilityList } = useAssetSuitabilityListListener({
-    contextKey: `${data.id}`,
+    contextKey: `${id}`,
     listenerKey: 'classroom-panel',
-    initialValue: data.assetRoleWorkTaskSuitabilities
+    initialValue: assetRoleWorkTaskSuitabilities
   });
 
   return (
@@ -61,10 +55,10 @@ const ClassroomPanelTransformer: PanelTransformer<AssetDto> = ({
   );
 };
 
-const ClassroomLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
+const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
-  const { currentState: suitabilityList } = useAssetSuitabilityListController({
+  const {} = useAssetSuitabilityListController({
     contextKey: `${data.id}`,
     listenerKey: 'classroom-label',
     initialValue: data.assetRoleWorkTaskSuitabilities
@@ -73,7 +67,7 @@ const ClassroomLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
   return <>{data.name}</>;
 };
 
-const buttonClusterTransformer: ButtonClusterTransformer<AssetDto> = ({
+const AssetButtonClusterTransformer: ButtonClusterTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
   return (

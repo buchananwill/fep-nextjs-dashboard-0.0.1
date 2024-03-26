@@ -1,11 +1,11 @@
 import {
   AccessorFunction,
   RatingListAccessor
-} from '../../staffroom/teachers/rating-table';
-import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
+} from '../../../../staffroom/teachers/rating-table';
+import { NameAccessor } from '../../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { Context } from 'react';
-import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
-import { RatingTableRatings } from '../../staffroom/teachers/rating-table-ratings';
+import { RatingEditContext } from '../../modals/rating-edit-context';
+import { RatingTableRatings } from '../../../../staffroom/teachers/rating-table-ratings';
 
 export function RatingTableBody<R, E>({
   elementsWithRatings,

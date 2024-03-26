@@ -14,7 +14,7 @@ import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/co
 import { convertListToStringMap } from '../../curriculum/delivery-models/contexts/convert-list-to-string-map';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
 
-import { ClassroomDisclosureListPanel } from './classroom-disclosure-list-panel';
+import { AssetDisclosureListPanel } from './asset-disclosure-list-panel';
 import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-context-provider';
 import ToolCardContextProvider from '../../generic/components/tool-card/tool-card-context-provider';
 import ToolCard from '../../generic/components/tool-card/tool-card';
@@ -45,7 +45,7 @@ export default async function Page({
   if (workTaskTypeDtos === undefined) {
     return <DataNotFoundCard>No lesson types found</DataNotFoundCard>;
   }
-  const assetDtos = actionResponse.data.nodes
+  const assetDtoList = actionResponse.data.nodes
     .map((dn) => dn.data)
     .map((asset) => {
       const sortedSuitabilities = asset.assetRoleWorkTaskSuitabilities.sort(
@@ -55,7 +55,7 @@ export default async function Page({
       return { ...asset, assetRoleWorkTaskSuitabilities: sortedSuitabilities };
     });
 
-  const assetStringMap = await convertListToStringMap(assetDtos, (asset) =>
+  const assetStringMap = await convertListToStringMap(assetDtoList, (asset) =>
     asset.id.toString()
   );
   const wttStringMap = await convertListToStringMap(
@@ -74,7 +74,7 @@ export default async function Page({
               <ToolCard>
                 <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
                 <ToolCard.LowerFiveSixths>
-                  <ClassroomDisclosureListPanel />
+                  <AssetDisclosureListPanel />
                 </ToolCard.LowerFiveSixths>
               </ToolCard>
             </ToolCardContextProvider>

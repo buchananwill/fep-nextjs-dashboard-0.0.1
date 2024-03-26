@@ -1,19 +1,12 @@
 import {
-  RatingValueAccessor,
   RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
-  RatingListAccessor
+  RatingListAccessor,
+  RatingValueAccessor
 } from '../../staffroom/teachers/rating-table';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { NameAccessor } from '../../curriculum/delivery-models/add-new-curriculum-model-card';
 import { AssetRoleWorkTaskSuitabilityDto } from '../../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
-import {
-  providerRoleNameAccessor,
-  workTaskCompetencyDtoListAccessor,
-  workTaskCompetencyIdAccessor,
-  workTaskCompetencyLabelAccessor,
-  workTaskCompetencyRatingAccessor
-} from '../../staffroom/teachers/skills/rating-table-accessor-functions';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { HasUuidDto } from '../../api/dtos/HasUuidDtoSchema';
 

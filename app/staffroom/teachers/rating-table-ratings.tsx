@@ -3,7 +3,7 @@
 import { RatingTableCell } from './rating-table-cell';
 import { Context, useContext } from 'react';
 import { RatingEditContext } from '../../generic/components/modals/rating-edit-context';
-import { EmptyNumberIdArray } from '../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import { EmptyArray } from '../../api/main';
 
 export function RatingTableRatings<R, E>({
   ratedElement,
@@ -22,7 +22,7 @@ export function RatingTableRatings<R, E>({
   const { currentState } = useRatingListDispatchHook(
     listKey,
     listenerKey,
-    EmptyNumberIdArray as R[]
+    EmptyArray as R[]
   );
 
   return (

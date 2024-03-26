@@ -9,33 +9,17 @@ import {
 } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { useSelectiveContextControllerNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
-import { StringMap } from '../../curriculum/delivery-models/contexts/string-map-context-creator';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { Card } from '@tremor/react';
-import { isNotNull } from '../../api/main';
-import { RatingTableBody } from './rating-table-body';
+import { RatingTableBody } from '../../generic/components/tables/rating/rating-table-body';
 import {
   SelectiveContext,
   useSelectiveContextListenerReadAll
 } from '../../generic/components/selective-context/generic-selective-context-creator';
 import { AssetSuitabilityListSelectiveContext } from '../../contexts/selective-context/selective-context-creators';
-import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-
-export const EmptyNumberIdArray: number[] = [];
-export const StaticNumberIdArray: number[] = [20];
-
-export function useMemoizedSelectionFromListAndStringMap<T>(
-  selectedList: number[],
-  ratedElements: StringMap<T>
-) {
-  return useMemo(() => {
-    return selectedList
-      .map((id) => ratedElements[id.toString()])
-      .filter(isNotNull<T>);
-  }, [selectedList, ratedElements]);
-}
-
+import { useMemoizedSelectionFromListAndStringMap } from './use-memoized-selection-from-list-and-string-map';
+import { EmptyArray } from '../../api/main';
 const assetSuitabilityTableWrapperListenerKey =
   'asset-suitability-table-wrapper';
 
@@ -63,7 +47,7 @@ export function AssetSuitabilityTableWrapper() {
     useSelectiveContextControllerNumberList({
       contextKey: AssetSelectionListContextKey,
       listenerKey: assetSuitabilityTableWrapperListenerKey,
-      initialValue: EmptyNumberIdArray
+      initialValue: EmptyArray
     });
   const selectiveContextListAccessor = useSelectiveContextRatingListAccessor(
     AssetSuitabilityListSelectiveContext,
@@ -74,7 +58,7 @@ export function AssetSuitabilityTableWrapper() {
     useSelectiveContextControllerNumberList({
       contextKey: workTaskTypeSelectionListContextKey,
       listenerKey: assetSuitabilityTableWrapperListenerKey,
-      initialValue: StaticNumberIdArray
+      initialValue: EmptyArray
     });
   const assetDtos = useMemoizedSelectionFromListAndStringMap(
     selectedAssetList,

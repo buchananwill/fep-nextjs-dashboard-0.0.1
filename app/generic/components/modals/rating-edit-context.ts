@@ -9,12 +9,12 @@ import {
   RatingAccessorProps,
   RatingListAccessor
 } from '../../../staffroom/teachers/rating-table';
-import { EmptyNumberIdArray } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import {
   MockReturn,
   UseSelectiveContextDispatch
 } from '../../hooks/selective-context/use-selective-context-listener';
 import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
+import { EmptyArray } from '../../../api/main';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
   elementLabelAccessor: NameAccessor<E>;
@@ -29,7 +29,7 @@ const defaultContext: RatingEditContext<any, any> = {
   ratingValueAccessor: () => NaN,
   ratingCategoryLabelAccessor: () => '',
   ratingCategoryIdAccessor: () => NaN,
-  ratingListAccessor: () => EmptyNumberIdArray,
+  ratingListAccessor: () => EmptyArray,
   elementLabelAccessor: () => '',
   elementIdAccessor: () => NaN,
   useRatingListDispatchHook: () => MockReturn

@@ -1,7 +1,7 @@
 'use client';
 import { RatingEditModal } from '../generic/components/modals/rating-edit-modal';
 import { AssetSuitabilityEditContext } from '../generic/components/modals/rating-edit-context';
-import { PropsWithChildren, ReactNode, useCallback } from 'react';
+import { PropsWithChildren } from 'react';
 import {
   assetRoleWorkTaskSuitabilityIdAccessor,
   AssetSuitabilityAccessorFunctions,
@@ -30,6 +30,7 @@ const suitabilityListSetter = (
     draft.assetRoleWorkTaskSuitabilities = list;
   });
 };
+export const UnsavedAssetChangesListenerKey = 'asset-suitability-edit-context';
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
@@ -45,7 +46,7 @@ export default function AssetSuitabilityEditContextProvider({
     suitabilityListSetter,
     IdStringFromNumberAccessor,
     UnsavedAssetChanges,
-    'asset-suitability-edit-context'
+    UnsavedAssetChangesListenerKey
   );
 
   console.log('rendering edit context');

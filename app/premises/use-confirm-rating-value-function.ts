@@ -1,18 +1,14 @@
 import {
   AccessorFunction,
-  RatingCategoryIdAccessor,
-  RatingListAccessor
+  RatingCategoryIdAccessor
 } from '../staffroom/teachers/rating-table';
 import { useSelectiveContextDispatchBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
-import { Dispatch, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useSelectiveContextDispatchStringList } from '../generic/components/selective-context/selective-context-manager-string-list';
 import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
-import { UpdateAction } from '../generic/components/selective-context/selective-context-manager';
 import { UseSelectiveContextDispatch } from '../generic/hooks/selective-context/use-selective-context-listener';
 import { SelectiveContextReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
-import { isNotUndefined } from '../api/main';
-
-const emptyArray: any[] = [];
+import { EmptyArray, isNotUndefined } from '../api/main';
 
 export interface ConfirmRatingValue<R, E> {
   (rating: R, elementWithRatings: E, updatedValue: number): void;
@@ -41,7 +37,7 @@ export function useConfirmRatingValueFunction<R, E>(
       initialValue: EmptyIdArray
     });
 
-  const { dispatch } = useSelectiveDispatchHook('', '', emptyArray as R[]);
+  const { dispatch } = useSelectiveDispatchHook('', '', EmptyArray as R[]);
 
   return useCallback(
     (rating: R, elementWithRatings: E, updatedValue: number) => {

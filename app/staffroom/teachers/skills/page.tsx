@@ -4,15 +4,13 @@ import { useContext, useMemo } from 'react';
 import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provider-role-selection-context';
 import { SkillEditContext } from '../../../generic/components/modals/rating-edit-context';
 import { SkillEditAccessorFunctions } from './rating-table-accessor-functions';
-import { RatingTableBody } from '../../../premises/classroom-suitability/rating-table-body';
+import { RatingTableBody } from '../../../generic/components/tables/rating/rating-table-body';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
-import {
-  useMemoizedSelectionFromListAndStringMap,
-  useSelectiveContextRatingListAccessor
-} from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
+import { useSelectiveContextRatingListAccessor } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
+import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/use-memoized-selection-from-list-and-string-map';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
