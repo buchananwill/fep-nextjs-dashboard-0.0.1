@@ -1,14 +1,12 @@
 import { Button, Card, Text, Title } from '@tremor/react';
 import { BuildMetricsChart } from './buildMetricsChart';
 import MetricsContextProvider from './metrics-context-provider';
-import DropdownParam from '../../components/dropdown/dropdown-param';
+
 import React from 'react';
 import Link from 'next/link';
-import { BuildMetricDto } from '../../api/dtos/BuildMetricDtoSchema';
 import { fetchScheduleIds } from '../../api/actions/timetables';
 import { fetchBuildMetricDto } from '../../api/actions/build-metrics';
-import { ActionResponsePromise } from '../../api/actions/actionResponse';
-import { useDirectSimRefEditsController } from '../../graphing/editing/functions/use-graph-edit-button-hooks';
+import DropdownParam from '../../generic/components/dropdown/dropdown-param';
 
 export default async function BuildMetricsOverview({
   params: { schedule }

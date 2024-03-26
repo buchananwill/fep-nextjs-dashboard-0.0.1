@@ -1,5 +1,5 @@
 'use client';
-import { ComponentType, useContext } from 'react';
+import { useContext } from 'react';
 
 import { MetricsContext } from './metrics-context';
 
