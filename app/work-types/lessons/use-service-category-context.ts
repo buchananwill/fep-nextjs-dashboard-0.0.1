@@ -1,8 +1,4 @@
-import { createContext, useContext } from 'react';
-import {
-  StringMap,
-  StringMapDispatch
-} from '../../contexts/string-map-context/string-map-reducer';
+import { useContext } from 'react';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';

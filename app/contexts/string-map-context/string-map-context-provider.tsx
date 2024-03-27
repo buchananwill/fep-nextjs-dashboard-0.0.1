@@ -1,33 +1,12 @@
 'use client';
 import {
-  MapDispatch,
-  MapDispatchBatch,
   StringMap,
   StringMapDispatch,
   StringMapReducer
 } from './string-map-reducer';
-import React, {
-  Context,
-  Dispatch,
-  MutableRefObject,
-  PropsWithChildren,
-  useEffect,
-  useReducer,
-  useRef
-} from 'react';
-import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
-
-import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
-import { ActionResponsePromise } from '../../api/actions/actionResponse';
+import React, { Context, PropsWithChildren, useReducer, useRef } from 'react';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
-import { useSelectiveContextControllerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
-import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
-
-import { isNotUndefined } from '../../api/main';
-import { useModal } from '../../generic/components/modals/confirm-action-modal';
-import { UnsavedChangesModal } from '../../generic/components/modals/unsaved-changes-modal';
 import { useSyncStringMapToProps } from './use-sync-string-map-to-props';
-import { IdStringFromNumberAccessor } from '../../premises/classroom-suitability/rating-table-accessor-functions';
 
 export interface StringMapContextProviderProps<T> {
   initialEntityMap: StringMap<T>;

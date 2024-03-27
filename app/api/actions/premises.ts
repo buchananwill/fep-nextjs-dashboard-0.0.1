@@ -7,9 +7,8 @@ import {
 import { ActionResponsePromise } from './actionResponse';
 import { GraphDto } from '../zod-mods';
 import { AssetDto } from '../dtos/AssetDtoSchema';
-import { API_BASE_URL, IntersectionRequestParams } from '../main';
+import { API_BASE_URL } from '../main';
 import { AssetRoleWorkTaskSuitabilityDto } from '../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
-import * as url from 'url';
 
 const premisesUrl = `${API_BASE_URL}/assets/premises`;
 

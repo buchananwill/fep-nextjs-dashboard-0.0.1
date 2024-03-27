@@ -19,7 +19,6 @@ import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-conte
 import ToolCardContextProvider from '../../generic/components/tool-card/tool-card-context-provider';
 import ToolCard from '../../generic/components/tool-card/tool-card';
 import AssetRoleSuitabilityStringMapContextProvider from '../asset-role-suitability-string-map-context-provider';
-import { ObjectPlaceholder } from '../../generic/components/selective-context/selective-context-manager-function';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { parseTen } from '../../api/date-and-time';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/data-not-found-card';
