@@ -57,9 +57,6 @@ export function NodeComponent({
     }
   }
 
-  if (nodeIndex === 0 || nodeIndex === 1) {
-  }
-
   return (
     <g
       transform={`translate(${finalX}, ${finalY})`}

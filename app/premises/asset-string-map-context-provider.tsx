@@ -1,5 +1,5 @@
 'use client';
-import { StringMapEditContextProvider } from '../contexts/string-map-context/string-map-edit-context-provider';
+import { WriteableStringMapContextProvider } from '../contexts/string-map-context/writeable-string-map-context-provider';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import {
   AssetChangesProviderListener,
@@ -13,7 +13,7 @@ import { patchPremises } from '../api/actions/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
 
-const Provider = StringMapEditContextProvider<AssetDto>;
+const Provider = WriteableStringMapContextProvider<AssetDto>;
 export default function AssetStringMapContextProvider({
   assetStringMap,
   children

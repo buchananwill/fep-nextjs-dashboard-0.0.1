@@ -4,13 +4,7 @@ import {
   StringMapDispatch,
   StringMapReducer
 } from './string-map-reducer';
-import React, {
-  Context,
-  PropsWithChildren,
-  useEffect,
-  useReducer,
-  useRef
-} from 'react';
+import React, { Context, PropsWithChildren, useReducer, useRef } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
@@ -22,8 +16,9 @@ import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curricul
 import { isNotUndefined } from '../../api/main';
 import { useModal } from '../../generic/components/modals/confirm-action-modal';
 import { UnsavedChangesModal } from '../../generic/components/modals/unsaved-changes-modal';
+import { useSyncStringMapToProps } from './use-sync-string-map-to-props';
 
-export interface StringMapEditContextProviderProps<T> {
+export interface WriteableStringMapContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
   unsavedChangesEntityKey: string;
   providerListenerKey: string;
@@ -33,7 +28,7 @@ export interface StringMapEditContextProviderProps<T> {
   mapKeyAccessor: AccessorFunction<T, string>;
 }
 
-export function StringMapEditContextProvider<T>({
+export function WriteableStringMapContextProvider<T>({
   initialEntityMap,
   commitServerAction,
   unsavedChangesEntityKey,
@@ -42,7 +37,7 @@ export function StringMapEditContextProvider<T>({
   providerListenerKey,
   children,
   mapKeyAccessor
-}: StringMapEditContextProviderProps<T> & PropsWithChildren) {
+}: WriteableStringMapContextProviderProps<T> & PropsWithChildren) {
   const DispatchProvider = dispatchContext.Provider;
   const MapProvider = mapContext.Provider;
   const EntityReducer = StringMapReducer<T>;
@@ -62,23 +57,15 @@ export function StringMapEditContextProvider<T>({
     EmptyIdArray
   );
 
-  const { isOpen, closeModal, openModal } = useModal();
+  useSyncStringMapToProps(
+    initialEntityMap,
+    initialMapRef,
+    dispatch,
+    currentModels,
+    mapKeyAccessor
+  );
 
-  useEffect(() => {
-    if (initialMapRef.current !== initialEntityMap) {
-      const payloadArray = getPayloadArray(
-        Object.values(currentModels),
-        mapKeyAccessor
-      );
-      dispatch({ type: 'deleteAll', payload: payloadArray });
-      const replacementMap = getPayloadArray(
-        Object.values(initialEntityMap),
-        mapKeyAccessor
-      );
-      dispatch({ type: 'updateAll', payload: replacementMap });
-      initialMapRef.current = initialEntityMap;
-    }
-  }, [currentModels, initialEntityMap, mapKeyAccessor]);
+  const { isOpen, closeModal, openModal } = useModal();
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;

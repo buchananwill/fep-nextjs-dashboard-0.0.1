@@ -1,7 +1,7 @@
 'use client';
 
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
-import { StringMapEditContextProvider } from '../../../contexts/string-map-context/string-map-edit-context-provider';
+import { WriteableStringMapContextProvider } from '../../../contexts/string-map-context/writeable-string-map-context-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
@@ -15,7 +15,7 @@ import {
 import { useSelectiveContextListenerReadAll } from '../../../generic/components/selective-context/generic-selective-context-creator';
 import { isNotUndefined } from '../../../api/main';
 
-const Provider = StringMapEditContextProvider<ProviderRoleDto>;
+const Provider = WriteableStringMapContextProvider<ProviderRoleDto>;
 export default function ProviderRoleStringMapContextProvider({
   providerRoleStringMap,
   children
