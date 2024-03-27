@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import TimetablesContextProvider from '../../timetables-context-provider';
 import { buildTimetablesState } from '../../build-timetables-state';
 import PendingScheduleEditionModal from '../../pending-schedule-edit-modal';
@@ -18,16 +18,13 @@ import DropdownParam from '../../../generic/components/dropdown/dropdown-param';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../generic/components/tables/dynamic-dimension-timetable';
+import { DataNotFoundCard } from './data-not-found-card';
 
 export const dynamic = 'force-dynamic';
 
-export function DataNotFoundCard({ children }: { children: ReactNode }) {
-  return <Card>{children}</Card>;
-}
-
 export default async function TimetablesPage({
   params: { schedule },
-  searchParams: { year, id }
+  searchParams: { id }
 }: {
   params: { schedule: string };
   searchParams: { year: string; id: string };
@@ -49,9 +46,7 @@ export default async function TimetablesPage({
   if (isNaN(scheduleId)) {
     return <DataNotFoundCard>No schedules found.</DataNotFoundCard>;
   }
-
-  const studentId = id ? parseInt(id) : NaN;
-
+  id ? parseInt(id) : NaN;
   const { data: studentDTOS } = await fetchAllStudents({ q: 'ell' });
   if (studentDTOS === undefined) {
     return <Card>No students found.</Card>;
@@ -73,7 +68,7 @@ export default async function TimetablesPage({
     return <DataNotFoundCard>Lesson cycles not found.</DataNotFoundCard>;
   }
 
-  const { initialState, lessonCycleArray } = buildTimetablesState(
+  const { initialState } = buildTimetablesState(
     allPeriodsInCycle,
     allLessonCycles,
     scheduleId

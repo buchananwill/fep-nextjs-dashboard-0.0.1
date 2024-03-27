@@ -113,14 +113,12 @@ export async function postEntity<T>(
 
 export async function postIntersectionTableRequest<T, U, V>({
   url,
-  entityWithIdTypeT,
-  entityWithIdTypeU,
   idsForHasIdTypeT,
   idsForHasIdTypeU
 }: IntersectionRequestParams<T, U>) {
   const requestBody: IntersectionPostRequestMap<T, U> = {};
-  requestBody[`${entityWithIdTypeT}IdList`] = idsForHasIdTypeT;
-  requestBody[`${entityWithIdTypeU}IdList`] = idsForHasIdTypeU;
+  requestBody[`idListTypeT`] = idsForHasIdTypeT;
+  requestBody[`idListTypeU`] = idsForHasIdTypeU;
   createRequestInit({
     body: requestBody,
     method: 'POST'

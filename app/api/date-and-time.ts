@@ -10,11 +10,11 @@ export const REGEX_TIME = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 export const REGEX_DATE =
   /^(?:19|20)\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 
-const parseTen = (stringNumber: string) => parseInt(stringNumber, 10);
+export const parseTen = (stringNumber: string) => parseInt(stringNumber, 10);
 
 export function timeToDateTime(stringTime: string): Date {
   const time = stringTime.split(':').map(parseTen);
-  if (time.length == 2) {
+  if (time.length === 2) {
     time.push(0);
   }
   let epochalDateTime = new Date(PROJECT_EPOCH_DATE_TIME_MONDAY);

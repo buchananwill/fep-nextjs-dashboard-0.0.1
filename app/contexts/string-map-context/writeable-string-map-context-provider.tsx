@@ -69,7 +69,11 @@ export function WriteableStringMapContextProvider<T>({
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;
-    const updatedEntities = currentState
+    const set = new Set<string>();
+    currentState.forEach((key) => set.add(key));
+    const keyArray: string[] = [];
+    set.forEach((element) => keyArray.push(element));
+    const updatedEntities = keyArray
       .map((id) => currentModels[id])
       .filter(isNotUndefined);
     // const entityList = Object.values(currentModels as StringMap<T>);

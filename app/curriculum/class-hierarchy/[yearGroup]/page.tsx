@@ -34,10 +34,9 @@ export default async function Page({
     await getOrganizationGraphByOrganizationType(yearGroup);
 
   const indexOfSpace = yearGroup.indexOf('%20');
-  const taskTypesResponse = await getWorkTaskTypes(
-    2,
-    parseInt(yearGroup.substring(indexOfSpace + 3))
-  );
+  const taskTypesResponse = await getWorkTaskTypes({
+    knowledgeLevelOrdinal: yearGroup.substring(indexOfSpace + 3)
+  });
   const workTaskTypeDtos = taskTypesResponse.data;
 
   const { data: dataGraph } = actionResponseOrganizationGraph;

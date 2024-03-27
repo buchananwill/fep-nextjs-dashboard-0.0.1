@@ -4,7 +4,7 @@ import { LessonTypeHierarchyGraph } from '../../graphing/graph-types/work-task-t
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
-import DropdownParam from '../../components/dropdown/dropdown-param';
+import DropdownParam from '../../generic/components/dropdown/dropdown-param';
 
 export default async function LessonTypeGraphPage({
   lessonTypesResponseGraph,

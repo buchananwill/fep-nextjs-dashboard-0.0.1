@@ -1,15 +1,15 @@
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import { getPremises, getPremisesWithRoot } from '../../api/actions/premises';
+import {
+  getAssetSuitabilities,
+  getPremises,
+  getPremisesWithRoot
+} from '../../api/actions/premises';
 import { Card } from '@tremor/react';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
-import {
-  isNotUndefined,
-  SECONDARY_EDUCATION_CATEGORY_ID
-} from '../../api/main';
-import { DataNotFoundCard } from '../../timetables/students/[schedule]/page';
+import { isNotUndefined } from '../../api/main';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../contexts/string-map-context/convert-list-to-string-map';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
@@ -18,6 +18,11 @@ import { AssetDisclosureListPanel } from './asset-disclosure-list-panel';
 import AssetSuitabilityEditContextProvider from '../asset-suitability-edit-context-provider';
 import ToolCardContextProvider from '../../generic/components/tool-card/tool-card-context-provider';
 import ToolCard from '../../generic/components/tool-card/tool-card';
+import AssetRoleSuitabilityStringMapContextProvider from '../asset-role-suitability-string-map-context-provider';
+import { ObjectPlaceholder } from '../../generic/components/selective-context/selective-context-manager-function';
+import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
+import { parseTen } from '../../api/date-and-time';
+import { DataNotFoundCard } from '../../timetables/students/[schedule]/data-not-found-card';
 
 export default async function Page({
   searchParams: { rootName, ...workTaskParams }
@@ -58,35 +63,57 @@ export default async function Page({
       return { ...asset, assetRoleWorkTaskSuitabilities: sortedSuitabilities };
     });
 
-  const assetStringMap = await convertListToStringMap(assetDtoList, (asset) =>
-    asset.id.toString()
+  const assetStringMap = await convertListToStringMap(
+    assetDtoList,
+    IdStringFromNumberAccessor
   );
   const wttStringMap = await convertListToStringMap(
     workTaskTypeDtos,
     (workTaskTypeDto) => workTaskTypeDto.id.toString()
   );
 
-  const assetIds = Object.keys(assetStringMap);
-  const workTaskTypeIds = Object.keys(wttStringMap);
+  const assetIds = Object.keys(assetStringMap).map(parseTen);
+  const workTaskTypeIds = Object.keys(wttStringMap)
+    .sort((key1, key2) => {
+      return wttStringMap[key1].name.localeCompare(wttStringMap[key2].name);
+    })
+    .map(parseTen);
+
+  console.log(assetIds, workTaskTypeIds);
+
+  const { data: assetSuitabilities } = await getAssetSuitabilities(
+    assetIds,
+    workTaskTypeIds
+  );
+
+  if (!isNotUndefined(assetSuitabilities)) {
+    return <DataNotFoundCard>Suitabilities not found.</DataNotFoundCard>;
+  }
+
+  const { table } = assetSuitabilities;
 
   console.log('rendering root page');
 
   return (
     <WorkTaskTypeContextProvider entityMap={wttStringMap}>
       <AssetStringMapContextProvider assetStringMap={assetStringMap}>
-        <AssetSuitabilityEditContextProvider>
-          <div className={'w-full flex'}>
-            <ToolCardContextProvider>
-              <ToolCard>
-                <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
-                <ToolCard.LowerFiveSixths>
-                  <AssetDisclosureListPanel />
-                </ToolCard.LowerFiveSixths>
-              </ToolCard>
-            </ToolCardContextProvider>
-            <AssetSuitabilityTableWrapper />
-          </div>
-        </AssetSuitabilityEditContextProvider>
+        <AssetRoleSuitabilityStringMapContextProvider suitabilityLists={table}>
+          <AssetSuitabilityEditContextProvider>
+            <div className={'w-full flex'}>
+              <ToolCardContextProvider>
+                <ToolCard>
+                  <ToolCard.UpperSixth>
+                    Classroom Suitability
+                  </ToolCard.UpperSixth>
+                  <ToolCard.LowerFiveSixths>
+                    <AssetDisclosureListPanel />
+                  </ToolCard.LowerFiveSixths>
+                </ToolCard>
+              </ToolCardContextProvider>
+              <AssetSuitabilityTableWrapper />
+            </div>
+          </AssetSuitabilityEditContextProvider>
+        </AssetRoleSuitabilityStringMapContextProvider>
       </AssetStringMapContextProvider>
     </WorkTaskTypeContextProvider>
   );

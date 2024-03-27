@@ -35,9 +35,7 @@ export async function getAssetSuitabilities(
     number,
     AssetRoleWorkTaskSuitabilityDto
   >({
-    entityWithIdTypeT: 'asset',
     idsForHasIdTypeT: assetIdList,
-    entityWithIdTypeU: 'workTaskType',
     idsForHasIdTypeU: workTaskTypeIdList,
     url: `${API_BASE_URL}/assets/assetRoleSuitabilities/intersectionTable`
   });

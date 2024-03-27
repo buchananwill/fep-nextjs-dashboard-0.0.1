@@ -14,12 +14,12 @@ import {
   fetchScheduleIds
 } from '../../api/actions/timetables';
 import { isNotUndefined } from '../../api/main';
-import { DataNotFoundCard } from '../students/[schedule]/page';
 import DropdownParam from '../../generic/components/dropdown/dropdown-param';
 import BigTableCard from '../../generic/components/tables/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../generic/components/tables/dynamic-dimension-timetable';
+import { DataNotFoundCard } from '../students/[schedule]/data-not-found-card';
 
 export const dynamic = 'force-dynamic';
 

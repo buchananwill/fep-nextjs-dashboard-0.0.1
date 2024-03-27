@@ -36,8 +36,6 @@ export default function AssetSuitabilityEditContextProvider({
     UnsavedAssetChangesListenerKey
   );
 
-  console.log('rendering edit context');
-
   return (
     <AssetSuitabilityEditContext.Provider
       value={{

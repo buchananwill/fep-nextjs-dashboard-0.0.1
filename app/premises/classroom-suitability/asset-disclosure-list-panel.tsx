@@ -16,6 +16,8 @@ import DisclosureListPanel, {
   TransformerProps
 } from '../../generic/components/disclosure-list/disclosure-list-panel';
 import ListItemSelector from '../../generic/components/disclosure-list/list-item-selector';
+import { useAssetSuitabilityStringMapContext } from '../asset-suitability-context-creator';
+import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 
 export function AssetDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
@@ -39,12 +41,16 @@ export function AssetDisclosureListPanel() {
 const AssetPanelTransformer: PanelTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
-  const { id, assetRoleWorkTaskSuitabilities } = data;
+  const { id } = data;
+  const { assetSuitabilityStringMap } = useAssetSuitabilityStringMapContext();
+
   const { currentState: suitabilityList } = useAssetSuitabilityListListener({
     contextKey: `${id}`,
     listenerKey: 'classroom-panel',
-    initialValue: assetRoleWorkTaskSuitabilities
+    initialValue: assetSuitabilityStringMap[IdStringFromNumberAccessor(data)]
   });
+
+  console.log(suitabilityList);
 
   return (
     <RatingList
@@ -58,10 +64,11 @@ const AssetPanelTransformer: PanelTransformer<AssetDto> = ({
 const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
+  const { assetSuitabilityStringMap } = useAssetSuitabilityStringMapContext();
   const {} = useAssetSuitabilityListController({
     contextKey: `${data.id}`,
     listenerKey: 'classroom-label',
-    initialValue: data.assetRoleWorkTaskSuitabilities
+    initialValue: assetSuitabilityStringMap[IdStringFromNumberAccessor(data)]
   });
 
   return <>{data.name}</>;

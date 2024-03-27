@@ -43,9 +43,9 @@ export default async function StaffroomLayout({
 
   let workTaskTypeDtos: WorkTaskTypeDto[] = [];
 
-  const { data: workTaskTypeDtosOptional } = await getWorkTaskTypes(
-    SECONDARY_EDUCATION_CATEGORY_ID
-  );
+  const { data: workTaskTypeDtosOptional } = await getWorkTaskTypes({
+    serviceCategoryDto: SECONDARY_EDUCATION_CATEGORY_ID.toString()
+  });
 
   if (workTaskTypeDtosOptional) {
     workTaskTypeDtos = workTaskTypeDtosOptional;

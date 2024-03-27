@@ -1,8 +1,9 @@
 'use client';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
-import { TwoStageClick } from '../../../components/buttons/two-stage-click';
+
 import { deleteKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
+import { TwoStageClick } from '../../../generic/components/buttons/two-stage-click';
 
 export function KnowledgeDomainDependencies({
   kd
@@ -10,7 +11,7 @@ export function KnowledgeDomainDependencies({
   kd: KnowledgeDomainDto;
 }) {
   const appRouterInstance = useRouter();
-  const { workTaskTypeCount, serviceCategoryId, id } = kd;
+  const { workTaskTypeCount } = kd;
   return workTaskTypeCount > 0 ? (
     <TwoStageClick
       onClick={() =>

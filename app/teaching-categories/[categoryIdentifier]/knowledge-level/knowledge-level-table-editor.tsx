@@ -1,5 +1,4 @@
 import { getKnowledgeLevels } from '../../../api/actions/service-categories';
-import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelNameCell } from './knowledge-level-name-cell';
 import { NewKnowledgeLevelButton } from './new-knowledge-level-button';
@@ -13,6 +12,7 @@ import {
   KnowledgeCategoryTableHeaderCell,
   KnowledgeCategoryTableRow
 } from '../components/knowledge-category-table';
+import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
 
 export default async function KnowledgeLevelTableEditor({
   category

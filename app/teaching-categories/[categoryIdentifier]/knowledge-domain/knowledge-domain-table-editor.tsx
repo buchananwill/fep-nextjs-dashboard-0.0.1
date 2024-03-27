@@ -1,5 +1,4 @@
 import { getKnowledgeDomains } from '../../../api/actions/service-categories';
-import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeDomainNameCell } from './knowledge-domain-name-cell';
 import { NewKnowledgeDomainButton } from './new-knowledge-domain-button';
@@ -13,6 +12,7 @@ import {
   KnowledgeCategoryTableHeaderCell,
   KnowledgeCategoryTableRow
 } from '../components/knowledge-category-table';
+import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
 
 export function getNameList<T extends HasNameDto>(namedDtoArray: T[]) {
   return namedDtoArray.map((dto) => dto.name);

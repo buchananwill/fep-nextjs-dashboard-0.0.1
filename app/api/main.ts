@@ -57,9 +57,7 @@ export interface IntersectionPostRequestMap<T, U> {
 }
 
 export interface IntersectionRequestParams<T, U> {
-  entityWithIdTypeT: string;
   idsForHasIdTypeT: T[];
-  entityWithIdTypeU: string;
   idsForHasIdTypeU: U[];
   url: string;
 }

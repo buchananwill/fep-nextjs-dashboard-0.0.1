@@ -46,7 +46,9 @@ export default async function Page({
 
   const actionResponse = await getBundles(schemaIdList);
 
-  const taskTypesResponse = await getWorkTaskTypes(2, parseInt(yearGroup));
+  const taskTypesResponse = await getWorkTaskTypes({
+    knowledgeLevelOrdinal: yearGroup
+  });
 
   const workTaskTypeDtos = taskTypesResponse.data;
   if (actionResponse.data === undefined || workTaskTypeDtos === undefined) {

@@ -20,7 +20,7 @@ export default async function Page({
   params: {
     yearGroup: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: StringMap<string | string[] | undefined>;
 }) {
   const { page, size } = searchParams;
   const queryParamToNumber = normalizeQueryParamToNumber(page, 1);
@@ -33,7 +33,9 @@ export default async function Page({
       parseInt(yearGroup)
     );
 
-  const taskTypesResponse = await getWorkTaskTypes(2, parseInt(yearGroup));
+  const taskTypesResponse = await getWorkTaskTypes({
+    knowledgeLevelOrdinal: yearGroup
+  });
 
   const { status, data, message } = curriculumDeliveryModelSchemas;
   const { data: taskTypeList } = taskTypesResponse;
