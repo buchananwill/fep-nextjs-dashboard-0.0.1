@@ -6,6 +6,7 @@ import {
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
+import { createStringMapContext } from '../../contexts/string-map-context/context-creator';
 
 export function useServiceCategoryContext() {
   const categoryMap = useContext(ServiceCategoryContext);
@@ -24,24 +25,15 @@ export function useServiceCategoryContext() {
   };
 }
 
-export const ServiceCategoryContext = createContext<
-  StringMap<ServiceCategoryDto>
->({} as StringMap<ServiceCategoryDto>);
-
-export const ServiceCategoryContextDispatch = createContext<
-  StringMapDispatch<ServiceCategoryDto>
->(() => {});
-export const KnowledgeDomainContext = createContext<
-  StringMap<KnowledgeDomainDto>
->({} as StringMap<KnowledgeDomainDto>);
-
-export const KnowledgeDomainContextDispatch = createContext<
-  StringMapDispatch<KnowledgeDomainDto>
->(() => {});
-export const KnowledgeLevelContext = createContext<
-  StringMap<KnowledgeLevelDto>
->({} as StringMap<KnowledgeLevelDto>);
-
-export const KnowledgeLevelContextDispatch = createContext<
-  StringMapDispatch<KnowledgeLevelDto>
->(() => {});
+export const {
+  mapContext: ServiceCategoryContext,
+  dispatchContext: ServiceCategoryContextDispatch
+} = createStringMapContext<ServiceCategoryDto>();
+export const {
+  mapContext: KnowledgeDomainContext,
+  dispatchContext: KnowledgeDomainContextDispatch
+} = createStringMapContext<KnowledgeDomainDto>();
+export const {
+  mapContext: KnowledgeLevelContext,
+  dispatchContext: KnowledgeLevelContextDispatch
+} = createStringMapContext<KnowledgeLevelDto>();

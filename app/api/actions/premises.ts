@@ -1,9 +1,15 @@
 'use server';
-import { getWithoutBody, patchEntityList } from './template-actions';
+import {
+  getWithoutBody,
+  patchEntityList,
+  postIntersectionTableRequest
+} from './template-actions';
 import { ActionResponsePromise } from './actionResponse';
 import { GraphDto } from '../zod-mods';
 import { AssetDto } from '../dtos/AssetDtoSchema';
-import { API_BASE_URL } from '../main';
+import { API_BASE_URL, IntersectionRequestParams } from '../main';
+import { AssetRoleWorkTaskSuitabilityDto } from '../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
+import * as url from 'url';
 
 const premisesUrl = `${API_BASE_URL}/assets/premises`;
 
@@ -18,4 +24,21 @@ export async function getPremisesWithRoot(
 
 export async function patchPremises(premises: AssetDto[]) {
   return patchEntityList(premises, premisesUrl);
+}
+
+export async function getAssetSuitabilities(
+  assetIdList: number[],
+  workTaskTypeIdList: number[]
+) {
+  return postIntersectionTableRequest<
+    number,
+    number,
+    AssetRoleWorkTaskSuitabilityDto
+  >({
+    entityWithIdTypeT: 'asset',
+    idsForHasIdTypeT: assetIdList,
+    entityWithIdTypeU: 'workTaskType',
+    idsForHasIdTypeU: workTaskTypeIdList,
+    url: `${API_BASE_URL}/assets/assetRoleSuitabilities/intersectionTable`
+  });
 }

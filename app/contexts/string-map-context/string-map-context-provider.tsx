@@ -27,6 +27,7 @@ import { isNotUndefined } from '../../api/main';
 import { useModal } from '../../generic/components/modals/confirm-action-modal';
 import { UnsavedChangesModal } from '../../generic/components/modals/unsaved-changes-modal';
 import { useSyncStringMapToProps } from './use-sync-string-map-to-props';
+import { IdStringFromNumberAccessor } from '../../premises/classroom-suitability/rating-table-accessor-functions';
 
 export interface StringMapContextProviderProps<T> {
   initialEntityMap: StringMap<T>;

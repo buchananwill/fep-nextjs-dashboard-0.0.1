@@ -9,7 +9,7 @@ import {
 } from '../tables/rating/rating-table';
 import { PropsWithChildren, useMemo } from 'react';
 
-import { ConfirmRatingValue } from '../../../premises/use-confirm-rating-value-function';
+import { ConfirmRatingValue } from '../../hooks/selective-context/use-confirm-rating-value-function';
 import { useRatingEditModal } from '../../hooks/use-rating-edit-modal';
 
 import { useSelectiveContextControllerFunction } from '../selective-context/selective-context-manager-function';

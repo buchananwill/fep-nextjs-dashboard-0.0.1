@@ -4,6 +4,11 @@ import {
   successResponse
 } from './actionResponse';
 import { HTTP_METHOD } from 'next/dist/server/web/http';
+import {
+  IdReferencedIntersectionTableDto,
+  IntersectionPostRequestMap,
+  IntersectionRequestParams
+} from '../main';
 
 function createRequestInit<T>({
   body,
@@ -104,6 +109,26 @@ export async function postEntity<T>(
     method: 'POST'
   });
   return callApi<T>(url, requestInit);
+}
+
+export async function postIntersectionTableRequest<T, U, V>({
+  url,
+  entityWithIdTypeT,
+  entityWithIdTypeU,
+  idsForHasIdTypeT,
+  idsForHasIdTypeU
+}: IntersectionRequestParams<T, U>) {
+  const requestBody: IntersectionPostRequestMap<T, U> = {};
+  requestBody[`${entityWithIdTypeT}IdList`] = idsForHasIdTypeT;
+  requestBody[`${entityWithIdTypeU}IdList`] = idsForHasIdTypeU;
+  createRequestInit({
+    body: requestBody,
+    method: 'POST'
+  });
+  return postEntitiesWithDifferentReturnType<
+    IntersectionPostRequestMap<T, U>,
+    IdReferencedIntersectionTableDto<V>
+  >(requestBody, url);
 }
 
 export async function deleteEntities<T>(

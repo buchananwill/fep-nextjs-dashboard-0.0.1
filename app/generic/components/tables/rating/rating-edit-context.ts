@@ -13,7 +13,7 @@ import {
   MockReturn,
   UseSelectiveContextDispatch
 } from '../../../hooks/selective-context/use-selective-context-listener';
-import { ConfirmRatingValue } from '../../../../premises/use-confirm-rating-value-function';
+import { ConfirmRatingValue } from '../../../hooks/selective-context/use-confirm-rating-value-function';
 import { EmptyArray } from '../../../../api/main';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {

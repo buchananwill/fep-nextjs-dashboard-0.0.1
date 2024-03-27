@@ -11,26 +11,13 @@ import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { UnsavedAssetChanges } from './asset-string-map-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { produce } from 'immer';
-import { useConfirmRatingValueFunction } from './use-confirm-rating-value-function';
+import { useConfirmRatingValueFunction } from '../generic/hooks/selective-context/use-confirm-rating-value-function';
 import { useAssetSuitabilityListDispatch } from '../contexts/selective-context/asset-suitability-list-selective-context-provider';
 
 import { getCurriedProducer } from '../staffroom/contexts/providerRoles/get-curried-producer';
 import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 
-const suitabilityProducer = getCurriedProducer<
-  AssetRoleWorkTaskSuitabilityDto,
-  number
->((rating, value) => (rating.suitabilityRating = value));
-const suitabilityListSetter = (
-  assetDto: AssetDto,
-  list: AssetRoleWorkTaskSuitabilityDto[]
-) => {
-  return produce(assetDto, (draft) => {
-    draft.assetRoleWorkTaskSuitabilities = list;
-  });
-};
-export const UnsavedAssetChangesListenerKey = 'asset-suitability-edit-context';
 export default function AssetSuitabilityEditContextProvider({
   children
 }: PropsWithChildren) {
@@ -74,3 +61,18 @@ export default function AssetSuitabilityEditContextProvider({
     </AssetSuitabilityEditContext.Provider>
   );
 }
+
+export const UnsavedAssetChangesListenerKey = 'asset-suitability-edit-context';
+
+const suitabilityProducer = getCurriedProducer<
+  AssetRoleWorkTaskSuitabilityDto,
+  number
+>((rating, value) => (rating.suitabilityRating = value));
+const suitabilityListSetter = (
+  assetDto: AssetDto,
+  list: AssetRoleWorkTaskSuitabilityDto[]
+) => {
+  return produce(assetDto, (draft) => {
+    draft.assetRoleWorkTaskSuitabilities = list;
+  });
+};

@@ -1,14 +1,14 @@
 import {
   AccessorFunction,
   RatingCategoryIdAccessor
-} from '../generic/components/tables/rating/rating-table';
-import { useSelectiveContextDispatchBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
+} from '../../components/tables/rating/rating-table';
+import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useCallback } from 'react';
-import { useSelectiveContextDispatchStringList } from '../generic/components/selective-context/selective-context-manager-string-list';
-import { EmptyIdArray } from '../curriculum/delivery-models/contexts/curriculum-models-context-provider';
-import { UseSelectiveContextDispatch } from '../generic/hooks/selective-context/use-selective-context-listener';
-import { SelectiveContextReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
-import { EmptyArray, isNotUndefined } from '../api/main';
+import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { EmptyIdArray } from '../../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
+import { UseSelectiveContextDispatch } from './use-selective-context-listener';
+import { SelectiveContextReadAll } from '../../components/selective-context/generic-selective-context-creator';
+import { EmptyArray, isNotUndefined } from '../../../api/main';
 
 export interface ConfirmRatingValue<R, E> {
   (rating: R, elementWithRatings: E, updatedValue: number): void;

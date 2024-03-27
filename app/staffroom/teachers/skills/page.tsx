@@ -7,10 +7,10 @@ import { SkillEditAccessorFunctions } from './rating-table-accessor-functions';
 import { RatingTableBody } from '../../../generic/components/tables/rating/rating-table-body';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
-import { useSelectiveContextRatingListAccessor } from '../../../premises/classroom-suitability/asset-suitability-table-wrapper';
 import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/use-memoized-selection-from-list-and-string-map';
+import { useSelectiveContextRatingListAccessor } from '../../../premises/classroom-suitability/use-selective-context-rating-list-accessor';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();

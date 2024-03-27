@@ -8,9 +8,8 @@ import {
   getAllKnowledgeLevels
 } from '../../../api/actions/service-categories';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/page';
-import ServiceCategoryContextInit, {
-  ServiceCategoriesEmptyArray
-} from '../service-category-context-init';
+import ServiceCategoryContextInit from '../service-category-context-init';
+import { EmptyArray } from '../../../api/main';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,7 +41,7 @@ export default async function LessonTypesPage({
     <ServiceCategoryContextInit
       knowledgeLevels={kLevels}
       knowledgeDomains={kDomains}
-      serviceCategories={ServiceCategoriesEmptyArray}
+      serviceCategories={EmptyArray}
     >
       <LessonTypeGraphPage
         lessonTypesResponseGraph={lessonTypesResponseGraph}

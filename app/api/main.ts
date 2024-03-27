@@ -1,3 +1,5 @@
+import { StringMap } from '../contexts/string-map-context/string-map-reducer';
+
 export const API_BASE_URL = process.env.API_BASE_URL!;
 export const API_ACADEMIC_URL = process.env.API_ACADEMIC_URL!;
 
@@ -42,3 +44,26 @@ export function isNotUndefined<T>(value: T | undefined): value is T {
 }
 
 export const EmptyArray: any[] = [];
+
+export function joinSearchParams(searchParams: StringMap<string>): string {
+  return Object.entries(searchParams).reduce(
+    (joined, currentValue) => `${joined}&${currentValue[0]}=${currentValue[1]}`,
+    ''
+  );
+}
+
+export interface IntersectionPostRequestMap<T, U> {
+  [key: string]: T[] | U[];
+}
+
+export interface IntersectionRequestParams<T, U> {
+  entityWithIdTypeT: string;
+  idsForHasIdTypeT: T[];
+  entityWithIdTypeU: string;
+  idsForHasIdTypeU: U[];
+  url: string;
+}
+
+export interface IdReferencedIntersectionTableDto<W> {
+  table: StringMap<W[]>;
+}

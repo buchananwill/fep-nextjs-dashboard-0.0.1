@@ -1,68 +1,32 @@
 'use client';
-import { PropsWithChildren, useReducer } from 'react';
+import { PropsWithChildren } from 'react';
 import {
-  KnowledgeDomainContext,
-  KnowledgeDomainContextDispatch,
-  KnowledgeLevelContext,
-  KnowledgeLevelContextDispatch,
   ServiceCategoryContext,
   ServiceCategoryContextDispatch
 } from './use-service-category-context';
-import {
-  StringMap,
-  StringMapReducer
-} from '../../contexts/string-map-context/string-map-reducer';
+import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
-import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
-import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
+import { StringMapContextProvider } from '../../contexts/string-map-context/string-map-context-provider';
+import { IdStringFromNumberAccessor } from '../../premises/classroom-suitability/rating-table-accessor-functions';
 
 export interface ServiceCategoryContextProviderProps extends PropsWithChildren {
   serviceCategories: StringMap<ServiceCategoryDto>;
-  knowledgeDomains: StringMap<KnowledgeDomainDto>;
-  knowledgeLevels: StringMap<KnowledgeLevelDto>;
 }
+
+const Provider = StringMapContextProvider<ServiceCategoryDto>;
 
 export default function ServiceCategoryContextProvider({
   children,
-  serviceCategories,
-  knowledgeLevels,
-  knowledgeDomains
+  serviceCategories
 }: ServiceCategoryContextProviderProps) {
-  const serviceCategoryReducer = StringMapReducer<ServiceCategoryDto>;
-  const [serviceCategoryMap, dispatchServiceCategories] = useReducer(
-    serviceCategoryReducer,
-    serviceCategories
-  );
-  const knowledgeDomainReducer = StringMapReducer<KnowledgeDomainDto>;
-  const [knowledgeDomainMap, dispatchKnowledgeDomains] = useReducer(
-    knowledgeDomainReducer,
-    knowledgeDomains
-  );
-  const knowledgeLevelReducer = StringMapReducer<KnowledgeLevelDto>;
-  const [knowledgeLevelMap, dispatchKnowledgeLevels] = useReducer(
-    knowledgeLevelReducer,
-    knowledgeLevels
-  );
-
   return (
-    <ServiceCategoryContext.Provider value={serviceCategoryMap}>
-      <ServiceCategoryContextDispatch.Provider
-        value={dispatchServiceCategories}
-      >
-        <KnowledgeDomainContext.Provider value={knowledgeDomainMap}>
-          <KnowledgeDomainContextDispatch.Provider
-            value={dispatchKnowledgeDomains}
-          >
-            <KnowledgeLevelContext.Provider value={knowledgeLevelMap}>
-              <KnowledgeLevelContextDispatch.Provider
-                value={dispatchKnowledgeLevels}
-              >
-                {children}
-              </KnowledgeLevelContextDispatch.Provider>
-            </KnowledgeLevelContext.Provider>
-          </KnowledgeDomainContextDispatch.Provider>
-        </KnowledgeDomainContext.Provider>
-      </ServiceCategoryContextDispatch.Provider>
-    </ServiceCategoryContext.Provider>
+    <Provider
+      initialEntityMap={serviceCategories}
+      mapKeyAccessor={IdStringFromNumberAccessor}
+      mapContext={ServiceCategoryContext}
+      dispatchContext={ServiceCategoryContextDispatch}
+    >
+      {children}
+    </Provider>
   );
 }

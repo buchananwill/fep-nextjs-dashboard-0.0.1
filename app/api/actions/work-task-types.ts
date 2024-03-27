@@ -1,7 +1,7 @@
 'use server';
 import { ActionResponsePromise } from './actionResponse';
 import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
-import { API_BASE_URL } from '../main';
+import { API_BASE_URL, joinSearchParams } from '../main';
 import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
 import {
   getWithoutBody,
@@ -26,15 +26,16 @@ export async function putWorkTaskTypeGraph(
   >(graph, url);
 }
 
-export async function getWorkTaskTypes(
-  serviceCategoryId: number,
-  knowledgeLevelOrdinal?: number
-): ActionResponsePromise<WorkTaskTypeDto[]> {
-  const queryParams = knowledgeLevelOrdinal
-    ? `?knowledgeLevelOrdinal=${knowledgeLevelOrdinal}`
-    : '';
+export async function getWorkTaskTypes(searchParams: {
+  rootName?: string;
+  serviceCategoryDto?: string;
+  knowledgeDomain?: string;
+  knowledgeLevelOrdinal?: string;
+}): ActionResponsePromise<WorkTaskTypeDto[]> {
+  const joinedParams = joinSearchParams(searchParams);
+  const queryParams = joinedParams.length > 0 ? `?${joinedParams}` : '';
 
-  const url = `${API_BASE_URL}/workTasks/${serviceCategoryId}/types${queryParams}`;
+  const url = `${API_BASE_URL}/workTasks/types${queryParams}`;
 
   return getWithoutBody(url);
 }

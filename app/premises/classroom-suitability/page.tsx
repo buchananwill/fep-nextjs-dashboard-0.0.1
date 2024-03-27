@@ -20,9 +20,14 @@ import ToolCardContextProvider from '../../generic/components/tool-card/tool-car
 import ToolCard from '../../generic/components/tool-card/tool-card';
 
 export default async function Page({
-  searchParams: { rootName }
+  searchParams: { rootName, ...workTaskParams }
 }: {
-  searchParams: { rootName: string };
+  searchParams: {
+    rootName?: string;
+    serviceCategoryDto?: string;
+    knowledgeDomain?: string;
+    knowledgeLevelOrdinal?: string;
+  };
 }) {
   let premisesPromises: ActionResponsePromise<GraphDto<AssetDto>>;
   if (isNotUndefined(rootName)) {
@@ -32,9 +37,7 @@ export default async function Page({
   }
   const actionResponse = await premisesPromises;
 
-  const actionResponseWorkTaskTypes = await getWorkTaskTypes(
-    SECONDARY_EDUCATION_CATEGORY_ID
-  );
+  const actionResponseWorkTaskTypes = await getWorkTaskTypes(workTaskParams);
 
   if (actionResponse.status != 200 || actionResponse.data === undefined) {
     console.log('Not implemented', actionResponse);
@@ -62,6 +65,9 @@ export default async function Page({
     workTaskTypeDtos,
     (workTaskTypeDto) => workTaskTypeDto.id.toString()
   );
+
+  const assetIds = Object.keys(assetStringMap);
+  const workTaskTypeIds = Object.keys(wttStringMap);
 
   console.log('rendering root page');
 
