@@ -15,24 +15,31 @@ import {
 } from '../../../hooks/selective-context/use-selective-context-listener';
 import { ConfirmRatingValue } from '../../../hooks/selective-context/use-confirm-rating-value-function';
 import { EmptyArray } from '../../../../api/main';
+import { Draft } from 'immer';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
   elementLabelAccessor: NameAccessor<E>;
   elementIdAccessor: AccessorFunction<E, string | number>;
   ratingListAccessor: RatingListAccessor<E, R>;
   useRatingListDispatchHook: UseSelectiveContextDispatch<R[]>;
+  ratingProducer: (rating: R | Draft<R>, value: number) => R;
   confirmRatingValue: ConfirmRatingValue<R, E>;
+  unsavedChangesListKey: string;
+  unsavedChangesKey: string;
 }
 
 const defaultContext: RatingEditContext<any, any> = {
   confirmRatingValue: () => {},
   ratingValueAccessor: () => NaN,
+  ratingProducer: () => {},
   ratingCategoryLabelAccessor: () => '',
   ratingCategoryIdAccessor: () => NaN,
   ratingListAccessor: () => EmptyArray,
   elementLabelAccessor: () => '',
   elementIdAccessor: () => NaN,
-  useRatingListDispatchHook: () => MockReturn
+  useRatingListDispatchHook: () => MockReturn,
+  unsavedChangesKey: '',
+  unsavedChangesListKey: ''
 };
 
 export const SkillEditContext = createContext<

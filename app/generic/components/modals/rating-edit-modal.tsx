@@ -1,7 +1,5 @@
 'use client';
 
-import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { HUE_OPTIONS } from '../color/color-context';
 import { NameAccessor } from '../../../curriculum/delivery-models/add-new-curriculum-model-card';
 import {
   RatingCategoryLabelAccessor,
@@ -14,12 +12,14 @@ import { useRatingEditModal } from '../../hooks/use-rating-edit-modal';
 
 import { useSelectiveContextControllerFunction } from '../selective-context/selective-context-manager-function';
 import { ConfirmActionModal } from './confirm-action-modal';
+import { RatingStepper } from '../buttons/rating-stepper';
 
 export interface RatingEditModalProps<R, E> {
   ratingCategoryLabelAccessor: RatingCategoryLabelAccessor<R>;
   ratingValueAccessor: RatingValueAccessor<R>;
   nameAccessor: NameAccessor<E>;
   confirmRatingValue: ConfirmRatingValue<R, E>;
+  ratingDescriptor?: string;
 }
 
 export interface RatingEditModalTriggerProps<R, E> {
@@ -32,7 +32,8 @@ export function RatingEditModal<R, E>({
   ratingCategoryLabelAccessor,
   ratingValueAccessor,
   confirmRatingValue,
-  children
+  children,
+  ratingDescriptor = 'Rating'
 }: RatingEditModalProps<R, E> & PropsWithChildren) {
   const {
     triggerModal,
@@ -60,7 +61,10 @@ export function RatingEditModal<R, E>({
   return (
     <>
       {children}
-      <ConfirmActionModal title={'Change Skill Value'} {...skillEditProps}>
+      <ConfirmActionModal
+        title={`Change ${ratingDescriptor} Value`}
+        {...skillEditProps}
+      >
         <div className="p-2 bg-gray-100 rounded-lg">
           <div className="font-light">
             {elementWithRatingsInModal &&
@@ -69,25 +73,11 @@ export function RatingEditModal<R, E>({
           </div>
           <div className="font-light flex py-2">
             {ratingInModal && ratingCategoryLabelAccessor(ratingInModal)}:
-            <div className="flex col px-2">
-              <button
-                className="border-2 rounded-md p-1 mx-1 hover:bg-gray-600 hover:text-gray-50"
-                onClick={() => modifySkillValue && modifySkillValue(-1)}
-              >
-                <MinusIcon className=" h-4 w-4"></MinusIcon>
-              </button>
-              <div
-                className={`w-7 rounded-md px-2 bg-${HUE_OPTIONS[modalRatingValue].id}-400 justify-center text-center`}
-              >
-                {modalRatingValue}
-              </div>
-              <button
-                className="border-2 rounded-md p-1 mx-1 hover:bg-gray-600 hover:text-gray-50"
-                onClick={() => modifySkillValue && modifySkillValue(1)}
-              >
-                <PlusIcon className=" h-4 w-4"></PlusIcon>
-              </button>
-            </div>
+            <RatingStepper
+              handleDecrement={() => modifySkillValue && modifySkillValue(-1)}
+              ratingValue={modalRatingValue}
+              handleIncrement={() => modifySkillValue && modifySkillValue(1)}
+            />
           </div>
         </div>
       </ConfirmActionModal>

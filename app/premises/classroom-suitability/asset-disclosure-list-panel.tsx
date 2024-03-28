@@ -19,14 +19,20 @@ import ListItemSelector from '../../generic/components/disclosure-list/list-item
 import { useAssetSuitabilityStringMapContext } from '../asset-suitability-context-creator';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { useSyncStringMapToProps } from '../../contexts/string-map-context/use-sync-string-map-to-props';
+import { useSelectiveContextListenerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSearchParams } from 'next/navigation';
+import { isNotNull, isNotUndefined } from '../../api/main';
 
 export function AssetDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
 
-  const assetDtoList = useMemo(() => {
-    return Object.values(assetDtoStringMap).sort((a1, a2) =>
+  const { assetDtoList } = useMemo(() => {
+    const assetDtoList = Object.values(assetDtoStringMap).sort((a1, a2) =>
       a1.name.localeCompare(a2.name)
     );
+    const idList = assetDtoList.map((asset) => asset.id);
+    return { assetDtoList, idList };
   }, [assetDtoStringMap]);
 
   return (

@@ -2,13 +2,11 @@ import {
   AccessorFunction,
   RatingCategoryIdAccessor
 } from '../../components/tables/rating/rating-table';
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
 import { useCallback } from 'react';
-import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
-import { EmptyIdArray } from '../../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 import { UseSelectiveContextDispatch } from './use-selective-context-listener';
 import { SelectiveContextReadAll } from '../../components/selective-context/generic-selective-context-creator';
 import { EmptyArray, isNotUndefined } from '../../../api/main';
+import { useUnsavedListContext } from './use-unsaved-list-context';
 
 export interface ConfirmRatingValue<R, E> {
   (rating: R, elementWithRatings: E, updatedValue: number): void;
@@ -24,18 +22,10 @@ export function useConfirmRatingValueFunction<R, E>(
   unsavedChangesContextKey: string,
   unsavedChangesListenerKey: string
 ): ConfirmRatingValue<R, E> {
-  const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
+  const addUnsavedChange = useUnsavedListContext(
     unsavedChangesContextKey,
-    unsavedChangesListenerKey,
-    false
+    unsavedChangesListenerKey
   );
-
-  const { currentState, dispatchWithoutControl: addIdToUnsavedList } =
-    useSelectiveContextDispatchStringList({
-      contextKey: unsavedChangesContextKey,
-      listenerKey: unsavedChangesListenerKey,
-      initialValue: EmptyIdArray
-    });
 
   const { dispatch } = useSelectiveDispatchHook('', '', EmptyArray as R[]);
 
@@ -56,19 +46,16 @@ export function useConfirmRatingValueFunction<R, E>(
         contextKey: idForMap,
         value: updatedList
       });
-      addIdToUnsavedList([...currentState, idForMap]);
-      dispatchWithoutControl(true);
+      addUnsavedChange(idForMap);
     },
     [
+      addUnsavedChange,
       dispatch,
-      currentState,
-      addIdToUnsavedList,
       ratingListAccessor,
       ratingCategoryIdAccessor,
       ratingValueSetter,
       ratingListSetter,
-      elementStringIdAccessor,
-      dispatchWithoutControl
+      elementStringIdAccessor
     ]
   );
 }

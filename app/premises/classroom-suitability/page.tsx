@@ -22,21 +22,21 @@ import AssetRoleSuitabilityStringMapContextProvider from '../asset-role-suitabil
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { parseTen } from '../../api/date-and-time';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/data-not-found-card';
-import WorkTaskTypeFilterGroup from './work-task-type-filter-group';
+import AssetRoleSuitabilityFilterGroup from './asset-role-suitability-filter-group';
 
 export default async function Page({
-  searchParams: { rootName, ...workTaskParams }
+  searchParams: { rootId, ...workTaskParams }
 }: {
   searchParams: {
-    rootName?: string;
+    rootId?: string;
     serviceCategoryDto?: string;
     knowledgeDomain?: string;
     knowledgeLevelOrdinal?: string;
   };
 }) {
   let premisesPromises: ActionResponsePromise<GraphDto<AssetDto>>;
-  if (isNotUndefined(rootName)) {
-    premisesPromises = getPremisesWithRoot(rootName);
+  if (isNotUndefined(rootId)) {
+    premisesPromises = getPremisesWithRoot(rootId);
   } else {
     premisesPromises = getPremises();
   }
@@ -112,7 +112,7 @@ export default async function Page({
               </ToolCardContextProvider>
 
               <AssetSuitabilityTableWrapper />
-              <WorkTaskTypeFilterGroup />
+              <AssetRoleSuitabilityFilterGroup />
             </div>
           </AssetSuitabilityEditContextProvider>
         </AssetRoleSuitabilityStringMapContextProvider>

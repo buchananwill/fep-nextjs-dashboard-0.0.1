@@ -40,7 +40,10 @@ export default function AssetSuitabilityEditContextProvider({
     <AssetSuitabilityEditContext.Provider
       value={{
         confirmRatingValue: confirmRatingValue,
+        ratingProducer: suitabilityProducer,
         useRatingListDispatchHook: useAssetSuitabilityListDispatch,
+        unsavedChangesKey: UnsavedAssetChanges,
+        unsavedChangesListKey: UnsavedAssetChanges,
         ...AssetSuitabilityAccessorFunctions
       }}
     >
@@ -53,6 +56,7 @@ export default function AssetSuitabilityEditContextProvider({
           AssetSuitabilityAccessorFunctions.ratingCategoryLabelAccessor
         }
         nameAccessor={AssetSuitabilityAccessorFunctions.elementLabelAccessor}
+        ratingDescriptor={'Classroom Suitability'}
       >
         {children}
       </RatingEditModal>
@@ -66,6 +70,7 @@ const suitabilityProducer = getCurriedProducer<
   AssetRoleWorkTaskSuitabilityDto,
   number
 >((rating, value) => (rating.suitabilityRating = value));
+
 const suitabilityListSetter = (
   assetDto: AssetDto,
   list: AssetRoleWorkTaskSuitabilityDto[]

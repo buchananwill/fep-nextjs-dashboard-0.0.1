@@ -13,6 +13,7 @@ import { ApplySearchParams } from './apply-search-params';
 import { useContext } from 'react';
 import { HasNameDto } from '../../api/dtos/HasNameDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
+import { AssetStringMapContext } from '../asset-string-map-context-creator';
 
 export const NameLabelAccessor: AccessorFunction<HasNameDto, string> = (dto) =>
   dto.name;
@@ -22,7 +23,7 @@ export const LevelOrdinalAccessor: AccessorFunction<
   string
 > = (dto) => dto.levelOrdinal.toString();
 
-export default function WorkTaskTypeFilterGroup() {
+export default function AssetRoleSuitabilityFilterGroup() {
   const knowledgeDomainDtoStringMap = useContext(KnowledgeDomainContext);
   console.log(knowledgeDomainDtoStringMap);
   return (
@@ -42,6 +43,13 @@ export default function WorkTaskTypeFilterGroup() {
           idAccessor={LevelOrdinalAccessor}
           labelDescriptor={'Year'}
           idSearchParamKey={'knowledgeLevelOrdinal'}
+        />
+        <StringMapContextFilterSelector
+          context={AssetStringMapContext}
+          idAccessor={IdStringFromNumberAccessor}
+          labelAccessor={NameLabelAccessor}
+          labelDescriptor={'Premises Root'}
+          idSearchParamKey={'rootId'}
         />
       </SearchParamsContextProvider>
     </Card>

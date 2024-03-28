@@ -16,9 +16,9 @@ export async function getPremises(): ActionResponsePromise<GraphDto<AssetDto>> {
   return await getWithoutBody(`${premisesUrl}/graph`);
 }
 export async function getPremisesWithRoot(
-  rootName: string
+  rootId: string
 ): ActionResponsePromise<GraphDto<AssetDto>> {
-  return await getWithoutBody(`${premisesUrl}/graph/byRootName/${rootName}`);
+  return await getWithoutBody(`${premisesUrl}/graph/byRootId/${rootId}`);
 }
 
 export async function patchPremises(premises: AssetDto[]) {
