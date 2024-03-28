@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { RatingEditContext } from './rating-edit-context';
-import { useRatingEditModalTrigger } from './rating-table-cell';
 import { GenericButtonProps } from '../../buttons/rename-button';
+import { useRatingEditModalTrigger } from './use-rating-edit-modal-trigger';
 
 const competencyColors: { [key: string]: string } = {
   '0': 'gray-200',

@@ -1,39 +1,14 @@
+'use client';
 import { Context, useContext } from 'react';
 import { RatingEditContext } from './rating-edit-context';
 import { HUE_OPTIONS } from '../../color/color-context';
-import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
-import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
-import {
-  GenericFunctionWrapper,
-  ObjectPlaceholder,
-  useSelectiveContextListenerFunction
-} from '../../selective-context/selective-context-manager-function';
-import { RatingEditModalTriggerProps } from '../../modals/rating-edit-modal';
+import { useRatingEditModalTrigger } from './use-rating-edit-modal-trigger';
+import { TooltipWrapper } from './tooltip-wrapper';
 
 interface RatingTableCellProps<R, E> {
   rating: R;
-
   ratedElement: E;
-
   ratingEditContext: Context<RatingEditContext<R, E>>;
-}
-
-export function useRatingEditModalTrigger<E, R>({
-  listenerKey
-}: {
-  listenerKey: string;
-}) {
-  const {
-    currentFunction: { cachedFunction }
-  } = useSelectiveContextListenerFunction<
-    RatingEditModalTriggerProps<R, E>,
-    void
-  >(
-    'prepare-rating-modal',
-    listenerKey,
-    ObjectPlaceholder as GenericFunctionWrapper<any, any>
-  );
-  return cachedFunction;
 }
 
 export function RatingTableCell<R, E>({
@@ -55,23 +30,26 @@ export function RatingTableCell<R, E>({
   });
 
   return (
-    <td
-      className={`border bg-${
-        HUE_OPTIONS[ratingValueAccessor(rating)].id
-      }-400 cursor-pointer`}
-      onClick={() => {
-        cachedFunction({ rating, elementWithRating: ratedElement });
-      }}
-    >
-      <Tooltip placement={'bottom'}>
-        <TooltipTrigger>
-          <div className={'px-2'}>{ratingValueAccessor(rating)}</div>
-        </TooltipTrigger>
-
-        <StandardTooltipContent>
-          <strong>{ratingCategoryLabelAccessor(rating)}</strong>: click to edit.
-        </StandardTooltipContent>
-      </Tooltip>
+    <td className={'p-0'}>
+      <TooltipWrapper
+        tooltipContent={
+          <span>
+            <strong>{ratingCategoryLabelAccessor(rating)}</strong>: click to
+            edit.
+          </span>
+        }
+      >
+        <button
+          className={` w-full h-full hover:bg-opacity-50 bg-${
+            HUE_OPTIONS[ratingValueAccessor(rating)].id
+          }-400 cursor-pointer`}
+          onClick={() => {
+            cachedFunction({ rating, elementWithRating: ratedElement });
+          }}
+        >
+          {ratingValueAccessor(rating)}
+        </button>
+      </TooltipWrapper>
     </td>
   );
 }
