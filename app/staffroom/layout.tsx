@@ -72,11 +72,11 @@ export default async function StaffroomLayout({
         ))
   );
 
-  const providerRoleStringMap = await convertListToStringMap(
+  const providerRoleStringMap = convertListToStringMap(
     teacherList,
     IdStringFromNumberAccessor
   );
-  const workTaskTypeStringMap = await convertListToStringMap(
+  const workTaskTypeStringMap = convertListToStringMap(
     workTaskTypeDtos,
     IdStringFromNumberAccessor
   );
@@ -99,10 +99,11 @@ export default async function StaffroomLayout({
             <ProviderRoleSkillEditContextProvider>
               <ProviderRoleColorCodingContextProvider>
                 <CalendarRangeContextProvider>
-                  <div className="flex w-full px-2">
+                  <div className="flex w-[100%] gap-2">
                     <ToolCardContextProvider>
                       <TeachersToolCard />
                     </ToolCardContextProvider>
+
                     {children}
                   </div>
                 </CalendarRangeContextProvider>

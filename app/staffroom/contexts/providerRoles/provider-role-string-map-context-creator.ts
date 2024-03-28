@@ -1,3 +1,4 @@
+'use client';
 import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 import { useContext } from 'react';
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';

@@ -11,6 +11,7 @@ import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/cont
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/use-memoized-selection-from-list-and-string-map';
 import { useSelectiveContextRatingListAccessor } from '../../../premises/classroom-suitability/use-selective-context-rating-list-accessor';
+import { Card } from '@tremor/react';
 
 export default function SkillsPage({}: {}) {
   const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
@@ -44,17 +45,19 @@ export default function SkillsPage({}: {}) {
   }
 
   return (
-    <RatingTable
-      ratedElements={providerRoleDtos}
-      ratingCategories={allWorkTaskTypes}
-      ratingCategoryDescriptor={'Skill'}
-    >
-      <RatingTableBody
-        elementsWithRatings={providerRoleDtos}
-        listAccessor={selectiveContextListAccessor}
-        elementIdAccessor={IdStringFromNumberAccessor}
-        ratingEditContext={SkillEditContext}
-      />
-    </RatingTable>
+    <Card className={'max-w-[50%] p-2 m-0'}>
+      <div className={'m-2 overflow-auto'}>
+        <RatingTable
+          ratedElements={providerRoleDtos}
+          ratingCategories={allWorkTaskTypes}
+          ratingCategoryDescriptor={'Skill'}
+        >
+          <RatingTableBody
+            elementsWithRatings={providerRoleDtos}
+            elementIdAccessor={IdStringFromNumberAccessor}
+          />
+        </RatingTable>
+      </div>
+    </Card>
   );
 }

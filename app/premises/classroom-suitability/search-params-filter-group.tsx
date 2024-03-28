@@ -16,7 +16,7 @@ export default function SearchParamsFilterGroup({
   unsavedContextKey: string;
 } & PropsWithChildren) {
   return (
-    <Card className={'max-w-[25%]'}>
+    <Card className={'max-w-[25%] w-1/4'}>
       <SearchParamsContextProvider>
         <ApplySearchParams unsavedContextKey={unsavedContextKey} />
         {children}

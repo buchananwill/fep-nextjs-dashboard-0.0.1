@@ -33,23 +33,14 @@ export default async function TeachersLayout({
         <KnowledgeLevelContextProvider
           knowledgeLevels={kLevels || ObjectPlaceholder}
         >
-          <div className={'flex w-full'}>
-            <Card className={'max-w-[75%] max-h-[75vh] p-0'}>
-              <div
-                className={
-                  'max-w-full max-h-full overflow-auto box-border border-8 border-transparent'
-                }
-              >
-                {children}
-              </div>
-            </Card>
-            <SearchParamsFilterGroup
-              unsavedContextKey={UnsavedProviderRoleChanges}
-            >
-              <KnowledgeDomainFilterSelector />
-              <KnowledgeLevelFilterSelector />
-            </SearchParamsFilterGroup>
-          </div>
+          {children}
+
+          <SearchParamsFilterGroup
+            unsavedContextKey={UnsavedProviderRoleChanges}
+          >
+            <KnowledgeDomainFilterSelector />
+            <KnowledgeLevelFilterSelector />
+          </SearchParamsFilterGroup>
         </KnowledgeLevelContextProvider>
       </KnowledgeDomainContextProvider>
     </ServiceCategoryContextProvider>
