@@ -57,13 +57,7 @@ const AssetPanelTransformer: PanelTransformer<AssetDto> = ({
     initialValue: assetSuitabilityStringMap[IdStringFromNumberAccessor(data)]
   });
 
-  return (
-    <RatingList
-      data={data}
-      ratingList={suitabilityList}
-      context={AssetSuitabilityEditContext}
-    />
-  );
+  return <RatingList data={data} ratingList={suitabilityList} />;
 };
 
 const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({

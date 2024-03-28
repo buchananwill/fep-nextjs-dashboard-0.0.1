@@ -1,4 +1,5 @@
 import {
+  AccessorFunction,
   RatingCategoryIdAccessor,
   RatingCategoryLabelAccessor,
   RatingListAccessor,
@@ -31,11 +32,18 @@ export function IdAccessor<T extends HasNumberIdDto | HasUuidDto>(element: T) {
   return element.id;
 }
 
-export function IdStringFromNumberAccessor<T extends HasNumberIdDto>(
-  element: T
-): string {
+export function IdStringFromNumberAccessor<
+  T extends HasNumberIdDto | HasUuidDto
+>(element: T): string {
   return element.id.toString();
 }
+
+export const StringMapKeyAccessors = {
+  idAccessor: IdAccessor,
+  idAsString: IdStringFromNumberAccessor
+} as const;
+
+export type AccessorKeys = keyof typeof StringMapKeyAccessors;
 
 export const AssetSuitabilityAccessorFunctions = {
   elementLabelAccessor: assetNameAccessor,

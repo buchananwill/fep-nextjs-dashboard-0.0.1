@@ -1,6 +1,6 @@
 'use client';
-import { Context, PropsWithChildren, useContext } from 'react';
-import { RatingEditContext } from './rating-edit-context';
+import { PropsWithChildren, useContext } from 'react';
+import { GenericRatingEditContext } from './rating-edit-context';
 import { ConfirmActionModal } from '../../modals/confirm-action-modal';
 import { useRatingEditModal } from '../../../hooks/use-rating-edit-modal';
 import { EmptyArray, isNotUndefined } from '../../../../api/main';
@@ -9,13 +9,11 @@ import { RatingStepper } from '../../buttons/rating-stepper';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 
 export function RatedElementRowHeader<R, E>({
-  elementWithRating,
-  ratingEditContext
+  elementWithRating
 }: {
   elementWithRating: E;
-  ratingEditContext: Context<RatingEditContext<R, E>>;
 } & PropsWithChildren) {
-  const retrievedContext = useContext(ratingEditContext);
+  const retrievedContext = useContext(GenericRatingEditContext);
   const {
     elementLabelAccessor,
     elementIdAccessor,

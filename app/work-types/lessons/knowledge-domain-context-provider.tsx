@@ -13,20 +13,18 @@ export interface KnowledgeDomainContextProviderProps extends PropsWithChildren {
   knowledgeDomains: StringMap<KnowledgeDomainDto>;
 }
 
-const Provider = StringMapContextProvider<KnowledgeDomainDto>;
-
 export default function KnowledgeDomainContextProvider({
   children,
   knowledgeDomains
 }: KnowledgeDomainContextProviderProps) {
   return (
-    <Provider
+    <StringMapContextProvider
       initialEntityMap={knowledgeDomains}
       mapKeyAccessor={IdStringFromNumberAccessor}
       mapContext={KnowledgeDomainContext}
       dispatchContext={KnowledgeDomainContextDispatch}
     >
       {children}
-    </Provider>
+    </StringMapContextProvider>
   );
 }

@@ -1,5 +1,4 @@
 'use client';
-import { AssetSuitabilityEditContext } from '../../generic/components/tables/rating/rating-edit-context';
 import RatingTable from '../../generic/components/tables/rating/rating-table';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
@@ -7,10 +6,8 @@ import { useSelectiveContextControllerNumberList } from '../../generic/component
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { Card } from '@tremor/react';
 import { RatingTableBody } from '../../generic/components/tables/rating/rating-table-body';
-import { AssetSuitabilityListSelectiveContext } from '../../contexts/selective-context/selective-context-creators';
 import { useMemoizedSelectionFromListAndStringMap } from './use-memoized-selection-from-list-and-string-map';
 import { EmptyArray } from '../../api/main';
-import { useSelectiveContextRatingListAccessor } from './use-selective-context-rating-list-accessor';
 
 export function AssetSuitabilityTableWrapper() {
   const { workTaskTypeMap } = useWorkTaskTypeContext();
@@ -21,10 +18,6 @@ export function AssetSuitabilityTableWrapper() {
       listenerKey: assetSuitabilityTableWrapperListenerKey,
       initialValue: EmptyArray
     });
-  const selectiveContextListAccessor = useSelectiveContextRatingListAccessor(
-    AssetSuitabilityListSelectiveContext,
-    IdStringFromNumberAccessor
-  );
 
   const assetDtos = useMemoizedSelectionFromListAndStringMap(
     selectedAssetList,
@@ -49,9 +42,7 @@ export function AssetSuitabilityTableWrapper() {
         >
           <RatingTableBody
             elementsWithRatings={assetDtos}
-            listAccessor={selectiveContextListAccessor}
             elementIdAccessor={IdStringFromNumberAccessor}
-            ratingEditContext={AssetSuitabilityEditContext}
           />
         </RatingTable>
       </div>

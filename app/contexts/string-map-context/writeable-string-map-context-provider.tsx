@@ -4,7 +4,7 @@ import {
   StringMapDispatch,
   StringMapReducer
 } from './string-map-reducer';
-import React, { Context, PropsWithChildren, useReducer, useRef } from 'react';
+import React, { Context, PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
@@ -42,7 +42,6 @@ export function WriteableStringMapContextProvider<T>({
   const MapProvider = mapContext.Provider;
   const EntityReducer = StringMapReducer<T>;
   const [currentModels, dispatch] = useReducer(EntityReducer, initialEntityMap);
-  const initialMapRef = useRef(initialEntityMap);
 
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(

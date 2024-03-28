@@ -49,3 +49,6 @@ export const AssetSuitabilityEditContext =
   createContext<RatingEditContext<AssetRoleWorkTaskSuitabilityDto, AssetDto>>(
     defaultContext
   );
+
+export const GenericRatingEditContext =
+  createContext<RatingEditContext<any, any>>(defaultContext);

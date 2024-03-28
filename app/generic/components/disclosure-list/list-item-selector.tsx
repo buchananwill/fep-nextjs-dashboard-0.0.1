@@ -6,6 +6,8 @@ import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
 import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 import { EmptyArray } from '../../../api/main';
 import { PendingOverlay } from '../overlays/pending-overlay';
+import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid';
+import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 
 export default function ListItemSelector({
   itemDescriptor,
@@ -31,32 +33,29 @@ export default function ListItemSelector({
   const isPinned = selectionList.includes(itemId);
 
   const handlePinClick = () => {
-    startTransition(() => {
-      if (isPinned) {
-        const numbers = selectionList.filter(
-          (selectedId) => selectedId !== itemId
-        );
-        setSelectionList(numbers);
-      } else {
-        setSelectionList([...selectionList, itemId]);
-      }
-    });
+    if (isPinned) {
+      const numbers = selectionList.filter(
+        (selectedId) => selectedId !== itemId
+      );
+      setSelectionList(numbers);
+    } else {
+      setSelectionList([...selectionList, itemId]);
+    }
   };
 
   return (
     <Tooltip placement={'right'}>
       <TooltipTrigger>
-        <div
-          className="px-1 flex items-center h-full"
-          // style={{ borderColor: `${current.cssHSLA}` }}
-        >
+        <div className="px-1 flex items-center h-full">
           <PendingOverlay pending={pending} />
-          <FillableButton
-            pinIcon={PinIcons.arrowLeftCircle}
-            isPinned={isPinned}
-            setPinned={handlePinClick}
-            id={`${itemDescriptor}:${itemId}`}
-          />
+
+          <button onClick={handlePinClick} className={'hover:opacity-50'}>
+            {isPinned ? (
+              <StarIconFilled className={'w-5 h-5'}></StarIconFilled>
+            ) : (
+              <StarIconOutline className={'w-5 h-5'}></StarIconOutline>
+            )}
+          </button>
         </div>
       </TooltipTrigger>
 

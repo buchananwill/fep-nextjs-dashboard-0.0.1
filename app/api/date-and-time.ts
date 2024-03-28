@@ -40,7 +40,7 @@ export const DayOfWeekObject = {
   FRIDAY: 'Friday',
   SATURDAY: 'Saturday',
   SUNDAY: 'Sunday'
-};
+} as const;
 export const DayOfWeekArray = [
   'Monday',
   'Tuesday',

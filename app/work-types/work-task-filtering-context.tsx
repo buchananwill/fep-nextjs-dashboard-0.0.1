@@ -18,11 +18,11 @@ export default async function WorkTaskFilteringContext({
   const { data: levels } = await getAllKnowledgeLevels();
   const { data: domains } = await getAllKnowledgeDomains();
 
-  const levelsMap = await convertListToStringMap<KnowledgeLevelDto>(
+  const levelsMap = convertListToStringMap<KnowledgeLevelDto>(
     levels || EmptyArray,
     IdStringFromNumberAccessor
   );
-  const domainsMap = await convertListToStringMap<KnowledgeDomainDto>(
+  const domainsMap = convertListToStringMap<KnowledgeDomainDto>(
     domains || EmptyArray,
     IdStringFromNumberAccessor
   );

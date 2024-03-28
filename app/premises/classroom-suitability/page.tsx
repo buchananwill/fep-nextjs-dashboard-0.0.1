@@ -67,11 +67,11 @@ export default async function Page({
       return { ...asset, assetRoleWorkTaskSuitabilities: sortedSuitabilities };
     });
 
-  const assetStringMap = await convertListToStringMap(
+  const assetStringMap = convertListToStringMap(
     assetDtoList,
     IdStringFromNumberAccessor
   );
-  const wttStringMap = await convertListToStringMap(
+  const wttStringMap = convertListToStringMap(
     workTaskTypeDtos,
     (workTaskTypeDto) => workTaskTypeDto.id.toString()
   );

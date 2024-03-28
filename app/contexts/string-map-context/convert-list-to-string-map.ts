@@ -1,7 +1,7 @@
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { StringMap } from './string-map-reducer';
 
-export async function convertListToStringMap<T>(
+export function convertListToStringMap<T>(
   list: T[],
   accessorFunction: AccessorFunction<T, string>
 ) {

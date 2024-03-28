@@ -1,3 +1,4 @@
+'use client';
 import { useContext } from 'react';
 import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';

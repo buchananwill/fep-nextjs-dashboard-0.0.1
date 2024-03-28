@@ -1,22 +1,20 @@
 'use client';
 
 import { RatingTableCell } from './rating-table-cell';
-import { Context, useContext } from 'react';
-import { RatingEditContext } from './rating-edit-context';
+import { useContext } from 'react';
+import { GenericRatingEditContext } from './rating-edit-context';
 import { EmptyArray } from '../../../../api/main';
 
 export function RatingTableRatings<R, E>({
-  ratedElement,
-  ratingEditContext
+  ratedElement
 }: {
   ratedElement: E;
-  ratingEditContext: Context<RatingEditContext<R, E>>;
 }) {
   const {
     ratingCategoryIdAccessor,
     useRatingListDispatchHook,
     elementIdAccessor
-  } = useContext(ratingEditContext);
+  } = useContext(GenericRatingEditContext);
   const listKey = `${elementIdAccessor(ratedElement)}`;
   const listenerKey = `${listKey}-ratings`;
   const { currentState } = useRatingListDispatchHook(
@@ -32,7 +30,6 @@ export function RatingTableRatings<R, E>({
           key={`${listKey}:${ratingCategoryIdAccessor(rating)}`}
           ratedElement={ratedElement}
           rating={rating}
-          ratingEditContext={ratingEditContext}
         ></RatingTableCell>
       ))}
     </>

@@ -1,3 +1,4 @@
+'use client';
 import { createContext } from 'react';
 import { StringMap, StringMapDispatch } from './string-map-reducer';
 

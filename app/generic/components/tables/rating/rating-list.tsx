@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
-import { RatingEditContext } from './rating-edit-context';
+import {
+  GenericRatingEditContext,
+  RatingEditContext
+} from './rating-edit-context';
 import { GenericButtonProps } from '../../buttons/rename-button';
 import { useRatingEditModalTrigger } from './use-rating-edit-modal-trigger';
 
@@ -17,20 +20,18 @@ function getCompetencyColor(competencyRating: number) {
 }
 
 export function RatingList<R, E>({
-  context,
   ratingList,
   data
 }: {
   data: E;
   ratingList: R[];
-  context: React.Context<RatingEditContext<R, E>>;
 }) {
   const {
     elementIdAccessor,
     ratingCategoryLabelAccessor,
     ratingCategoryIdAccessor,
     ratingValueAccessor
-  } = useContext(context);
+  } = useContext(GenericRatingEditContext);
 
   return (
     <ul className={'divide-y'}>

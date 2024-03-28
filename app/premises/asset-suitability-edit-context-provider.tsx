@@ -1,6 +1,9 @@
 'use client';
 import { RatingEditModal } from '../generic/components/modals/rating-edit-modal';
-import { AssetSuitabilityEditContext } from '../generic/components/tables/rating/rating-edit-context';
+import {
+  AssetSuitabilityEditContext,
+  GenericRatingEditContext
+} from '../generic/components/tables/rating/rating-edit-context';
 import { PropsWithChildren } from 'react';
 import {
   assetRoleWorkTaskSuitabilityIdAccessor,
@@ -37,7 +40,7 @@ export default function AssetSuitabilityEditContextProvider({
   );
 
   return (
-    <AssetSuitabilityEditContext.Provider
+    <GenericRatingEditContext.Provider
       value={{
         confirmRatingValue: confirmRatingValue,
         ratingProducer: suitabilityProducer,
@@ -60,7 +63,7 @@ export default function AssetSuitabilityEditContextProvider({
       >
         {children}
       </RatingEditModal>
-    </AssetSuitabilityEditContext.Provider>
+    </GenericRatingEditContext.Provider>
   );
 }
 

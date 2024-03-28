@@ -12,7 +12,7 @@ export interface StringMapContextProviderProps<T> {
   initialEntityMap: StringMap<T>;
   mapContext: Context<StringMap<T>>;
   dispatchContext: Context<StringMapDispatch<T>>;
-  mapKeyAccessor: AccessorFunction<T, string>;
+  mapKeyAccessor?: AccessorFunction<T, string>;
 }
 
 export function StringMapContextProvider<T>({
@@ -20,7 +20,7 @@ export function StringMapContextProvider<T>({
   dispatchContext,
   mapContext,
   children,
-  mapKeyAccessor
+  mapKeyAccessor = (object) => ''
 }: StringMapContextProviderProps<T> & PropsWithChildren) {
   const DispatchProvider = dispatchContext.Provider;
   const MapProvider = mapContext.Provider;

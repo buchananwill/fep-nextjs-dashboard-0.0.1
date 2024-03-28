@@ -1,6 +1,6 @@
 'use client';
-import { Context, useContext } from 'react';
-import { RatingEditContext } from './rating-edit-context';
+import { useContext } from 'react';
+import { GenericRatingEditContext } from './rating-edit-context';
 import { HUE_OPTIONS } from '../../color/color-context';
 import { useRatingEditModalTrigger } from './use-rating-edit-modal-trigger';
 import { TooltipWrapper } from './tooltip-wrapper';
@@ -8,20 +8,18 @@ import { TooltipWrapper } from './tooltip-wrapper';
 interface RatingTableCellProps<R, E> {
   rating: R;
   ratedElement: E;
-  ratingEditContext: Context<RatingEditContext<R, E>>;
 }
 
 export function RatingTableCell<R, E>({
   rating,
-  ratedElement,
-  ratingEditContext
+  ratedElement
 }: RatingTableCellProps<R, E>) {
   const {
     ratingCategoryLabelAccessor,
     ratingValueAccessor,
     elementIdAccessor,
     ratingCategoryIdAccessor
-  } = useContext(ratingEditContext);
+  } = useContext(GenericRatingEditContext);
 
   const cachedFunction = useRatingEditModalTrigger({
     listenerKey: `cell:${elementIdAccessor(
