@@ -40,7 +40,6 @@ export default function TupleSelector({
   selectionDescriptor: string;
   optionTransformer?: OptionTransformer;
 }) {
-  console.log(selectionList);
   return (
     <Listbox
       value={selectedState}

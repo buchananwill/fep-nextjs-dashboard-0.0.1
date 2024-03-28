@@ -40,7 +40,6 @@ export function RatedElementRowHeader<R, E>({
     if (!isNotUndefined(rating) || !isNotUndefined(element)) return;
     const ratings = currentState.map((rating) => ratingProducer(rating, value));
 
-    console.log(ratings);
     dispatchWithoutControl(ratings);
     addUnsavedChange(elementIdAccessor(elementWithRating).toString());
   };

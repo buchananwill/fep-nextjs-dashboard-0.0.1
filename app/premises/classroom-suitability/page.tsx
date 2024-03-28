@@ -22,7 +22,11 @@ import AssetRoleSuitabilityStringMapContextProvider from '../asset-role-suitabil
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { parseTen } from '../../api/date-and-time';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/data-not-found-card';
-import AssetRoleSuitabilityFilterGroup from './asset-role-suitability-filter-group';
+import SearchParamsFilterGroup from './search-params-filter-group';
+import { UnsavedAssetChanges } from '../asset-string-map-context-creator';
+import { KnowledgeDomainFilterSelector } from './knowledge-domain-filter-selector';
+import { KnowledgeLevelFilterSelector } from './knowledge-level-filter-selector';
+import { AssetRootIdFilterSelector } from './asset-root-id-filter-selector';
 
 export default async function Page({
   searchParams: { rootId, ...workTaskParams }
@@ -79,8 +83,6 @@ export default async function Page({
     })
     .map(parseTen);
 
-  console.log(assetIds, workTaskTypeIds);
-
   const { data: assetSuitabilities } = await getAssetSuitabilities(
     assetIds,
     workTaskTypeIds
@@ -112,7 +114,11 @@ export default async function Page({
               </ToolCardContextProvider>
 
               <AssetSuitabilityTableWrapper />
-              <AssetRoleSuitabilityFilterGroup />
+              <SearchParamsFilterGroup unsavedContextKey={UnsavedAssetChanges}>
+                <KnowledgeDomainFilterSelector />
+                <KnowledgeLevelFilterSelector />
+                <AssetRootIdFilterSelector />
+              </SearchParamsFilterGroup>
             </div>
           </AssetSuitabilityEditContextProvider>
         </AssetRoleSuitabilityStringMapContextProvider>

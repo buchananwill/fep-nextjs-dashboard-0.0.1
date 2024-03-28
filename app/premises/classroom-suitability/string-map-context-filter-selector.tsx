@@ -49,7 +49,7 @@ export function StringMapContextFilterSelector<T>({
   }, [idAccessor, labelAccessor, sortFunction, stringMapTypeT]);
   const { searchParamsMap, dispatchSearchParams } = useSearchParamsContext();
   const currentSelection = searchParamsMap[idSearchParamKey];
-  console.log(selectionList, stringMapTypeT);
+
   const updateSelectedState = useCallback(
     (selection: NameIdStringTuple | null) => {
       if (isNotNull(selection)) {

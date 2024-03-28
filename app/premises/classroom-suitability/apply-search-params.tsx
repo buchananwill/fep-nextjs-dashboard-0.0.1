@@ -1,15 +1,18 @@
 'use client';
 import { useSearchParamsContext } from '../../contexts/string-map-context/search-params-context-creator';
 import { isNotNull, isNotUndefined } from '../../api/main';
-import { startTransition, useTransition } from 'react';
+import { useTransition } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { PendingOverlay } from '../../generic/components/overlays/pending-overlay';
-import ProtectedNavigation, {
-  ProtectedNavigationProps
-} from '../../navbar/protected-navigation';
-import { UnsavedAssetChanges } from '../asset-string-map-context-creator';
+import ProtectedNavigation from '../../navbar/protected-navigation';
 
-export function ApplySearchParams({ buttonLabel }: { buttonLabel?: string }) {
+export function ApplySearchParams({
+  buttonLabel,
+  unsavedContextKey
+}: {
+  buttonLabel?: string;
+  unsavedContextKey: string;
+}) {
   const { searchParamsMap } = useSearchParamsContext();
   const pathname = usePathname();
   const { push } = useRouter();
@@ -32,7 +35,7 @@ export function ApplySearchParams({ buttonLabel }: { buttonLabel?: string }) {
     <ProtectedNavigation
       onConfirm={handleApplyParams}
       className={'btn'}
-      unsavedContextKey={UnsavedAssetChanges}
+      unsavedContextKey={unsavedContextKey}
       unsavedListenerKey={'apply-params'}
     >
       <PendingOverlay pending={pending}></PendingOverlay>

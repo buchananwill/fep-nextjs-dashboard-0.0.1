@@ -19,7 +19,6 @@ export default function KnowledgeDomainContextProvider({
   children,
   knowledgeDomains
 }: KnowledgeDomainContextProviderProps) {
-  console.log(knowledgeDomains);
   return (
     <Provider
       initialEntityMap={knowledgeDomains}

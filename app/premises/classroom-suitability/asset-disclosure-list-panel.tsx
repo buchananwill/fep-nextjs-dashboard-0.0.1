@@ -83,7 +83,6 @@ const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
 
   useEffect(() => {
     if (stringMapFromContext.current !== assetSuitabilityStringMapElement) {
-      console.log('Syncing props with context');
       dispatchUpdate({ contextKey, value: assetSuitabilityStringMapElement });
       stringMapFromContext.current = assetSuitabilityStringMapElement;
     }
