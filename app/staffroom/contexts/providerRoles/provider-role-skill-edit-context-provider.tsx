@@ -50,6 +50,9 @@ export default function ProviderRoleSkillEditContextProvider({
       value={{
         useRatingListDispatchHook: useWorkTaskCompetencyListDispatch,
         confirmRatingValue: confirmRatingValue,
+        ratingProducer: skillProducer,
+        unsavedChangesKey: UnsavedProviderRoleChanges,
+        unsavedChangesListKey: UnsavedProviderRoleChanges,
         ...SkillEditAccessorFunctions
       }}
     >

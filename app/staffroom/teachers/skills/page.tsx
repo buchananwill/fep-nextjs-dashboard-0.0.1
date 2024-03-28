@@ -53,7 +53,6 @@ export default function SkillsPage({}: {}) {
         elementsWithRatings={providerRoleDtos}
         listAccessor={selectiveContextListAccessor}
         elementIdAccessor={IdStringFromNumberAccessor}
-        elementLabelAccessor={SkillEditAccessorFunctions.elementLabelAccessor}
         ratingEditContext={SkillEditContext}
       />
     </RatingTable>

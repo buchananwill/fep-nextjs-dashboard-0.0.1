@@ -8,6 +8,7 @@ import {
 import { ObjectPlaceholder } from '../../generic/components/selective-context/selective-context-manager-function';
 import KnowledgeDomainContextProvider from '../../work-types/lessons/knowledge-domain-context-provider';
 import KnowledgeLevelContextProvider from '../../work-types/lessons/knowledge-level-context-provider';
+import WorkTaskFilteringContext from '../../work-types/work-task-filtering-context';
 
 export default async function TeachersLayout({
   children
@@ -26,11 +27,6 @@ export default async function TeachersLayout({
         <KnowledgeLevelContextProvider
           knowledgeLevels={kLevels || ObjectPlaceholder}
         >
-          {/*<ServiceCategoryContextInit*/}
-          {/*  serviceCategories={EmptyArray}*/}
-          {/*  knowledgeLevels={kLevels}*/}
-          {/*  knowledgeDomains={kDomains}*/}
-          {/*/>*/}
           <div className={'flex w-full'}>
             <Card className={'max-w-[75%] max-h-[75vh] p-0'}>
               <div
