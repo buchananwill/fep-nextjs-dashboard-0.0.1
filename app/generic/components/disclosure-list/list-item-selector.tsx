@@ -1,11 +1,9 @@
 'use client';
-import React, { useEffect, useTransition } from 'react';
-import { FillableButton, PinIcons } from '../buttons/fillable-button';
+import React from 'react';
 import { useSelectiveContextDispatchNumberList } from '../selective-context/selective-context-manager-number-list';
 import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
 import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 import { EmptyArray } from '../../../api/main';
-import { PendingOverlay } from '../overlays/pending-overlay';
 import { StarIcon as StarIconFilled } from '@heroicons/react/24/solid';
 import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 
@@ -28,7 +26,6 @@ export default function ListItemSelector({
     listenerKey: selectorListenerKey,
     initialValue: EmptyArray
   });
-  const [pending, startTransition] = useTransition();
 
   const isPinned = selectionList.includes(itemId);
 
@@ -47,8 +44,6 @@ export default function ListItemSelector({
     <Tooltip placement={'right'}>
       <TooltipTrigger>
         <div className="px-1 flex items-center h-full">
-          <PendingOverlay pending={pending} />
-
           <button onClick={handlePinClick} className={'hover:opacity-50'}>
             {isPinned ? (
               <StarIconFilled className={'w-5 h-5'}></StarIconFilled>
