@@ -6,7 +6,7 @@ import { useRatingEditModal } from '../../../hooks/use-rating-edit-modal';
 import { EmptyArray, isNotUndefined } from '../../../../api/main';
 import { useUnsavedListContext } from '../../../hooks/selective-context/use-unsaved-list-context';
 import { RatingStepper } from '../../buttons/rating-stepper';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import { ArrowRightIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 
 export function RatedElementRowHeader<R, E>({
   elementWithRating
@@ -59,14 +59,14 @@ export function RatedElementRowHeader<R, E>({
     <>
       <button
         className={
-          'btn rounded-none w-full h-full px-1 btn-xs text-left flex justify-between'
+          'btn rounded-none w-full h-full px-1 btn-xs text-left flex justify-between focus-visible:outline-offset-0 focus-visible:outline-1'
         }
         onClick={() =>
           triggerModal({ elementWithRating, rating: currentState[0] })
         }
       >
         {elementLabelAccessor(elementWithRating)}
-        <PencilSquareIcon className={'w-4 h-4 '}></PencilSquareIcon>
+        <ArrowRightIcon className={'w-4 h-4 '}></ArrowRightIcon>
       </button>
       <ConfirmActionModal
         show={show}
