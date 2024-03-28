@@ -1,5 +1,5 @@
 import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import { ColorCoding } from '../../../generic/components/color/color-coding-context';
 import {
   BASE_HSL,
@@ -14,9 +14,13 @@ import {
   TooltipTrigger
 } from '../../../generic/components/tooltips/tooltip';
 import { StandardTooltipContent } from '../../../generic/components/tooltips/standard-tooltip-content';
+import { useAssetSuitabilityStringMapContext } from '../../../premises/asset-suitability-context-creator';
+import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
+import { useAssetSuitabilityListController } from '../../../contexts/selective-context/asset-suitability-list-selective-context-provider';
+import { useWorkTaskCompetencyListStringMapContext } from '../skills/work-task-competency-context-creator';
 
 export function ProviderRoleLabel({
-  data: { partyName, knowledgeDomainName, id, workTaskCompetencyDtoList },
+  data: { partyName, knowledgeDomainName, id },
   children
 }: {
   data: ProviderRoleDto;
@@ -28,11 +32,30 @@ export function ProviderRoleLabel({
   const { setHslaColorState } = useContext(HslColorDispatchContext);
   const hslaColorState = useContext(HslColorContext);
 
-  useWorkTaskCompetencyListController({
-    contextKey: `${id}`,
-    listenerKey: `teacher-label`,
-    initialValue: workTaskCompetencyDtoList
+  const { workTaskCompetencyListStringMap } =
+    useWorkTaskCompetencyListStringMapContext();
+  const workTaskCompetencyStringMapElement =
+    workTaskCompetencyListStringMap[id.toString()];
+  const stringMapFromContext = useRef(workTaskCompetencyStringMapElement);
+
+  const contextKey = useMemo(() => `${id}`, [id]);
+  const { dispatchUpdate } = useWorkTaskCompetencyListController({
+    contextKey: contextKey,
+    listenerKey: 'provider-role-label',
+    initialValue: workTaskCompetencyStringMapElement
   });
+
+  useEffect(() => {
+    if (stringMapFromContext.current !== workTaskCompetencyStringMapElement) {
+      dispatchUpdate({ contextKey, value: workTaskCompetencyStringMapElement });
+      stringMapFromContext.current = workTaskCompetencyStringMapElement;
+    }
+  }, [
+    stringMapFromContext,
+    dispatchUpdate,
+    workTaskCompetencyStringMapElement,
+    contextKey
+  ]);
 
   useEffect(() => {
     const hueId = colorCodingStateElement?.hue.id || 'gray';

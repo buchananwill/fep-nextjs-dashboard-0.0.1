@@ -1,63 +1,82 @@
-'use client';
-import RatingTable from '../../../generic/components/tables/rating/rating-table';
-import { useContext, useMemo } from 'react';
-import { ProviderRoleSelectionContext } from '../../contexts/providerRoles/provider-role-selection-context';
-import { SkillEditContext } from '../../../generic/components/tables/rating/rating-edit-context';
-import { SkillEditAccessorFunctions } from './rating-table-accessor-functions';
-import { RatingTableBody } from '../../../generic/components/tables/rating/rating-table-body';
+import { WorkTaskTypeContextProvider } from '../../../curriculum/delivery-models/contexts/work-task-type-context-provider';
+import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
+import SkillTableWrapper from './skill-table-wrapper';
+import { convertListToStringMap } from '../../../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
-import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
-import { useWorkTaskTypeContext } from '../../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
-import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/use-memoized-selection-from-list-and-string-map';
-import { useSelectiveContextRatingListAccessor } from '../../../premises/classroom-suitability/use-selective-context-rating-list-accessor';
-import { Card } from '@tremor/react';
+import { EmptyArray, isNotUndefined } from '../../../api/main';
+import ProviderRoleSkillEditContextProvider from '../../contexts/providerRoles/provider-role-skill-edit-context-provider';
+import {
+  getTeachers,
+  getWorkTaskCompetencies
+} from '../../../api/actions/provider-roles';
+import { getWorkTaskTypeIdsAlphabetical } from '../../../premises/classroom-suitability/get-work-task-type-ids-alphabetical';
+import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
+import { parseTen } from '../../../api/date-and-time';
+import WorkTaskCompetencyStringMapContextProvider, {
+  WorkTaskCompetencyListKeyAccessor
+} from './work-task-competency-context-provider';
+import { TeachersToolCard } from '../../teachers-tool-card';
+import ToolCardContextProvider from '../../../generic/components/tool-card/tool-card-context-provider';
+import React from 'react';
+import ProviderRoleStringMapContextProvider from '../../contexts/providerRoles/provider-role-string-map-context-provider';
 
-export default function SkillsPage({}: {}) {
-  const { providerRoleDtoStringMap } = useProviderRoleStringMapContext();
-  const { selectedProviders } = useContext(ProviderRoleSelectionContext);
-  const { workTaskTypeMap } = useWorkTaskTypeContext();
+export default async function SkillsPage({
+  searchParams
+}: {
+  searchParams: {
+    serviceCategoryDto?: string;
+    knowledgeDomain?: string;
+    knowledgeLevelOrdinal?: string;
+  };
+}) {
+  const { data: providerRoles } = await getTeachers();
 
-  const idList = useMemo(() => {
-    return selectedProviders.map((tuple) => tuple.id);
-  }, [selectedProviders]);
+  if (!isNotUndefined(providerRoles))
+    return <DataNotFoundCard>No Teachers!</DataNotFoundCard>;
 
-  const providerRoleDtos = useMemoizedSelectionFromListAndStringMap(
-    idList,
-    providerRoleDtoStringMap
-  );
+  const { data: workTaskTypeDtos } = await getWorkTaskTypes(searchParams);
 
-  const allWorkTaskTypes = Object.values(workTaskTypeMap).sort((wtt1, wtt2) =>
-    wtt1.name.localeCompare(wtt2.name)
-  );
-
-  const selectiveContextListAccessor = useSelectiveContextRatingListAccessor(
-    WorkTaskCompetencyListSelectiveContext,
+  const workTaskTypeStringMap = convertListToStringMap(
+    workTaskTypeDtos || EmptyArray,
     IdStringFromNumberAccessor
   );
 
-  if (Object.keys(providerRoleDtoStringMap).length === 0) {
+  const providerRoleStringMap = convertListToStringMap(
+    providerRoles,
+    IdStringFromNumberAccessor
+  );
+
+  const workTaskTypeIdsAlphabetical = getWorkTaskTypeIdsAlphabetical(
+    workTaskTypeStringMap
+  );
+  const providerRoleIds = Object.keys(providerRoleStringMap).map(parseTen);
+
+  const { data: workTaskCompetencies } = await getWorkTaskCompetencies(
+    providerRoleIds,
+    workTaskTypeIdsAlphabetical
+  );
+
+  if (!isNotUndefined(workTaskCompetencies)) {
     return (
-      <div className={'w-full h-fit bg-gray-400 text-black rounded-lg p-2'}>
-        No teachers.
-      </div>
+      <DataNotFoundCard>No work task competencies found.</DataNotFoundCard>
     );
   }
-
   return (
-    <Card className={'max-w-[50%] p-2 m-0'}>
-      <div className={'m-2 overflow-auto'}>
-        <RatingTable
-          ratedElements={providerRoleDtos}
-          ratingCategories={allWorkTaskTypes}
-          ratingCategoryDescriptor={'Skill'}
+    <WorkTaskTypeContextProvider entityMap={workTaskTypeStringMap}>
+      <WorkTaskCompetencyStringMapContextProvider
+        competencyLists={workTaskCompetencies.table}
+      >
+        <ProviderRoleStringMapContextProvider
+          providerRoleStringMap={providerRoleStringMap}
         >
-          <RatingTableBody
-            elementsWithRatings={providerRoleDtos}
-            elementIdAccessor={IdStringFromNumberAccessor}
-          />
-        </RatingTable>
-      </div>
-    </Card>
+          <ProviderRoleSkillEditContextProvider>
+            <ToolCardContextProvider>
+              <TeachersToolCard />
+            </ToolCardContextProvider>
+            <SkillTableWrapper />
+          </ProviderRoleSkillEditContextProvider>
+        </ProviderRoleStringMapContextProvider>
+      </WorkTaskCompetencyStringMapContextProvider>
+    </WorkTaskTypeContextProvider>
   );
 }

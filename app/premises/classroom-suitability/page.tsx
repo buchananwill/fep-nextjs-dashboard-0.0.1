@@ -27,6 +27,7 @@ import { UnsavedAssetChanges } from '../asset-string-map-context-creator';
 import { KnowledgeDomainFilterSelector } from './knowledge-domain-filter-selector';
 import { KnowledgeLevelFilterSelector } from './knowledge-level-filter-selector';
 import { AssetRootIdFilterSelector } from './asset-root-id-filter-selector';
+import { getWorkTaskTypeIdsAlphabetical } from './get-work-task-type-ids-alphabetical';
 
 export default async function Page({
   searchParams: { rootId, ...workTaskParams }
@@ -77,11 +78,7 @@ export default async function Page({
   );
 
   const assetIds = Object.keys(assetStringMap).map(parseTen);
-  const workTaskTypeIds = Object.keys(wttStringMap)
-    .sort((key1, key2) => {
-      return wttStringMap[key1].name.localeCompare(wttStringMap[key2].name);
-    })
-    .map(parseTen);
+  const workTaskTypeIds = getWorkTaskTypeIdsAlphabetical(wttStringMap);
 
   const { data: assetSuitabilities } = await getAssetSuitabilities(
     assetIds,

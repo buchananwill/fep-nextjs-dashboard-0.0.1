@@ -19,7 +19,7 @@ export function RatingStepper({
         <MinusIcon className=" h-4 w-4"></MinusIcon>
       </button>
       <div
-        className={`w-7 rounded-md px-2 bg-${HUE_OPTIONS[ratingValue].id}-400 justify-center text-center`}
+        className={`flex w-7 rounded-md px-2 bg-${HUE_OPTIONS[ratingValue].id}-400 justify-center text-center items-center`}
       >
         {ratingValue}
       </div>

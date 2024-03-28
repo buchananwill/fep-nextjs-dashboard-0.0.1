@@ -68,6 +68,7 @@ export function WriteableStringMapContextProvider<T>({
   async function handleCommit() {
     if (commitServerAction === undefined) return;
     const set = new Set<string>();
+
     currentState.forEach((key) => set.add(key));
     const keyArray: string[] = [];
     set.forEach((element) => keyArray.push(element));

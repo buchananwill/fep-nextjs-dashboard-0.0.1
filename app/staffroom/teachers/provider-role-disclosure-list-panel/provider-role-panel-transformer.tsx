@@ -3,7 +3,10 @@ import { useWorkTaskCompetencyListListener } from '../../../contexts/selective-c
 import { EmptyArray } from '../../../api/main';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 import { RatingList } from '../../../generic/components/tables/rating/rating-list';
-import { SkillEditContext } from '../../../generic/components/tables/rating/rating-edit-context';
+import {
+  GenericRatingEditContext,
+  SkillEditContext
+} from '../../../generic/components/tables/rating/rating-edit-context';
 import React from 'react';
 
 export function ProviderRolePanelTransformer(props: { data: ProviderRoleDto }) {
@@ -15,11 +18,5 @@ export function ProviderRolePanelTransformer(props: { data: ProviderRoleDto }) {
     initialValue: EmptyArray as WorkTaskCompetencyDto[]
   });
 
-  return (
-    <RatingList
-      data={data}
-      context={SkillEditContext}
-      ratingList={currentState}
-    />
-  );
+  return <RatingList data={data} ratingList={currentState} />;
 }

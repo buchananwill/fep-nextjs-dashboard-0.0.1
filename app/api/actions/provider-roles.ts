@@ -4,10 +4,12 @@ import { API_BASE_URL } from '../main';
 import {
   getWithoutBody,
   patchEntityList,
-  postEntitiesWithDifferentReturnType
+  postEntitiesWithDifferentReturnType,
+  postIntersectionTableRequest
 } from './template-actions';
 import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
 import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema';
+import { WorkTaskCompetencyDto } from '../dtos/WorkTaskCompetencyDtoSchema';
 
 const url = `${API_BASE_URL}/providers`;
 
@@ -27,4 +29,15 @@ export async function updateTeachers(
 
 export async function getTeachers(): ActionResponsePromise<ProviderRoleDto[]> {
   return getWithoutBody(teachersUrl);
+}
+
+export async function getWorkTaskCompetencies(
+  providerRoleIdList: number[],
+  workTaskTypeIdList: number[]
+) {
+  return postIntersectionTableRequest<number, number, WorkTaskCompetencyDto>({
+    idsForHasIdTypeT: providerRoleIdList,
+    idsForHasIdTypeU: workTaskTypeIdList,
+    url: `${API_BASE_URL}/providers/workTaskCompetencies/intersectionTable`
+  });
 }

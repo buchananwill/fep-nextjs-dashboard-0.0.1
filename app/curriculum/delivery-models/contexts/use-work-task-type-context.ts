@@ -1,3 +1,4 @@
+'use client';
 import { useContext } from 'react';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
