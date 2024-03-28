@@ -6,6 +6,11 @@ import {
   getAllKnowledgeLevels
 } from '../api/actions/service-categories';
 import { ObjectPlaceholder } from '../generic/components/selective-context/selective-context-manager-function';
+import { convertListToStringMap } from '../contexts/string-map-context/convert-list-to-string-map';
+import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
+import { EmptyArray } from '../api/main';
+import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
+import { KnowledgeDomainDto } from '../api/dtos/KnowledgeDomainDtoSchema';
 
 export default async function WorkTaskFilteringContext({
   children
@@ -13,13 +18,18 @@ export default async function WorkTaskFilteringContext({
   const { data: levels } = await getAllKnowledgeLevels();
   const { data: domains } = await getAllKnowledgeDomains();
 
+  const levelsMap = await convertListToStringMap<KnowledgeLevelDto>(
+    levels || EmptyArray,
+    IdStringFromNumberAccessor
+  );
+  const domainsMap = await convertListToStringMap<KnowledgeDomainDto>(
+    domains || EmptyArray,
+    IdStringFromNumberAccessor
+  );
+
   return (
-    <KnowledgeDomainContextProvider
-      knowledgeDomains={domains || ObjectPlaceholder}
-    >
-      <KnowledgeLevelContextProvider
-        knowledgeLevels={levels || ObjectPlaceholder}
-      >
+    <KnowledgeDomainContextProvider knowledgeDomains={domainsMap}>
+      <KnowledgeLevelContextProvider knowledgeLevels={levelsMap}>
         {children}
       </KnowledgeLevelContextProvider>
     </KnowledgeDomainContextProvider>

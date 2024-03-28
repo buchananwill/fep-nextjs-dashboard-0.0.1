@@ -4,6 +4,20 @@ import { KnowledgeLevelDto } from '../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../api/dtos/ServiceCategoryDtoSchema';
 import { createStringMapContext } from '../../contexts/string-map-context/context-creator';
 
+export const ServiceCategoryContextKeys = [
+  'categoryMap',
+  'domainMap',
+  'levelMap'
+] as const;
+export const ServiceCategoryDispatchKeys = [
+  'dispatchCategories',
+  'dispatchDomains',
+  'dispatchLevels'
+] as const;
+
+export type ServiceCategoryContextKey =
+  (typeof ServiceCategoryContextKeys)[number];
+
 export function useServiceCategoryContext() {
   const categoryMap = useContext(ServiceCategoryContext);
   const dispatchCategories = useContext(ServiceCategoryContextDispatch);

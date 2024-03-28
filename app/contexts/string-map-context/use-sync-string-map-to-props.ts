@@ -1,17 +1,23 @@
+'use client';
 import { MapDispatch, MapDispatchBatch, StringMap } from './string-map-reducer';
-import { Dispatch, MutableRefObject, useEffect } from 'react';
+import { Dispatch, MutableRefObject, useEffect, useRef } from 'react';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
+import { isNotUndefined } from '../../api/main';
 
 export function useSyncStringMapToProps<T>(
   initialEntityMap: StringMap<T>,
-  initialMapRef: MutableRefObject<StringMap<T>>,
   dispatch: Dispatch<MapDispatch<T> | MapDispatchBatch<T>>,
   currentModels: StringMap<T>,
   mapKeyAccessor: AccessorFunction<T, string>
 ) {
+  const initialMapRef = useRef(initialEntityMap);
+
   useEffect(() => {
-    if (initialMapRef.current !== initialEntityMap) {
+    if (
+      initialMapRef.current !== initialEntityMap &&
+      isNotUndefined(dispatch)
+    ) {
       const payloadArray = getPayloadArray(
         Object.values(currentModels),
         mapKeyAccessor

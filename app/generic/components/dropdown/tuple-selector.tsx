@@ -1,8 +1,9 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { Fragment } from 'react';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
+import { isNotNull } from '../../../api/main';
 
 export type OptionTransformer = React.FC<OptionTransformerProps>;
 
@@ -33,12 +34,13 @@ export default function TupleSelector({
   selectionDescriptor,
   optionTransformer: OptionTransformerComponent
 }: {
-  selectedState: NameIdStringTuple;
+  selectedState: NameIdStringTuple | null;
   selectionList: NameIdStringTuple[];
-  updateSelectedState: (value: NameIdStringTuple) => void;
+  updateSelectedState: (value: NameIdStringTuple | null) => void;
   selectionDescriptor: string;
   optionTransformer?: OptionTransformer;
 }) {
+  console.log(selectionList);
   return (
     <Listbox
       value={selectedState}
@@ -46,21 +48,41 @@ export default function TupleSelector({
       onChange={(value) => updateSelectedState(value)}
     >
       <div className="relative mt-1">
-        <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-          <span className="block truncate">
-            <strong>
-              {selectionDescriptor}
-              {': '}
-            </strong>
-            {selectedState.name != '' ? selectedState.name : 'No Selection'}
-          </span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <div
+          className={
+            'flex items-center relative w-full cursor-default rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'
+          }
+        >
+          <Listbox.Button className="grow text-left h-full p-2">
+            <span className="block truncate">
+              <strong>
+                {selectionDescriptor}
+                {': '}
+              </strong>
+              {isNotNull(selectedState) ? selectedState.name : 'No Selection'}
+            </span>
+            <span></span>
+          </Listbox.Button>
+          <button
+            className={`btn btn-ghost p-0 rounded-full btn-square  btn-sm ${
+              isNotNull(selectedState) ? '' : 'opacity-0'
+            }`}
+            onClick={() => updateSelectedState(null)}
+            disabled={!isNotNull(selectedState)}
+          >
+            <XCircleIcon
+              className={`w-5 h-5 ${
+                isNotNull(selectedState) ? '' : 'opacity-0'
+              }`}
+            ></XCircleIcon>
+          </button>
+          <span className="pointer-events-none flex items-center pr-2">
             <ChevronUpDownIcon
               className="h-5 w-5 text-gray-400"
               aria-hidden="true"
             />
           </span>
-        </Listbox.Button>
+        </div>
         <Transition
           as={Fragment}
           leave="transition ease-in duration-100"

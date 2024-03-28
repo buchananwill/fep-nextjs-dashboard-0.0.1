@@ -9,7 +9,7 @@ import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../../generic/components/tables/dynamic-dimension-timetable';
-import NameIdTupleParamsSelector from '../../../generic/components/dropdown/name-id-tuple-params-selector';
+import StringNameStringIdSearchParamsSelector from '../../../generic/components/dropdown/string-name-string-id-search-params-selector';
 
 export function LessonCycleBuildMetricsCard({
   nameIdStringTuples,
@@ -34,7 +34,7 @@ export function LessonCycleBuildMetricsCard({
         </Button>
       </Link>
       {nameIdStringTuples.length > 0 && (
-        <NameIdTupleParamsSelector
+        <StringNameStringIdSearchParamsSelector
           selectionDescriptor={'Selected Lesson Cycle: '}
           selectedProp={selectedLessonCycle}
           selectionList={nameIdStringTuples}

@@ -17,10 +17,8 @@ export interface StringMapContextProviderProps<T> {
 
 export function StringMapContextProvider<T>({
   initialEntityMap,
-
   dispatchContext,
   mapContext,
-
   children,
   mapKeyAccessor
 }: StringMapContextProviderProps<T> & PropsWithChildren) {
@@ -28,11 +26,9 @@ export function StringMapContextProvider<T>({
   const MapProvider = mapContext.Provider;
   const EntityReducer = StringMapReducer<T>;
   const [currentModels, dispatch] = useReducer(EntityReducer, initialEntityMap);
-  const initialMapRef = useRef(initialEntityMap);
 
   useSyncStringMapToProps(
     initialEntityMap,
-    initialMapRef,
     dispatch,
     currentModels,
     mapKeyAccessor

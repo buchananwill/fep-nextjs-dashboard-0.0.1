@@ -29,26 +29,17 @@ export function AssetSuitabilityTableWrapper() {
     IdStringFromNumberAccessor
   );
 
-  const { currentState: selectedWorkTaskTypeList } =
-    useSelectiveContextControllerNumberList({
-      contextKey: workTaskTypeSelectionListContextKey,
-      listenerKey: assetSuitabilityTableWrapperListenerKey,
-      initialValue: EmptyArray
-    });
   const assetDtos = useMemoizedSelectionFromListAndStringMap(
     selectedAssetList,
     assetDtoStringMap
   );
-  useMemoizedSelectionFromListAndStringMap(
-    selectedWorkTaskTypeList,
-    workTaskTypeMap
-  );
+
   const allWorkTaskTypes = Object.values(workTaskTypeMap).sort((wtt1, wtt2) =>
     wtt1.name.localeCompare(wtt2.name)
   );
 
   return (
-    <Card className={'max-w-[75%] max-h-[75vh] p-0'}>
+    <Card className={'w-full max-w-[50vw] max-h-[75vh] p-0'}>
       <div
         className={
           'max-w-full max-h-full overflow-auto box-border border-8 border-transparent'
@@ -78,5 +69,3 @@ const assetSuitabilityTableWrapperListenerKey =
   'asset-suitability-table-wrapper';
 
 export const AssetSelectionListContextKey = 'asset-selection-list';
-
-const workTaskTypeSelectionListContextKey = 'work-task-type-selection-list';

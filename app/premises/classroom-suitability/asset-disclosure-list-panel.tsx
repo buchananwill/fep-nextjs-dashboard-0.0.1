@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { AssetSelectionListContextKey } from './asset-suitability-table-wrapper';
@@ -18,6 +18,7 @@ import DisclosureListPanel, {
 import ListItemSelector from '../../generic/components/disclosure-list/list-item-selector';
 import { useAssetSuitabilityStringMapContext } from '../asset-suitability-context-creator';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
+import { useSyncStringMapToProps } from '../../contexts/string-map-context/use-sync-string-map-to-props';
 
 export function AssetDisclosureListPanel() {
   const { assetDtoStringMap } = useAssetStringMapContext();
@@ -50,8 +51,6 @@ const AssetPanelTransformer: PanelTransformer<AssetDto> = ({
     initialValue: assetSuitabilityStringMap[IdStringFromNumberAccessor(data)]
   });
 
-  console.log(suitabilityList);
-
   return (
     <RatingList
       data={data}
@@ -65,11 +64,29 @@ const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
   data
 }: TransformerProps<AssetDto>) => {
   const { assetSuitabilityStringMap } = useAssetSuitabilityStringMapContext();
-  const {} = useAssetSuitabilityListController({
-    contextKey: `${data.id}`,
+  const assetSuitabilityStringMapElement =
+    assetSuitabilityStringMap[IdStringFromNumberAccessor(data)];
+  const stringMapFromContext = useRef(assetSuitabilityStringMapElement);
+
+  const contextKey = useMemo(() => `${data.id}`, [data]);
+  const { dispatchUpdate } = useAssetSuitabilityListController({
+    contextKey: contextKey,
     listenerKey: 'classroom-label',
-    initialValue: assetSuitabilityStringMap[IdStringFromNumberAccessor(data)]
+    initialValue: assetSuitabilityStringMapElement
   });
+
+  useEffect(() => {
+    if (stringMapFromContext.current !== assetSuitabilityStringMapElement) {
+      console.log('Syncing props with context');
+      dispatchUpdate({ contextKey, value: assetSuitabilityStringMapElement });
+      stringMapFromContext.current = assetSuitabilityStringMapElement;
+    }
+  }, [
+    stringMapFromContext,
+    dispatchUpdate,
+    assetSuitabilityStringMapElement,
+    contextKey
+  ]);
 
   return <>{data.name}</>;
 };

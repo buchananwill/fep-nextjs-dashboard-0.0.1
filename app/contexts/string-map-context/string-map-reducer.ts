@@ -1,3 +1,4 @@
+'use client';
 import { Dispatch, useReducer } from 'react';
 import { Draft, produce } from 'immer';
 

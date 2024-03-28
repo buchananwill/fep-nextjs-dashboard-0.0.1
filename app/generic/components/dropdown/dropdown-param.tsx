@@ -3,6 +3,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment, useTransition } from 'react';
 import { ArrowRightIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePathname, useRouter } from 'next/navigation';
+import { SpanTruncateEllipsis } from './span-truncate-ellipsis';
 
 interface DropdownParamProps {
   paramOptions: string[];
@@ -84,8 +85,4 @@ export default function DropdownParam({
       </Menu>
     </div>
   );
-}
-
-export function SpanTruncateEllipsis({ children }: { children: string }) {
-  return <span className={'truncate ...'}>{children}</span>;
 }

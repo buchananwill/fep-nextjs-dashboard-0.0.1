@@ -59,7 +59,6 @@ export function WriteableStringMapContextProvider<T>({
 
   useSyncStringMapToProps(
     initialEntityMap,
-    initialMapRef,
     dispatch,
     currentModels,
     mapKeyAccessor

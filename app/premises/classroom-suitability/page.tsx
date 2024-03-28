@@ -22,6 +22,7 @@ import AssetRoleSuitabilityStringMapContextProvider from '../asset-role-suitabil
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { parseTen } from '../../api/date-and-time';
 import { DataNotFoundCard } from '../../timetables/students/[schedule]/data-not-found-card';
+import WorkTaskTypeFilterGroup from './work-task-type-filter-group';
 
 export default async function Page({
   searchParams: { rootName, ...workTaskParams }
@@ -98,7 +99,7 @@ export default async function Page({
       <AssetStringMapContextProvider assetStringMap={assetStringMap}>
         <AssetRoleSuitabilityStringMapContextProvider suitabilityLists={table}>
           <AssetSuitabilityEditContextProvider>
-            <div className={'w-full flex'}>
+            <div className={'w-full flex gap-2'}>
               <ToolCardContextProvider>
                 <ToolCard>
                   <ToolCard.UpperSixth>
@@ -109,7 +110,9 @@ export default async function Page({
                   </ToolCard.LowerFiveSixths>
                 </ToolCard>
               </ToolCardContextProvider>
+
               <AssetSuitabilityTableWrapper />
+              <WorkTaskTypeFilterGroup />
             </div>
           </AssetSuitabilityEditContextProvider>
         </AssetRoleSuitabilityStringMapContextProvider>

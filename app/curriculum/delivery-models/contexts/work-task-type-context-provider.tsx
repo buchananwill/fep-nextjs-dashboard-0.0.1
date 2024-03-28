@@ -1,7 +1,8 @@
 'use client';
 import {
   StringMap,
-  StringMapReducer
+  StringMapReducer,
+  useStringMapReducer
 } from '../../../contexts/string-map-context/string-map-reducer';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
@@ -14,6 +15,8 @@ import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
+import { useSyncStringMapToProps } from '../../../contexts/string-map-context/use-sync-string-map-to-props';
+import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
 export const WorkTaskTypeChangesProviderListener =
@@ -27,6 +30,7 @@ export function WorkTaskTypeContextProvider({
 }: { entityMap: StringMap<WorkTaskTypeDto> } & PropsWithChildren) {
   const WorkTaskTypeReducer = StringMapReducer<WorkTaskTypeDto>;
   const [currentModels, dispatch] = useReducer(WorkTaskTypeReducer, entityMap);
+  // const [currentModels, dispatch] = useStringMapReducer<WorkTaskTypeDto>(entityMap);
   const { currentState: modalOpen, dispatchUpdate } =
     useSelectiveContextControllerBoolean(
       workTaskTypeCommitKey,
@@ -39,6 +43,13 @@ export function WorkTaskTypeContextProvider({
       WorkTaskTypeChangesProviderListener,
       false
     );
+
+  useSyncStringMapToProps(
+    entityMap,
+    dispatch,
+    currentModels,
+    IdStringFromNumberAccessor
+  );
 
   const handleClose = () => {
     dispatchUpdate({ contextKey: workTaskTypeCommitKey, value: false });

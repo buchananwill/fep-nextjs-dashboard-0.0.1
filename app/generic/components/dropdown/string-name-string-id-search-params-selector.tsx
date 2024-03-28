@@ -1,36 +1,57 @@
 'use client';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
-import React, { Fragment, startTransition } from 'react';
+import React, { Fragment, startTransition, useMemo } from 'react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
+import { isNotNull, isNotUndefined } from '../../../api/main';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 
-export default function NameIdTupleParamsSelector({
-  selectionList,
-  selectedProp,
-  selectionDescriptor
-}: {
+interface NameIdTupleSearchParamSelector {
   selectionDescriptor: string;
   selectionList: NameIdStringTuple[];
-  selectedProp: NameIdStringTuple;
-}) {
+  selectedProp?: NameIdStringTuple;
+  searchParamKey?: string;
+}
+
+export default function StringNameStringIdSearchParamsSelector({
+  selectionList,
+  selectedProp,
+  selectionDescriptor,
+  searchParamKey = 'id'
+}: NameIdTupleSearchParamSelector) {
   const { push } = useRouter();
   const pathname = usePathname();
+  const readonlyURLSearchParams = useSearchParams();
+  const currentSelectionId = readonlyURLSearchParams?.get(searchParamKey);
+  const selectionToIdStringMap = useMemo(() => {
+    const map: StringMap<NameIdStringTuple> = {};
+    selectionList.forEach((tuple) => (map[tuple.name] = tuple));
+    return map;
+  }, [selectionList]);
+  const currentSelection = isNotUndefined(selectedProp)
+    ? selectedProp
+    : isNotNull(currentSelectionId) && isNotUndefined(currentSelectionId)
+    ? selectionToIdStringMap[currentSelectionId]
+    : undefined;
 
-  const updateSearchParams = (updatedSelection: NameIdStringTuple) => {
+  const updateSearchParams = (updatedSelection: NameIdStringTuple | null) => {
     const params = new URLSearchParams(window.location.search);
 
-    params.set('id', updatedSelection.id);
-
+    if (isNotNull(updatedSelection)) {
+      params.set(searchParamKey, updatedSelection.id);
+    } else {
+      params.delete(searchParamKey);
+    }
     startTransition(() => {
       push(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
   return (
-    <Listbox value={selectedProp} by={'id'} onChange={updateSearchParams}>
+    <Listbox value={currentSelection} by={'id'} onChange={updateSearchParams}>
       <div className="relative mt-1">
         <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
           <span className="block truncate">
@@ -38,7 +59,9 @@ export default function NameIdTupleParamsSelector({
               {selectionDescriptor}
               {': '}
             </strong>
-            {selectedProp.name != '' ? selectedProp.name : 'No Selection'}
+            {isNotUndefined(currentSelection)
+              ? currentSelection.name
+              : 'No Selection'}
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
