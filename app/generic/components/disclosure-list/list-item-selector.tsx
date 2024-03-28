@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+'use client';
+import React, { useEffect, useTransition } from 'react';
 import { FillableButton, PinIcons } from '../buttons/fillable-button';
 import { useSelectiveContextDispatchNumberList } from '../selective-context/selective-context-manager-number-list';
 import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
 import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 import { EmptyArray } from '../../../api/main';
+import { PendingOverlay } from '../overlays/pending-overlay';
 
 export default function ListItemSelector({
   itemDescriptor,
@@ -24,17 +26,21 @@ export default function ListItemSelector({
     listenerKey: selectorListenerKey,
     initialValue: EmptyArray
   });
+  const [pending, startTransition] = useTransition();
 
   const isPinned = selectionList.includes(itemId);
 
   const handlePinClick = () => {
-    if (isPinned) {
-      setSelectionList(
-        selectionList.filter((selectedId) => selectedId !== itemId)
-      );
-    } else {
-      setSelectionList([...selectionList, itemId]);
-    }
+    startTransition(() => {
+      if (isPinned) {
+        const numbers = selectionList.filter(
+          (selectedId) => selectedId !== itemId
+        );
+        setSelectionList(numbers);
+      } else {
+        setSelectionList([...selectionList, itemId]);
+      }
+    });
   };
 
   return (
@@ -44,6 +50,7 @@ export default function ListItemSelector({
           className="px-1 flex items-center h-full"
           // style={{ borderColor: `${current.cssHSLA}` }}
         >
+          <PendingOverlay pending={pending} />
           <FillableButton
             pinIcon={PinIcons.arrowLeftCircle}
             isPinned={isPinned}
