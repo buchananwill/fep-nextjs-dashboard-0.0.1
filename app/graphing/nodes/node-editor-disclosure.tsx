@@ -7,7 +7,7 @@ import AddLinksButton from '../editing/buttons/add-links-button';
 import { DeleteNodesButton } from '../editing/buttons/delete-nodes-button';
 import { DeleteLinksButton } from '../editing/buttons/delete-links-button';
 import React from 'react';
-import { useSelectiveContextListenerFunction } from '../../generic/components/selective-context/selective-context-manager-function';
+import { useSelectiveContextListenerFunction } from '../../selective-context/components/typed/selective-context-manager-function';
 import InvertLinksButton from '../editing/buttons/invert-links-button';
 import { DisclosureThatGrowsOpen } from '../../generic/components/disclosures/disclosure-that-grows-open';
 import { CloneFunction } from '../editing/buttons/clone-function';

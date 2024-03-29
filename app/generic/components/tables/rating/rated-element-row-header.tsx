@@ -4,7 +4,7 @@ import { GenericRatingEditContext } from './rating-edit-context';
 import { ConfirmActionModal } from '../../modals/confirm-action-modal';
 import { useRatingEditModal } from '../../../hooks/use-rating-edit-modal';
 import { EmptyArray, isNotUndefined } from '../../../../api/main';
-import { useUnsavedListContext } from '../../../hooks/selective-context/use-unsaved-list-context';
+import { useUnsavedListContext } from '../../../../selective-context/hooks/derived/use-unsaved-list-context';
 import { RatingStepper } from '../../buttons/rating-stepper';
 import { ArrowRightIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 

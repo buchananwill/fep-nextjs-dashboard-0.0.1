@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useSelectiveContextDispatchNumberList } from '../selective-context/selective-context-manager-number-list';
+import { useSelectiveContextDispatchNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { Tooltip, TooltipTrigger } from '../tooltips/tooltip';
 import { StandardTooltipContent } from '../tooltips/standard-tooltip-content';
 import { EmptyArray } from '../../../api/main';

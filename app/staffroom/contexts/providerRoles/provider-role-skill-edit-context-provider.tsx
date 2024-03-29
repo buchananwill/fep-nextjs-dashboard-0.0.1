@@ -9,11 +9,11 @@ import {
   workTaskCompetencyIdAccessor
 } from '../../teachers/skills/rating-table-accessor-functions';
 import { useWorkTaskCompetencyListDispatch } from '../../../contexts/selective-context/work-task-competency-list-selective-context-provider';
-import { useConfirmRatingValueFunction } from '../../../generic/hooks/selective-context/use-confirm-rating-value-function';
+import { useConfirmRatingValueFunction } from '../../../selective-context/hooks/derived/use-confirm-rating-value-function';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
-import { useSelectiveContextListenerReadAll } from '../../../generic/components/selective-context/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 
 const skillProducer = getCurriedProducer<WorkTaskCompetencyDto, number>(

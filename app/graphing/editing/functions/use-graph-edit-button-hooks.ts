@@ -13,11 +13,11 @@ import {
 import {
   useSelectiveContextControllerNumber,
   useSelectiveContextDispatchNumber
-} from '../../../generic/components/selective-context/selective-context-manager-number';
-import { useSelectiveContextDispatchNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
+} from '../../../selective-context/components/typed/selective-context-manager-number';
+import { useSelectiveContextDispatchNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { TransientIdOffset } from './graph-edits';
-import { useSelectiveContextKeyMemo } from '../../../generic/hooks/selective-context/use-selective-context-listener';
-import { useSelectiveContextDispatchBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextKeyMemo } from '../../../selective-context/hooks/generic/use-selective-context-listener';
+import { useSelectiveContextDispatchBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { UnsavedNodeDataContextKey } from '../../graph-types/organization/curriculum-delivery-graph';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericLinkContext } from '../../links/generic-link-context-creator';

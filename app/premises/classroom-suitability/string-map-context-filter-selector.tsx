@@ -12,7 +12,7 @@ import StringNameStringIdSearchParamsSelector from '../../generic/components/dro
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { isNotNull, isNotUndefined } from '../../api/main';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
-import { useSelectiveContextControllerString } from '../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerString } from '../../selective-context/components/typed/selective-context-manager-string';
 import { useSearchParamsContext } from '../../contexts/string-map-context/search-params-context-creator';
 
 export interface Comparator<T> {

@@ -1,12 +1,12 @@
 import {
   AccessorFunction,
   RatingCategoryIdAccessor
-} from '../../components/tables/rating/rating-table';
+} from '../../../generic/components/tables/rating/rating-table';
 import { useCallback } from 'react';
-import { UseSelectiveContextDispatch } from './use-selective-context-listener';
-import { SelectiveContextReadAll } from '../../components/selective-context/generic-selective-context-creator';
+import { SelectiveContextReadAll } from '../../components/base/generic-selective-context-creator';
 import { EmptyArray, isNotUndefined } from '../../../api/main';
 import { useUnsavedListContext } from './use-unsaved-list-context';
+import { UseSelectiveContextDispatch } from '../generic/use-selective-context-dispatch';
 
 export interface ConfirmRatingValue<R, E> {
   (rating: R, elementWithRatings: E, updatedValue: number): void;

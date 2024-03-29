@@ -2,7 +2,7 @@ import {
   GenericFunctionWrapper,
   ObjectPlaceholder,
   useSelectiveContextListenerFunction
-} from '../../selective-context/selective-context-manager-function';
+} from '../../../../selective-context/components/typed/selective-context-manager-function';
 import { RatingEditModalTriggerProps } from '../../modals/rating-edit-modal';
 
 export function useRatingEditModalTrigger<E, R>({

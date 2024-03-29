@@ -11,7 +11,7 @@ import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
 import { patchPremises } from '../api/actions/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
-import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
 
 const Provider = WriteableStringMapContextProvider<AssetDto>;
 export default function AssetStringMapContextProvider({

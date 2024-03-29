@@ -3,7 +3,7 @@ import {
   LatestValueRef,
   UpdateAction,
   ListenerRefInterface
-} from './selective-context-manager';
+} from '../base/selective-context-manager';
 import { GenericFunctionWrapper } from './selective-context-manager-function';
 
 export const ContextRefBoolean = createContext<

@@ -10,7 +10,7 @@ import {
   AssetRoleWorkTaskSuitabilityDispatchContext
 } from './asset-suitability-context-creator';
 import { useSearchParams } from 'next/navigation';
-import { useSelectiveContextDispatchNumberList } from '../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextDispatchNumberList } from '../selective-context/components/typed/selective-context-manager-number-list';
 import { AssetSelectionListContextKey } from './classroom-suitability/asset-suitability-table-wrapper';
 import { EmptyArray, isNotNull, isNotUndefined } from '../api/main';
 import { parseTen } from '../api/date-and-time';

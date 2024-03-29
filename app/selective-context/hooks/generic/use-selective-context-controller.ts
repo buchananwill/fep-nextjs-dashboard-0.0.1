@@ -1,9 +1,10 @@
+'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   LatestValueRef,
   UpdateAction,
   ListenerRefInterface
-} from '../../components/selective-context/selective-context-manager';
+} from '../../components/base/selective-context-manager';
 import { useSelectiveContextListener } from './use-selective-context-listener';
 
 export interface UseSelectiveContextParams<T> {

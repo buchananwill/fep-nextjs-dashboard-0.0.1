@@ -5,12 +5,12 @@ import {
   StringMapReducer
 } from './string-map-reducer';
 import React, { Context, PropsWithChildren, useReducer } from 'react';
-import { useSelectiveContextControllerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
-import { useSelectiveContextControllerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
 import { isNotUndefined } from '../../api/main';

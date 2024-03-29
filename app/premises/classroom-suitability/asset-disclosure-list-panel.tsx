@@ -19,8 +19,8 @@ import ListItemSelector from '../../generic/components/disclosure-list/list-item
 import { useAssetSuitabilityStringMapContext } from '../asset-suitability-context-creator';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { useSyncStringMapToProps } from '../../contexts/string-map-context/use-sync-string-map-to-props';
-import { useSelectiveContextListenerStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
-import { useSelectiveContextDispatchNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextListenerStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';
+import { useSelectiveContextDispatchNumberList } from '../../selective-context/components/typed/selective-context-manager-number-list';
 import { useSearchParams } from 'next/navigation';
 import { isNotNull, isNotUndefined } from '../../api/main';
 

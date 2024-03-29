@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithChildren } from 'react';
 import { StringMapContextProvider } from './string-map-context-provider';
-import { ObjectPlaceholder } from '../../generic/components/selective-context/selective-context-manager-function';
+import { ObjectPlaceholder } from '../../selective-context/components/typed/selective-context-manager-function';
 import {
   SearchParamsContext,
   SearchParamsDispatchContext

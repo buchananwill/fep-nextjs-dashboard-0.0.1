@@ -1,4 +1,4 @@
-import { useSelectiveContextListenerNumber } from '../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../selective-context/components/typed/selective-context-manager-number';
 
 export function useSvgZoom(uniqueElementKey: string, rootSvgKey: string) {
   const { currentState: zoomScale } = useSelectiveContextListenerNumber(

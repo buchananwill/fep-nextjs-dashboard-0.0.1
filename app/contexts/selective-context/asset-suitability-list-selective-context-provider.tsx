@@ -1,10 +1,10 @@
 'use client';
 import { PropsWithChildren } from 'react';
-import GenericSelectiveContextManager from '../../generic/components/selective-context/generic-selective-context-manager';
+import GenericSelectiveContextManager from '../../selective-context/components/base/generic-selective-context-manager';
 import { AssetSuitabilityListSelectiveContext } from './selective-context-creators';
-import { getSelectiveContextControllerHook } from '../../generic/hooks/selective-context/get-selective-context-controller-hook';
-import getSelectiveContextListenerHook from '../../generic/hooks/selective-context/get-selective-context-listener-hook';
-import getSelectiveContextDispatchHook from '../../generic/hooks/selective-context/get-selective-context-dispatch-hook';
+import { getSelectiveContextControllerHook } from '../../selective-context/hooks/curriedHooks/get-selective-context-controller-hook';
+import getSelectiveContextListenerHook from '../../selective-context/hooks/curriedHooks/get-selective-context-listener-hook';
+import getSelectiveContextDispatchHook from '../../selective-context/hooks/curriedHooks/get-selective-context-dispatch-hook';
 
 export default function AssetSuitabilityListSelectiveContextProvider({
   children

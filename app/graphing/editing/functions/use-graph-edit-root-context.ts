@@ -1,7 +1,7 @@
-import { useSelectiveContextControllerNumber } from '../../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../../selective-context/components/typed/selective-context-manager-number';
 import { useGraphSelectiveContextController } from '../../graph/graph-context-creator';
 import { TransientIdOffset } from './graph-edits';
-import { useSelectiveContextControllerNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { useDirectSimRefEditsController } from './use-graph-edit-button-hooks';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 

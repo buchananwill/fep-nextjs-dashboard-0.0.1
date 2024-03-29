@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { SchemaBundleKeyPrefix } from '../[yearGroup]/bundles/bundle-editor';
-import { useSelectiveContextDispatchBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { UnsavedBundleAssignmentsKey } from '../contexts/bundle-assignments-provider';
+import { SchemaBundleKeyPrefix } from '../../../selective-context/keys/work-series-schema-bundle-keys';
 
 export function useBundleAssignmentUnsavedFlag(
   assignmentOptional: string | undefined,

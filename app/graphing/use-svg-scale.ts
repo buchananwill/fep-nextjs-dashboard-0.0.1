@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useRootSvgContext } from './root-svg-context';
 import { useSvgZoom } from './use-svg-zoom';
-import { useSelectiveContextControllerNumber } from '../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../selective-context/components/typed/selective-context-manager-number';
 
 export function useSvgScale(uniqueElementKey: string) {
   const svgRef = useRef<SVGSVGElement | null>(null);

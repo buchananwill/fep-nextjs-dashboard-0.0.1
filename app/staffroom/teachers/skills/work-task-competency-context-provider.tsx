@@ -4,7 +4,7 @@ import { StringMap } from '../../../contexts/string-map-context/string-map-reduc
 import { StringMapContextProvider } from '../../../contexts/string-map-context/string-map-context-provider';
 import { AccessorFunction } from '../../../generic/components/tables/rating/rating-table';
 import { useSearchParams } from 'next/navigation';
-import { useSelectiveContextDispatchNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextDispatchNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { EmptyArray, isNotNull, isNotUndefined } from '../../../api/main';
 import { parseTen } from '../../../api/date-and-time';
 import { ProviderRoleSelectionList } from '../provider-role-disclosure-list-panel/provider-role-button-cluster';

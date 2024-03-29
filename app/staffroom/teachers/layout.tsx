@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import ServiceCategoryContextProvider from '../../work-types/lessons/service-category-context-provider';
-import { ObjectPlaceholder } from '../../generic/components/selective-context/selective-context-manager-function';
+import { ObjectPlaceholder } from '../../selective-context/components/typed/selective-context-manager-function';
 import WorkTaskFilteringContext from '../../work-types/work-task-filtering-context';
 import SearchParamsFilterGroup from '../../premises/classroom-suitability/search-params-filter-group';
 import { UnsavedProviderRoleChanges } from '../contexts/providerRoles/provider-role-string-map-context-creator';

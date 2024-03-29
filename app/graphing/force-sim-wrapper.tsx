@@ -4,7 +4,7 @@ import React, { ReactNode, useContext, useRef, useState } from 'react';
 import { useD3ForceSimulation } from './useD3ForceSimulation';
 import { GenericLinkRefContext } from './links/generic-link-context-creator';
 import { GenericNodeRefContext } from './nodes/generic-node-context-creator';
-import { useSelectiveContextDispatchNumber } from '../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextDispatchNumber } from '../selective-context/components/typed/selective-context-manager-number';
 import { NodePositionsKey } from './graph-types/organization/curriculum-delivery-graph';
 
 export default function ForceSimWrapper({

@@ -4,10 +4,10 @@ import {
   ConfirmActionModal,
   ConfirmActionModalProps
 } from './confirm-action-modal';
-import { useSelectiveContextKeyMemo } from '../../hooks/selective-context/use-selective-context-listener';
-import { useSelectiveContextDispatchString } from '../selective-context/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../selective-context/hooks/generic/use-selective-context-listener';
+import { useSelectiveContextDispatchString } from '../../../selective-context/components/typed/selective-context-manager-string';
+import { RenameModalWrapperContextKey } from '../../../selective-context/keys/modal-keys';
 
-export const RenameModalWrapperContextKey = 'rename-modal-wrapper';
 export const RenameModalWrapperListener = `${RenameModalWrapperContextKey}:listener`;
 
 export interface RenameModalProps {

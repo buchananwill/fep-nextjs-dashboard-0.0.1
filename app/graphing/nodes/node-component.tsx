@@ -2,7 +2,7 @@
 import React, { ReactNode, useContext } from 'react';
 import { useNodeInteractionContext } from './node-interaction-context';
 import { GenericNodeRefContext } from './generic-node-context-creator';
-import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../selective-context/components/typed/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useForceGraphDndElement } from '../force-graph-dnd/use-force-graph-dnd-element';
 

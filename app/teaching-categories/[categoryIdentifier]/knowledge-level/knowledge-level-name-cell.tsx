@@ -1,6 +1,6 @@
 'use client';
 
-import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { patchKnowledgeLevels } from '../../../api/actions/service-categories';

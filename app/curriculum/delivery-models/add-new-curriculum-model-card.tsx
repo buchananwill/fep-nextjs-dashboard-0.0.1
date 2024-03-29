@@ -11,7 +11,7 @@ import { useCurriculumModelContext } from './contexts/use-curriculum-model-conte
 import { AdjustAllocation } from './curriculum-delivery-model';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useRouter } from 'next/navigation';
 import { postModels } from '../../api/actions/curriculum-delivery-model';

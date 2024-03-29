@@ -11,8 +11,7 @@ import {
   useStringMapReducer
 } from '../../../contexts/string-map-context/string-map-reducer';
 
-import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
-import { UnsavedBundleEdits } from '../[yearGroup]/bundles/bundle-editor';
+import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 
 import {
   deleteBundles,
@@ -22,10 +21,11 @@ import {
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { ActionResponse } from '../../../api/actions/actionResponse';
 import { Card, Title } from '@tremor/react';
-import { useSelectiveContextControllerNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { getPayloadArray } from '../use-editing-context-dependency';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
+import { UnsavedBundleEdits } from '../../../selective-context/keys/work-series-schema-bundle-keys';
 
 export const StaticDeletedBundleList: number[] = [];
 

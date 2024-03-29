@@ -12,7 +12,7 @@ import {
   ProviderRoleStringMapDispatchContext,
   UnsavedProviderRoleChanges
 } from './provider-role-string-map-context-creator';
-import { useSelectiveContextListenerReadAll } from '../../../generic/components/selective-context/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
 import { isNotUndefined } from '../../../api/main';
 
 const Provider = WriteableStringMapContextProvider<ProviderRoleDto>;

@@ -2,7 +2,7 @@ import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import {
   GenericFunctionWrapper,
   useSelectiveContextControllerFunction
-} from '../../../generic/components/selective-context/selective-context-manager-function';
+} from '../../../selective-context/components/typed/selective-context-manager-function';
 import { DataNode } from '../../../api/zod-mods';
 import { useContext } from 'react';
 import { GraphContext } from '../../graph/graph-context-creator';

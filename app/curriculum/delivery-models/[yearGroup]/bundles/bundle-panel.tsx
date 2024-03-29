@@ -1,46 +1,13 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import { SchemaBundleKeyPrefix, UnsavedBundleEdits } from './bundle-editor';
-import { useSelectiveContextDispatchBoolean } from '../../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../../selective-context/components/typed/selective-context-manager-boolean';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { TabPanelStyled } from '../../../../generic/components/tab-layouts/tab-panel-styled';
-
-function OptionChooserItem({
-  children,
-  checkedStyling,
-  bundleKey,
-  optionKey,
-  listenerKey,
-  ...props
-}: {
-  children: ReactNode;
-  checkedStyling: string;
-  bundleKey: string;
-  optionKey: string;
-  listenerKey: string;
-} & React.HTMLAttributes<HTMLInputElement>) {
-  const { bundleItemsMap } = useBundleItemsContext();
-
-  const checked =
-    bundleItemsMap[bundleKey].workProjectSeriesSchemaIds.includes(optionKey);
-
-  return (
-    <label
-      className={`inline-block relative w-full select-none cursor-pointer text-sm hover:bg-blue-200 p-1 ${
-        checked ? checkedStyling : ''
-      } focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-blue-500 focus-within:z-20 `}
-    >
-      <input
-        type={'checkbox'}
-        checked={checked}
-        {...props}
-        className={'pointer-events-none absolute opacity-0  '}
-        aria-labelledby={`label-${optionKey}`}
-      />
-      {children}
-    </label>
-  );
-}
+import { OptionChooserItem } from './option-chooser-item';
+import {
+  SchemaBundleKeyPrefix,
+  UnsavedBundleEdits
+} from '../../../../selective-context/keys/work-series-schema-bundle-keys';
 
 interface BundlePanelProps {
   bundleId: string;

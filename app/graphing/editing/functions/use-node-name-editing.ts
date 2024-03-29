@@ -2,9 +2,9 @@ import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { DataNode } from '../../../api/zod-mods';
 
-import { useSelectiveContextKeyMemo } from '../../../generic/hooks/selective-context/use-selective-context-listener';
+import { useSelectiveContextKeyMemo } from '../../../selective-context/hooks/generic/use-selective-context-listener';
 
-import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 import { useContext } from 'react';
 import { GraphContext } from '../../graph/graph-context-creator';
 import { UnsavedNodeDataContextKey } from '../../graph-types/organization/curriculum-delivery-graph';
@@ -14,10 +14,8 @@ import {
   ConfirmActionModalProps,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
-import {
-  RenameModalProps,
-  RenameModalWrapperContextKey
-} from '../../../generic/components/modals/rename-modal';
+import { RenameModalProps } from '../../../generic/components/modals/rename-modal';
+import { RenameModalWrapperContextKey } from '../../../selective-context/keys/modal-keys';
 
 export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
   node: DataNode<T>,

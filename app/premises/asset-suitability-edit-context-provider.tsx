@@ -14,11 +14,11 @@ import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { UnsavedAssetChanges } from './asset-string-map-context-creator';
 import { AssetRoleWorkTaskSuitabilityDto } from '../api/dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { produce } from 'immer';
-import { useConfirmRatingValueFunction } from '../generic/hooks/selective-context/use-confirm-rating-value-function';
+import { useConfirmRatingValueFunction } from '../selective-context/hooks/derived/use-confirm-rating-value-function';
 import { useAssetSuitabilityListDispatch } from '../contexts/selective-context/asset-suitability-list-selective-context-provider';
 
 import { getCurriedProducer } from '../staffroom/contexts/providerRoles/get-curried-producer';
-import { useSelectiveContextListenerReadAll } from '../generic/components/selective-context/generic-selective-context-creator';
+import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 
 export default function AssetSuitabilityEditContextProvider({

@@ -10,7 +10,7 @@ import { classNames } from '../utils/class-names';
 import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
-} from '../generic/components/selective-context/selective-context-manager-boolean';
+} from '../selective-context/components/typed/selective-context-manager-boolean';
 
 const paginationUnsavedListenerKey = ':pagination';
 

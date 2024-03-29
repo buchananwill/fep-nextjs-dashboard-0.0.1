@@ -10,15 +10,15 @@ import { usePathname } from 'next/navigation';
 import { BundlePanel } from './bundle-panel';
 
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
-import { useSelectiveContextControllerString } from '../../../../generic/components/selective-context/selective-context-manager-string';
-import { useSelectiveContextKeyMemo } from '../../../../generic/hooks/selective-context/use-selective-context-listener';
+import { useSelectiveContextControllerString } from '../../../../selective-context/components/typed/selective-context-manager-string';
+import { useSelectiveContextKeyMemo } from '../../../../selective-context/hooks/generic/use-selective-context-listener';
 import { produce } from 'immer';
 import { TrashIcon } from '@heroicons/react/20/solid';
-import { useSelectiveContextDispatchBoolean } from '../../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../../../selective-context/components/typed/selective-context-manager-boolean';
 import {
   useSelectiveContextControllerNumberList,
   useSelectiveContextDispatchNumberList
-} from '../../../../generic/components/selective-context/selective-context-manager-number-list';
+} from '../../../../selective-context/components/typed/selective-context-manager-number-list';
 import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
 
 import {
@@ -27,22 +27,19 @@ import {
 } from '../../contexts/bundle-items-context-provider';
 
 import { sumAllSchemas } from '../../functions/sum-delivery-allocations';
-import {
-  RenameModal,
-  RenameModalWrapperContextKey
-} from '../../../../generic/components/modals/rename-modal';
+import { RenameModal } from '../../../../generic/components/modals/rename-modal';
 import { useModal } from '../../../../generic/components/modals/confirm-action-modal';
 import { RenameButton } from '../../../../generic/components/buttons/rename-button';
 import { TwoStageClick } from '../../../../generic/components/buttons/two-stage-click';
 import { TabStyled } from '../../../../generic/components/tab-layouts/tab-styled';
 import { EmptyArray } from '../../../../api/main';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
+import {
+  BundleEditorKey,
+  UnsavedBundleEdits
+} from '../../../../selective-context/keys/work-series-schema-bundle-keys';
+import { RenameModalWrapperContextKey } from '../../../../selective-context/keys/modal-keys';
 
-export const BundleEditorKey = 'bundles-editor';
-
-export const UnsavedBundleEdits = `Unsaved-${BundleEditorKey}`;
-
-export const SchemaBundleKeyPrefix = 'schema-bundle';
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,
   bun2: WorkSeriesSchemaBundleLeanDto
@@ -101,8 +98,8 @@ export function BundleEditor({
   const { currentState: transientBundleIds } =
     useSelectiveContextControllerNumberList({
       contextKey: `${BundleEditorKey}:unsaved-bundles`,
-      initialValue: EmptyArray,
-      listenerKey: BundleEditorKey
+      listenerKey: BundleEditorKey,
+      initialValue: EmptyArray
     });
 
   const {
@@ -111,7 +108,7 @@ export function BundleEditor({
   } = useSelectiveContextDispatchNumberList({
     contextKey: DeletedBundlesList,
     listenerKey: BundleEditorKey,
-    initialValue: StaticDeletedBundleList
+    initialValue: EmptyArray
   });
 
   const [activeTab, setActiveTab] = useState(0);

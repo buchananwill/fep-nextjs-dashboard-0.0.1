@@ -2,7 +2,7 @@
 import RatingTable from '../../generic/components/tables/rating/rating-table';
 import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
-import { useSelectiveContextControllerNumberList } from '../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../selective-context/components/typed/selective-context-manager-number-list';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
 import { Card } from '@tremor/react';
 import { RatingTableBody } from '../../generic/components/tables/rating/rating-table-body';

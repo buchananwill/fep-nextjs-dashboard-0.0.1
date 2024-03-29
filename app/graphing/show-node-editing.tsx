@@ -2,7 +2,7 @@
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../generic/components/selective-context/selective-context-manager-boolean';
+} from '../selective-context/components/typed/selective-context-manager-boolean';
 import { ShowNodeEditingKey } from './nodes/node-editor-disclosure';
 import { ControllerKey } from './graph/show-force-adjustments';
 import { useGraphName } from './graph/graph-context-creator';

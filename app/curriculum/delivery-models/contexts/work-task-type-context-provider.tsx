@@ -5,7 +5,7 @@ import {
   useStringMapReducer
 } from '../../../contexts/string-map-context/string-map-reducer';
 import React, { PropsWithChildren, useReducer } from 'react';
-import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import {
   WorkTaskTypeContext,
   WorkTaskTypeContextDispatch

@@ -1,5 +1,5 @@
 'use client';
-import { useSelectiveContextControllerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../selective-context/components/typed/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useGraphName } from './graph-context-creator';
 

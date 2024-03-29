@@ -5,7 +5,7 @@ import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import {
   useSelectiveContextControllerString,
   useSelectiveContextDispatchString
-} from '../../../generic/components/selective-context/selective-context-manager-string';
+} from '../../../selective-context/components/typed/selective-context-manager-string';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { Title } from '@tremor/react';
@@ -13,7 +13,7 @@ import { useTransition } from 'react';
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../../../generic/components/selective-context/selective-context-manager-boolean';
+} from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { postKnowledgeDomain } from '../../../api/actions/service-categories';
 import { useRouter } from 'next/navigation';
 import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';

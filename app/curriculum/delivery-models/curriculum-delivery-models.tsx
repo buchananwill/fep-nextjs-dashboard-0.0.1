@@ -5,7 +5,7 @@ import { CurriculumDeliveryModel } from './curriculum-delivery-model';
 import React, { useMemo } from 'react';
 import { AddNewCurriculumModelCard } from './add-new-curriculum-model-card';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import {
   DeletedCurriculumModelIdsKey,
   EmptyIdArray,
@@ -13,7 +13,7 @@ import {
 } from './contexts/curriculum-models-context-provider';
 import { useEditingContextDependency } from './use-editing-context-dependency';
 import { UuidAccessor } from './use-curriculum-delivery-model-and-work-task-dependency';
-import { useSelectiveContextDispatchStringList } from '../../generic/components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';
 import { CurriculumModelNameListValidator } from './[yearGroup]/curriculum-model-name-list-validator';
 const modelsListenerKey = 'models-component';
 

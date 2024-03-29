@@ -5,7 +5,7 @@ import {
   getAllKnowledgeDomains,
   getAllKnowledgeLevels
 } from '../api/actions/service-categories';
-import { ObjectPlaceholder } from '../generic/components/selective-context/selective-context-manager-function';
+import { ObjectPlaceholder } from '../selective-context/components/typed/selective-context-manager-function';
 import { convertListToStringMap } from '../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
 import { EmptyArray } from '../api/main';

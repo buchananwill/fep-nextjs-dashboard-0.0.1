@@ -1,6 +1,6 @@
-import { GenericSelectiveContextProps } from '../../components/selective-context/generic-selective-context-manager';
-import { UseSelectiveContextParams } from './use-selective-context-controller';
-import { useSelectiveContextListener } from './use-selective-context-listener';
+import { GenericSelectiveContextProps } from '../../components/base/generic-selective-context-manager';
+import { UseSelectiveContextParams } from '../generic/use-selective-context-controller';
+import { useSelectiveContextListener } from '../generic/use-selective-context-listener';
 
 export default function getSelectiveContextListenerHook<T>({
   latestValueRefContext,

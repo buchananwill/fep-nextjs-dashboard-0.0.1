@@ -4,7 +4,7 @@ import { RatingTableBody } from '../../../generic/components/tables/rating/ratin
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { Card } from '@tremor/react';
 import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
-import { useSelectiveContextControllerNumberList } from '../../../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { ProviderRoleSelectionList } from '../provider-role-disclosure-list-panel/provider-role-button-cluster';
 import { EmptyArray } from '../../../api/main';
 import { useMemoizedSelectionFromListAndStringMap } from '../../../premises/classroom-suitability/use-memoized-selection-from-list-and-string-map';

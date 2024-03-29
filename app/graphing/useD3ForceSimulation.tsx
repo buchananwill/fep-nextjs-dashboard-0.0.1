@@ -18,11 +18,11 @@ import {
   updateLinkForce
 } from './forces/force-link';
 import { getForceCollide } from './forces/force-collide';
-import { useSelectiveContextListenerBoolean } from '../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../selective-context/components/typed/selective-context-manager-boolean';
 import { getForceRadial, updateForceRadial } from './forces/force-radial';
-import { useSelectiveContextListenerNumber } from '../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../selective-context/components/typed/selective-context-manager-number';
 import { useGraphSelectiveContextListener } from './graph/graph-context-creator';
-import { useSelectiveContextListenerNumberList } from '../generic/components/selective-context/selective-context-manager-number-list';
+import { useSelectiveContextListenerNumberList } from '../selective-context/components/typed/selective-context-manager-number-list';
 import { HasNumberIdDto } from '../api/dtos/HasNumberIdDtoSchema';
 
 export type StandardForceKey =

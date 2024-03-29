@@ -1,7 +1,7 @@
 'use client';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 
-import { useSelectiveContextControllerString } from '../../../generic/components/selective-context/selective-context-manager-string';
+import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { patchKnowledgeDomain } from '../../../api/actions/service-categories';

@@ -8,18 +8,18 @@ import {
 import {
   LatestValueRef,
   useSelectiveContextManager
-} from './selective-context-manager';
+} from '../base/selective-context-manager';
 
 import {
   useSelectiveContextController,
   UseSelectiveContextController,
   UseSelectiveContextDispatch
-} from '../../hooks/selective-context/use-selective-context-controller';
+} from '../../hooks/generic/use-selective-context-controller';
 import {
-  useSelectiveContextDispatch,
   UseSelectiveContextListener,
   useSelectiveContextListener
-} from '../../hooks/selective-context/use-selective-context-listener';
+} from '../../hooks/generic/use-selective-context-listener';
+import { useSelectiveContextDispatch } from '../../hooks/generic/use-selective-context-dispatch';
 
 export default function SelectiveContextManagerNumberList({
   children

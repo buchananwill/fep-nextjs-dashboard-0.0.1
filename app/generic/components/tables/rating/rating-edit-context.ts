@@ -9,13 +9,11 @@ import {
   RatingAccessorProps,
   RatingListAccessor
 } from './rating-table';
-import {
-  MockReturn,
-  UseSelectiveContextDispatch
-} from '../../../hooks/selective-context/use-selective-context-listener';
-import { ConfirmRatingValue } from '../../../hooks/selective-context/use-confirm-rating-value-function';
+import { MockReturn } from '../../../../selective-context/hooks/generic/use-selective-context-listener';
+import { ConfirmRatingValue } from '../../../../selective-context/hooks/derived/use-confirm-rating-value-function';
 import { EmptyArray } from '../../../../api/main';
 import { Draft } from 'immer';
+import { UseSelectiveContextDispatch } from '../../../../selective-context/hooks/generic/use-selective-context-dispatch';
 
 export interface RatingEditContext<R, E> extends RatingAccessorProps<R> {
   elementLabelAccessor: NameAccessor<E>;

@@ -7,10 +7,10 @@ import {
   useGenericGraphRefs,
   useGenericNodeContext
 } from './generic-node-context-creator';
-import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../selective-context/components/typed/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { LeftCtrlListener } from '../../generic/components/key-listener-context/key-listener-context-creator';
 import { TransitionWrapper } from '../../generic/components/svg/transition-wrapper';

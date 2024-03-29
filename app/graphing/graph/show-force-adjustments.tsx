@@ -2,7 +2,7 @@
 import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
-} from '../../generic/components/selective-context/selective-context-manager-boolean';
+} from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { useGraphName } from './graph-context-creator';
 import { useEffect } from 'react';
 

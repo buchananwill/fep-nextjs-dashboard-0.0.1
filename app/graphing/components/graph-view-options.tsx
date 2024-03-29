@@ -4,7 +4,7 @@ import {
   Tooltip,
   TooltipTrigger
 } from '../../generic/components/tooltips/tooltip';
-import { SelectiveContextRangeSlider } from '../../generic/components/selective-context/selective-context-range-slider';
+import { SelectiveContextRangeSlider } from '../../generic/components/range-input/selective-context-range-slider';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GraphContext } from '../graph/graph-context-creator';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';

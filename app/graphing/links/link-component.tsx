@@ -5,10 +5,10 @@ import { useGenericLinkContext } from './generic-link-context-creator';
 import { useNodeSelectedListener } from '../nodes/node-interaction-context';
 import { BASE_HSL } from '../../generic/components/color/color-context';
 import * as d3 from 'd3';
-import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
-import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../selective-context/components/typed/selective-context-manager-number';
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useSineLutContext } from '../../contexts/animation-sync-context/animation-sync-context-creator';
 

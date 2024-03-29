@@ -9,7 +9,7 @@ import { StepperContext } from '../../contexts/stepper/stepper-context-creator';
 
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
-import { useSelectiveContextDispatchBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { sumDeliveryAllocations } from './functions/sum-delivery-allocations';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';

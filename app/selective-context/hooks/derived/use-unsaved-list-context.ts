@@ -1,5 +1,5 @@
-import { useSelectiveContextDispatchBoolean } from '../../components/selective-context/selective-context-manager-boolean';
-import { useSelectiveContextDispatchStringList } from '../../components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextDispatchBoolean } from '../../components/typed/selective-context-manager-boolean';
+import { useSelectiveContextDispatchStringList } from '../../components/typed/selective-context-manager-string-list';
 import { EmptyIdArray } from '../../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 import { useCallback } from 'react';
 

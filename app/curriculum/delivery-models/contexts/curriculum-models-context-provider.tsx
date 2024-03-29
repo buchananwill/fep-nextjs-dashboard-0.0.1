@@ -15,11 +15,11 @@ import {
   deleteCurriculumDeliveryModels,
   putModels
 } from '../../../api/actions/curriculum-delivery-model';
-import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
-import { useSelectiveContextControllerStringList } from '../../../generic/components/selective-context/selective-context-manager-string-list';
+import { useSelectiveContextControllerStringList } from '../../../selective-context/components/typed/selective-context-manager-string-list';
 import {
   ConfirmActionModal,
   useModal

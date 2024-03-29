@@ -1,5 +1,5 @@
 'use client';
-import { Text } from '@tremor/react';
+import { Switch, Text } from '@tremor/react';
 import React from 'react';
 import { useTooltipsContext } from './tooltips-context-provider';
 
@@ -9,13 +9,13 @@ const ToolTipsToggle = () => {
   return (
     <label className="flex items-center">
       <Text className={'text-gray-200'}>Tooltips:</Text>
-      <input
-        type="checkbox"
+      <Switch
+        // type="checkbox"
         name="tool-tips"
-        className="toggle toggle-xs ml-1 toggle-success"
+        // className="toggle toggle-xs ml-1 toggle-success"
         checked={showTooltips}
         onChange={() => setShowTooltips(!showTooltips)}
-      ></input>
+      ></Switch>
     </label>
   );
 };

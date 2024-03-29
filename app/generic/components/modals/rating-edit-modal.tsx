@@ -7,10 +7,10 @@ import {
 } from '../tables/rating/rating-table';
 import { PropsWithChildren, useMemo } from 'react';
 
-import { ConfirmRatingValue } from '../../hooks/selective-context/use-confirm-rating-value-function';
+import { ConfirmRatingValue } from '../../../selective-context/hooks/derived/use-confirm-rating-value-function';
 import { useRatingEditModal } from '../../hooks/use-rating-edit-modal';
 
-import { useSelectiveContextControllerFunction } from '../selective-context/selective-context-manager-function';
+import { useSelectiveContextControllerFunction } from '../../../selective-context/components/typed/selective-context-manager-function';
 import { ConfirmActionModal } from './confirm-action-modal';
 import { RatingStepper } from '../buttons/rating-stepper';
 

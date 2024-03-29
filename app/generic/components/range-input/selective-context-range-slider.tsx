@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useSelectiveContextControllerNumber } from './selective-context-manager-number';
+import { useSelectiveContextControllerNumber } from '../../../selective-context/components/typed/selective-context-manager-number';
 
 export function SelectiveContextRangeSlider({
   contextKey,

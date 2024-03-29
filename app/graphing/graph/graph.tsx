@@ -5,7 +5,7 @@ import { useGraphElements } from '../aggregate-functions/use-graph-elements';
 
 import { useDraggable } from '@dnd-kit/core';
 
-import { useSelectiveContextListenerNumber } from '../../generic/components/selective-context/selective-context-manager-number';
+import { useSelectiveContextListenerNumber } from '../../selective-context/components/typed/selective-context-manager-number';
 import GraphViewOptions from '../components/graph-view-options';
 import NodeInteractionProvider from '../nodes/node-interaction-context';
 import { useGenericGraphRefs } from '../nodes/generic-node-context-creator';
@@ -22,7 +22,7 @@ import {
   NodeEditorDisclosure,
   ShowNodeEditingKey
 } from '../nodes/node-editor-disclosure';
-import { useSelectiveContextListenerBoolean } from '../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextListenerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { ShowForceAdjustmentsKey } from './show-force-adjustments';
 import { useDragToTranslate } from '../../generic/components/draggable-to-translate/draggable-to-translate';
 import { useMouseMoveSvgDraggable } from '../force-graph-dnd/use-mouse-move-svg-draggable';

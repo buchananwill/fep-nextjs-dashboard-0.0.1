@@ -1,7 +1,7 @@
 import {
   SelectiveContext,
   useSelectiveContextListenerReadAll
-} from '../../generic/components/selective-context/generic-selective-context-creator';
+} from '../../selective-context/components/base/generic-selective-context-creator';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { useCallback } from 'react';
 

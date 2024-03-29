@@ -9,7 +9,7 @@ import SubjectColorCodingProvider from './contexts/color/subject-color-coding-pr
 
 import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
 import ColorCodingProvider from './generic/components/color/color-coding-provider';
-import SelectiveContextCollection from './generic/components/selective-context/selective-context-collection';
+import SelectiveContextCollection from './selective-context/components/selective-context-collection';
 import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
 
 enableMapSet();

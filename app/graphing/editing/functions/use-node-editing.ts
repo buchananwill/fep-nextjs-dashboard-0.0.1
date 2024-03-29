@@ -2,8 +2,8 @@
 import { TransientIdOffset } from './graph-edits';
 import React, { useContext } from 'react';
 import { GraphContext } from '../../graph/graph-context-creator';
-import { useSelectiveContextKeyMemo } from '../../../generic/hooks/selective-context/use-selective-context-listener';
-import { useSelectiveContextControllerBoolean } from '../../../generic/components/selective-context/selective-context-manager-boolean';
+import { useSelectiveContextKeyMemo } from '../../../selective-context/hooks/generic/use-selective-context-listener';
+import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import {
   DataLink,
@@ -11,7 +11,7 @@ import {
   GraphDto,
   GraphDtoPutRequestBody
 } from '../../../api/zod-mods';
-import { GenericFunctionWrapper } from '../../../generic/components/selective-context/selective-context-manager-function';
+import { GenericFunctionWrapper } from '../../../selective-context/components/typed/selective-context-manager-function';
 
 import { useNodeCloneFunction } from './use-node-clone-function';
 import { useRouter } from 'next/navigation';
