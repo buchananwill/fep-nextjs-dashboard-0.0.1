@@ -15,9 +15,7 @@ export default function TooltipsContextProvider({
 
   const contextValue: TooltipsState = {
     showTooltips: showTooltips,
-    setShowTooltips: (value: boolean) => {
-      setShowTooltips(value);
-    }
+    setShowTooltips: setShowTooltips
   };
 
   return (

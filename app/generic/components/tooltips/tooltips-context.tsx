@@ -1,8 +1,8 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface TooltipsState {
   showTooltips: boolean;
-  setShowTooltips: (value: boolean) => void;
+  setShowTooltips: Dispatch<SetStateAction<boolean>>;
 }
 
 export default createContext<TooltipsState>({
