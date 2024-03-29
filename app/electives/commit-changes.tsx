@@ -16,6 +16,7 @@ import {
   ConfirmActionModal,
   useModal
 } from '../generic/components/modals/confirm-action-modal';
+import { Button } from '@nextui-org/react';
 
 interface Props {
   children: React.ReactNode;
@@ -42,11 +43,6 @@ const CommitChanges = ({ children }: Props) => {
   }, [setEnabled, modifiedPreferences]);
 
   const dispatch = useContext(ElectiveDispatchContext);
-
-  const assignmentConflictCount = useSearchParams()?.get('assignmentConflict');
-
-  const conflictCountInt =
-    assignmentConflictCount && parseInt(assignmentConflictCount);
 
   async function handleCommitClick() {
     setCommitPending(true);
@@ -75,22 +71,17 @@ const CommitChanges = ({ children }: Props) => {
   );
 
   return (
-    <div className="indicator mx-2">
+    <>
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
-          <button
-            className={`btn normal-case`}
-            disabled={!enabled}
+          <Button
+            isDisabled={!enabled}
+            color={'default'}
             onClick={() => openModal()}
           >
-            {!enabled && conflictCountInt && (
-              <span className="indicator-item badge badge-error">
-                {conflictCountInt}
-              </span>
-            )}
             {children}
             {spinner}
-          </button>
+          </Button>
         </TooltipTrigger>
         <TooltipContent>
           <StandardTooltipContentOld>
@@ -111,7 +102,7 @@ const CommitChanges = ({ children }: Props) => {
       >
         <p>Commit changes to the database</p>
       </ConfirmActionModal>
-    </div>
+    </>
   );
 };
 

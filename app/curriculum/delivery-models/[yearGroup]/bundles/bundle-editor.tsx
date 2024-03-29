@@ -212,17 +212,14 @@ export function BundleEditor({
   const { name: nameOfBundle } = sortedBundleList[activeTab];
   return (
     <Card>
-      <Title className={'w-full flex items-center pb-2'}>
-        Current Tab:{' '}
+      <div className={'w-full flex items-center pb-2'}>
+        <Title>Current Tab: </Title>
         <RenameButton
           onClick={handleOpen}
           currentName={nameOfBundle}
           className={'mx-2 '}
         />
-        <TwoStageClick
-          onClick={() => deleteBundle(activeBundleAndId.id)}
-          className={'btn-sm'}
-        >
+        <TwoStageClick onClick={() => deleteBundle(activeBundleAndId.id)}>
           <TrashIcon className={'h-4 w-4'}></TrashIcon>
         </TwoStageClick>
         <span className={'grow'}></span>
@@ -230,7 +227,7 @@ export function BundleEditor({
           Curriculum Bundles - Year {yearGroup} - Total All Bundles:{' '}
           <Badge color={badgeColor}>{sumOfAllBundles}</Badge>
         </span>
-      </Title>
+      </div>
       <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
         <div className={'w-full flex items-center mb-2'}>
           <Tab.List as={Fragment}>

@@ -1,5 +1,6 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import React from 'react';
+import { Button, ButtonProps } from '@nextui-org/react';
 
 export type GenericButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -9,17 +10,19 @@ export type GenericButtonProps = React.DetailedHTMLProps<
 export function RenameButton({
   currentName,
   className,
-  ...props
+  ...buttonProps
 }: {
   currentName?: string;
-} & GenericButtonProps) {
+} & ButtonProps) {
   return (
-    <button
-      className={`btn btn-primary btn-outline btn-sm ${className}`}
-      {...props}
+    <Button
+      className={` ${className}`}
+      size={'sm'}
+      variant={'ghost'}
+      {...buttonProps}
     >
       {currentName && currentName}
       <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
-    </button>
+    </Button>
   );
 }

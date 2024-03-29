@@ -11,6 +11,7 @@ import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functi
 import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
+import { Button, ButtonProps } from '@nextui-org/react';
 
 export const LeftCol =
   'text-xs w-full text-center h-full flex items-center justify-center';
@@ -59,10 +60,10 @@ export default function CurriculumDeliveryDetails({
       <div className={'grid grid-cols-6 gap-1 mb-1'}>
         <div className={LeftCol}>Block:</div>
         <div className={'col-start-2 col-span-5'}>
-          <button className={'btn btn-xs w-full'} onClick={openModal}>
+          <Button className={'w-full '} onClick={openModal} size={'sm'}>
             <PencilSquareIcon className={'w-4 h-4'}></PencilSquareIcon>
             {node.data.name} - Total Periods: {totalAllocation}
-          </button>
+          </Button>
         </div>
       </div>
       <div
@@ -90,10 +91,7 @@ export default function CurriculumDeliveryDetails({
           }}
         >
           <Listbox value={assignmentOptional} onChange={handleAssignmentChange}>
-            <Listbox.Button
-              as={NodeDetailsListBoxButton}
-              // className={'btn w-full h-full relative px-1'}
-            >
+            <Listbox.Button as={NodeDetailsListBoxButton}>
               <table className={'text-left w-full'}>
                 <thead className={'text-sm border-b-2'}>
                   <tr>
@@ -149,17 +147,18 @@ function CourseSummary({
 
 export const NodeDetailsListBoxButton = forwardRef(
   function NodeDetailsListBoxButton(
-    { children, ...props }: Omit<GenericButtonProps, 'className'>,
+    { children, ...props }: Omit<ButtonProps, 'className'>,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) {
     return (
-      <button
-        className={'btn w-full h-full relative px-1'}
+      <Button
+        className={'w-full h-full relative px-1'}
+        radius={'sm'}
         {...props}
         ref={ref}
       >
         {children}
-      </button>
+      </Button>
     );
   }
 );

@@ -11,6 +11,8 @@ import AnimationSyncContextProvider from './contexts/animation-sync-context/anim
 import ColorCodingProvider from './generic/components/color/color-coding-provider';
 import SelectiveContextCollection from './selective-context/components/selective-context-collection';
 import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
+import { NextUIProvider } from '@nextui-org/system';
+import RootProviders from './root-providers';
 
 enableMapSet();
 
@@ -28,26 +30,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50" data-theme={'light'}>
       <body className="h-full">
-        <AnimationSyncContextProvider>
-          <TooltipsContextProvider startDisabled={true}>
-            <SelectiveContextCollection>
-              <SubjectColorCodingProvider>
-                <KeyListenerManager>
-                  <ColorCodingProvider>
-                    <Suspense>
-                      <Nav />
-                    </Suspense>
-                    <main className="p-4 md:p-10 mx-auto max-w-full">
-                      <Suspense fallback={<Loading />}>{children}</Suspense>
-                    </main>
-                    <Analytics />
-                  </ColorCodingProvider>
-                  {/*<Toast />*/}
-                </KeyListenerManager>
-              </SubjectColorCodingProvider>
-            </SelectiveContextCollection>
-          </TooltipsContextProvider>
-        </AnimationSyncContextProvider>
+        <RootProviders>
+          <Suspense>
+            <Nav />
+          </Suspense>
+          <main className="p-4 md:p-10 mx-auto max-w-full">
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </main>
+          <Analytics />
+          {/*<Toast />*/}
+        </RootProviders>
       </body>
     </html>
   );

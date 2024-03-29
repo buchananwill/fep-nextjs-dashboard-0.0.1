@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, ButtonProps } from '@nextui-org/react';
 
 export function GraphEditButton({
   noNodeSelected,
@@ -7,12 +8,9 @@ export function GraphEditButton({
 }: {
   noNodeSelected: boolean;
   children: string;
-} & React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->) {
+} & ButtonProps) {
   return (
-    <button className={'btn btn-primary btn-outline'} {...buttonProps}>
+    <Button variant={'ghost'} color={'primary'} {...buttonProps}>
       {children}
       {noNodeSelected && (
         <span
@@ -21,6 +19,6 @@ export function GraphEditButton({
           Select more nodes!
         </span>
       )}
-    </button>
+    </Button>
   );
 }

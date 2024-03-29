@@ -1,12 +1,14 @@
 import type { Config } from 'tailwindcss';
+import { nextui } from '@nextui-org/react';
 
 export default {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/@tremor/**/*.{js,ts,jsx,tsx,mdx}'
+    './node_modules/@tremor/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
-  plugins: [require('@headlessui/tailwindcss'), require('daisyui')],
+  plugins: [require('@headlessui/tailwindcss'), require('daisyui'), nextui()],
   daisyui: {
     themes: [
       {
@@ -52,7 +54,7 @@ export default {
           },
           content: {
             subtle: '#9ca3af', // gray-400
-            DEFAULT: '#6b7280', // gray-500
+            DEFAULT: '#d6d6d6',
             emphasis: '#374151', // gray-700
             strong: '#111827', // gray-900
             inverted: '#ffffff' // white

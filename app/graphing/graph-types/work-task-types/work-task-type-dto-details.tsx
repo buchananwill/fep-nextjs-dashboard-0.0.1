@@ -1,55 +1,22 @@
 'use client';
 import { DataNode } from '../../../api/zod-mods';
-import React, { Fragment, PropsWithChildren } from 'react';
+import React, { Fragment } from 'react';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import {
-  LeftCol,
   NodeDetailsListBoxButton,
   NodeDetailsListBoxOption,
   NodeDetailsListBoxOptions
 } from '../organization/curriculum-delivery-details';
-
-import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useServiceCategoryContext } from '../../../work-types/lessons/use-service-category-context';
 import { Listbox } from '@headlessui/react';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { useDirectSimRefEditsDispatch } from '../../editing/functions/use-graph-edit-button-hooks';
-import { RenameModal } from '../../../generic/components/modals/rename-modal';
-
-const WorkTaskTypeDtoDetailsListenerKey = 'work-task-type-details';
-
-function ColumnOne({ children }: PropsWithChildren) {
-  return <div className={LeftCol}>{children}</div>;
-}
-
-function ColumnsTwoToFour({ children }: PropsWithChildren) {
-  return <div className={'col-start-2 col-span-3'}>{children}</div>;
-}
-
-function RenameWorkTaskType({ node }: { node: DataNode<WorkTaskTypeDto> }) {
-  const {
-    id,
-    data: { name }
-  } = node;
-  const listenerKey = `${WorkTaskTypeDtoDetailsListenerKey}:${id}`;
-  const { openModal, renameModalProps } = useNodeNameEditing(node, listenerKey);
-  return (
-    <>
-      <ColumnOne>Name:</ColumnOne>
-      <ColumnsTwoToFour>
-        <button
-          onClick={openModal}
-          className={'btn text-xs w-full overflow-hidden flex flex-nowrap'}
-        >
-          <span className={' truncate ...'}>{name}</span>
-          <PencilSquareIcon className={'h-4 w-4'}></PencilSquareIcon>
-        </button>
-      </ColumnsTwoToFour>
-      <RenameModal {...renameModalProps} />
-    </>
-  );
-}
+import {
+  ColumnOne,
+  ColumnsTwoToFour,
+  RenameWorkTaskType,
+  WorkTaskTypeDtoDetailsListenerKey
+} from './rename-work-task-type';
 
 export default function WorkTaskTypeDtoDetails({
   node

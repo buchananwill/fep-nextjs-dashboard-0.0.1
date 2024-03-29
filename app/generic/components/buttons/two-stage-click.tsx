@@ -2,18 +2,19 @@ import React, { useRef, useState } from 'react';
 import { Badge } from '@tremor/react';
 import { offset, useFloating } from '@floating-ui/react';
 import { GenericButtonProps } from './rename-button';
+import { Button } from '@nextui-org/react';
 
 export function TwoStageClick({
   children,
   onClick,
-  standardAppearance = 'btn-outline',
-  primedAppearance = 'btn-error',
+  standardAppearance = 'ghost',
+  primedAppearance = 'danger',
   primedMessage = 'Confirm delete?',
   className,
   ...props
 }: {
-  standardAppearance?: 'btn-outline' | 'btn-ghost';
-  primedAppearance?: 'btn-error' | 'btn-primary';
+  standardAppearance?: 'light' | 'ghost';
+  primedAppearance?: 'danger' | 'primary';
   primedMessage?: string;
 } & GenericButtonProps) {
   const [clickPrimed, setClickPrimed] = useState(false);
@@ -35,29 +36,28 @@ export function TwoStageClick({
   };
 
   return (
-    <button
-      className={`z-10 relative btn transition-colors duration-500  ${
-        clickPrimed ? primedAppearance : standardAppearance
-      } ${className}`}
-      {...props}
-      onClick={guardClick}
-      ref={refs.setReference}
-    >
+    <div className={'w-fit h-fit'} ref={refs.setReference}>
+      <Button
+        className={`z-10 relative transition-colors duration-500 ${className}`}
+        /*{...props}*/
+        color={clickPrimed ? primedAppearance : 'default'}
+        variant={standardAppearance}
+        size={'sm'}
+        onClick={guardClick}
+      >
+        {children}
+      </Button>
       {clickPrimed && (
         <div
           ref={refs.setFloating}
           style={floatingStyles}
           className={'bg-white bg-opacity-100 w-fit h-fit rounded-md'}
         >
-          <Badge
-            color={primedAppearance === 'btn-error' ? 'red' : 'blue'}
-            onClick={guardClick}
-          >
+          <Badge color={'red'} onClick={guardClick}>
             {primedMessage}
           </Badge>
         </div>
       )}
-      {children}
-    </button>
+    </div>
   );
 }
