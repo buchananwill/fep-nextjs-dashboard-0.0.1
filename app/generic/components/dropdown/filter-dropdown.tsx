@@ -75,7 +75,6 @@ export function FilterDropdown({
         by="URI"
         onChange={handleOnChange}
         multiple
-        // className={`btn bg-${color}-400 hover:bg-${color}-500 normal-case text-xs w-fit h-min min-h-0 p-2 my-0 mx-2`}
       >
         <div className=" relative mt-1">
           <Listbox.Button

@@ -43,14 +43,14 @@ export default async function KnowledgeDomainTableEditor({
           {category.knowledgeDomainDescriptor}
           <NewKnowledgeDomainButton
             className={
-              'flex btn btn-outline btn-xs ml-2 relative overflow-hidden'
+              'flex relative m-0 p-0 min-h-fit max-h-fit h-6 leading-none overflow-hidden'
             }
             serviceCategory={category}
             knowledgeDomainServiceCategoryNameList={nameList}
           />
         </KnowledgeCategoryTableHeaderCell>
         <KnowledgeCategoryTableHeaderCell>
-          Work Task Types
+          <div className={'h-full'}>Work Task Types</div>
         </KnowledgeCategoryTableHeaderCell>
       </KnowledgeCategoryTableHeader>
       <KnowledgeCategoryTableBody>

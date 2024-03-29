@@ -11,14 +11,11 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from '../selective-context/components/typed/selective-context-manager-boolean';
+import { Button, ButtonProps } from '@nextui-org/react';
 
 const paginationUnsavedListenerKey = ':pagination';
 
-export interface ProtectedNavigationProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export interface ProtectedNavigationProps extends ButtonProps {
   onConfirm: () => void;
   children: ReactNode;
   isActive?: boolean;
@@ -49,7 +46,8 @@ const ProtectedNavigation = forwardRef<
     unsavedContextKey,
     unsavedListenerKey: listenerKeyProp,
     className,
-    disabled
+    disabled,
+    ...buttonProps
   } = props;
   let [isOpen, setIsOpen] = useState(false);
 
@@ -86,9 +84,9 @@ const ProtectedNavigation = forwardRef<
 
   return (
     <>
-      <button
-        type="button"
-        onClick={
+      <Button
+        {...buttonProps}
+        onPress={
           requestConfirmation || protectionActive
             ? openModal
             : () => {
@@ -97,10 +95,10 @@ const ProtectedNavigation = forwardRef<
         }
         className={finalClassNames}
         aria-current={isActive ? 'page' : undefined}
-        disabled={disabled}
+        isDisabled={disabled}
       >
         {children}
-      </button>
+      </Button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>

@@ -10,7 +10,9 @@ import { useEffect, useState, useTransition } from 'react';
 import ProtectedNavigation from '../../../navbar/protected-navigation';
 
 import { zeroIndexToOneIndex } from '../../../api/utils';
-const buttonClassName = 'btn  relative btn-primary btn-outline';
+import { ButtonProps } from '@nextui-org/react';
+const buttonClassName = ' relative ';
+
 const svgClassName = 'h-5 w-5 ';
 
 /**
@@ -72,6 +74,9 @@ export function Pagination({
     <div className={'my-2 gap-x-1 flex'}>
       {!!lastPage && (
         <ProtectedNavigation
+          variant={'ghost'}
+          isIconOnly
+          color={'primary'}
           className={`${buttonClassName}`}
           disabled={first || pending}
           onConfirm={toFirstPage}
@@ -85,6 +90,9 @@ export function Pagination({
         </ProtectedNavigation>
       )}
       <ProtectedNavigation
+        variant={'ghost'}
+        isIconOnly
+        color={'primary'}
         className={`${buttonClassName}`}
         disabled={first || pending}
         onConfirm={() => handleClick(false)}
@@ -95,6 +103,9 @@ export function Pagination({
         <ArrowLeftIcon className={svgClassName}></ArrowLeftIcon>
       </ProtectedNavigation>
       <ProtectedNavigation
+        variant={'ghost'}
+        isIconOnly
+        color={'primary'}
         className={`${buttonClassName}`}
         onConfirm={() => handleClick(true)}
         disabled={last || pending}
@@ -106,6 +117,9 @@ export function Pagination({
       </ProtectedNavigation>
       {!!lastPage && (
         <ProtectedNavigation
+          variant={'ghost'}
+          isIconOnly
+          color={'primary'}
           className={`${buttonClassName}`}
           disabled={last || pending}
           onConfirm={toLastPage}

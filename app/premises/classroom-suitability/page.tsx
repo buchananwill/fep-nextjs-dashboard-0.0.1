@@ -6,7 +6,7 @@ import {
   getPremises,
   getPremisesWithRoot
 } from '../../api/actions/premises';
-import { Card } from '@tremor/react';
+import { Card } from '@nextui-org/react';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 import { isNotUndefined } from '../../api/main';

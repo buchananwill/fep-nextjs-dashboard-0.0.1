@@ -7,6 +7,7 @@ import { EmptyArray, isNotUndefined } from '../../../../api/main';
 import { useUnsavedListContext } from '../../../../selective-context/hooks/derived/use-unsaved-list-context';
 import { RatingStepper } from '../../buttons/rating-stepper';
 import { ArrowRightIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
+import { Button } from '@nextui-org/react';
 
 export function RatedElementRowHeader<R, E>({
   elementWithRating
@@ -57,17 +58,18 @@ export function RatedElementRowHeader<R, E>({
 
   return (
     <>
-      <button
+      <Button
         className={
-          'btn rounded-none w-full h-full px-1 btn-xs text-left flex justify-between focus-visible:outline-offset-0 focus-visible:outline-1'
+          'rounded-none w-full h-full m-0 border-0 px-1 text-left focus:outline-offset-0 flex justify-between focus-visible:outline-offset-0 outline-offset-0 focus-visible:outline-1 data-[focus-visible=true]:outline-offset-0'
         }
-        onClick={() =>
+        onPress={() =>
           triggerModal({ elementWithRating, rating: currentState[0] })
         }
+        // size={'md'}
       >
         {elementLabelAccessor(elementWithRating)}
         <ArrowRightIcon className={'w-4 h-4 '}></ArrowRightIcon>
-      </button>
+      </Button>
       <ConfirmActionModal
         show={show}
         onClose={onClose}

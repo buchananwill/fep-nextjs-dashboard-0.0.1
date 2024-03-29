@@ -2,11 +2,13 @@ import React, { useRef, useState } from 'react';
 import { Badge } from '@tremor/react';
 import { offset, useFloating } from '@floating-ui/react';
 import { GenericButtonProps } from './rename-button';
-import { Button } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/react';
+import { PressEvent } from '@react-types/shared';
+import { isNotUndefined } from '../../../api/main';
 
 export function TwoStageClick({
   children,
-  onClick,
+  onPress,
   standardAppearance = 'ghost',
   primedAppearance = 'danger',
   primedMessage = 'Confirm delete?',
@@ -16,7 +18,7 @@ export function TwoStageClick({
   standardAppearance?: 'light' | 'ghost';
   primedAppearance?: 'danger' | 'primary';
   primedMessage?: string;
-} & GenericButtonProps) {
+} & ButtonProps) {
   const [clickPrimed, setClickPrimed] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { refs, floatingStyles } = useFloating({
@@ -24,9 +26,9 @@ export function TwoStageClick({
     middleware: [offset({ mainAxis: 10 })]
   });
 
-  const guardClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (clickPrimed && onClick) {
-      onClick(e);
+  const guardClick = (e: PressEvent) => {
+    if (clickPrimed && isNotUndefined(onPress)) {
+      onPress(e);
       setClickPrimed(false);
       if (timeoutRef.current !== undefined) clearTimeout(timeoutRef.current);
     } else {
@@ -43,7 +45,7 @@ export function TwoStageClick({
         color={clickPrimed ? primedAppearance : 'default'}
         variant={standardAppearance}
         size={'sm'}
-        onClick={guardClick}
+        onPress={guardClick}
       >
         {children}
       </Button>
@@ -51,9 +53,9 @@ export function TwoStageClick({
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className={'bg-white bg-opacity-100 w-fit h-fit rounded-md'}
+          className={'bg-white bg-opacity-100 w-fit h-fit rounded-md z-10'}
         >
-          <Badge color={'red'} onClick={guardClick}>
+          <Badge color={'red'} className={''}>
             {primedMessage}
           </Badge>
         </div>

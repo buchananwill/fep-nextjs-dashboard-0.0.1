@@ -39,6 +39,7 @@ import {
   UnsavedBundleEdits
 } from '../../../../selective-context/keys/work-series-schema-bundle-keys';
 import { RenameModalWrapperContextKey } from '../../../../selective-context/keys/modal-keys';
+import { Button } from '@nextui-org/react';
 
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,
@@ -215,11 +216,11 @@ export function BundleEditor({
       <div className={'w-full flex items-center pb-2'}>
         <Title>Current Tab: </Title>
         <RenameButton
-          onClick={handleOpen}
+          onPress={handleOpen}
           currentName={nameOfBundle}
           className={'mx-2 '}
         />
-        <TwoStageClick onClick={() => deleteBundle(activeBundleAndId.id)}>
+        <TwoStageClick onPress={() => deleteBundle(activeBundleAndId.id)}>
           <TrashIcon className={'h-4 w-4'}></TrashIcon>
         </TwoStageClick>
         <span className={'grow'}></span>
@@ -258,12 +259,15 @@ export function BundleEditor({
             </div>
           </Tab.List>
 
-          <button
-            className={` btn btn-sm btn-outline px-0 w-[50px] `}
-            onClick={handleNewBundle}
+          <Button
+            className={`  px-0 w-[50px] `}
+            onPress={handleNewBundle}
+            variant={'ghost'}
+            size={'sm'}
+            color={'primary'}
           >
             <PlusCircleIcon className={'h-5 w-5'}></PlusCircleIcon>
-          </button>
+          </Button>
         </div>
         <Tab.Panels>
           {sortedBundleList.map(({ id }, index) => (

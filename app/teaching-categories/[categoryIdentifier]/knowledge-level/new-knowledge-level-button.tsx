@@ -22,6 +22,7 @@ import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
+import { Button } from '@nextui-org/react';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 
@@ -154,20 +155,22 @@ export function NewKnowledgeLevelButton({
 
   return (
     <>
-      <button
+      <Button
         className={className}
-        onClick={() => {
+        onPress={() => {
           setConfirmWithoutName({
             contextKey: NewKnowledgeLevelContextKey,
             value: false
           });
           openModal();
         }}
+        size={'sm'}
+        variant={'ghost'}
         disabled={pending}
       >
         <PendingOverlay pending={pending} />
         <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
-      </button>
+      </Button>
       <ConfirmActionModal
         show={isOpen}
         onClose={closeModal}

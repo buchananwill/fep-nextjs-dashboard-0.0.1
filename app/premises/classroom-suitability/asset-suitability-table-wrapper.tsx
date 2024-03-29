@@ -4,7 +4,7 @@ import { IdStringFromNumberAccessor } from './rating-table-accessor-functions';
 import { useWorkTaskTypeContext } from '../../curriculum/delivery-models/contexts/use-work-task-type-context';
 import { useSelectiveContextControllerNumberList } from '../../selective-context/components/typed/selective-context-manager-number-list';
 import { useAssetStringMapContext } from '../asset-string-map-context-creator';
-import { Card } from '@tremor/react';
+import { Card } from '@nextui-org/react';
 import { RatingTableBody } from '../../generic/components/tables/rating/rating-table-body';
 import { useMemoizedSelectionFromListAndStringMap } from './use-memoized-selection-from-list-and-string-map';
 import { EmptyArray } from '../../api/main';

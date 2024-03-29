@@ -34,7 +34,6 @@ export function ApplySearchParams({
   return (
     <ProtectedNavigation
       onConfirm={handleApplyParams}
-      className={'btn'}
       unsavedContextKey={unsavedContextKey}
       unsavedListenerKey={'apply-params'}
     >

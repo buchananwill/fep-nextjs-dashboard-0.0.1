@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import { CheckIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 import { isNotNull } from '../../../api/main';
+import { Button } from '@nextui-org/react';
 
 export type OptionTransformer = React.FC<OptionTransformerProps>;
 
@@ -62,11 +63,14 @@ export default function TupleSelector({
             </span>
             <span></span>
           </Listbox.Button>
-          <button
-            className={`btn btn-ghost p-0 rounded-full btn-square  btn-sm ${
+          <Button
+            variant={'light'}
+            size={'sm'}
+            isIconOnly
+            className={`p-0 rounded-full ${
               isNotNull(selectedState) ? '' : 'opacity-0'
             }`}
-            onClick={() => updateSelectedState(null)}
+            onPress={() => updateSelectedState(null)}
             disabled={!isNotNull(selectedState)}
           >
             <XCircleIcon
@@ -74,7 +78,7 @@ export default function TupleSelector({
                 isNotNull(selectedState) ? '' : 'opacity-0'
               }`}
             ></XCircleIcon>
-          </button>
+          </Button>
           <span className="pointer-events-none flex items-center pr-2">
             <ChevronUpDownIcon
               className="h-5 w-5 text-gray-400"

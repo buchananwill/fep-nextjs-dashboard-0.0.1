@@ -1,5 +1,6 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Overlay } from './overlay';
+import { Button } from '@nextui-org/react';
 
 export function DeletedOverlay({
   show,
@@ -12,14 +13,16 @@ export function DeletedOverlay({
     <>
       {show && (
         <Overlay>
-          <button
+          <Button
             className={
-              'w-full h-full btn-outline transition-colors duration-500'
+              'w-full h-full transition-colors duration-500 rounded-none border-0 place-content-center p-2'
             }
-            onClick={handleUnDelete}
+            onPress={handleUnDelete}
+            variant={'ghost'}
+            isIconOnly
           >
-            <XMarkIcon className={'h-full w-full opacity-50'}></XMarkIcon>
-          </button>
+            <XMarkIcon className={'h-full  opacity-50'}></XMarkIcon>
+          </Button>
         </Overlay>
       )}
     </>

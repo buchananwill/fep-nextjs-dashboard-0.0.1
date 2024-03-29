@@ -39,7 +39,7 @@ export default async function KnowledgeLevelTableEditor({
         <KnowledgeCategoryTableHeaderCell>
           {category.knowledgeLevelDescriptor}
           <NewKnowledgeLevelButton
-            className={'flex btn btn-outline btn-xs ml-2'}
+            className={'flex  ml-2'}
             serviceCategory={category}
             knowledgeLevelNameList={nameList}
           />

@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
+import { Button } from '@nextui-org/react';
+import { isFragment } from 'preact/compat';
 
 export function TabStyled({ children }: { children: string }) {
   return (
-    <Tab as={'div'} className={'w-full p-0.5 rounded-lg overflow-hidden'}>
-      {({ selected }) => (
-        <button
-          className={`w-full btn btn-sm btn-outline py-0 text-xs   ${
+    <Tab as={Fragment}>
+      {({ selected, ...props }) => (
+        <Button
+          className={`w-full py-0 text-xs p-0.5 rounded-lg overflow-hidden  ${
             selected ? '' : 'opacity-25'
           }`}
+          variant={'ghost'}
+          size={'sm'}
         >
           <span className={'truncate ...'}>{children}</span>
-        </button>
+        </Button>
       )}
     </Tab>
   );

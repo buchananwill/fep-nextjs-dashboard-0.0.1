@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
+import { Button } from '@nextui-org/react';
 
 export function KnowledgeDomainNameCell({
   kd,
@@ -43,9 +44,9 @@ export function KnowledgeDomainNameCell({
 
   return (
     <>
-      <button onClick={openModal} className={'btn btn-ghost btn-sm'}>
+      <Button onPress={openModal} size={'sm'} variant={'light'}>
         <PencilSquareIcon className={'w-4 h-4'} />{' '}
-      </button>
+      </Button>
       <span className={'px-2'}>{name}</span>
       <RenameModal
         title={`Rename ${name}`}

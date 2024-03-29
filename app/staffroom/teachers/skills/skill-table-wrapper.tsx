@@ -2,7 +2,7 @@
 import RatingTable from '../../../generic/components/tables/rating/rating-table';
 import { RatingTableBody } from '../../../generic/components/tables/rating/rating-table-body';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
-import { Card } from '@tremor/react';
+import { Card } from '@nextui-org/react';
 import { useProviderRoleStringMapContext } from '../../contexts/providerRoles/provider-role-string-map-context-creator';
 import { useSelectiveContextControllerNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
 import { ProviderRoleSelectionList } from '../provider-role-disclosure-list-panel/provider-role-button-cluster';

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { useSelectiveContextControllerNumber } from '../../../selective-context/components/typed/selective-context-manager-number';
+import { Slider } from '@nextui-org/react';
 
 export function SelectiveContextRangeSlider({
   contextKey,
@@ -22,19 +23,25 @@ export function SelectiveContextRangeSlider({
   });
 
   return (
-    <input
+    <Slider
+      className={'max-w-[50%]'}
+      hideValue={false}
+      showTooltip={true}
+      hideThumb
+      size={'md'}
       name={contextKey}
       id={contextKey}
-      type={'range'}
-      min={minValue}
-      max={maxValue}
+      minValue={minValue}
+      maxValue={maxValue}
       value={currentState}
-      onChange={(event) => {
+      onChange={(value) => {
+        const singleValue = Array.isArray(value) ? value[0] : value;
+
         dispatchUpdate({
           contextKey: contextKey,
-          value: parseInt(event.target.value)
+          value: singleValue
         });
       }}
-    ></input>
+    ></Slider>
   );
 }

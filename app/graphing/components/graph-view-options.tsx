@@ -10,6 +10,7 @@ import { GraphContext } from '../graph/graph-context-creator';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import { DefaultGraphZoom, MaxGraphZoom } from '../graph/graph';
+import { Button } from '@nextui-org/react';
 
 const graphToggles: GraphToggleProps[] = [
   {
@@ -52,9 +53,9 @@ export default function GraphViewOptions() {
   }, [showSliders]);
   return (
     <>
-      <button
-        className={`btn ${showSliders ? 'btn-primary' : ''}`}
-        onClick={() => setShowSliders(!showSliders)}
+      <Button
+        color={`${showSliders ? 'primary' : 'default'}`}
+        onPress={() => setShowSliders(!showSliders)}
       >
         View Options
         <ChevronDownIcon
@@ -62,7 +63,7 @@ export default function GraphViewOptions() {
             !showSliders ? 'rotate-90 transform' : ''
           } transition-transform duration-500`}
         ></ChevronDownIcon>
-      </button>
+      </Button>
       <div
         className={`mt-2 h-fit w-fit flex flex-col gap-1 items-center transition-opacity duration-500 ${
           showSliders ? 'opacity-100' : 'opacity-0 -z-10 '

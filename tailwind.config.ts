@@ -54,7 +54,7 @@ export default {
           },
           content: {
             subtle: '#9ca3af', // gray-400
-            DEFAULT: '#d6d6d6',
+            DEFAULT: '#989898',
             emphasis: '#374151', // gray-700
             strong: '#111827', // gray-900
             inverted: '#ffffff' // white

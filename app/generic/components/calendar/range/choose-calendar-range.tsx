@@ -17,6 +17,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import ZoomBothAxes from '../../zoom/zoom-both-axes';
 import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
 import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
+import { Button } from '@nextui-org/react';
 type TooltipOptions =
   | 'minusWeek'
   | 'minusDay'
@@ -87,21 +88,23 @@ export function ChooseCalendarRange() {
           <div className=" flex justify-center">
             <div className="flex items-center ">
               <LocalToolTip option={'minusWeek'}>
-                <button
-                  className="btn-sm btn m-2"
-                  onClick={() => handleRangeUpdate(-7)}
+                <Button
+                  className="m-2"
+                  size={'sm'}
+                  onPress={() => handleRangeUpdate(-7)}
                 >
                   <ArrowLeftIcon className="h-4 w-4 m-0"></ArrowLeftIcon>Week
-                </button>
+                </Button>
               </LocalToolTip>
 
               <LocalToolTip option={'minusDay'}>
-                <button
-                  className="btn-sm btn m-2"
-                  onClick={() => handleRangeUpdate(-1)}
+                <Button
+                  className="m-2"
+                  size={'sm'}
+                  onPress={() => handleRangeUpdate(-1)}
                 >
                   <ArrowLeftIcon className="h-4 w-4 m-0"></ArrowLeftIcon>Day
-                </button>
+                </Button>
               </LocalToolTip>
               <LocalToolTip option={'adjustRange'}>
                 <Disclosure.Button className="mb-2 inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
@@ -124,20 +127,22 @@ export function ChooseCalendarRange() {
               </LocalToolTip>
               <div className="ml-4"></div>
               <LocalToolTip option={'plusDay'}>
-                <button
-                  className="btn btn-sm m-2"
-                  onClick={() => handleRangeUpdate(1)}
+                <Button
+                  className="m-2"
+                  size={'sm'}
+                  onPress={() => handleRangeUpdate(1)}
                 >
                   Day<ArrowRightIcon className="h-4 w-4"></ArrowRightIcon>
-                </button>
+                </Button>
               </LocalToolTip>
               <LocalToolTip option={'plusWeek'}>
-                <button
-                  className="btn btn-sm m-2"
-                  onClick={() => handleRangeUpdate(7)}
+                <Button
+                  className="m-2"
+                  size={'sm'}
+                  onPress={() => handleRangeUpdate(7)}
                 >
                   Week<ArrowRightIcon className="h-4 w-4"></ArrowRightIcon>
-                </button>
+                </Button>
               </LocalToolTip>
             </div>
           </div>

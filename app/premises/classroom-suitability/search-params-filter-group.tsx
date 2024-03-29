@@ -1,5 +1,5 @@
 'use client';
-import { Card } from '@tremor/react';
+import { Card } from '@nextui-org/react';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import SearchParamsContextProvider from '../../contexts/string-map-context/search-params-context-provider';
 import { ApplySearchParams } from './apply-search-params';

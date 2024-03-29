@@ -24,6 +24,7 @@ import { createTeacher } from '../../api/actions/provider-roles';
 import { useServiceCategoryContext } from '../../work-types/lessons/use-service-category-context';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
 import { Overlay } from '../../generic/components/overlays/overlay';
+import { Button, Card, CardBody, CardFooter } from '@nextui-org/react';
 
 const partyData: PersonDto[] = [
   {
@@ -110,10 +111,10 @@ export default function AddTeacherForm() {
     );
   }
   return (
-    <>
+    <Card className={'overflow-visible'}>
       {!serverAvailable && <Overlay>Server not available.</Overlay>}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={'flex flex-col gap-y-4'}>
+        <CardBody className={'flex flex-col gap-y-4 overflow-visible'}>
           <Title className={'py-2'}>Form to add a teacher.</Title>
           <div>
             <div>Use existing person:</div>
@@ -261,7 +262,7 @@ export default function AddTeacherForm() {
                   </Listbox.Button>
                   <Listbox.Options
                     className={
-                      'absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm '
+                      'absolute mt-1 max-h-60 w-full z-20 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm '
                     }
                   >
                     {domainArray.map((knowledgeDomain) => (
@@ -294,11 +295,11 @@ export default function AddTeacherForm() {
               )}
             />
           </div>
-          <div className={'flex justify-center'}>
-            <button className={'btn btn-primary'}>Submit</button>
-          </div>
-        </div>
+        </CardBody>
+        <CardFooter className={'flex justify-center'}>
+          <Button color={'primary'}>Submit</Button>
+        </CardFooter>
       </form>
-    </>
+    </Card>
   );
 }

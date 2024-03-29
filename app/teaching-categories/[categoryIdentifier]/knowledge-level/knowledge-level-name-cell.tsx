@@ -10,6 +10,7 @@ import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { useEffect, useState } from 'react';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
+import { Button } from '@nextui-org/react';
 
 export function useValidationUniqueNonEmpty(
   proposedName: string,
@@ -62,9 +63,9 @@ export function KnowledgeLevelNameCell({
 
   return (
     <div className={'flex items-center px-2'}>
-      <button onClick={openModal} className={'btn btn-ghost btn-sm'}>
+      <Button onPress={openModal} size={'sm'} variant={'light'}>
         <PencilSquareIcon className={'w-4 h-4'} />{' '}
-      </button>
+      </Button>
       <span className={'px-2'}>{name}</span>
       <RenameModal
         title={`Rename ${name}`}

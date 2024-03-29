@@ -1,5 +1,5 @@
 'use client';
-import { Card } from '@tremor/react';
+import { Button, Card } from '@nextui-org/react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import React, { useMemo, useState } from 'react';
 
@@ -28,6 +28,7 @@ import {
   useModal
 } from '../../generic/components/modals/confirm-action-modal';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
+import { isNotNull } from '../../api/main';
 
 const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
 
@@ -55,7 +56,8 @@ export function AddNewCurriculumModelCard({
   const { isOpen, closeModal, openModal } = useModal();
   const { workTaskTypeMap } = useWorkTaskTypeContext();
   const { dispatch, curriculumModelsMap } = useCurriculumModelContext();
-  const [newModelTaskType, setNewModelTaskType] = useState(noTaskType);
+  const [newModelTaskType, setNewModelTaskType] =
+    useState<NameIdStringTuple | null>(null);
   const [nextModelId, setNextModelId] = useState(crypto.randomUUID());
   const [revertUnsaved, setRevertUnsaved] = useState(true);
   const appRouterInstance = useRouter();
@@ -99,12 +101,13 @@ export function AddNewCurriculumModelCard({
     }
     setNextModelId(crypto.randomUUID());
     setNewModelTaskType(
-      taskTypeSelectionList.length > 0 ? taskTypeSelectionList[0] : noTaskType
+      taskTypeSelectionList.length > 0 ? taskTypeSelectionList[0] : null
     );
     closeModal();
   };
 
   const handleAddNewModel = () => {
+    if (!isNotNull(newModelTaskType)) return;
     const unsavedModel: WorkProjectSeriesSchemaDto = {
       ...curriculumModelsMap[nextModelId],
       id: nextModelId,
@@ -129,12 +132,14 @@ export function AddNewCurriculumModelCard({
   return (
     <>
       <Card className={'p-4'}>
-        <button
-          className={'btn btn-primary w-full h-full btn-outline'}
-          onClick={handleOpen}
+        <Button
+          className={' w-full h-full '}
+          variant={'ghost'}
+          color={'primary'}
+          onPress={handleOpen}
         >
           Add New Model <PlusCircleIcon className={'w-8 h-8'}></PlusCircleIcon>
-        </button>
+        </Button>
       </Card>
       <ConfirmActionModal
         show={isOpen}

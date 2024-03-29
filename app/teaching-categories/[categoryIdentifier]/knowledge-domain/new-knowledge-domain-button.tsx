@@ -23,10 +23,11 @@ import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
+import { Button, ButtonProps } from '@nextui-org/react';
 
 const NewKnowledgeDomainContextKey = 'new-knowledge-domain-name';
 
-type NewKnowledgeDomainButtonProps = Omit<GenericButtonProps, 'onClick'> & {
+type NewKnowledgeDomainButtonProps = Omit<ButtonProps, 'onClick'> & {
   serviceCategory: ServiceCategoryDto;
   knowledgeDomainServiceCategoryNameList: string[];
 };
@@ -70,7 +71,8 @@ function NewKnowledgeDomainPanel({
 export function NewKnowledgeDomainButton({
   serviceCategory,
   className,
-  knowledgeDomainServiceCategoryNameList
+  knowledgeDomainServiceCategoryNameList,
+  ...buttonProps
 }: NewKnowledgeDomainButtonProps) {
   const [pending, startTransition] = useTransition();
   const appRouterInstance = useRouter();
@@ -133,20 +135,25 @@ export function NewKnowledgeDomainButton({
 
   return (
     <>
-      <button
+      <Button
+        {...buttonProps}
         className={className}
-        onClick={() => {
+        onPress={() => {
           setConfirmWithoutName({
             contextKey: NewKnowledgeDomainContextKey,
             value: false
           });
           openModal();
         }}
-        disabled={pending}
+        isDisabled={pending}
+        size={'sm'}
+        variant={'ghost'}
+        color={'primary'}
       >
         <PendingOverlay pending={pending} />
-        <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
-      </button>
+        <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>
+        New
+      </Button>
       <ConfirmActionModal
         show={isOpen}
         onClose={closeModal}

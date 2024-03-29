@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { PropsWithChildren, useState } from 'react';
+import { Button } from '@nextui-org/react';
 
 export function DisclosureThatGrowsOpen({
   children,
@@ -15,9 +16,9 @@ export function DisclosureThatGrowsOpen({
 
   return (
     <div className={`flex flex-col w-96 `}>
-      <button
-        className={`btn ${showSliders ? 'btn-primary' : ''}`}
-        onClick={() => setShowSliders(!showSliders)}
+      <Button
+        color={`${showSliders ? 'primary' : 'default'}`}
+        onPress={() => setShowSliders(!showSliders)}
       >
         {label}
         <ChevronDownIcon
@@ -25,7 +26,7 @@ export function DisclosureThatGrowsOpen({
             !showSliders ? 'rotate-90 transform' : ''
           } transition-transform duration-500`}
         ></ChevronDownIcon>
-      </button>
+      </Button>
 
       <div
         className={`mt-2 rounded-lg border-slate-300 ${

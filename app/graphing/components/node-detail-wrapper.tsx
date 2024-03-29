@@ -1,5 +1,5 @@
 'use client';
-import React, { PropsWithChildren } from 'react';
+import React, { Fragment, PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DataNode } from '../../api/zod-mods';
@@ -11,6 +11,7 @@ import {
 import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
+import { Button } from '@nextui-org/react';
 
 export function NodeDetailWrapper<T extends HasNumberIdDto>({
   label,
@@ -29,17 +30,18 @@ export function NodeDetailWrapper<T extends HasNumberIdDto>({
         <>
           <div className={'p-0.5'}>
             <SelectionOutline showOutline={isSelected}>
-              <div className={'flex w-full'}>
-                <button
-                  onClick={() => handleDispatch()}
-                  className={'btn border-0 m-0'}
+              <div className={'flex w-full items-center'}>
+                <Button
+                  onPress={() => handleDispatch()}
+                  className={'border-0 m-0'}
+                  isIconOnly
                 >
                   {isSelected ? (
                     <StarIcon className={'h-4 w-4 fill-amber-300'}></StarIcon>
                   ) : (
                     <StarIconOutline className={'h-4 w-4'}></StarIconOutline>
                   )}
-                </button>
+                </Button>
                 <StandardDisclosureButton
                   open={open}
                   label={label}
@@ -63,19 +65,22 @@ function StandardDisclosureButton({
   label: string;
 }) {
   return (
-    <Disclosure.Button
-      className={`btn ${
-        open ? 'btn-primary' : ''
-      } max-w-full w-[300px] grow flex justify-between`}
-    >
-      <span className={'w-5/6 h-fit leading-6 text-left truncate ...'}>
-        {label}
-      </span>
-      <ChevronDownIcon
-        className={`w-6 h-6 ${
-          !open ? 'rotate-90 transform' : ''
-        } transition-transform duration-500`}
-      ></ChevronDownIcon>
+    <Disclosure.Button as={Fragment}>
+      {({ open }) => (
+        <Button
+          color={`${open ? 'primary' : 'default'}`}
+          className={`max-w-full w-[300px] grow flex justify-between`}
+        >
+          <span className={'w-5/6 h-fit leading-6 text-left truncate ...'}>
+            {label}
+          </span>
+          <ChevronDownIcon
+            className={`w-6 h-6 ${
+              !open ? 'rotate-90 transform' : ''
+            } transition-transform duration-500`}
+          ></ChevronDownIcon>
+        </Button>
+      )}
     </Disclosure.Button>
   );
 }
