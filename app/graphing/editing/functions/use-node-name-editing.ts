@@ -16,6 +16,8 @@ import {
 } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModalProps } from '../../../generic/components/modals/rename-modal';
 import { RenameModalWrapperContextKey } from '../../../selective-context/keys/modal-keys';
+import { useSelectiveContextDispatchNumberList } from '../../../selective-context/components/typed/selective-context-manager-number-list';
+import { EmptyArray } from '../../../api/main';
 
 export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
   node: DataNode<T>,
@@ -31,9 +33,6 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
     componentListenerKey,
     node.data.name
   );
-
-  const { uniqueGraphName } = useContext(GraphContext);
-  useSelectiveContextKeyMemo(UnsavedNodeDataContextKey, uniqueGraphName);
 
   const { nodeListRef, incrementSimVersion, linkListRef } =
     useDirectSimRefEditsDispatch<OrganizationDto>(componentListenerKey);

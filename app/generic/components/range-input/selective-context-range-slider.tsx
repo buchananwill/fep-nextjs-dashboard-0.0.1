@@ -36,6 +36,7 @@ export function SelectiveContextRangeSlider({
       minValue={minValue}
       maxValue={maxValue}
       value={currentState}
+      aria-label={contextKey}
       onChange={(value) => {
         const singleValue = Array.isArray(value) ? value[0] : value;
 

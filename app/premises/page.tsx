@@ -4,8 +4,12 @@ import { getPremises } from '../api/actions/premises';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { ActionResponsePromise } from '../api/actions/actionResponse';
-import ForceGraphPage from '../graphing/force-graph-page';
+import ForceGraphPage, { NodePayload } from '../graphing/force-graph-page';
 import { PremisesHierarchyGraph } from './premises-hierarchy-graph';
+import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
+import CurriculumDeliveryDetails from '../graphing/graph-types/organization/curriculum-delivery-details';
+import React from 'react';
+import PremisesDetails from './premises-details';
 
 export const dynamic = 'force-dynamic';
 

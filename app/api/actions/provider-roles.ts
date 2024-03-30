@@ -8,7 +8,7 @@ import {
   postIntersectionTableRequest
 } from './template-actions';
 import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
-import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema';
+import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema-Validation';
 import { WorkTaskCompetencyDto } from '../dtos/WorkTaskCompetencyDtoSchema';
 
 const url = `${API_BASE_URL}/providers`;
@@ -18,6 +18,7 @@ const teachersUrl = `${url}/teachers`;
 export async function createTeacher(
   formData: NewProviderRoleDto
 ): ActionResponsePromise<ProviderRoleDto> {
+  console.log('Creating teacher...');
   return postEntitiesWithDifferentReturnType(formData, teachersUrl);
 }
 

@@ -5,7 +5,7 @@ import { DaySubColumnLabel } from './columns/day-sub-column-label';
 
 import React, { ReactNode, useEffect, useRef } from 'react';
 
-import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
+import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema-Validation';
 import { createDateMatcher } from './columns/day-column';
 import { DayOfWeekArray } from '../../../api/date-and-time';
 import { HourLabelsColumn } from '../../../staffroom/hour-labels-column';

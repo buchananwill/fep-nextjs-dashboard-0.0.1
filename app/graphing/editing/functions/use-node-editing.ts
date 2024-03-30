@@ -72,11 +72,11 @@ export function useNodeEditing<T extends HasNumberIdDto>(
     const links = linksRef.current;
     if (links && nodes) {
       const linksWithNumberIdRefs = links.map(mapLinksBackToIdRefs);
-
       const updatedGraph: GraphDto<T> = {
         nodes: nodes,
         closureDtos: linksWithNumberIdRefs
       };
+      console.log(updatedGraph);
       const deletedLinkNonTransientIds =
         deletedLinkIds.filter(removeTransientId);
       const deletedNodeNonTransientIds =

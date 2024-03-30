@@ -3,7 +3,7 @@
 import { ReactNode, useState } from 'react';
 
 import { ProviderRoleSelectionContext } from './provider-role-selection-context';
-import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
+import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema-Validation';
 
 export default function ProviderRoleSelectionContextProvider({
   children,

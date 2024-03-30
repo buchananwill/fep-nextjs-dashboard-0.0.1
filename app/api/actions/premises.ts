@@ -2,18 +2,22 @@
 import {
   getWithoutBody,
   patchEntityList,
-  postIntersectionTableRequest
+  postIntersectionTableRequest,
+  putEntities,
+  putRequestWithDifferentReturnType
 } from './template-actions';
 import { ActionResponsePromise } from './actionResponse';
-import { GraphDto } from '../zod-mods';
+import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
 import { AssetDto } from '../dtos/AssetDtoSchema';
 import { API_BASE_URL } from '../main';
 import { AssetRoleWorkTaskSuitabilityDto } from '../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 
 const premisesUrl = `${API_BASE_URL}/assets/premises`;
 
+const premisesGraphUrl = `${premisesUrl}/graph`;
+
 export async function getPremises(): ActionResponsePromise<GraphDto<AssetDto>> {
-  return await getWithoutBody(`${premisesUrl}/graph`);
+  return await getWithoutBody(premisesGraphUrl);
 }
 export async function getPremisesWithRoot(
   rootId: string
@@ -23,6 +27,15 @@ export async function getPremisesWithRoot(
 
 export async function patchPremises(premises: AssetDto[]) {
   return patchEntityList(premises, premisesUrl);
+}
+
+export async function putPremisesGraph(
+  request: GraphDtoPutRequestBody<AssetDto>
+) {
+  return putRequestWithDifferentReturnType<
+    GraphDtoPutRequestBody<AssetDto>,
+    GraphDto<AssetDto>
+  >(request, premisesGraphUrl);
 }
 
 export async function getAssetSuitabilities(

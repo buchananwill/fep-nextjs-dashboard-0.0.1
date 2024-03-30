@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema';
+import { LongIdStringNameTuple } from '../../../api/dtos/LongIdStringNameTupleSchema-Validation';
 
 export interface ProviderRoleSelectionInterface {
   selectedProviders: LongIdStringNameTuple[];
