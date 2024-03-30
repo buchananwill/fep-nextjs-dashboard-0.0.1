@@ -145,7 +145,9 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
   ];
   return (
     <InteractiveTableCard additionalClassNames={additionalClassNames}>
-      <div className={'w-full h-full flex grow items-center relative'}>
+      <div
+        className={'w-full h-full flex grow items-center relative gap-0.5 px-1'}
+      >
         <div
           className={
             'flex absolute w-full h-full top-0 right-0 z-10 pointer-events-none'
@@ -189,7 +191,7 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
           <TooltipTrigger className="m-0 outline-0 border-o">
             <FillableButton
               pinIcon={PinIcons.mortarBoard}
-              className={`${highlightText} mr-1 align-middle py-2`}
+              className={`${highlightText} `}
               isPinned={highlightText != ''}
               setPinned={() => handleMortarBoardClick(courseId)}
               id={`course:highlight-matching:${courseId}`}

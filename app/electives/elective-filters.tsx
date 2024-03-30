@@ -62,7 +62,8 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
 
   const { showTooltips } = useContext(TooltipsContext);
 
-  function handleUnionIntersection(value: string) {
+  function handleUnionIntersection(value: FilterType) {
+    console.log('dispatching filtertype...', value);
     dispatch({
       type: 'setFilterType',
       filterType: value
@@ -96,23 +97,30 @@ export function ElectiveFilters({ electiveDTOList }: Props) {
       </Tooltip>
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
-          <label className="swap ml-2 w-32">
+          <label className="ml-2 w-32 relative cursor-pointer font-mono">
             <input
               type={'checkbox'}
-              className="inline w-32"
-              value={filterType}
-              onChange={(e) => handleUnionIntersection(e.target.value)}
+              className={'pointer-events-none absolute opacity-0 '}
+              checked={filterType === FilterType.any}
+              onChange={() => {
+                console.log('Setting filtertype');
+                handleUnionIntersection(
+                  filterType === FilterType.any
+                    ? FilterType.all
+                    : FilterType.any
+                );
+              }}
             />
-            <div className="swap-off ">
+
+            {filterType === FilterType.any ? (
               <Union size={48}>
                 <span>Match {filterType}</span>
               </Union>
-            </div>
-            <div className="swap-on">
+            ) : (
               <Intersection size={48}>
                 <span>Match {filterType}</span>
               </Intersection>
-            </div>
+            )}
           </label>
         </TooltipTrigger>
         <TooltipContent>

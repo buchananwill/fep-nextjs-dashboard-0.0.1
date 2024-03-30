@@ -14,6 +14,7 @@ import {
   FillableButton,
   PinIcons
 } from '../generic/components/buttons/fillable-button';
+import { FilterType } from '../electives/elective-filter-reducers';
 
 interface Props {
   lessonCycleList: LessonCycle[];
@@ -65,23 +66,28 @@ export function SubjectFilters({ lessonCycleList }: Props) {
         filterOptions={distinctCourses}
         filterReducerType={'setHighlightedSubjects'}
       ></SubjectFilterDropdown>
-      <label className="swap ml-2 w-32">
+      <label className="ml-2 w-32 relative cursor-pointer font-mono">
         <input
           type={'checkbox'}
-          className="inline w-32"
-          value={filterType}
-          onChange={(e) => handleUnionIntersection(e.target.value)}
+          className={'pointer-events-none absolute opacity-0 '}
+          checked={filterType === FilterType.any}
+          onChange={() => {
+            console.log('Setting filtertype');
+            handleUnionIntersection(
+              filterType === FilterType.any ? FilterType.all : FilterType.any
+            );
+          }}
         />
-        <div className="swap-off ">
+
+        {filterType === FilterType.any ? (
           <Union size={48}>
             <span>Match {filterType}</span>
           </Union>
-        </div>
-        <div className="swap-on">
+        ) : (
           <Intersection size={48}>
             <span>Match {filterType}</span>
           </Intersection>
-        </div>
+        )}
       </label>
       <div className="flex flew-row items-center">
         <Text className="mr-2">Reset: </Text>

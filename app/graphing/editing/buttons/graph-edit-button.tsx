@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
+import { Chip } from '@nextui-org/chip';
 
 export function GraphEditButton({
   noNodeSelected,
@@ -13,11 +14,12 @@ export function GraphEditButton({
     <Button variant={'ghost'} color={'primary'} {...buttonProps}>
       {children}
       {noNodeSelected && (
-        <span
-          className={'badge badge-error absolute top-1 text-xs h-10 w-24 z-20'}
+        <Chip
+          color={'warning'}
+          className={'absolute top-1 text-xs h-8 w-24 z-20'}
         >
           Select more nodes!
-        </span>
+        </Chip>
       )}
     </Button>
   );

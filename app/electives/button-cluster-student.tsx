@@ -14,6 +14,7 @@ import {
   FillableButton,
   PinIcons
 } from '../generic/components/buttons/fillable-button';
+import { StandardTooltipContent } from '../generic/components/tooltips/standard-tooltip-content';
 
 export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
   data: { id },
@@ -63,23 +64,20 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
   }
 
   return (
-    <div className="flex align-baseline">
+    <div className="flex items-center h-fit">
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
           <FillableButton
             pinIcon={PinIcons.arrowLeftCircle}
-            className="z-20 py-1"
             isPinned={id == userRoleId}
             setPinned={() => handleRadioClick(id)}
             id={`student:selected:${id}`}
           ></FillableButton>
         </TooltipTrigger>
-        <TooltipContent>
-          <StandardTooltipContentOld>
-            Click the <strong>arrow</strong> to show options enrolled by this
-            student.
-          </StandardTooltipContentOld>
-        </TooltipContent>
+        <StandardTooltipContent>
+          Click the <strong>arrow</strong> to show options enrolled by this
+          student.
+        </StandardTooltipContent>
       </Tooltip>
 
       {children}
@@ -88,36 +86,31 @@ export const ButtonClusterStudent: ButtonClusterTransformer<StudentDTO> = ({
         <TooltipTrigger>
           <FillableButton
             pinIcon={PinIcons.mapPin}
-            className="z-20 py-1"
             isPinned={pinnedStudents.has(id)}
             setPinned={() => handlePinnedStudent(id)}
             id={`student:pinned:${id}`}
           ></FillableButton>
         </TooltipTrigger>
-        <TooltipContent>
-          <StandardTooltipContentOld>
-            Click the <strong>pin</strong> to keep this student in the filtered
-            list.
-          </StandardTooltipContentOld>
-        </TooltipContent>
+        <StandardTooltipContent>
+          Click the <strong>pin</strong> to keep this student in the filtered
+          list.
+        </StandardTooltipContent>
       </Tooltip>
 
       <Tooltip enabled={showTooltips}>
         <TooltipTrigger>
           <FillableButton
+            className={'h-fit'}
             pinIcon={PinIcons.mortarBoard}
-            className={`mr-1 py-1`}
             isPinned={false}
             setPinned={() => handleMortarBoardClick(id)}
             id={`student:highlight-courses:${id}`}
           ></FillableButton>
         </TooltipTrigger>
-        <TooltipContent>
-          <StandardTooltipContentOld>
-            Click the <strong>mortar board</strong> to show all the options
-            delivering the student{"'"}s active elective preferences.
-          </StandardTooltipContentOld>
-        </TooltipContent>
+        <StandardTooltipContent>
+          Click the <strong>mortar board</strong> to show all the options
+          delivering the student{"'"}s active elective preferences.
+        </StandardTooltipContent>
       </Tooltip>
     </div>
   );

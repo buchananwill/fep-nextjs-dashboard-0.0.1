@@ -163,11 +163,11 @@ export default function electivePreferencesReducer(
 
     case 'setFilterType': {
       const { filterType } = action;
-
+      console.log('received type:', filterType);
       const updatedType =
         filterType == FilterType.all ? FilterType.any : FilterType.all;
       return produce(electivesState, (draftState) => {
-        draftState.filterType = updatedType;
+        draftState.filterType = filterType;
         draftState.filterPending = true;
       });
     }

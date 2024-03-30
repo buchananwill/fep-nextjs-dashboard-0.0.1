@@ -4,14 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
 import React, { Suspense } from 'react';
 import Loading from './loading';
-import TooltipsContextProvider from './generic/components/tooltips/tooltips-context-provider';
-import SubjectColorCodingProvider from './contexts/color/subject-color-coding-provider';
-
-import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
-import ColorCodingProvider from './generic/components/color/color-coding-provider';
-import SelectiveContextCollection from './selective-context/components/selective-context-collection';
-import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
-import { NextUIProvider } from '@nextui-org/system';
 import RootProviders from './root-providers';
 
 enableMapSet();
@@ -28,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-gray-50" data-theme={'light'}>
+    <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
         <RootProviders>
           <Suspense>
