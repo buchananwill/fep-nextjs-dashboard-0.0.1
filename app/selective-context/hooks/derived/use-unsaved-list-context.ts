@@ -24,6 +24,6 @@ export function useUnsavedListContext(
       addIdToUnsavedList([...currentState, idForMap]);
       dispatchWithoutControl(true);
     },
-    [currentState, addIdToUnsavedList, dispatchWithoutControl]
+    [currentState]
   );
 }

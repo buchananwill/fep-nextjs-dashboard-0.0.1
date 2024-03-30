@@ -1,9 +1,6 @@
 'use client';
 import { RatingEditModal } from '../generic/components/modals/rating-edit-modal';
-import {
-  AssetSuitabilityEditContext,
-  GenericRatingEditContext
-} from '../generic/components/tables/rating/rating-edit-context';
+import { GenericRatingEditContext } from '../generic/components/tables/rating/rating-edit-context';
 import { PropsWithChildren } from 'react';
 import {
   assetRoleWorkTaskSuitabilityIdAccessor,

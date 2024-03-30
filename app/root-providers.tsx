@@ -7,11 +7,11 @@ import SelectiveContextCollection from './selective-context/components/selective
 import SubjectColorCodingProvider from './contexts/color/subject-color-coding-provider';
 import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
 import ColorCodingProvider from './generic/components/color/color-coding-provider';
-import { NextUIProvider } from '@nextui-org/react';
+import NextUiProviderWrapper from './next-ui-provider-wrapper';
 
 export default function RootProviders({ children }: { children: ReactNode }) {
   return (
-    <NextUIProvider>
+    <NextUiProviderWrapper>
       <AnimationSyncContextProvider>
         <TooltipsContextProvider startDisabled={true}>
           <SelectiveContextCollection>
@@ -23,6 +23,6 @@ export default function RootProviders({ children }: { children: ReactNode }) {
           </SelectiveContextCollection>
         </TooltipsContextProvider>
       </AnimationSyncContextProvider>
-    </NextUIProvider>
+    </NextUiProviderWrapper>
   );
 }

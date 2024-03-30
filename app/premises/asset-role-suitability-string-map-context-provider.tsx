@@ -49,7 +49,7 @@ export default function AssetRoleSuitabilityStringMapContextProvider({
         dispatchWithoutControl(idList);
       }
     }
-  }, [dispatchWithoutControl, readonlyURLSearchParams, suitabilityLists]);
+  }, [readonlyURLSearchParams, suitabilityLists]);
 
   return (
     <Provider

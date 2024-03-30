@@ -50,6 +50,7 @@ export function RatingEditModal<R, E>({
   });
 
   const triggerFunction = useMemo(() => {
+    console.log('regenerating trigger function');
     return { cachedFunction: triggerModal };
   }, [triggerModal]);
 
