@@ -58,15 +58,7 @@ export default async function Page({
   if (workTaskTypeDtos === undefined) {
     return <DataNotFoundCard>No lesson types found</DataNotFoundCard>;
   }
-  const assetDtoList = actionResponse.data.nodes
-    .map((dn) => dn.data)
-    .map((asset) => {
-      const sortedSuitabilities = asset.assetRoleWorkTaskSuitabilities.sort(
-        (suit1, suit2) =>
-          suit1.workTaskTypeName.localeCompare(suit2.workTaskTypeName)
-      );
-      return { ...asset, assetRoleWorkTaskSuitabilities: sortedSuitabilities };
-    });
+  const assetDtoList = actionResponse.data.nodes.map((dn) => dn.data);
 
   const assetStringMap = convertListToStringMap(
     assetDtoList,

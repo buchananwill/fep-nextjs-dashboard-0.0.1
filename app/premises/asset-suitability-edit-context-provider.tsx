@@ -30,7 +30,6 @@ export default function AssetSuitabilityEditContextProvider({
     selectiveContextReadAll,
     assetRoleWorkTaskSuitabilityIdAccessor,
     suitabilityProducer,
-    suitabilityListSetter,
     IdStringFromNumberAccessor,
     UnsavedAssetChanges,
     UnsavedAssetChangesListenerKey
@@ -70,12 +69,3 @@ const suitabilityProducer = getCurriedProducer<
   AssetRoleWorkTaskSuitabilityDto,
   number
 >((rating, value) => (rating.suitabilityRating = value));
-
-const suitabilityListSetter = (
-  assetDto: AssetDto,
-  list: AssetRoleWorkTaskSuitabilityDto[]
-) => {
-  return produce(assetDto, (draft) => {
-    draft.assetRoleWorkTaskSuitabilities = list;
-  });
-};

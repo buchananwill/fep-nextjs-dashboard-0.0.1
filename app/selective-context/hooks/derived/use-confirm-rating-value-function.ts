@@ -17,7 +17,6 @@ export function useConfirmRatingValueFunction<R, E>(
   ratingListAccessor: SelectiveContextReadAll<R[]>,
   ratingCategoryIdAccessor: RatingCategoryIdAccessor<R>,
   ratingValueSetter: (rating: R, value: number) => R,
-  ratingListSetter: (elementWithRatings: E, list: R[]) => E,
   elementStringIdAccessor: AccessorFunction<E, string>,
   unsavedChangesContextKey: string,
   unsavedChangesListenerKey: string
@@ -40,8 +39,8 @@ export function useConfirmRatingValueFunction<R, E>(
           ? ratingValueSetter(ratingDto, updatedValue)
           : ratingDto
       );
-      const updatedElement = ratingListSetter(elementWithRatings, updatedList);
-      const idForMap = elementStringIdAccessor(updatedElement);
+
+      const idForMap = elementStringIdAccessor(elementWithRatings);
       dispatch({
         contextKey: idForMap,
         value: updatedList
@@ -54,7 +53,7 @@ export function useConfirmRatingValueFunction<R, E>(
       ratingListAccessor,
       ratingCategoryIdAccessor,
       ratingValueSetter,
-      ratingListSetter,
+
       elementStringIdAccessor
     ]
   );
