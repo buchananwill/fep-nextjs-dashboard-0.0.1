@@ -1,6 +1,7 @@
 'use client';
 import { useSelectiveContextAnyController } from '../selective-context/components/global/selective-context-manager-global';
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
+import { Badge } from '@nextui-org/badge';
 
 const tuple: NameIdStringTuple = {
   id: '1',
@@ -15,11 +16,8 @@ export default function SomeComponent() {
       initialValue: tuple
     });
   return (
-    <div className={'indicator'}>
-      <span className={'indicator-item badge badge-info'}>
-        {currentState.id}
-      </span>
+    <Badge content={`${currentState.id}`}>
       <div>{currentState.name}</div>
-    </div>
+    </Badge>
   );
 }

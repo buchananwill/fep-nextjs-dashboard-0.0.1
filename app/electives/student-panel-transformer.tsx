@@ -6,13 +6,13 @@ import { OptionBlockChooser } from './option-block-chooser';
 import { ToggleElectivePreferenceActive } from './toggle-elective-preference-active';
 import {
   Tooltip,
-  TooltipContent,
   TooltipTrigger
 } from '../generic/components/tooltips/tooltip';
 import TooltipsContext from '../generic/components/tooltips/tooltips-context';
-import { StandardTooltipContentOld } from '../generic/components/tooltips/standard-tooltip-content-old';
 import { StudentDTO } from '../api/dtos/StudentDTOSchema';
 import { PanelTransformer } from '../generic/components/disclosure-list/disclosure-list-panel';
+import { Badge } from '@nextui-org/badge';
+import { StandardTooltipContent } from '../generic/components/tooltips/standard-tooltip-content';
 
 export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
   data: { id, name }
@@ -39,28 +39,29 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
             key={`${id}-${electivePreference.preferencePosition}`}
             className="flex grow-0 w-full justify-between p-0 m-0 align-middle items-center"
           >
-            <span>{electivePreference.courseName} </span>
+            <span className={'text-xs truncate ...'}>
+              {electivePreference.courseName}{' '}
+            </span>
             <span className="grow"></span>
             <Tooltip enabled={showTooltips}>
               <TooltipTrigger className="p-0 m-0 border-0 outline-0 h-full">
-                <div className="indicator">
-                  <OptionBlockChooser electivePreference={electivePreference} />
-                  {getAssignmentIndicator(
-                    checkAssignment(
-                      electiveDtoMap,
-                      electivePreferenceList,
-                      electivePreference.preferencePosition
-                    )
+                <Badge
+                  isInvisible={checkAssignment(
+                    electiveDtoMap,
+                    electivePreferenceList,
+                    electivePreference.preferencePosition
                   )}
-                </div>
+                  content={'!'}
+                  color={'danger'}
+                >
+                  <OptionBlockChooser electivePreference={electivePreference} />
+                </Badge>
               </TooltipTrigger>
-              <TooltipContent>
-                <StandardTooltipContentOld>
-                  Select in which <strong>option block</strong> this{' '}
-                  <strong>student</strong> will attend this{' '}
-                  <strong>course</strong>.
-                </StandardTooltipContentOld>
-              </TooltipContent>
+              <StandardTooltipContent>
+                Select in which <strong>option block</strong> this{' '}
+                <strong>student</strong> will attend this{' '}
+                <strong>course</strong>.
+              </StandardTooltipContent>
             </Tooltip>
             <Tooltip enabled={showTooltips}>
               <TooltipTrigger className="border-0 outline-0 items-center text-xs leading-none">
@@ -69,12 +70,10 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
                   electivePreference={electivePreference}
                 />
               </TooltipTrigger>
-              <TooltipContent>
-                <StandardTooltipContentOld>
-                  Toggle whether this <strong>elective enrollment</strong> is
-                  active.
-                </StandardTooltipContentOld>
-              </TooltipContent>
+              <StandardTooltipContent>
+                Toggle whether this <strong>elective enrollment</strong> is
+                active.
+              </StandardTooltipContent>
             </Tooltip>
           </div>
         );
@@ -82,13 +81,3 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
     </>
   );
 };
-
-function getAssignmentIndicator(assignmentCheck: boolean) {
-  const indicator = 'rose-400';
-
-  return assignmentCheck ? (
-    <></>
-  ) : (
-    <span className={`indicator-item badge bg-${indicator} text-xs`}>!</span>
-  );
-}

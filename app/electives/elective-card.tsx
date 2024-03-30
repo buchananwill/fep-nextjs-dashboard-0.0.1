@@ -1,5 +1,6 @@
 'use client';
-import { Badge, Color, Text } from '@tremor/react';
+import { Badge } from '@nextui-org/badge';
+import { Chip } from '@nextui-org/chip';
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { ElectiveContext, ElectiveDispatchContext } from './elective-context';
 import { ElectiveState } from './elective-reducers';
@@ -22,6 +23,7 @@ import {
   FillableButton,
   PinIcons
 } from '../generic/components/buttons/fillable-button';
+import { PendingOverlay } from '../generic/components/overlays/pending-overlay';
 
 const aLevelClassLimitInt = 25;
 
@@ -139,86 +141,100 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
     `opacity-${opacity}`,
     borderVisible,
     carouselOptionIdSet.has(id) ? 'bg-emerald-100' : '',
-    'py-0 w-48'
+    'w-48'
   ];
   return (
     <InteractiveTableCard additionalClassNames={additionalClassNames}>
-      <Tooltip enabled={showTooltips}>
-        <TooltipTrigger className="outline-0 w-full border-0">
-          {isPending && (
-            <div className="absolute -left-1 top-0 bottom-0 flex items-center justify-center">
-              <span className="loading loading-ring loading-sm"></span>
-            </div>
-          )}
-          <div className="indicator grow w-full">
-            {getFiltered(courseFilters, courseId) && (
-              <span className="indicator-item badge indicator-start bg-emerald-300 badge-sm"></span>
-            )}
-            <div
-              className="px-0 py-3 cursor-pointer grow inline"
-              onClick={() => {
-                handleCardClick(id);
-              }}
-            >
-              <Text className="text-xs">{name}</Text>
-            </div>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <StandardTooltipContentOld>
-            <p>
-              Click the<strong> subject name </strong> to filter students taking
-              this course.
-            </p>{' '}
-          </StandardTooltipContentOld>
-        </TooltipContent>
-      </Tooltip>
+      <div className={'w-full h-full flex grow items-center relative'}>
+        <div
+          className={
+            'flex absolute w-full h-full top-0 right-0 z-10 pointer-events-none'
+          }
+        >
+          <Badge
+            content={''}
+            color={'success'}
+            size={'sm'}
+            placement={'top-right'}
+            isInvisible={!getFiltered(courseFilters, courseId)}
+          >
+            <div></div>
+          </Badge>
+        </div>
+        <div className={'grow relative rounded-md overflow-hidden'}>
+          <PendingOverlay pending={isPending} />
+          <Tooltip enabled={showTooltips}>
+            <TooltipTrigger>
+              <div
+                className="px-0 py-3 cursor-pointer grow  text-xs  truncate ..."
+                onClick={() => {
+                  handleCardClick(id);
+                }}
+              >
+                {name}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <StandardTooltipContentOld>
+                <p>
+                  Click the<strong> subject name </strong> to filter students
+                  taking this course.
+                </p>{' '}
+              </StandardTooltipContentOld>
+            </TooltipContent>
+          </Tooltip>
+        </div>
 
-      <Tooltip enabled={showTooltips}>
-        <TooltipTrigger className="m-0 outline-0 border-o">
-          <FillableButton
-            pinIcon={PinIcons.mortarBoard}
-            className={`${highlightText} mr-1 align-middle py-2`}
-            isPinned={highlightText != ''}
-            setPinned={() => handleMortarBoardClick(courseId)}
-            id={`course:highlight-matching:${courseId}`}
-          ></FillableButton>
-        </TooltipTrigger>
-        <TooltipContent className="">
-          <StandardTooltipContentOld>
-            <p>
-              Click the <strong> mortar board </strong> to show the locations of
-              matching courses.
-            </p>
-          </StandardTooltipContentOld>
-        </TooltipContent>
-      </Tooltip>
+        <Tooltip enabled={showTooltips}>
+          <TooltipTrigger className="m-0 outline-0 border-o">
+            <FillableButton
+              pinIcon={PinIcons.mortarBoard}
+              className={`${highlightText} mr-1 align-middle py-2`}
+              isPinned={highlightText != ''}
+              setPinned={() => handleMortarBoardClick(courseId)}
+              id={`course:highlight-matching:${courseId}`}
+            ></FillableButton>
+          </TooltipTrigger>
+          <TooltipContent className="">
+            <StandardTooltipContentOld>
+              <p>
+                Click the <strong> mortar board </strong> to show the locations
+                of matching courses.
+              </p>
+            </StandardTooltipContentOld>
+          </TooltipContent>
+        </Tooltip>
 
-      <Tooltip enabled={showTooltips}>
-        <TooltipTrigger>
-          <div className="py-2 flex">
-            <Badge color={classesColor}>{numberOfClasses} </Badge>
-            <Badge color={subscribersColor}>{subscribers}</Badge>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <StandardTooltipContentOld>
-            Number of classes in this block, with a max size of{' '}
-            {aLevelClassLimitInt} students.
-          </StandardTooltipContentOld>
-        </TooltipContent>
-      </Tooltip>
+        <Tooltip enabled={showTooltips}>
+          <TooltipTrigger>
+            <div className="py-2 flex">
+              <Chip variant={'flat'} color={classesColor}>
+                {numberOfClasses}{' '}
+              </Chip>
+              <Chip variant={'flat'} color={subscribersColor}>
+                {subscribers}
+              </Chip>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <StandardTooltipContentOld>
+              Number of classes in this block, with a max size of{' '}
+              {aLevelClassLimitInt} students.
+            </StandardTooltipContentOld>
+          </TooltipContent>
+        </Tooltip>
+      </div>
     </InteractiveTableCard>
   );
 };
 
 function getSubscribersColor(subscribers: number) {
-  if (subscribers === 0) return 'red';
-  if (subscribers < 5) return 'orange';
-  if (subscribers < 10) return 'yellow';
-  if (subscribers > 30) return 'indigo';
-  if (subscribers > 20) return 'sky';
-  else return 'emerald';
+  if (subscribers === 0) return 'default';
+  if (subscribers < 5) return 'danger';
+  if (subscribers < 10) return 'warning';
+  if (subscribers > 30) return 'secondary';
+  if (subscribers > 20) return 'primary';
+  else return 'success';
 }
 
 function getOpacity(isEnabled: boolean) {
@@ -226,11 +242,11 @@ function getOpacity(isEnabled: boolean) {
   else return 50;
 }
 
-function getClassesColor(classes: number): Color {
-  if (classes >= 3) return 'red';
-  if (classes == 2) return 'amber';
-  if (classes == 1) return 'green';
-  else return 'gray';
+function getClassesColor(classes: number) {
+  if (classes >= 3) return 'danger';
+  if (classes == 2) return 'warning';
+  if (classes == 1) return 'success';
+  else return 'default';
 }
 
 export default ElectiveCard;

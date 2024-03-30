@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { ElectiveDispatchContext } from './elective-context';
 import { ElectivePreferenceDTO } from '../api/dtos/ElectivePreferenceDTOSchema';
+import { Switch } from '@tremor/react';
 
 export function ToggleElectivePreferenceActive({
   electivePreferenceDTOS,
@@ -20,9 +21,9 @@ export function ToggleElectivePreferenceActive({
   }
 
   return (
-    <input
-      type="checkbox"
-      className="toggle toggle-success ml-2 min-h-0"
+    <Switch
+      className=" ml-2 min-h-0"
+      color={'success'}
       defaultChecked={
         electivePreferenceDTOS[electivePreference.preferencePosition - 1].active
       } // preferencePosition is one-indexed
@@ -32,6 +33,6 @@ export function ToggleElectivePreferenceActive({
           electivePreference.preferencePosition
         );
       }}
-    ></input>
+    ></Switch>
   );
 }

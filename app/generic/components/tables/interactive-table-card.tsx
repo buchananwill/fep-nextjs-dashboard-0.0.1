@@ -21,7 +21,7 @@ export default function InteractiveTableCard({
   return (
     <Card
       className={classNames(
-        'flex py-2 px-1 m-0 items-center z-10 hover:zoom-110 hover:z-20 hover:transition-transform hover:duration-300 duration-500 ',
+        'flex p-0 m-0 items-center z-10 hover:scale-110 hover:z-20 hover:transition-transform hover:duration-300 duration-500 ',
         ...(additionalClassNames || [])
       )}
       decoration={decoration || 'left'}
