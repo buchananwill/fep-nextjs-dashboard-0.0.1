@@ -8,23 +8,8 @@ export default {
     './node_modules/@tremor/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
-  plugins: [require('@headlessui/tailwindcss'), require('daisyui'), nextui()],
-  daisyui: {
-    themes: [
-      {
-        light: {
-          ...require('daisyui/src/theming/themes')['light'],
-          primary: '#3247ff',
-          secondary: '#aae47a',
-          accent: '#37cdbe',
-          neutral: '#3d4451',
-          'base-100': '#ffffff'
-        }
-      },
-      'dark',
-      'cupcake'
-    ]
-  },
+  plugins: [require('@headlessui/tailwindcss'), nextui()],
+
   theme: {
     transparent: 'transparent',
     current: 'currentColor',
