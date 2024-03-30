@@ -93,7 +93,7 @@ export function useNodeEditing<T extends HasNumberIdDto>(
         }
       });
 
-      setUnsaved({ contextKey: unsavedGraphContextKey, value: false });
+      setUnsaved({ contextKey: unsavedGraphContextKey, update: false });
       appRouterInstance.refresh();
       closeModal();
     }

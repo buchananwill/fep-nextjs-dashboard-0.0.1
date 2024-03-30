@@ -177,7 +177,7 @@ export function BundleEditor({
     const { stateBundle } = activeBundleAndId;
     dispatchRenameLocally({
       contextKey: contextKeyMemo,
-      value: stateBundle.name
+      update: stateBundle.name
     });
     closeModal();
   };
@@ -186,7 +186,7 @@ export function BundleEditor({
     const {
       stateBundle: { name }
     } = activeBundleAndId;
-    dispatchRenameLocally({ contextKey: contextKeyMemo, value: name });
+    dispatchRenameLocally({ contextKey: contextKeyMemo, update: name });
     openModal();
   };
 

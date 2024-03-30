@@ -71,7 +71,7 @@ export function BundleAssignmentsProvider({
         dispatch({ type: 'updateAll', payload: payloadArray });
         dispatchUpdate({
           contextKey: UnsavedBundleAssignmentsKey,
-          value: false
+          update: false
         });
       }
     });

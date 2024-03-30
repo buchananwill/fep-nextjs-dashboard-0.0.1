@@ -1,4 +1,9 @@
-import React, { Dispatch, useContext } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext
+} from 'react';
 import {
   LatestValueRef,
   ListenerRefInterface,
@@ -28,7 +33,7 @@ export function useSelectiveContextDispatch<T>(
   latestValueRefContext: React.Context<
     React.MutableRefObject<LatestValueRef<T>>
   >,
-  dispatchUpdateContext: React.Context<(value: UpdateAction<T>) => void>
+  dispatchUpdateContext: React.Context<Dispatch<UpdateAction<T>>>
 ) {
   const { currentState } = useSelectiveContextListener(
     contextKey,
@@ -40,9 +45,12 @@ export function useSelectiveContextDispatch<T>(
 
   const dispatch = useContext(dispatchUpdateContext);
 
-  const dispatchWithoutControl = (proposedValue: T) => {
-    dispatch({ contextKey, value: proposedValue });
-  };
+  const dispatchWithoutControl = useCallback(
+    (proposedUpdate: SetStateAction<T>) => {
+      dispatch({ contextKey, update: proposedUpdate });
+    },
+    [contextKey, dispatch]
+  );
 
   return { currentState, dispatchWithoutControl, dispatch };
 }

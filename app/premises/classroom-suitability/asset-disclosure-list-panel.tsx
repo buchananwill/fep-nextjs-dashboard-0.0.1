@@ -77,7 +77,7 @@ const AssetLabelTransformer: DisclosureLabelTransformer<AssetDto> = ({
 
   useEffect(() => {
     if (stringMapFromContext.current !== assetSuitabilityStringMapElement) {
-      dispatchUpdate({ contextKey, value: assetSuitabilityStringMapElement });
+      dispatchUpdate({ contextKey, update: assetSuitabilityStringMapElement });
       stringMapFromContext.current = assetSuitabilityStringMapElement;
     }
   }, [

@@ -23,7 +23,7 @@ export function useSvgScale(uniqueElementKey: string) {
       const viewBox = svg.viewBox;
       setSvgScale({
         contextKey: svgScaleKey,
-        value: viewBox.baseVal.width / svg.width.baseVal.value
+        update: viewBox.baseVal.width / svg.width.baseVal.value
       });
     }
   }, [svgRef, setSvgScale, svgScaleKey, zoomScale]);

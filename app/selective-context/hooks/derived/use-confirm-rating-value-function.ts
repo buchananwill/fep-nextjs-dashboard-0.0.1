@@ -43,7 +43,7 @@ export function useConfirmRatingValueFunction<R, E>(
       const idForMap = elementStringIdAccessor(elementWithRatings);
       dispatch({
         contextKey: idForMap,
-        value: updatedList
+        update: updatedList
       });
       addUnsavedChange(idForMap);
     },

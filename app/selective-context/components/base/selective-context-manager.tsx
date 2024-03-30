@@ -2,6 +2,7 @@ import {
   Context,
   Dispatch,
   MutableRefObject,
+  SetStateAction,
   useCallback,
   useRef
 } from 'react';
@@ -11,7 +12,7 @@ export interface ListenerRefInterface<T> {
 }
 
 export interface SelectiveListeners<T> {
-  [key: string]: (update: T) => void;
+  [key: string]: Dispatch<SetStateAction<T>>;
 }
 
 export interface LatestValueRef<T> {
@@ -20,7 +21,7 @@ export interface LatestValueRef<T> {
 
 export interface UpdateAction<T> {
   contextKey: string;
-  value: T;
+  update: SetStateAction<T>;
 }
 
 export type SelectiveListenersContext<T> = Context<
@@ -39,26 +40,32 @@ export function useSelectiveContextManager<T>(
   const latestValueRef = useRef(initialContext);
 
   const dispatch = useCallback((action: UpdateAction<T>) => {
-    const { contextKey, value } = action;
+    const { contextKey, update } = action;
     const currentElement = latestValueRef.current[contextKey];
     const listeners = triggerUpdateRef.current[contextKey];
 
     if (!listeners) {
       throw new Error(
-        `No listeners found for this context: ${contextKey} with value ${value}`
+        `No listeners found for this context: ${contextKey} with value ${update}`
       );
     }
 
-    if (currentElement !== value) {
+    let newValue = currentElement;
+    if (update instanceof Function) {
+      newValue = update(currentElement);
+    } else {
+      newValue = update;
+    }
+
+    if (currentElement !== newValue) {
       try {
         Object.values(listeners).forEach((l) => {
-          l(value);
+          l(update);
         });
       } catch (e) {
         console.error(e);
       }
-      latestValueRef.current[contextKey] = value;
-      // }
+      latestValueRef.current[contextKey] = newValue;
     }
   }, []);
 

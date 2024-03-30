@@ -51,7 +51,7 @@ export function useDirectSimRefEditsController<T extends HasNumberIdDto>(
     });
 
   const incrementSimVersion = () => {
-    dispatchUpdate({ contextKey: contextVersionKey, value: simVersion + 1 });
+    dispatchUpdate({ contextKey: contextVersionKey, update: simVersion + 1 });
   };
   const { nodeListRef, linkListRef } = useGenericGraphRefs<T>();
   return { incrementSimVersion, nodeListRef, linkListRef };

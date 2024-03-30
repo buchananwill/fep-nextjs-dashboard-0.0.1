@@ -95,12 +95,12 @@ export function NewKnowledgeDomainButton({
     if (currentState === '') {
       setConfirmWithoutName({
         contextKey: NewKnowledgeDomainContextKey,
-        value: true
+        update: true
       });
     } else if (knowledgeDomainServiceCategoryNameList.includes(currentState)) {
       setConfirmWithoutName({
         contextKey: NewKnowledgeDomainContextKey,
-        value: true
+        update: true
       });
     } else {
       const kdToPost: KnowledgeDomainDto = {
@@ -118,11 +118,11 @@ export function NewKnowledgeDomainButton({
           .then(() => {
             setConfirmWithoutName({
               contextKey: NewKnowledgeDomainContextKey,
-              value: false
+              update: false
             });
             dispatchUpdate({
               contextKey: NewKnowledgeDomainContextKey,
-              value: ''
+              update: ''
             });
             closeModal();
           })
@@ -141,7 +141,7 @@ export function NewKnowledgeDomainButton({
         onPress={() => {
           setConfirmWithoutName({
             contextKey: NewKnowledgeDomainContextKey,
-            value: false
+            update: false
           });
           openModal();
         }}

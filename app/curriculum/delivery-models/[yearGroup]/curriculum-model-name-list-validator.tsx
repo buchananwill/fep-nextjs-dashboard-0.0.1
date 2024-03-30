@@ -26,7 +26,7 @@ export function CurriculumModelNameListValidator({
     EmptyIdArray
   );
   useEffect(() => {
-    dispatchUpdate({ contextKey: ValidatorContextKey, value: nameList });
+    dispatchUpdate({ contextKey: ValidatorContextKey, update: nameList });
   }, [nameList, dispatchUpdate]);
 
   return <>{children}</>;

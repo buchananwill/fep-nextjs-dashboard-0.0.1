@@ -80,7 +80,7 @@ export function WriteableStringMapContextProvider<T>({
       if (r.data) {
         const schemas = getPayloadArray(r.data, mapKeyAccessor);
         dispatch({ type: 'updateAll', payload: schemas });
-        setUnsaved({ contextKey: unsavedChangesEntityKey, value: false });
+        setUnsaved({ contextKey: unsavedChangesEntityKey, update: false });
       }
     });
   }

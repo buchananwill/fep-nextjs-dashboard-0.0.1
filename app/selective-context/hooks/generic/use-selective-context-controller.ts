@@ -1,5 +1,11 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import {
   LatestValueRef,
   UpdateAction,
@@ -19,7 +25,7 @@ export interface UseSelectiveContextControllerReturn<T> {
 }
 export interface UseSelectiveContextDispatchReturn<T> {
   currentState: T;
-  dispatchWithoutControl: (value: T) => void;
+  dispatchWithoutControl: Dispatch<SetStateAction<T>>;
 }
 
 export type UseSelectiveContextDispatch<T> = (
@@ -65,7 +71,7 @@ export function useSelectiveContextController<T>(
 
   useEffect(() => {
     if (!isInitialized) {
-      dispatchUpdate({ contextKey: contextKey, value: initialValue });
+      dispatchUpdate({ contextKey: contextKey, update: initialValue });
       if (currentState === initialValue) {
         setIsInitialized(true);
       } else {

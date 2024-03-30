@@ -38,7 +38,7 @@ export function KnowledgeDomainNameCell({
   };
 
   const handleCancel = () => {
-    dispatchUpdate({ contextKey: renameContextKey, value: name });
+    dispatchUpdate({ contextKey: renameContextKey, update: name });
     closeModal();
   };
 

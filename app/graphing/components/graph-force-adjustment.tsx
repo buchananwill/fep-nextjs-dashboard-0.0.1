@@ -34,7 +34,7 @@ export default function GraphForceAdjustment() {
 
   useEffect(() => {
     if (!currentState) {
-      dispatchUpdate({ contextKey: readyToGraph, value: true });
+      dispatchUpdate({ contextKey: readyToGraph, update: true });
     }
   }, [dispatchUpdate, currentState, readyToGraph]);
 

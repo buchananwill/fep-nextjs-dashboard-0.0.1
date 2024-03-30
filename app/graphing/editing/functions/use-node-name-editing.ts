@@ -52,7 +52,7 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
   const handleCancelRename = () => {
     dispatchUpdate({
       contextKey: renameModalContextKey,
-      value: node.data.name
+      update: node.data.name
     });
     closeModal();
   };

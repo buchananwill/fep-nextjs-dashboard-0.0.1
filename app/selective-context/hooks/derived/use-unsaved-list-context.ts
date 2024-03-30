@@ -13,7 +13,7 @@ export function useUnsavedListContext(
     false
   );
 
-  const { currentState, dispatchWithoutControl: addIdToUnsavedList } =
+  const { dispatchWithoutControl: addIdToUnsavedList } =
     useSelectiveContextDispatchStringList({
       contextKey: unsavedChangesContextKey,
       listenerKey: unsavedChangesListenerKey,
@@ -21,9 +21,9 @@ export function useUnsavedListContext(
     });
   return useCallback(
     (idForMap: string) => {
-      addIdToUnsavedList([...currentState, idForMap]);
+      addIdToUnsavedList((prev) => [...prev, idForMap]);
       dispatchWithoutControl(true);
     },
-    [currentState]
+    [dispatchWithoutControl, addIdToUnsavedList]
   );
 }

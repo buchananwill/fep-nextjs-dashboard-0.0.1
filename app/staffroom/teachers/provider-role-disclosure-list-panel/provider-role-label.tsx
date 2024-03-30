@@ -47,7 +47,10 @@ export function ProviderRoleLabel({
 
   useEffect(() => {
     if (stringMapFromContext.current !== workTaskCompetencyStringMapElement) {
-      dispatchUpdate({ contextKey, value: workTaskCompetencyStringMapElement });
+      dispatchUpdate({
+        contextKey,
+        update: workTaskCompetencyStringMapElement
+      });
       stringMapFromContext.current = workTaskCompetencyStringMapElement;
     }
   }, [

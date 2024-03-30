@@ -23,7 +23,7 @@ export function SelectiveContextDispatcherBoolean({
       id={uniqueKey}
       color={'emerald'}
       onChange={() => {
-        dispatchUpdate({ contextKey: uniqueKey, value: !currentState });
+        dispatchUpdate({ contextKey: uniqueKey, update: !currentState });
       }}
       // className={` ${
       //   currentState

@@ -119,12 +119,12 @@ export function NewKnowledgeLevelButton({
     if (currentState === '') {
       setConfirmWithoutName({
         contextKey: NewKnowledgeLevelContextKey,
-        value: true
+        update: true
       });
     } else if (knowledgeLevelNameList.includes(currentState)) {
       setConfirmWithoutName({
         contextKey: NewKnowledgeLevelContextKey,
-        value: true
+        update: true
       });
     } else {
       const kdToPost: KnowledgeLevelDto = {
@@ -142,11 +142,11 @@ export function NewKnowledgeLevelButton({
         .then(() => {
           setConfirmWithoutName({
             contextKey: NewKnowledgeLevelContextKey,
-            value: false
+            update: false
           });
           dispatchUpdate({
             contextKey: NewKnowledgeLevelContextKey,
-            value: ''
+            update: ''
           });
           closeModal();
         });
@@ -160,7 +160,7 @@ export function NewKnowledgeLevelButton({
         onPress={() => {
           setConfirmWithoutName({
             contextKey: NewKnowledgeLevelContextKey,
-            value: false
+            update: false
           });
           openModal();
         }}

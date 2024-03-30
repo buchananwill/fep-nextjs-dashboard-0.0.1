@@ -17,9 +17,9 @@ export default function MountedTracker({}: {}) {
   );
 
   useEffect(() => {
-    dispatchUpdate({ contextKey: mountedKey, value: true });
+    dispatchUpdate({ contextKey: mountedKey, update: true });
     return () => {
-      dispatchUpdate({ contextKey: mountedKey, value: false });
+      dispatchUpdate({ contextKey: mountedKey, update: false });
     };
   }, [dispatchUpdate, mountedKey]);
   return <div></div>;

@@ -96,7 +96,7 @@ export function BundleItemsContextProvider({
         })
         .then(() => {
           dispatch({ type: 'updateAll', payload: updatedBundles });
-          setUnsavedBundles({ contextKey: UnsavedBundleEdits, value: false });
+          setUnsavedBundles({ contextKey: UnsavedBundleEdits, update: false });
           closeModal();
         });
     });

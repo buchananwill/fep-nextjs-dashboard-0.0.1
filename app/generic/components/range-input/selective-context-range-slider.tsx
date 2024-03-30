@@ -42,7 +42,7 @@ export function SelectiveContextRangeSlider({
 
         dispatchUpdate({
           contextKey: contextKey,
-          value: singleValue
+          update: singleValue
         });
       }}
     ></Slider>

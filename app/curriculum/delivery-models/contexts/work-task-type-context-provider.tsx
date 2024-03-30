@@ -52,10 +52,10 @@ export function WorkTaskTypeContextProvider({
   );
 
   const handleClose = () => {
-    dispatchUpdate({ contextKey: workTaskTypeCommitKey, value: false });
+    dispatchUpdate({ contextKey: workTaskTypeCommitKey, update: false });
   };
   const openModal = () =>
-    dispatchUpdate({ contextKey: workTaskTypeCommitKey, value: true });
+    dispatchUpdate({ contextKey: workTaskTypeCommitKey, update: true });
 
   async function handleCommit() {
     const workTaskTypeDtos = Object.values(
@@ -65,7 +65,7 @@ export function WorkTaskTypeContextProvider({
       if (r.data) {
         const schemas = getPayloadArray(r.data, (r) => r.id.toString());
         dispatch({ type: 'updateAll', payload: schemas });
-        setUnsaved({ contextKey: UnsavedWorkTaskTypeChanges, value: false });
+        setUnsaved({ contextKey: UnsavedWorkTaskTypeChanges, update: false });
       }
     });
   }

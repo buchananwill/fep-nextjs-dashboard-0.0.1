@@ -62,7 +62,10 @@ export function CurriculumModelsContextProvider({
     let successUpdate = false;
     const clearFlag = () => {
       if (successUpdate && successDelete) {
-        setUnsaved({ contextKey: UnsavedCurriculumModelChanges, value: false });
+        setUnsaved({
+          contextKey: UnsavedCurriculumModelChanges,
+          update: false
+        });
       }
     };
 
@@ -72,7 +75,7 @@ export function CurriculumModelsContextProvider({
           if (r.status == 200) {
             dispatchDeletedModelIdList({
               contextKey: DeletedCurriculumModelIdsKey,
-              value: EmptyIdArray
+              update: EmptyIdArray
             });
             successDelete = true;
           } else {

@@ -77,7 +77,7 @@ export function useRenameCurriculumDeliveryModel(
   const handleCancelRename = () => {
     dispatchUpdate({
       contextKey: renameModalContextKey,
-      value: curriculumModelsMap[modelId]?.name
+      update: curriculumModelsMap[modelId]?.name
     });
     closeModal();
   };
