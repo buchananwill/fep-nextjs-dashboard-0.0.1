@@ -39,7 +39,6 @@ export function SelectiveContextRangeSlider({
       aria-label={contextKey}
       onChange={(value) => {
         const singleValue = Array.isArray(value) ? value[0] : value;
-
         dispatchUpdate({
           contextKey: contextKey,
           update: singleValue
