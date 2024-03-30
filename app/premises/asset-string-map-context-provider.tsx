@@ -9,9 +9,13 @@ import {
 } from './asset-string-map-context-creator';
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
-import { patchPremises } from '../api/actions/premises';
+import {
+  patchAssetRoleWorkTaskSuitabilities,
+  patchPremises
+} from '../api/actions/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
+import { isNotUndefined } from '../api/main';
 
 const Provider = WriteableStringMapContextProvider<AssetDto>;
 export default function AssetStringMapContextProvider({
@@ -22,20 +26,13 @@ export default function AssetStringMapContextProvider({
     AssetSuitabilityListSelectiveContext
   );
   const commitServerAction = useCallback(
-    (changedAssetDtoList: AssetDto[]) => {
-      const assetDtoListWithUpdatedLists = changedAssetDtoList.map(
-        (assetDto) => {
-          const newVar = selectiveContextReadAll(assetDto.id.toString());
-          return {
-            ...assetDto,
-            assetRoleWorkTaskSuitabilities:
-              newVar !== undefined
-                ? newVar
-                : assetDto.assetRoleWorkTaskSuitabilities
-          };
-        }
-      );
-      return patchPremises(assetDtoListWithUpdatedLists);
+    async (changedAssetDtoList: AssetDto[]) => {
+      const updatedSuitabilityLists = changedAssetDtoList
+        .map((assetDto) => selectiveContextReadAll(assetDto.id.toString()))
+        .filter(isNotUndefined)
+        .reduce((prev, curr) => [...prev, ...curr], []);
+      await patchAssetRoleWorkTaskSuitabilities(updatedSuitabilityLists);
+      return await patchPremises(changedAssetDtoList);
     },
     [selectiveContextReadAll]
   );

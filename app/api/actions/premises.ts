@@ -28,6 +28,14 @@ export async function getPremisesWithRoot(
 export async function patchPremises(premises: AssetDto[]) {
   return patchEntityList(premises, premisesUrl);
 }
+export async function patchAssetRoleWorkTaskSuitabilities(
+  suitabilityList: AssetRoleWorkTaskSuitabilityDto[]
+) {
+  return patchEntityList(
+    suitabilityList,
+    `${API_BASE_URL}/assets/assetRoleSuitabilities`
+  );
+}
 
 export async function putPremisesGraph(
   request: GraphDtoPutRequestBody<AssetDto>
