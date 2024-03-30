@@ -10,7 +10,7 @@ import { useEffect, useState, useTransition } from 'react';
 import ProtectedNavigation from '../../../navbar/protected-navigation';
 
 import { zeroIndexToOneIndex } from '../../../api/utils';
-import { ButtonProps } from '@nextui-org/react';
+
 const buttonClassName = ' relative ';
 
 const svgClassName = 'h-5 w-5 ';

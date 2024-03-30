@@ -24,7 +24,8 @@ import { createTeacher } from '../../api/actions/provider-roles';
 import { useServiceCategoryContext } from '../../work-types/lessons/use-service-category-context';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
 import { Overlay } from '../../generic/components/overlays/overlay';
-import { Button, Card, CardBody, CardFooter } from '@nextui-org/react';
+import { Card, CardBody, CardFooter } from '@nextui-org/card';
+import { Button } from '@nextui-org/button';
 
 const partyData: PersonDto[] = [
   {

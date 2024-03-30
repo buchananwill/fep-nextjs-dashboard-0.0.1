@@ -6,7 +6,7 @@ import {
   getPremises,
   getPremisesWithRoot
 } from '../../api/actions/premises';
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/work-task-types';
 import { isNotUndefined } from '../../api/main';

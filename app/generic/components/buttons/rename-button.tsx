@@ -1,6 +1,6 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import React from 'react';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
 
 export type GenericButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,

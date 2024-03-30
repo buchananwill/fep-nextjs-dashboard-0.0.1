@@ -3,7 +3,7 @@ import { useSelectiveContextAnyDispatch } from '../selective-context/components/
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 import { ObjectPlaceholder } from '../selective-context/components/typed/selective-context-manager-function';
 import { parseTen } from '../api/date-and-time';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export default function SomeButtonToControlGary() {
   const { dispatchWithoutControl, currentState } =

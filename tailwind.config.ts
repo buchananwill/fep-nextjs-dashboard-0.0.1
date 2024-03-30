@@ -8,7 +8,21 @@ export default {
     './node_modules/@tremor/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
-  plugins: [require('@headlessui/tailwindcss'), nextui()],
+  plugins: [
+    require('@headlessui/tailwindcss'),
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            default: {
+              foreground: '#000000',
+              DEFAULT: '#f3f4f6'
+            }
+          }
+        }
+      }
+    })
+  ],
 
   theme: {
     transparent: 'transparent',

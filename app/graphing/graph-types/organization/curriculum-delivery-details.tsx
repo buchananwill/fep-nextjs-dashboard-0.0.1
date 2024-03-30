@@ -11,7 +11,7 @@ import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functi
 import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
 
 export const LeftCol =
   'text-xs w-full text-center h-full flex items-center justify-center';

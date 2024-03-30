@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { PropsWithChildren, useState } from 'react';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function DisclosureThatGrowsOpen({
   children,

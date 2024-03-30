@@ -1,8 +1,8 @@
 'use client';
-import { ButtonHTMLAttributes, useContext } from 'react';
+import { useContext } from 'react';
 import { RunnableContext } from './runnable-context';
 import { ColorCoding } from '../../generic/components/color/color-coding-context';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
 
 interface ColorContextButtonProps extends ButtonProps {
   contextKey: string;

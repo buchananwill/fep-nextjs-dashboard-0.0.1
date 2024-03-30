@@ -1,5 +1,5 @@
 import SomeComponent from './some-component';
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 import SelectiveContextManagerGlobal from '../selective-context/components/global/selective-context-manager-global';
 import SomeButtonToControlGary from './some-button-to-control-gary';
 import SomeComponentInterestedInGary from './some-component-interested-in-gary';

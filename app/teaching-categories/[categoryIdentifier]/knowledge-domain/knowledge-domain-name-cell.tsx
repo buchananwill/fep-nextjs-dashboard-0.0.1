@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function KnowledgeDomainNameCell({
   kd,

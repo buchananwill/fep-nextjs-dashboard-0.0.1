@@ -5,7 +5,7 @@ import {
   GraphDtoPutRequestBody
 } from '../../../api/zod-mods';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 import CurriculumDeliveryDetails from './curriculum-delivery-details';
 import { NodePayload } from '../../force-graph-page';
 import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';

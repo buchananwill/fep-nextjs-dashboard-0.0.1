@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 import { isFragment } from 'preact/compat';
 
 export function TabStyled({ children }: { children: string }) {

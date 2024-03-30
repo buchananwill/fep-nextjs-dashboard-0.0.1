@@ -16,7 +16,7 @@ import {
   ConfirmActionModal,
   useModal
 } from '../generic/components/modals/confirm-action-modal';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 interface Props {
   children: React.ReactNode;

@@ -17,7 +17,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import ZoomBothAxes from '../../zoom/zoom-both-axes';
 import { Tooltip, TooltipTrigger } from '../../tooltips/tooltip';
 import { StandardTooltipContent } from '../../tooltips/standard-tooltip-content';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 type TooltipOptions =
   | 'minusWeek'
   | 'minusDay'

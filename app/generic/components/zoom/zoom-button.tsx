@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { ZoomDispatchContext, ZoomType } from './zoom-context';
 
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export default function ZoomButton({ direction }: { direction: ZoomType }) {
   const zoomDispatchContext = useContext(ZoomDispatchContext);

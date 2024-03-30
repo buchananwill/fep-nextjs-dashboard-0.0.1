@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Badge } from '@tremor/react';
 import { offset, useFloating } from '@floating-ui/react';
 import { GenericButtonProps } from './rename-button';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
 import { PressEvent } from '@react-types/shared';
 import { isNotUndefined } from '../../../api/main';
 

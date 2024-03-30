@@ -3,7 +3,7 @@ import {
   getCurriculumDeliveryModelSchemasByKnowledgeLevel
 } from '../../../../api/actions/curriculum-delivery-model';
 import { normalizeQueryParamToNumber } from '../../../../api/utils';
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';

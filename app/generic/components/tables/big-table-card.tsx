@@ -1,4 +1,4 @@
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 import React from 'react';
 
 export default function BigTableCard({

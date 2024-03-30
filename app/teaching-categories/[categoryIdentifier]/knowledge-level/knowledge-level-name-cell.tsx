@@ -10,7 +10,7 @@ import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { useEffect, useState } from 'react';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function useValidationUniqueNonEmpty(
   proposedName: string,

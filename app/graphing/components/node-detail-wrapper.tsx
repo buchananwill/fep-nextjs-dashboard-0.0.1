@@ -11,7 +11,7 @@ import {
 import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function NodeDetailWrapper<T extends HasNumberIdDto>({
   label,

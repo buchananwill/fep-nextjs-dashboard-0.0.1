@@ -1,6 +1,6 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Overlay } from './overlay';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function DeletedOverlay({
   show,

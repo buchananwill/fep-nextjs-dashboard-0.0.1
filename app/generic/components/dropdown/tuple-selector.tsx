@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 import { CheckIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import { NameIdStringTuple } from '../../../api/dtos/NameIdStringTupleSchema';
 import { isNotNull } from '../../../api/main';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export type OptionTransformer = React.FC<OptionTransformerProps>;
 

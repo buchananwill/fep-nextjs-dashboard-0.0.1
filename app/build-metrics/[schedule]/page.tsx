@@ -1,5 +1,5 @@
 import { Button, Text, Title } from '@tremor/react';
-import { Card, CardBody } from '@nextui-org/react';
+import { Card, CardBody } from '@nextui-org/card';
 import { BuildMetricsChart } from './buildMetricsChart';
 import MetricsContextProvider from './metrics-context-provider';
 

@@ -3,7 +3,7 @@ import { LeftCol } from '../organization/curriculum-delivery-details';
 import { DataNode } from '../../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 
@@ -17,7 +17,11 @@ export function ColumnsTwoToFour({ children }: PropsWithChildren) {
   return <div className={'col-start-2 col-span-3'}>{children}</div>;
 }
 
-export function RenameWorkTaskType({ node }: { node: DataNode<WorkTaskTypeDto> }) {
+export function RenameWorkTaskType({
+  node
+}: {
+  node: DataNode<WorkTaskTypeDto>;
+}) {
   const {
     id,
     data: { name }

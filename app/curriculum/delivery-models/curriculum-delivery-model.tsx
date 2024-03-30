@@ -21,7 +21,7 @@ import { TwoStageClick } from '../../generic/components/buttons/two-stage-click'
 import { TabStyled } from '../../generic/components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../../generic/components/tab-layouts/tab-panel-styled';
 import { RenameModal } from '../../generic/components/modals/rename-modal';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 const allocationSizes = [1, 2];
 

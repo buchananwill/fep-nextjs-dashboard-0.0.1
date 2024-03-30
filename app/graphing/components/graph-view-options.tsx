@@ -10,7 +10,7 @@ import { GraphContext } from '../graph/graph-context-creator';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { StandardTooltipContent } from '../../generic/components/tooltips/standard-tooltip-content';
 import { DefaultGraphZoom, MaxGraphZoom } from '../graph/graph';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 const graphToggles: GraphToggleProps[] = [
   {
@@ -75,6 +75,7 @@ export default function GraphViewOptions() {
         <Tooltip>
           <TooltipTrigger>
             <SelectiveContextRangeSlider
+              className={'w-32'}
               contextKey={`zoom-${uniqueGraphName}`}
               listenerKey={`zoom-${uniqueGraphName}-slider`}
               maxValue={MaxGraphZoom}
@@ -87,6 +88,7 @@ export default function GraphViewOptions() {
         <Tooltip>
           <TooltipTrigger>
             <SelectiveContextRangeSlider
+              className={'w-32'}
               contextKey={`text-size-${uniqueGraphName}`}
               listenerKey={`text-size-${uniqueGraphName}-slider`}
               maxValue={200}

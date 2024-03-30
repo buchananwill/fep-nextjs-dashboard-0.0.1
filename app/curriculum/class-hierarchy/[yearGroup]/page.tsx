@@ -4,7 +4,7 @@ import {
   getOrganizationGraphByOrganizationType,
   getSchemasByIdList
 } from '../../../api/actions/curriculum-delivery-model';
-import { Card } from '@nextui-org/react';
+import { Card } from '@nextui-org/card';
 
 import ForceGraphPage from '../../../graphing/force-graph-page';
 

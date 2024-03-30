@@ -11,7 +11,7 @@ import {
   useSelectiveContextDispatchBoolean,
   useSelectiveContextListenerBoolean
 } from '../selective-context/components/typed/selective-context-manager-boolean';
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/button';
 
 const paginationUnsavedListenerKey = ':pagination';
 

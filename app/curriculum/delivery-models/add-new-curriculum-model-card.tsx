@@ -1,5 +1,6 @@
 'use client';
-import { Button, Card } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
+import { Card } from '@nextui-org/card';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import React, { useMemo, useState } from 'react';
 
@@ -29,8 +30,6 @@ import {
 } from '../../generic/components/modals/confirm-action-modal';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
 import { isNotNull } from '../../api/main';
-
-const noTaskType: NameIdStringTuple = { name: 'No Type Selected', id: 'n/a' };
 
 export interface NameAccessor<T> extends AccessorFunction<T, string> {
   (object: T): string;

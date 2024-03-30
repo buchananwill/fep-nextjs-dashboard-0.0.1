@@ -39,7 +39,7 @@ import {
   UnsavedBundleEdits
 } from '../../../../selective-context/keys/work-series-schema-bundle-keys';
 import { RenameModalWrapperContextKey } from '../../../../selective-context/keys/modal-keys';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,

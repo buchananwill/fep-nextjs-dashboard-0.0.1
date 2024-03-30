@@ -7,7 +7,7 @@ import { EmptyArray, isNotUndefined } from '../../../../api/main';
 import { useUnsavedListContext } from '../../../../selective-context/hooks/derived/use-unsaved-list-context';
 import { RatingStepper } from '../../buttons/rating-stepper';
 import { ArrowRightIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 
 export function RatedElementRowHeader<R, E>({
   elementWithRating
