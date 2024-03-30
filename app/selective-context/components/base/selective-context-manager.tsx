@@ -38,32 +38,29 @@ export function useSelectiveContextManager<T>(
 
   const latestValueRef = useRef(initialContext);
 
-  const dispatch = useCallback(
-    (action: UpdateAction<T>) => {
-      const { contextKey, value } = action;
-      const currentElement = latestValueRef.current[contextKey];
-      const listeners = triggerUpdateRef.current[contextKey];
+  const dispatch = useCallback((action: UpdateAction<T>) => {
+    const { contextKey, value } = action;
+    const currentElement = latestValueRef.current[contextKey];
+    const listeners = triggerUpdateRef.current[contextKey];
 
-      if (!listeners) {
-        throw new Error(
-          `No listeners found for this context: ${contextKey} with value ${value}`
-        );
-      }
+    if (!listeners) {
+      throw new Error(
+        `No listeners found for this context: ${contextKey} with value ${value}`
+      );
+    }
 
-      if (currentElement !== value) {
-        try {
-          Object.values(listeners).forEach((l) => {
-            l(value);
-          });
-        } catch (e) {
-          console.error(e);
-        }
-        latestValueRef.current[contextKey] = value;
-        // }
+    if (currentElement !== value) {
+      try {
+        Object.values(listeners).forEach((l) => {
+          l(value);
+        });
+      } catch (e) {
+        console.error(e);
       }
-    },
-    [latestValueRef.current, triggerUpdateRef.current]
-  );
+      latestValueRef.current[contextKey] = value;
+      // }
+    }
+  }, []);
 
   return { dispatch, triggerUpdateRef, contextRef: latestValueRef };
 }
