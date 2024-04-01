@@ -12,6 +12,11 @@ import { useSelectiveContextListenerNumber } from '../../selective-context/compo
 import { NodePositionsKey } from '../graph-types/organization/curriculum-delivery-graph';
 import { useSineLutContext } from '../../contexts/animation-sync-context/animation-sync-context-creator';
 
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export function LinkComponent<T extends HasNumberIdDto>({
   children,
   linkIndex,
@@ -83,16 +88,43 @@ export function LinkComponent<T extends HasNumberIdDto>({
     return null;
   }
 
+  const lineGenerator = d3
+    .line(
+      (d: Coordinate) => d.x,
+      (d: Coordinate) => d.y
+    )
+    .curve(d3.curveBasis);
   const locationInterpolation = d3.interpolateObject(
     { x: x1, y: y1 },
     { x: x2, y: y2 }
   );
 
+  const firstQuart = { ...locationInterpolation(0.25) };
+  const midPoint = { ...locationInterpolation(0.5) };
+  const lastQuart = { ...locationInterpolation(0.75) };
+
+  console.log(firstQuart, midPoint, lastQuart);
+
+  const data: Coordinate[] = [
+    { x: x1, y: y1 },
+    { x: firstQuart.x, y: y1 },
+    { x: midPoint.x, y: midPoint.y },
+    { x: lastQuart.x, y: y2 },
+    { x: x2, y: y2 }
+  ];
+
+  const curvePathData = lineGenerator(data);
+
+  const interpolateArrowPositionX = d3.interpolateBasis(data.map((d) => d.x));
+  const interpolateArrowPositionY = d3.interpolateBasis(data.map((d) => d.y));
+
   const arrowToParentLocation = {
-    ...locationInterpolation(0.67 + 0.15 * sineLutSync)
+    x: interpolateArrowPositionX(0.67 + 0.15 * sineLutSync),
+    y: interpolateArrowPositionY(0.67 + 0.15 * sineLutSync)
   };
   const arrowToChildLocation = {
-    ...locationInterpolation(0.33 - 0.15 * sineLutSync)
+    x: interpolateArrowPositionX(0.33 - 0.15 * sineLutSync),
+    y: interpolateArrowPositionY(0.33 - 0.15 * sineLutSync)
   };
 
   const parentRotationAngle = calculateRotationAngle(
@@ -112,27 +144,31 @@ export function LinkComponent<T extends HasNumberIdDto>({
 
   return (
     <g>
-      <line
-        x1={source.x}
-        y1={source.y}
-        x2={target.x}
-        y2={target.y}
-        className={'stroke-gray-600 stroke-1 opacity-25'}
-        onClick={() => console.log(updatedLink)}
-      >
-        {children}
-      </line>
-      {glow && (
+      {/*<line*/}
+      {/*  x1={source.x}*/}
+      {/*  y1={source.y}*/}
+      {/*  x2={target.x}*/}
+      {/*  y2={target.y}*/}
+      {/*  className={'stroke-gray-600 stroke-1 opacity-25'}*/}
+      {/*  onClick={() => console.log(updatedLink)}*/}
+      {/*>*/}
+      {/*  {children}*/}
+      {/*</line>*/}
+      {curvePathData && (
+        <path
+          d={curvePathData}
+          className={'stroke-gray-600 stroke-1 opacity-25 fill-transparent'}
+        ></path>
+      )}
+      {glow && curvePathData && (
         <>
-          <line
-            x1={source.x}
-            y1={source.y}
-            x2={target.x}
-            y2={target.y}
+          <path
+            d={curvePathData}
             stroke={emerald?.formatHsl() || cssHSLA}
             strokeWidth={4}
             strokeLinecap={'round'}
-          ></line>
+            className={'fill-transparent'}
+          ></path>
           {showArrowsToParents && (
             <path
               style={{
@@ -143,7 +179,6 @@ export function LinkComponent<T extends HasNumberIdDto>({
               strokeLinecap="round"
               strokeLinejoin="round"
               stroke={cssHSLA}
-              // className={'animate-bounce-less'}
               d="m-7.5 7.5 7.5-7.5 7.5 7.5"
             />
           )}
@@ -157,7 +192,6 @@ export function LinkComponent<T extends HasNumberIdDto>({
               strokeLinecap="round"
               strokeLinejoin="round"
               stroke={cssHSLA}
-              // className={'animate-bounce-less'}
               d="m-7.5 7.5 7.5-7.5 7.5 7.5"
             />
           )}
