@@ -103,8 +103,6 @@ export function LinkComponent<T extends HasNumberIdDto>({
   const midPoint = { ...locationInterpolation(0.5) };
   const lastQuart = { ...locationInterpolation(0.75) };
 
-  console.log(firstQuart, midPoint, lastQuart);
-
   const data: Coordinate[] = [
     { x: x1, y: y1 },
     { x: firstQuart.x, y: y1 },
