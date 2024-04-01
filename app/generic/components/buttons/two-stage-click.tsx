@@ -46,6 +46,7 @@ export function TwoStageClick({
         variant={standardAppearance}
         size={'sm'}
         onPress={guardClick}
+        {...props}
       >
         {children}
       </Button>

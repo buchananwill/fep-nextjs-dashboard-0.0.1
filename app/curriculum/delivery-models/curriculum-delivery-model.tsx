@@ -1,5 +1,6 @@
 'use client';
-import { Card, Flex, Text } from '@tremor/react';
+import { Flex, Text } from '@tremor/react';
+import { Card, CardBody } from '@nextui-org/card';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { DeliveryAllocationDto } from '../../api/dtos/DeliveryAllocationDtoSchema';
 import React, { useMemo } from 'react';
@@ -42,45 +43,51 @@ export function CurriculumDeliveryModel({
   );
 
   return (
-    <Card className={'overflow-x-auto p-4'}>
-      <DeletedOverlay
-        show={currentState.includes(model.id)}
-        handleUnDelete={handleUnDelete}
-      />
-      <Tab.Group>
-        <div className={'grid grid-cols-4 mb-2 items-center gap-0.5'}>
-          <div className={'col-span-2 flex items-center gap-1'}>
-            <TwoStageClick standardAppearance={'light'} onPress={handleDelete}>
-              {' '}
-              <TrashIcon className={'h-4 w-4'}></TrashIcon>
-            </TwoStageClick>
-            <Button
-              className={'w-3/4 flex overflow-hidden flex-nowrap'}
-              onPress={openModal}
-              size={'sm'}
-              variant={'light'}
-            >
-              <span className={'truncate ... w-3/4'}>{model.name}</span>
-              <PencilSquareIcon className={'h-4 w-4 grow'}></PencilSquareIcon>
-            </Button>
+    <Card className={'overflow-x-auto p-0'}>
+      <CardBody>
+        <DeletedOverlay
+          show={currentState.includes(model.id)}
+          handleUnDelete={handleUnDelete}
+        />
+        <Tab.Group>
+          <div className={'grid grid-cols-4 mb-2 items-center gap-0.5'}>
+            <div className={'col-span-2 flex items-center gap-1'}>
+              <TwoStageClick
+                standardAppearance={'light'}
+                onPress={handleDelete}
+                isIconOnly
+              >
+                {' '}
+                <TrashIcon className={'h-4 w-4'}></TrashIcon>
+              </TwoStageClick>
+              <Button
+                className={'w-3/4 flex overflow-hidden flex-nowrap'}
+                onPress={openModal}
+                size={'sm'}
+                variant={'light'}
+              >
+                <span className={'truncate ... w-3/4'}>{model.name}</span>
+                <PencilSquareIcon className={'h-4 w-4 grow'}></PencilSquareIcon>
+              </Button>
+            </div>
+            <Tab.List className={'grid col-span-2 grow grid-cols-2'}>
+              <TabStyled>Periods</TabStyled>
+              <TabStyled>Details</TabStyled>
+            </Tab.List>
           </div>
-          <Tab.List className={'grid col-span-2 grow grid-cols-2'}>
-            <TabStyled>Periods</TabStyled>
-            <TabStyled>Details</TabStyled>
-          </Tab.List>
-        </div>
 
-        <TabPanelStyled>
-          <AdjustAllocation modelId={model.id}></AdjustAllocation>
-        </TabPanelStyled>
-        <TabPanelStyled>
-          <Text>{model.workTaskType.knowledgeDomainName}</Text>
-          <Text className="text-right">
-            {model.workTaskType.serviceCategoryKnowledgeDomainDescriptor}
-          </Text>
-        </TabPanelStyled>
-      </Tab.Group>
-      <RenameModal {...renameModalProps} />
+          <TabPanelStyled>
+            <AdjustAllocation modelId={model.id}></AdjustAllocation>
+          </TabPanelStyled>
+          <TabPanelStyled>
+            <Text>{model.workTaskType.knowledgeDomainName}</Text>
+            <Text className="text-right">
+              {model.workTaskType.serviceCategoryKnowledgeDomainDescriptor}
+            </Text>
+          </TabPanelStyled>
+        </Tab.Group>
+        <RenameModal {...renameModalProps} />
+      </CardBody>
     </Card>
   );
 }
