@@ -3,22 +3,24 @@
 import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
 import { useContext } from 'react';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../../api/dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
 export const {
-  mapContext: WorkTaskCompetencyListContext,
-  dispatchContext: WorkTaskCompetencyListDispatchContext
-} = createStringMapContext<WorkTaskCompetencyDto[]>();
+  mapContext: ProviderRoleTypeWorkTaskTypeSuitabilityListContext,
+  dispatchContext: ProviderRoleTypeWorkTaskTypeSuitabilityListDispatchContext
+} = createStringMapContext<ProviderRoleTypeWorkTaskTypeSuitabilityDto[]>();
 
-export function useWorkTaskCompetencyListStringMapContext() {
-  const workTaskCompetencyListStringMap = useContext(
-    WorkTaskCompetencyListContext
+export function useProviderRoleTypeWorkTaskTypeSuitabilityListStringMapContext() {
+  const stringMap = useContext(
+    ProviderRoleTypeWorkTaskTypeSuitabilityListContext
   );
-  const workTaskCompetencyListStringMapDispatch = useContext(
-    WorkTaskCompetencyListDispatchContext
+  const stringMapDispatch = useContext(
+    ProviderRoleTypeWorkTaskTypeSuitabilityListDispatchContext
   );
 
   return {
-    workTaskCompetencyListStringMap,
-    workTaskCompetencyListStringMapDispatch
+    providerRoleTypeWorkTaskTypeSuitabilityListStringMap: stringMap,
+    providerRoleTypeWorkTaskTypeSuitabilityListStringMapDispatch:
+      stringMapDispatch
   };
 }

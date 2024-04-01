@@ -10,6 +10,5 @@ export const ProductDtoSchema = z.object({
   physicalAttributesWeight: z.number(),
   productTypeId: z.number(),
   productTypeName: z.string(),
-  productComponentIds: z.array(z.number()),
 });
 export type ProductDto = z.infer<typeof ProductDtoSchema>;

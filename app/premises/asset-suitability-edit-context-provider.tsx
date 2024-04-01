@@ -41,6 +41,7 @@ export default function AssetSuitabilityEditContextProvider({
         useRatingListDispatchHook: useAssetSuitabilityListDispatch,
         unsavedChangesKey: UnsavedAssetChanges,
         unsavedChangesListKey: UnsavedAssetChanges,
+        ratingListAccessor: selectiveContextReadAll,
         ...AssetSuitabilityAccessorFunctions
       }}
     >
@@ -66,4 +67,4 @@ export const UnsavedAssetChangesListenerKey = 'asset-suitability-edit-context';
 const suitabilityProducer = getCurriedProducer<
   AssetRoleWorkTaskSuitabilityDto,
   number
->((rating, value) => (rating.suitabilityRating = value));
+>((rating, value) => (rating.rating = value));

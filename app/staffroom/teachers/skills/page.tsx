@@ -7,7 +7,7 @@ import { EmptyArray, isNotUndefined } from '../../../api/main';
 import ProviderRoleSkillEditContextProvider from '../../contexts/providerRoles/provider-role-skill-edit-context-provider';
 import {
   getTeachers,
-  getWorkTaskCompetencies
+  getWorkTaskSuitabilities
 } from '../../../api/actions/provider-roles';
 import { getWorkTaskTypeIdsAlphabetical } from '../../../premises/classroom-suitability/get-work-task-type-ids-alphabetical';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
@@ -51,7 +51,7 @@ export default async function SkillsPage({
   );
   const providerRoleIds = Object.keys(providerRoleStringMap).map(parseTen);
 
-  const { data: workTaskCompetencies } = await getWorkTaskCompetencies(
+  const { data: workTaskCompetencies } = await getWorkTaskSuitabilities(
     providerRoleIds,
     workTaskTypeIdsAlphabetical
   );
@@ -64,7 +64,7 @@ export default async function SkillsPage({
   return (
     <WorkTaskTypeContextProvider entityMap={workTaskTypeStringMap}>
       <WorkTaskCompetencyStringMapContextProvider
-        competencyLists={workTaskCompetencies.table}
+        competencyLists={workTaskCompetencies}
       >
         <ProviderRoleStringMapContextProvider
           providerRoleStringMap={providerRoleStringMap}

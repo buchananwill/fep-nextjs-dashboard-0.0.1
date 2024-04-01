@@ -17,7 +17,7 @@ import { StandardTooltipContent } from '../../../generic/components/tooltips/sta
 import { useAssetSuitabilityStringMapContext } from '../../../premises/asset-suitability-context-creator';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { useAssetSuitabilityListController } from '../../../contexts/selective-context/asset-suitability-list-selective-context-provider';
-import { useWorkTaskCompetencyListStringMapContext } from '../skills/work-task-competency-context-creator';
+import { useProviderRoleTypeWorkTaskTypeSuitabilityListStringMapContext } from '../skills/work-task-competency-context-creator';
 
 export function ProviderRoleLabel({
   data: { partyName, knowledgeDomainName, id },
@@ -32,10 +32,10 @@ export function ProviderRoleLabel({
   const { setHslaColorState } = useContext(HslColorDispatchContext);
   const hslaColorState = useContext(HslColorContext);
 
-  const { workTaskCompetencyListStringMap } =
-    useWorkTaskCompetencyListStringMapContext();
+  const { providerRoleTypeWorkTaskTypeSuitabilityListStringMap } =
+    useProviderRoleTypeWorkTaskTypeSuitabilityListStringMapContext();
   const workTaskCompetencyStringMapElement =
-    workTaskCompetencyListStringMap[id.toString()];
+    providerRoleTypeWorkTaskTypeSuitabilityListStringMap[id.toString()];
   const stringMapFromContext = useRef(workTaskCompetencyStringMapElement);
 
   const contextKey = useMemo(() => `${id}`, [id]);

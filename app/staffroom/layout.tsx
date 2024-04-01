@@ -47,14 +47,6 @@ export default async function StaffroomLayout({
     if (data) availabilityMap.set(providerRoleDto.id, data);
   }
 
-  teacherList.forEach(
-    (teacher) =>
-      (teacher.workTaskCompetencyDtoList =
-        teacher.workTaskCompetencyDtoList.sort((wtt1, wtt2) =>
-          wtt1.workTaskType.localeCompare(wtt2.workTaskType)
-        ))
-  );
-
   const providerRoleStringMap = convertListToStringMap(
     teacherList,
     IdStringFromNumberAccessor

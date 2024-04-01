@@ -15,15 +15,12 @@ import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
 import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../../api/dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
-const skillProducer = getCurriedProducer<WorkTaskCompetencyDto, number>(
-  (task, value) => (task.competencyRating = value)
-);
-
-const skillListProducer = getCurriedProducer<
-  ProviderRoleDto,
-  WorkTaskCompetencyDto[]
->((providerRole, list) => (providerRole.workTaskCompetencyDtoList = list));
+const skillProducer = getCurriedProducer<
+  ProviderRoleTypeWorkTaskTypeSuitabilityDto,
+  number
+>((task, value) => (task.rating = value));
 
 export default function ProviderRoleSkillEditContextProvider({
   children
@@ -39,7 +36,6 @@ export default function ProviderRoleSkillEditContextProvider({
     selectiveContextReadAll,
     workTaskCompetencyIdAccessor,
     skillProducer,
-    skillListProducer,
     IdStringFromNumberAccessor,
     UnsavedProviderRoleChanges,
     'edit-context-provider'
@@ -53,6 +49,7 @@ export default function ProviderRoleSkillEditContextProvider({
         ratingProducer: skillProducer,
         unsavedChangesKey: UnsavedProviderRoleChanges,
         unsavedChangesListKey: UnsavedProviderRoleChanges,
+        ratingListAccessor: selectiveContextReadAll,
         ...SkillEditAccessorFunctions
       }}
     >

@@ -10,6 +10,7 @@ import {
 import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
 import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema-Validation';
 import { WorkTaskCompetencyDto } from '../dtos/WorkTaskCompetencyDtoSchema';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
 const url = `${API_BASE_URL}/providers`;
 
@@ -32,12 +33,25 @@ export async function getTeachers(): ActionResponsePromise<ProviderRoleDto[]> {
   return getWithoutBody(teachersUrl);
 }
 
-export async function getWorkTaskCompetencies(
-  providerRoleIdList: number[],
+export async function patchWorkTaskSuitabilities(
+  updatedSuitabilities: ProviderRoleTypeWorkTaskTypeSuitabilityDto[]
+) {
+  return patchEntityList(
+    updatedSuitabilities,
+    `${url}/workTaskTypeSuitabilityRatings`
+  );
+}
+
+export async function getWorkTaskSuitabilities(
+  partyIdList: number[],
   workTaskTypeIdList: number[]
 ) {
-  return postIntersectionTableRequest<number, number, WorkTaskCompetencyDto>({
-    idsForHasIdTypeT: providerRoleIdList,
+  return postIntersectionTableRequest<
+    number,
+    number,
+    ProviderRoleTypeWorkTaskTypeSuitabilityDto
+  >({
+    idsForHasIdTypeT: partyIdList,
     idsForHasIdTypeU: workTaskTypeIdList,
     url: `${API_BASE_URL}/providers/workTaskCompetencies/intersectionTable`
   });

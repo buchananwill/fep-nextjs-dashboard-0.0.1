@@ -10,34 +10,39 @@ import { parseTen } from '../../../api/date-and-time';
 import { ProviderRoleSelectionList } from '../provider-role-disclosure-list-panel/provider-role-button-cluster';
 import { WorkTaskCompetencyDto } from '../../../api/dtos/WorkTaskCompetencyDtoSchema';
 import {
-  WorkTaskCompetencyListContext,
-  WorkTaskCompetencyListDispatchContext
+  ProviderRoleTypeWorkTaskTypeSuitabilityListContext,
+  ProviderRoleTypeWorkTaskTypeSuitabilityListDispatchContext
 } from './work-task-competency-context-creator';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../../api/dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
-export interface WorkTaskCompetencyListContextProviderProps
+export interface ProviderRoleTypeWorkTaskTypeSuitabilityListContextProviderProps
   extends PropsWithChildren {
-  competencyLists: StringMap<WorkTaskCompetencyDto[]>;
+  competencyLists: StringMap<ProviderRoleTypeWorkTaskTypeSuitabilityDto[]>;
 }
 
-const Provider = StringMapContextProvider<WorkTaskCompetencyDto[]>;
+const Provider = StringMapContextProvider<
+  ProviderRoleTypeWorkTaskTypeSuitabilityDto[]
+>;
 
 export const WorkTaskCompetencyListKeyAccessor: AccessorFunction<
-  WorkTaskCompetencyDto[],
+  ProviderRoleTypeWorkTaskTypeSuitabilityDto[],
   string
 > = (workTaskCompetencyList) => {
-  return workTaskCompetencyList[0]?.providerRoleId.toString();
+  return workTaskCompetencyList[0]?.partyId.toString();
 };
 
 export default function WorkTaskCompetencyStringMapContextProvider({
   children,
   competencyLists
-}: WorkTaskCompetencyListContextProviderProps) {
+}: ProviderRoleTypeWorkTaskTypeSuitabilityListContextProviderProps) {
   return (
     <Provider
       initialEntityMap={competencyLists}
       mapKeyAccessor={WorkTaskCompetencyListKeyAccessor}
-      mapContext={WorkTaskCompetencyListContext}
-      dispatchContext={WorkTaskCompetencyListDispatchContext}
+      mapContext={ProviderRoleTypeWorkTaskTypeSuitabilityListContext}
+      dispatchContext={
+        ProviderRoleTypeWorkTaskTypeSuitabilityListDispatchContext
+      }
     >
       {children}
     </Provider>

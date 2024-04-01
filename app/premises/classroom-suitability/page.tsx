@@ -81,7 +81,7 @@ export default async function Page({
     return <DataNotFoundCard>Suitabilities not found.</DataNotFoundCard>;
   }
 
-  const { table } = assetSuitabilities;
+  const table = assetSuitabilities;
 
   console.log('rendering root page');
 

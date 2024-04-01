@@ -13,7 +13,7 @@ import { HasUuidDto } from '../../api/dtos/HasUuidDtoSchema';
 
 export const assetRoleWorkTaskSuitabilityRatingValueAccessor: RatingValueAccessor<
   AssetRoleWorkTaskSuitabilityDto
-> = (wtcDto) => wtcDto.suitabilityRating;
+> = (wtcDto) => wtcDto.rating;
 export const assetRoleWorkTaskSuitabilityLabelAccessor: RatingCategoryLabelAccessor<
   AssetRoleWorkTaskSuitabilityDto
 > = (wtcDto) => wtcDto.workTaskTypeName;
@@ -22,11 +22,6 @@ export const assetRoleWorkTaskSuitabilityIdAccessor: RatingCategoryIdAccessor<
 > = (wtcDto) => wtcDto.workTaskTypeId;
 export const assetNameAccessor: NameAccessor<AssetDto> = (assetDto) =>
   assetDto.name;
-
-export const assetRoleWorkTaskSuitabilityDtoListAccessor: RatingListAccessor<
-  AssetDto,
-  AssetRoleWorkTaskSuitabilityDto
-> = (asset) => asset.assetRoleWorkTaskSuitabilities;
 
 export function IdAccessor<T extends HasNumberIdDto | HasUuidDto>(element: T) {
   return element.id;
@@ -47,7 +42,6 @@ export type AccessorKeys = keyof typeof StringMapKeyAccessors;
 
 export const AssetSuitabilityAccessorFunctions = {
   elementLabelAccessor: assetNameAccessor,
-  ratingListAccessor: assetRoleWorkTaskSuitabilityDtoListAccessor,
   ratingCategoryLabelAccessor: assetRoleWorkTaskSuitabilityLabelAccessor,
   ratingValueAccessor: assetRoleWorkTaskSuitabilityRatingValueAccessor,
   ratingCategoryIdAccessor: assetRoleWorkTaskSuitabilityIdAccessor,

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 export const AssetRoleWorkTaskSuitabilityDtoSchema = z.object({
   id: z.number(),
-  suitabilityRating: z.number(),
+  rating: z.number(),
   assetRoleTypeName: z.string(),
   assetRoleTypeId: z.number(),
   workTaskTypeName: z.string(),

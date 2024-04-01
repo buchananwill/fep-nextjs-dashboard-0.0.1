@@ -5,7 +5,10 @@ import { WriteableStringMapContextProvider } from '../../../contexts/string-map-
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
 import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
-import { updateTeachers } from '../../../api/actions/provider-roles';
+import {
+  patchWorkTaskSuitabilities,
+  updateTeachers
+} from '../../../api/actions/provider-roles';
 import {
   ProviderChangesProviderListener,
   ProviderRoleStringMapContext,
@@ -26,20 +29,14 @@ export default function ProviderRoleStringMapContextProvider({
 
   const commitServerAction = useCallback(
     (changedProviderRoleDtoList: ProviderRoleDto[]) => {
-      const providerRoleDtoListWithUpdatedRatingLists =
-        changedProviderRoleDtoList.map((providerRoleDto) => {
-          const updatedList = selectiveContextReadAll(
-            providerRoleDto.id.toString()
-          );
-
-          return {
-            ...providerRoleDto,
-            workTaskCompetencyDtoList: isNotUndefined(updatedList)
-              ? updatedList
-              : providerRoleDto.workTaskCompetencyDtoList
-          };
-        });
-      return updateTeachers(providerRoleDtoListWithUpdatedRatingLists);
+      const updateLists = changedProviderRoleDtoList
+        .map((providerRoleDto) => {
+          return selectiveContextReadAll(providerRoleDto.id.toString());
+        })
+        .filter(isNotUndefined)
+        .reduce((prev, curr) => [...prev, ...curr], []);
+      patchWorkTaskSuitabilities(updateLists);
+      return updateTeachers(changedProviderRoleDtoList);
     },
     [selectiveContextReadAll]
   );

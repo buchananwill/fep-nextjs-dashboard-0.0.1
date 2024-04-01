@@ -62,6 +62,4 @@ export interface IntersectionRequestParams<T, U> {
   url: string;
 }
 
-export interface IdReferencedIntersectionTableDto<W> {
-  table: StringMap<W[]>;
-}
+export interface IdReferencedIntersectionTableDto<W> extends StringMap<W[]> {}

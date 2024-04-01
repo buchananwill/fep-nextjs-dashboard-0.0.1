@@ -6,14 +6,10 @@ export const WorkTaskDtoSchema = z.object({
   events: z.array(EventDtoSchema),
   dueDate: z.date(),
   serviceProductSeriesSchemaId: z.number(),
-  serviceProductSeriesSchemaName: z.string(),
-  serviceProductTypeDto: WorkTaskTypeDtoSchema,
+  workProjectSeriesSchemaName: z.string(),
+  workTaskTypeDto: WorkTaskTypeDtoSchema,
   taskLength: z.number(),
-  targetAssetId: z.number(),
-  targetAssetName: z.string(),
-  targetAssetTypeName: z.string(),
   completedDate: z.date(),
-  customerOrderNumber: z.number(),
   notes: z.string(),
 });
 export type WorkTaskDto = z.infer<typeof WorkTaskDtoSchema>;
