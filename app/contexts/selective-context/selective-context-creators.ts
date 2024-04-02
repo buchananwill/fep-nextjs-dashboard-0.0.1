@@ -5,5 +5,5 @@ import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../api/dtos/Provi
 
 export const AssetSuitabilityListSelectiveContext =
   createSelectiveContext<AssetRoleWorkTaskSuitabilityDto[]>();
-export const WorkTaskCompetencyListSelectiveContext =
+export const ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext =
   createSelectiveContext<ProviderRoleTypeWorkTaskTypeSuitabilityDto[]>();

@@ -3,7 +3,9 @@ export const ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema = z.object({
   id: z.number(),
   rating: z.number(),
   partyId: z.number(),
-  workTaskType: z.string(),
+  providerRoleTypeId: z.number(),
+  providerRoleTypeName: z.string(),
   workTaskTypeId: z.number(),
+  workTaskTypeName: z.string(),
 });
 export type ProviderRoleTypeWorkTaskTypeSuitabilityDto = z.infer<typeof ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema>;

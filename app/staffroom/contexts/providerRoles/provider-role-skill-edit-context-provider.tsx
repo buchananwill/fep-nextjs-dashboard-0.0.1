@@ -14,7 +14,7 @@ import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitabil
 import { getCurriedProducer } from './get-curried-producer';
 import { UnsavedProviderRoleChanges } from './provider-role-string-map-context-creator';
 import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
-import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../../api/dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
 const skillProducer = getCurriedProducer<
@@ -28,7 +28,7 @@ export default function ProviderRoleSkillEditContextProvider({
   children: ReactNode;
 }) {
   const selectiveContextReadAll = useSelectiveContextListenerReadAll(
-    WorkTaskCompetencyListSelectiveContext
+    ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext
   );
 
   const confirmRatingValue = useConfirmRatingValueFunction(

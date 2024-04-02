@@ -4,7 +4,7 @@ import { ProviderRoleDto } from '../../../api/dtos/ProviderRoleDtoSchema';
 import { WriteableStringMapContextProvider } from '../../../contexts/string-map-context/writeable-string-map-context-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
-import { WorkTaskCompetencyListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import {
   patchWorkTaskSuitabilities,
   updateTeachers
@@ -24,7 +24,7 @@ export default function ProviderRoleStringMapContextProvider({
   children
 }: { providerRoleStringMap: StringMap<ProviderRoleDto> } & PropsWithChildren) {
   const selectiveContextReadAll = useSelectiveContextListenerReadAll(
-    WorkTaskCompetencyListSelectiveContext
+    ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext
   );
 
   const commitServerAction = useCallback(
