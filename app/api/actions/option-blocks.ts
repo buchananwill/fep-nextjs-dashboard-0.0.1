@@ -11,3 +11,10 @@ export async function getOptionBlocks(): ActionResponsePromise<
 
   return getWithoutBody(fullUrl);
 }
+
+export async function getCoAppearanceMatrix(
+  yearGroupCohort: number
+): ActionResponsePromise<number[][]> {
+  const fullUrl = `${API_ACADEMIC_URL}/electives/coAppearanceMatrix?yearGroupCohort=${yearGroupCohort}`;
+  return getWithoutBody(fullUrl);
+}

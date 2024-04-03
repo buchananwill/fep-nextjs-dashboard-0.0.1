@@ -1,17 +1,20 @@
-import SomeComponent from './some-component';
 import { Card } from '@nextui-org/card';
 import SelectiveContextManagerGlobal from '../selective-context/components/global/selective-context-manager-global';
-import SomeButtonToControlGary from './some-button-to-control-gary';
-import SomeComponentInterestedInGary from './some-component-interested-in-gary';
+import { getCoAppearanceMatrix } from '../api/actions/option-blocks';
+import { isNotUndefined } from '../api/main';
+import { DataNotFoundCard } from '../timetables/students/[schedule]/data-not-found-card';
+import ArcChart from './arcChart';
 
 export default async function PlaygroundPage({}: {}) {
+  const { data } = await getCoAppearanceMatrix(12);
+  if (!isNotUndefined(data))
+    return <DataNotFoundCard>No matrix.</DataNotFoundCard>;
+
   return (
     <SelectiveContextManagerGlobal>
       <Card className={'flex gap-4'}>
-        <SomeComponent />
-        <SomeButtonToControlGary />
+        <ArcChart data={data} />
       </Card>
-      <SomeComponentInterestedInGary></SomeComponentInterestedInGary>
     </SelectiveContextManagerGlobal>
   );
 }
