@@ -69,7 +69,7 @@ export async function getOrganizationGraphByOrganizationType(
 export async function getOrganizationTypes(): ActionResponsePromise<
   OrganizationTypeDto[]
 > {
-  const url = `${organizationGraphEndpoint}/types?parentTypeId=7&depth=1&depthOp=%3D
+  const url = `${organizationGraphEndpoint}/types?parentTypeId=6&depth=1&depthOp=%3D
 `;
   return getWithoutBody(url);
 }

@@ -102,7 +102,7 @@ export default function CurriculumDeliveryGraph({
   });
 
   const titleList = nodes.map(
-    (n: DataNode<OrganizationDto>) => n.data?.organizationType?.name || ''
+    (n: DataNode<OrganizationDto>) => n.data?.type?.name || ''
   );
 
   const nodeDetailElements: NodePayload<OrganizationDto>[] = nodes.map(

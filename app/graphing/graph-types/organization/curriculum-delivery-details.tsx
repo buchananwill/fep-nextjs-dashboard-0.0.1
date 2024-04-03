@@ -114,7 +114,7 @@ export default function CurriculumDeliveryDetails({
                       selected={selected}
                       active={active}
                     >
-                      Bundle {bundle[1].id}
+                      Bundle {bundle[1].name}
                     </NodeDetailsListBoxOption>
                   )}
                 </Listbox.Option>
