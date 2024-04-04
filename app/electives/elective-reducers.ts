@@ -139,7 +139,7 @@ export default function electivePreferencesReducer(
     case 'focusCarouselOption': {
       const { carouselOptionId } = action;
       const { carouselOptionIdSet: oldCarouselOptionIdSet } = electivesState;
-
+      console.log(carouselOptionId, oldCarouselOptionIdSet);
       const carouselOptionIdMatch =
         oldCarouselOptionIdSet.has(carouselOptionId);
 

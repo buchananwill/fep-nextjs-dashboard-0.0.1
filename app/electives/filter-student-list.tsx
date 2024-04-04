@@ -20,7 +20,7 @@ export function filterStudentList(
   carouselOptionIdSet: Set<number>
 ): StudentDTO[] {
   const filteredList: StudentDTO[] = [];
-
+  console.log(carouselOptionIdSet, studentMap);
   const courseIdSet = new Set<string>();
 
   const strings = courseFilters.map((filterOption) => filterOption.URI);

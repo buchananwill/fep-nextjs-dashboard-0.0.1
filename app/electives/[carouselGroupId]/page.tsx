@@ -50,6 +50,7 @@ export default async function ElectivesPage({
       electivePreferenceDTOList: electivePreferences
     } = yearGroupElectiveData;
 
+    console.log(studentDTOList);
     try {
       // Safely map electiveData
       tableCellsData =

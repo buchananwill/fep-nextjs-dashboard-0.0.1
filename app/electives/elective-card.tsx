@@ -109,7 +109,6 @@ const ElectiveCard: CellDataTransformer<ElectiveDTO> = ({ data }) => {
     startTransition(() => {
       dispatch({
         type: 'focusCarouselOption',
-
         carouselOptionId: carouselOptionId
       });
     });

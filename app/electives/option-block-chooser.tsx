@@ -36,7 +36,7 @@ export function OptionBlockChooser({
 
   return (
     <select
-      className="select select-xs select-bordered w-16 grow-1"
+      className="w-10 border-1 rounded-md"
       value={matchCarouselOrdinal(
         courseId,
         assignedCarouselOptionId,
@@ -48,15 +48,19 @@ export function OptionBlockChooser({
           preferencePosition,
           parseInt(e.target.value)
         );
-        // setUnsaved(true);
       }}
     >
-      {mapOptions(
-        electiveAvailability,
-        courseId,
-        userRoleId,
-        preferencePosition
-      )}
+      {electiveAvailability[courseId].map((carouselOrdinal, index) => {
+        return (
+          <option
+            key={`${userRoleId}-${preferencePosition}-${index}`}
+            className="p-0 m-0 text-left"
+            value={carouselOrdinal}
+          >
+            {carouselOrdinal}
+          </option>
+        );
+      })}
     </select>
   );
 }
@@ -68,19 +72,6 @@ function mapOptions(
   preferencePosition: number
 ) {
   try {
-    return electiveAvailability[uuid].map(
-      (carouselOrdinal, index) => {
-        return (
-          <option
-            key={`${studentId}-${preferencePosition}-${index}`}
-            className="p-0 m-0 text-left"
-            value={carouselOrdinal}
-          >
-            {carouselOrdinal}
-          </option>
-        );
-      }
-      // }
-    );
+    return;
   } catch (error) {}
 }

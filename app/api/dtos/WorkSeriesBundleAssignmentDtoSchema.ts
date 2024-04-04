@@ -3,8 +3,6 @@ import { z } from 'zod';
 export const WorkSeriesBundleAssignmentDtoSchema = z.object({
   id: z.number(),
   partyId: z.number(),
-  workSeriesSchemaBundle: WorkSeriesSchemaBundleLeanDtoSchema
+  workSeriesSchemaBundle: WorkSeriesSchemaBundleLeanDtoSchema,
 });
-export type WorkSeriesBundleAssignmentDto = z.infer<
-  typeof WorkSeriesBundleAssignmentDtoSchema
->;
+export type WorkSeriesBundleAssignmentDto = z.infer<typeof WorkSeriesBundleAssignmentDtoSchema>;

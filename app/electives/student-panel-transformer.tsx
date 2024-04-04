@@ -37,14 +37,13 @@ export const StudentPanelTransformer: PanelTransformer<StudentDTO> = ({
         return (
           <div
             key={`${id}-${electivePreference.preferencePosition}`}
-            className="flex grow-0 w-full justify-between p-0 m-0 align-middle items-center"
+            className="flex grow-0 w-full p-0 m-0 align-middle items-center"
           >
-            <span className={'text-xs truncate ...'}>
+            <span className={'text-xs grow text-left truncate ...'}>
               {electivePreference.courseName}{' '}
             </span>
-            <span className="grow"></span>
             <Tooltip enabled={showTooltips}>
-              <TooltipTrigger className="p-0 m-0 border-0 outline-0 h-full">
+              <TooltipTrigger className="p-0 m-0 border-0 outline-0 h-full w-fit">
                 <Badge
                   isInvisible={checkAssignment(
                     electiveDtoMap,
