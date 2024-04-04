@@ -18,6 +18,7 @@ import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
+import { LongLongTuple } from '../../../api/dtos/LongLongTupleSchema';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -56,12 +57,12 @@ export function BundleAssignmentsProvider({
 
   const handleConfirm = () => {
     const curriedMapper = (numberTuple: [number, number]) => {
-      return applyStringKeysToIntValues(['partyId', 'bundleId'], numberTuple);
+      return applyStringKeysToIntValues(['longOne', 'longTwo'], numberTuple);
     };
     const mappedBundles = Object.entries(bundleAssignmentState)
       .map(parseStringStringToIntInt)
       .map(curriedMapper);
-    const apiPayload = mappedBundles as { partyId: number; bundleId: number }[];
+    const apiPayload = mappedBundles as LongLongTuple[];
 
     postBundleDeliveries(apiPayload).then((r) => {
       if (r.status < 300 && r.data) {

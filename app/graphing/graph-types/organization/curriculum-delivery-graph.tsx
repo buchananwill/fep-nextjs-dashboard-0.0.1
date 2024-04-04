@@ -8,7 +8,7 @@ import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { Card } from '@nextui-org/card';
 import CurriculumDeliveryDetails from './curriculum-delivery-details';
 import { NodePayload } from '../../force-graph-page';
-import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
 import { useBundleAssignmentsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
@@ -64,7 +64,7 @@ export const CurriculumDeliveryGraphPageKey = 'curriculum-delivery-graph-page';
 
 export default function CurriculumDeliveryGraph({
   bundles
-}: PropsWithChildren & { bundles: WorkSeriesBundleDeliveryDto[] }) {
+}: PropsWithChildren & { bundles: WorkSeriesBundleAssignmentDto[] }) {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();
 
   const { dispatch } = useBundleAssignmentsContext();

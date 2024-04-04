@@ -1,18 +1,18 @@
-import { WorkSeriesBundleDeliveryDto } from '../../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
 import {
   StringMap,
   StringMapPayload
 } from '../../../contexts/string-map-context/string-map-reducer';
 
 export function mapToPartyIdBundleIdRecords(
-  bundles: WorkSeriesBundleDeliveryDto[]
+  bundles: WorkSeriesBundleAssignmentDto[]
 ) {
   const bundleAssignments = {} as StringMap<string>;
   const initialPayload = [] as StringMapPayload<string>[];
-  bundles.forEach((bundleDeliveryDto) => {
-    const partyIdString = bundleDeliveryDto.partyId.toString();
+  bundles.forEach((bundleAssignment) => {
+    const partyIdString = bundleAssignment.partyId.toString();
     const bundleIdString =
-      bundleDeliveryDto.workSeriesSchemaBundle.id.toString();
+      bundleAssignment.workSeriesSchemaBundle.id.toString();
     bundleAssignments[partyIdString] = bundleIdString;
     initialPayload.push({ key: partyIdString, data: bundleIdString });
   });

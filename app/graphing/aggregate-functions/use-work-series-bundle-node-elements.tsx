@@ -2,13 +2,13 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import React, { ReactElement } from 'react';
 import { DataNode } from '../../api/zod-mods';
 import { PartyDto } from '../../api/dtos/PartyDtoSchema';
-import { WorkSeriesBundleDeliveryDto } from '../../api/dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { WorkSeriesBundleAssignmentDto } from '../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
 import { useCurriculumModelContext } from '../../curriculum/delivery-models/contexts/use-curriculum-model-context';
 import { NodeComponent } from '../nodes/node-component';
 
 export function useWorkSeriesBundleNodeElements(
   nodes: DataNode<PartyDto>[],
-  bundles: WorkSeriesBundleDeliveryDto[]
+  bundles: WorkSeriesBundleAssignmentDto[]
 ) {
   const { curriculumModelsMap } = useCurriculumModelContext();
   return nodes.map((d, index) => {

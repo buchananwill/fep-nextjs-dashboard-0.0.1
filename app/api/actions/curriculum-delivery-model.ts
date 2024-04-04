@@ -3,7 +3,7 @@ import { ActionResponsePromise } from './actionResponse';
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
 import { API_BASE_URL, Page } from '../main';
 import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
-import { WorkSeriesBundleDeliveryDto } from '../dtos/WorkSeriesBundleDeliveryDtoSchema';
+import { WorkSeriesBundleAssignmentDto } from '../dtos/WorkSeriesBundleAssignmentDtoSchema';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
 import {
@@ -16,6 +16,7 @@ import {
   putRequestWithDifferentReturnType
 } from './template-actions';
 import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
+import { LongLongTuple } from '../dtos/LongLongTupleSchema';
 
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 
@@ -38,11 +39,11 @@ export async function deleteCurriculumDeliveryModels(schemaIdList: string[]) {
 }
 export async function getBundleDeliveriesByOrgType(
   orgType: string
-): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
+): ActionResponsePromise<WorkSeriesBundleAssignmentDto[]> {
   let url = SCHEMA_URL;
-  url = `${url}/deliveries/organizationType/${orgType.replaceAll(' ', '%20')}`;
+  url = `${url}/assignments/organizationType/${orgType.replaceAll(' ', '%20')}`;
 
-  return await getWithoutBody<WorkSeriesBundleDeliveryDto[]>(url);
+  return await getWithoutBody<WorkSeriesBundleAssignmentDto[]>(url);
 }
 
 export async function getSchemasByIdList(idList: string[]) {
@@ -84,8 +85,8 @@ export async function putOrganizationGraph(
 }
 export async function getCurriculumDeliveries(
   idList: number[]
-): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
-  const urlForDeliveries = `${SCHEMA_URL}/deliveries/by-party-id`;
+): ActionResponsePromise<WorkSeriesBundleAssignmentDto[]> {
+  const urlForDeliveries = `${SCHEMA_URL}/assignments/by-party-id`;
   return getDtoListByIds(idList, urlForDeliveries);
 }
 
@@ -124,18 +125,12 @@ export async function postModels(
 ): ActionResponsePromise<WorkProjectSeriesSchemaDto[]> {
   return postEntities(modelList, SCHEMA_URL);
 }
-
-export interface CreateBundleAssignmentDto {
-  partyId: number;
-  bundleId: number;
-}
-
 export async function postBundleDeliveries(
-  bundleAssignments: CreateBundleAssignmentDto[]
-): ActionResponsePromise<WorkSeriesBundleDeliveryDto[]> {
-  const bundlePostUrl = `${SCHEMA_URL}/deliveries`;
+  bundleAssignments: LongLongTuple[]
+): ActionResponsePromise<WorkSeriesBundleAssignmentDto[]> {
+  const bundlePostUrl = `${SCHEMA_URL}/assignments`;
   return postEntitiesWithDifferentReturnType<
-    CreateBundleAssignmentDto[],
-    WorkSeriesBundleDeliveryDto[]
+    LongLongTuple[],
+    WorkSeriesBundleAssignmentDto[]
   >(bundleAssignments, bundlePostUrl);
 }
