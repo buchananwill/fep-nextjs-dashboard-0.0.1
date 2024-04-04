@@ -4,7 +4,7 @@ import {
   BASE_HSL,
   HUE_OPTIONS
 } from '../generic/components/color/color-context';
-import { Ribbon } from 'd3';
+import { BaseType, Chord, ChordGroup, ChordSubgroup } from 'd3';
 
 export default function ArcChart({ data }: { data: number[][] }) {
   const width = 640;
@@ -22,11 +22,14 @@ export default function ArcChart({ data }: { data: number[][] }) {
     .sortGroups(d3.descending)
     .sortSubgroups(d3.ascending);
 
-  const arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+  const arc = d3
+    .arc<ChordGroup>()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius);
 
-  const ribbon = d3.ribbon().radius(innerRadius);
+  const ribbon = d3.ribbon<Chord, ChordSubgroup>().radius(innerRadius);
 
-  const color = d3.scaleOrdinal(d3.schemeCategory10);
+  const ribbonGenerator = ribbon.context(null) as (d: Chord) => string;
 
   const chords = chord(data);
   return (
@@ -57,7 +60,7 @@ export default function ArcChart({ data }: { data: number[][] }) {
       {chords.groups.map((group, index) => (
         <path
           key={index}
-          d={arc(group)}
+          d={arc(group) || ''}
           fill={BASE_HSL[HUE_OPTIONS[index % HUE_OPTIONS.length].id].cssHSLA} // Modify this line to use HUE_OPTIONS if needed
           stroke={BASE_HSL[HUE_OPTIONS[index % HUE_OPTIONS.length].id].cssHSLA}
         />
@@ -69,7 +72,7 @@ export default function ArcChart({ data }: { data: number[][] }) {
         return (
           <path
             key={index}
-            d={ribbon(d)}
+            d={ribbonGenerator(d)}
             fill={gradientId}
             stroke={
               BASE_HSL[HUE_OPTIONS[d.target.index % HUE_OPTIONS.length].id]
