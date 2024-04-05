@@ -1,7 +1,9 @@
 import {
   getBundleDeliveriesByOrgType,
   getBundles,
+  getOrganizationGraph,
   getOrganizationGraphByOrganizationType,
+  getOrganizationGraphByRootId,
   getSchemasByIdList
 } from '../../../api/actions/curriculum-delivery-model';
 import { Card } from '@nextui-org/card';
@@ -28,10 +30,11 @@ export default async function Page({
     yearGroup: string;
   };
 }) {
-  // await getOrganizationGraph();
   const bundleDeliveries = await getBundleDeliveriesByOrgType(yearGroup);
   const actionResponseOrganizationGraph =
-    await getOrganizationGraphByOrganizationType(yearGroup);
+    // await getOrganizationGraphByOrganizationType(yearGroup);
+    // await getOrganizationGraph();
+    await getOrganizationGraphByRootId(1446);
 
   const indexOfSpace = yearGroup.indexOf('%20');
   const taskTypesResponse = await getWorkTaskTypes({

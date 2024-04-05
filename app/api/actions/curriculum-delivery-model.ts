@@ -51,12 +51,17 @@ export async function getSchemasByIdList(idList: string[]) {
   return await getDtoListByIds<string, WorkProjectSeriesSchemaDto>(idList, url);
 }
 
-const organizationGraphEndpoint = `${API_BASE_URL}/graphs/organizations`;
+const organizationGraphEndpoint = `${API_BASE_URL}/v2/organizations/graphs`;
 
 export async function getOrganizationGraph(): ActionResponsePromise<
   GraphDto<OrganizationDto>
 > {
   return getWithoutBody(organizationGraphEndpoint);
+}
+export async function getOrganizationGraphByRootId(
+  rootId: number
+): ActionResponsePromise<GraphDto<OrganizationDto>> {
+  return getWithoutBody(`${organizationGraphEndpoint}/byRootId/${rootId}`);
 }
 
 export async function getOrganizationGraphByOrganizationType(

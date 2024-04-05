@@ -8,7 +8,7 @@ const teachersEndpoint = `${API_BASE_URL}/providers/teachers`;
 export async function getAvailabilities(
   providerRoleId: number
 ): ActionResponsePromise<ProviderAvailabilityDto[]> {
-  const url = `${teachersEndpoint}/${providerRoleId}/availability`;
+  const url = `${teachersEndpoint}/${providerRoleId}/availabilities`;
 
   return await getWithoutBody<ProviderAvailabilityDto[]>(url);
 }
