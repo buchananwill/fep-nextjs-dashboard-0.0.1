@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithChildren } from 'react';
 import GenericSelectiveContextManager from '../base/generic-selective-context-manager';
-import { SelectContextGlobal } from './selective-context-creator-global';
+import { SelectiveContextGlobal } from './selective-context-creator-global';
 import {
   useSelectiveContextController,
   UseSelectiveContextParams
@@ -13,7 +13,7 @@ export default function SelectiveContextManagerGlobal({
   children
 }: PropsWithChildren) {
   return (
-    <GenericSelectiveContextManager {...SelectContextGlobal}>
+    <GenericSelectiveContextManager {...SelectiveContextGlobal}>
       {children}
     </GenericSelectiveContextManager>
   );
@@ -28,9 +28,9 @@ export function useSelectiveContextAnyController<T>({
     contextKey,
     listenerKey,
     initialValue,
-    SelectContextGlobal.listenerRefContext,
-    SelectContextGlobal.latestValueRefContext,
-    SelectContextGlobal.dispatchContext
+    SelectiveContextGlobal.listenerRefContext,
+    SelectiveContextGlobal.latestValueRefContext,
+    SelectiveContextGlobal.dispatchContext
   );
 }
 export function useSelectiveContextAnyDispatch<T>({
@@ -42,9 +42,9 @@ export function useSelectiveContextAnyDispatch<T>({
     contextKey,
     listenerKey,
     initialValue,
-    SelectContextGlobal.listenerRefContext,
-    SelectContextGlobal.latestValueRefContext,
-    SelectContextGlobal.dispatchContext
+    SelectiveContextGlobal.listenerRefContext,
+    SelectiveContextGlobal.latestValueRefContext,
+    SelectiveContextGlobal.dispatchContext
   );
 }
 
@@ -57,7 +57,7 @@ export function useSelectiveContextGlobalListener<T>({
     contextKey,
     listenerKey,
     initialValue,
-    SelectContextGlobal.listenerRefContext,
-    SelectContextGlobal.latestValueRefContext
+    SelectiveContextGlobal.listenerRefContext,
+    SelectiveContextGlobal.latestValueRefContext
   );
 }

@@ -60,7 +60,7 @@ export function useSelectiveContextManager<T>(
     if (currentElement !== newValue) {
       try {
         Object.values(listeners).forEach((l) => {
-          l(update);
+          l(newValue);
         });
       } catch (e) {
         console.error(e);

@@ -46,7 +46,7 @@ export default function ArcChart({ data }: { data: number[][] }) {
             BASE_HSL[HUE_OPTIONS[chord.target.index % HUE_OPTIONS.length].id]
               .cssHSLA;
           const endColor =
-            BASE_HSL[HUE_OPTIONS[chord.source.index % HUE_OPTIONS.length].id]
+            BASE_HSL[HUE_OPTIONS[chord.target.index % HUE_OPTIONS.length].id]
               .cssHSLA;
           return (
             <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%" key={id}>
