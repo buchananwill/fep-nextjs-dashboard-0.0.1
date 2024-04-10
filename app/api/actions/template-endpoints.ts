@@ -7,9 +7,12 @@ import {
 } from './template-actions';
 import { API_V2_URL, isNotUndefined, Page } from '../main';
 
-function constructUrl(resourceSegments: string[], action?: string) {
+function constructUrl(resourceSegments: string[] | string, action?: string) {
   const basePath = API_V2_URL;
-  const resourcePath = resourceSegments.join('/');
+
+  const resourcePath = Array.isArray(resourceSegments)
+    ? resourceSegments.join('/')
+    : resourceSegments;
   return `${basePath}/${resourcePath}${
     isNotUndefined(action) ? `/${action}` : ''
   }`;
@@ -57,9 +60,9 @@ async function deleteDtoList<ID_TYPE>(
 }
 
 export function generateBaseEndpointSet<T, ID_TYPE>(
-  resourceSegments: string[]
+  path: string | string[]
 ): BaseEndpointSet<T, ID_TYPE> {
-  const generatedUrl = constructUrl(resourceSegments);
+  const generatedUrl = constructUrl(path);
   return {
     getPage: (pageRequest) => getDtoList<T>(pageRequest, generatedUrl),
     putList: (dtoList) => putDtoList(dtoList, generatedUrl),

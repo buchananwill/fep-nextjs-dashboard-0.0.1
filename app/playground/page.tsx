@@ -4,7 +4,7 @@ import { getCoAppearanceMatrix } from '../api/actions/option-blocks';
 import { isNotUndefined } from '../api/main';
 import { DataNotFoundCard } from '../timetables/students/[schedule]/data-not-found-card';
 import ArcChart from './arcChart';
-import { getPage } from '../api/actions/carousel';
+import { getPage } from '../api/READ-ONLY-generated-actions/Carousel';
 
 export default async function PlaygroundPage({}: {}) {
   const actionResponse = await getPage({});
