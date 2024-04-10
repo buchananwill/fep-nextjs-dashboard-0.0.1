@@ -22,10 +22,10 @@ import { useModal } from '../../../generic/components/modals/confirm-action-moda
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { UnsavedBundleEdits } from '../../../selective-context/keys/work-series-schema-bundle-keys';
 import {
-  deleteBundles,
-  postBundles,
-  putBundles
-} from '../../../api/actions/work-series-schema-bundles';
+  deleteIdList,
+  postList,
+  putList
+} from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 
 export const StaticDeletedBundleList: number[] = [];
 
@@ -74,8 +74,8 @@ export function BundleItemsContextProvider({
       const updatedBundles: StringMapPayload<WorkSeriesSchemaBundleLeanDto>[] =
         [];
       const responses: ActionResponse<WorkSeriesSchemaBundleLeanDto[]>[] = [];
-      deleteBundles(deleteBundleIds)
-        .then(() => postBundles(newBundles))
+      deleteIdList(deleteBundleIds)
+        .then(() => postList(newBundles))
         .then((r) => {
           if (r.status >= 200 && r.status < 300 && r.data) {
             getPayloadArray(r.data, (bundle) => bundle.id.toString()).forEach(
@@ -85,7 +85,7 @@ export function BundleItemsContextProvider({
             return;
           }
         })
-        .then(() => putBundles(existingBundles))
+        .then(() => putList(existingBundles))
         .then((r) => {
           if (r.status >= 200 && r.status < 300 && r.data) {
             const payloadArray = getPayloadArray(r.data, (bundle) =>

@@ -7,26 +7,17 @@ import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundl
 
 import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
-import {
-  getWorkTaskTypes,
-  getWorkTaskTypesByWorkProjectSeriesSchemaIdList
-} from '../../../api/actions/work-task-types';
+import { getWorkTaskTypesByWorkProjectSeriesSchemaIdList } from '../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
 } from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
-import {
-  getBundles,
-  getBundlesBySchemaIdList
-} from '../../../api/actions/work-series-schema-bundles';
 import { getBundleAssignmentsByOrgType } from '../../../api/actions/work-series-bundle-assignments';
-import {
-  getOrganizationGraphByOrganizationType,
-  getOrganizationGraphByRootId
-} from '../../../api/actions/organizations';
+import { getOrganizationGraphByOrganizationType } from '../../../api/actions/organizations';
 import { parseTen } from '../../../api/date-and-time';
 import { isNotUndefined } from '../../../api/main';
+import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -37,7 +28,9 @@ export default async function Page({
     yearGroup: string;
   };
 }) {
-  const actionResponseAllBundles = await getBundles();
+  const actionResponseAllBundles = await getPage({ pageSize: 100 });
+
+  console.log('bundle response:', actionResponseAllBundles);
 
   const schemaIdList = actionResponseAllBundles.data?.content
     .map((bundle) => bundle.workProjectSeriesSchemaIds)

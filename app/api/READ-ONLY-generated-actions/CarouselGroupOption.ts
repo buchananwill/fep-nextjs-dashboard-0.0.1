@@ -1,6 +1,6 @@
 'use server';
 import { generateBaseEndpointSet } from '../actions/template-endpoints';
-import { CarouselDto } from '../dtos/CarouselDtoSchema';
+import { CarouselGroupOptionDto } from '../dtos/CarouselGroupOptionDtoSchema';
 
 export const {
   getPage,
@@ -14,10 +14,10 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  CarouselDto,
-  string
+  CarouselGroupOptionDto,
+  number
 >(
-  '/api/v2/carouselGroups/carousels'
+  '/api/v2/carouselGroups/options'
 );
 
 

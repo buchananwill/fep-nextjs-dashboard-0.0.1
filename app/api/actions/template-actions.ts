@@ -90,6 +90,16 @@ export async function patchEntity<T>(
   });
   return callApi<T>(url, requestInit);
 }
+export async function putEntity<T>(
+  entity: T,
+  url: string
+): ActionResponsePromise<T> {
+  const requestInit = createRequestInit({
+    body: entity,
+    method: 'PUT'
+  });
+  return callApi<T>(url, requestInit);
+}
 export async function patchEntityList<T>(
   entityList: T[],
   url: string
@@ -135,6 +145,11 @@ export async function deleteEntities<T>(
 ): ActionResponsePromise<T[]> {
   const request = createRequestInit({ body: entityBody, method: 'DELETE' });
   return callApi<T[]>(url, request);
+}
+
+export async function deleteEntity<T>(url: string): ActionResponsePromise<T> {
+  const request = createRequestInit({ method: 'DELETE' });
+  return callApi<T>(url, request);
 }
 
 async function callApi<T>(

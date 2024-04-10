@@ -1,19 +1,24 @@
 import { ActionResponsePromise } from './actionResponse';
 import {
   deleteEntities,
+  deleteEntity,
+  getDtoListByIds,
   getWithoutBody,
   postEntities,
-  putEntities
+  postEntity,
+  putEntities,
+  putEntity
 } from './template-actions';
-import { API_V2_URL, isNotUndefined, Page } from '../main';
+import { BASE_URL, isNotUndefined, Page } from '../main';
+import { HasNumberId, HasUuid } from '../dto-interfaces';
 
 function constructUrl(resourceSegments: string[] | string, action?: string) {
-  const basePath = API_V2_URL;
+  const basePath = BASE_URL;
 
   const resourcePath = Array.isArray(resourceSegments)
     ? resourceSegments.join('/')
     : resourceSegments;
-  return `${basePath}/${resourcePath}${
+  return `${basePath}${resourcePath}${
     isNotUndefined(action) ? `/${action}` : ''
   }`;
 }
@@ -24,11 +29,23 @@ export interface PageRequest {
   sort?: string;
 }
 
-export interface BaseEndpointSet<T, ID_TYPE> {
+export interface BaseEndpointSet<T, ID_TYPE extends string | number> {
   getPage: (pageRequest: PageRequest) => ActionResponsePromise<Page<T>>;
   putList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   postList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   deleteIdList: (idDeletionList: ID_TYPE[]) => ActionResponsePromise<ID_TYPE[]>;
+  getOne: (id: ID_TYPE) => ActionResponsePromise<Page<T>>;
+  putOne: (dto: T) => ActionResponsePromise<T>;
+  postOne: (dto: T) => ActionResponsePromise<T>;
+  deleteOne: (id: ID_TYPE) => ActionResponsePromise<ID_TYPE>;
+  getDtoListByParamList: (
+    idList: ID_TYPE[],
+    url: string
+  ) => ActionResponsePromise<T[]>;
+  getDtoListByBodyList: (
+    idList: ID_TYPE[],
+    url: string
+  ) => ActionResponsePromise<T[]>;
 }
 
 async function getDtoList<T>(
@@ -36,6 +53,19 @@ async function getDtoList<T>(
   url: string
 ): ActionResponsePromise<Page<T>> {
   return getWithoutBody(`${url}?page=${page}&size=${pageSize}`);
+}
+async function getDtoListByParamList<T, ID_TYPE extends string | number>(
+  idList: ID_TYPE[],
+  url: string
+): ActionResponsePromise<T[]> {
+  const paramString = idList.map((id) => `id=${id}`).join('&');
+  return getWithoutBody(`${url}/byIdList?${paramString}`);
+}
+async function getDtoListByBodyList<T, ID_TYPE extends string | number>(
+  idList: ID_TYPE[],
+  url: string
+): ActionResponsePromise<T[]> {
+  return getDtoListByIds<ID_TYPE, T>(idList, `${url}/byIdList`);
 }
 
 async function putDtoList<T>(
@@ -59,15 +89,54 @@ async function deleteDtoList<ID_TYPE>(
   return deleteEntities(deletionIdList, url);
 }
 
-export function generateBaseEndpointSet<T, ID_TYPE>(
-  path: string | string[]
-): BaseEndpointSet<T, ID_TYPE> {
+function getSingletonCrudUrl(url: string, id: number | string) {
+  return `${url}/${id}`;
+}
+
+async function getDto<T, ID_TYPE extends number | string>(
+  id: ID_TYPE,
+  url: string
+): ActionResponsePromise<T> {
+  return getWithoutBody(getSingletonCrudUrl(url, id));
+}
+
+async function putDto<T extends HasNumberId | HasUuid>(
+  dto: T,
+  url: string
+): ActionResponsePromise<T> {
+  return putEntity(dto, getSingletonCrudUrl(url, dto.id));
+}
+
+async function postDto<T>(dto: T, url: string): ActionResponsePromise<T> {
+  return postEntity(dto, `${url}/create`);
+}
+
+async function deleteOneEntity<ID_TYPE extends number | string>(
+  deletionId: ID_TYPE,
+  url: string
+): ActionResponsePromise<ID_TYPE> {
+  return deleteEntity(getSingletonCrudUrl(url, deletionId));
+}
+
+export function generateBaseEndpointSet<
+  T extends HasNumberId | HasUuid,
+  ID_TYPE extends string | number
+>(path: string | string[]): BaseEndpointSet<T, ID_TYPE> {
   const generatedUrl = constructUrl(path);
+  console.log('generated url:', generatedUrl);
   return {
     getPage: (pageRequest) => getDtoList<T>(pageRequest, generatedUrl),
     putList: (dtoList) => putDtoList(dtoList, generatedUrl),
     postList: (dtoList) => postDtoList(dtoList, generatedUrl),
     deleteIdList: (idDeletionList) =>
-      deleteDtoList<ID_TYPE>(idDeletionList, generatedUrl)
+      deleteDtoList<ID_TYPE>(idDeletionList, generatedUrl),
+    getOne: (id) => getDto(id, generatedUrl),
+    putOne: (dto) => putDto(dto, generatedUrl),
+    postOne: (dto) => postDto(dto, generatedUrl),
+    deleteOne: (id) => deleteOneEntity(id, generatedUrl),
+    getDtoListByParamList: (idList) =>
+      getDtoListByParamList<T, ID_TYPE>(idList, generatedUrl),
+    getDtoListByBodyList: (idList) =>
+      getDtoListByBodyList<T, ID_TYPE>(idList, generatedUrl)
   };
 }

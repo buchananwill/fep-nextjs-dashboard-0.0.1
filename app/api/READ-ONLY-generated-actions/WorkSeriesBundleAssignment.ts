@@ -1,6 +1,6 @@
 'use server';
 import { generateBaseEndpointSet } from '../actions/template-endpoints';
-import { CarouselDto } from '../dtos/CarouselDtoSchema';
+import { WorkSeriesBundleAssignmentDto } from '../dtos/WorkSeriesBundleAssignmentDtoSchema';
 
 export const {
   getPage,
@@ -14,10 +14,10 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  CarouselDto,
-  string
+  WorkSeriesBundleAssignmentDto,
+  number
 >(
-  '/api/v2/carouselGroups/carousels'
+  '/api/v2/workProjectSeriesSchemas/bundleAssignments'
 );
 
 

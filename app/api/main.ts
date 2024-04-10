@@ -1,5 +1,6 @@
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 
+export const BASE_URL = process.env.BASE_URL!;
 export const API_BASE_URL = process.env.API_BASE_URL!;
 export const API_V2_URL = `${process.env.API_BASE_URL!}/v2`;
 export const API_ACADEMIC_URL = process.env.API_ACADEMIC_URL!;
