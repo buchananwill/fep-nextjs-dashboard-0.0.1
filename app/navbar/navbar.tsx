@@ -15,8 +15,8 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { getOptionBlocks } from '../api/actions/option-blocks';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
-import { getOrganizationTypes } from '../api/actions/curriculum-delivery-model';
 import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';
+import { getOrganizationTypes } from '../api/actions/organizations';
 
 interface DropdownItem {
   name: string;
@@ -84,9 +84,9 @@ export default function Navbar({
       getOrganizationTypes().then((r) => {
         if (r.data) {
           if (electivesDropdown !== undefined) setIsLoading(false);
-          const receivedOrganizationTypes = r.data.map((orgType) => ({
-            name: orgType.name,
-            href: `/${orgType.name}`
+          const receivedOrganizationTypes = r.data.nodes.map(({ data }) => ({
+            name: data.name,
+            href: `/${data.id}`
           }));
           setOrganizationTypes(receivedOrganizationTypes);
         }

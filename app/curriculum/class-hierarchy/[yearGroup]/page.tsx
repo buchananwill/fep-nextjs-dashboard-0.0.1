@@ -1,11 +1,4 @@
-import {
-  getBundleDeliveriesByOrgType,
-  getBundles,
-  getOrganizationGraph,
-  getOrganizationGraphByOrganizationType,
-  getOrganizationGraphByRootId,
-  getSchemasByIdList
-} from '../../../api/actions/curriculum-delivery-model';
+import { getSchemasByIdList } from '../../../api/actions/curriculum-delivery-model';
 import { Card } from '@nextui-org/card';
 
 import ForceGraphPage from '../../../graphing/force-graph-page';
@@ -14,12 +7,26 @@ import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundl
 
 import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
-import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
+import {
+  getWorkTaskTypes,
+  getWorkTaskTypesByWorkProjectSeriesSchemaIdList
+} from '../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
 } from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
+import {
+  getBundles,
+  getBundlesBySchemaIdList
+} from '../../../api/actions/work-series-schema-bundles';
+import { getBundleAssignmentsByOrgType } from '../../../api/actions/work-series-bundle-assignments';
+import {
+  getOrganizationGraphByOrganizationType,
+  getOrganizationGraphByRootId
+} from '../../../api/actions/organizations';
+import { parseTen } from '../../../api/date-and-time';
+import { isNotUndefined } from '../../../api/main';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -30,16 +37,36 @@ export default async function Page({
     yearGroup: string;
   };
 }) {
-  const bundleDeliveries = await getBundleDeliveriesByOrgType(yearGroup);
-  const actionResponseOrganizationGraph =
-    // await getOrganizationGraphByOrganizationType(yearGroup);
-    // await getOrganizationGraph();
-    await getOrganizationGraphByRootId(1446);
+  const actionResponseAllBundles = await getBundles();
 
-  const indexOfSpace = yearGroup.indexOf('%20');
-  const taskTypesResponse = await getWorkTaskTypes({
-    knowledgeLevelOrdinal: yearGroup.substring(indexOfSpace + 3)
-  });
+  const schemaIdList = actionResponseAllBundles.data?.content
+    .map((bundle) => bundle.workProjectSeriesSchemaIds)
+    .reduce((prev, curr) => {
+      if (Array.isArray(curr)) return [...prev, ...curr];
+      else return [...prev, curr];
+    }, []);
+
+  const schemaIdListFromSet = isNotUndefined(schemaIdList)
+    ? [...new Set(schemaIdList)]
+    : ([] as string[]);
+
+  const allSchemasInBundles = await getSchemasByIdList(schemaIdListFromSet);
+
+  const typeId = parseTen(yearGroup);
+  const bundleDeliveries = await getBundleAssignmentsByOrgType(typeId);
+  bundleDeliveries.data
+    ?.map((data) => data.workSeriesSchemaBundle.workProjectSeriesSchemaIds)
+    .reduce((previousValue, curr) => {
+      curr.forEach((id) => previousValue.add(id));
+      return previousValue;
+    }, new Set<string>());
+  const actionResponseOrganizationGraph =
+    await getOrganizationGraphByOrganizationType(typeId);
+  // await getOrganizationGraph();
+  // await getOrganizationGraphByRootId(1446);
+
+  const taskTypesResponse =
+    await getWorkTaskTypesByWorkProjectSeriesSchemaIdList(schemaIdListFromSet);
   const workTaskTypeDtos = taskTypesResponse.data;
 
   const { data: dataGraph } = actionResponseOrganizationGraph;
@@ -50,40 +77,32 @@ export default async function Page({
     message
   } = bundleDeliveries;
 
-  if (
-    workTaskTypeDtos === undefined ||
-    assignedBundleDeliveryData === undefined ||
-    dataGraph === undefined
-  ) {
+  if (assignedBundleDeliveryData === undefined) {
     return <Card>No deliveries found!</Card>;
+  } else if (workTaskTypeDtos === undefined) {
+    return <Card>No task types found!</Card>;
   }
-
-  const schemaIdList = assignedBundleDeliveryData
-    .map((delivery) => delivery.workSeriesSchemaBundle)
-    .map((bundle) => bundle.workProjectSeriesSchemaIds)
-    .reduce((prev, curr) => [...prev, ...curr], []);
-
-  const actionResponseSchemasInTheAssignedDeliveries =
-    await getSchemasByIdList(schemaIdList);
-
-  const actionResponseAllBundles = await getBundles(schemaIdList);
+  if (dataGraph === undefined) {
+    return <Card>No organization graph found!</Card>;
+  }
 
   if (
     actionResponseAllBundles.data === undefined ||
-    actionResponseSchemasInTheAssignedDeliveries.data === undefined
+    allSchemasInBundles.data === undefined
   ) {
+    console.log(allSchemasInBundles);
     return <Card>No bundles found!</Card>;
   }
 
   const bundleLeanDtos = actionResponseAllBundles.data;
-  const schemas = actionResponseSchemasInTheAssignedDeliveries.data;
+  const schemas = allSchemasInBundles.data;
 
   if (status >= 400) {
     return <Card>{message}</Card>;
   }
 
   return (
-    <BundleItemsContextProvider bundleItems={bundleLeanDtos}>
+    <BundleItemsContextProvider bundleItems={bundleLeanDtos.content}>
       <BundleAssignmentsProvider bundleAssignments={emptyBundles}>
         <CurriculumDeliveryModelsInit
           workProjectSeriesSchemaDtos={schemas}

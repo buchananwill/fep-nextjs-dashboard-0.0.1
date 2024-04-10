@@ -1,7 +1,4 @@
-import {
-  getBundles,
-  getCurriculumDeliveryModelSchemasByKnowledgeLevel
-} from '../../../../api/actions/curriculum-delivery-model';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../../api/actions/curriculum-delivery-model';
 import { normalizeQueryParamToNumber } from '../../../../api/utils';
 import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';
@@ -10,6 +7,7 @@ import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-pro
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
 import { getWorkTaskTypes } from '../../../../api/actions/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
+import { getBundlesBySchemaIdList } from '../../../../api/actions/work-series-schema-bundles';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -44,7 +42,7 @@ export default async function Page({
     {} as { [key: string]: string }
   );
 
-  const actionResponse = await getBundles(schemaIdList);
+  const actionResponse = await getBundlesBySchemaIdList(schemaIdList);
 
   const taskTypesResponse = await getWorkTaskTypes({
     knowledgeLevelOrdinal: yearGroup
@@ -52,6 +50,7 @@ export default async function Page({
 
   const workTaskTypeDtos = taskTypesResponse.data;
   if (actionResponse.data === undefined || workTaskTypeDtos === undefined) {
+    console.log(actionResponse.data, workTaskTypeDtos);
     return <Card>No bundles found!</Card>;
   }
 

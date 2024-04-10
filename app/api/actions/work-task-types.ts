@@ -5,6 +5,7 @@ import { API_BASE_URL, joinSearchParams } from '../main';
 import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
 import {
   getWithoutBody,
+  postEntitiesWithDifferentReturnType,
   putEntities,
   putRequestWithDifferentReturnType
 } from './template-actions';
@@ -38,6 +39,17 @@ export async function getWorkTaskTypes(searchParams: {
   const url = `${API_BASE_URL}/workTasks/types${queryParams}`;
 
   return getWithoutBody(url);
+}
+
+export async function getWorkTaskTypesByWorkProjectSeriesSchemaIdList(
+  idList: string[]
+): ActionResponsePromise<WorkTaskTypeDto[]> {
+  const url = `${API_BASE_URL}/v2/workTaskTypes/byWorkProjectSeriesSchemaIdList`;
+
+  return postEntitiesWithDifferentReturnType<string[], WorkTaskTypeDto[]>(
+    idList,
+    url
+  );
 }
 
 export async function putWorkTaskTypes(

@@ -1,6 +1,7 @@
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 
 export const API_BASE_URL = process.env.API_BASE_URL!;
+export const API_V2_URL = `${process.env.API_BASE_URL!}/v2`;
 export const API_ACADEMIC_URL = process.env.API_ACADEMIC_URL!;
 
 export const SECONDARY_EDUCATION_CATEGORY_ID = 2;

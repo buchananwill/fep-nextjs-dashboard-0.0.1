@@ -12,13 +12,13 @@ import { useSelectiveContextControllerBoolean } from '../../../selective-context
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { Text } from '@tremor/react';
-import { postBundleDeliveries } from '../../../api/actions/curriculum-delivery-model';
 import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';
 import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
 import { LongLongTuple } from '../../../api/dtos/LongLongTupleSchema';
+import { postBundleDeliveries } from '../../../api/actions/work-series-bundle-assignments';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -52,6 +52,8 @@ export function BundleAssignmentsProvider({
       UnsavedBundleAssignmentsProvider,
       false
     );
+
+  console.log(bundleAssignments);
 
   const { openModal, isOpen, closeModal } = useModal();
 

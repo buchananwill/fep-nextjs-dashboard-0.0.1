@@ -2,7 +2,7 @@ import { WorkSeriesSchemaBundleLeanDtoSchema } from './WorkSeriesSchemaBundleLea
 import { z } from 'zod';
 export const WorkSeriesBundleAssignmentDtoSchema = z.object({
   id: z.number(),
-  partyId: z.number(),
+  organizationId: z.number(),
   workSeriesSchemaBundle: WorkSeriesSchemaBundleLeanDtoSchema,
 });
 export type WorkSeriesBundleAssignmentDto = z.infer<typeof WorkSeriesBundleAssignmentDtoSchema>;

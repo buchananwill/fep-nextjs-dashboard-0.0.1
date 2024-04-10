@@ -13,11 +13,6 @@ import {
 
 import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 
-import {
-  deleteBundles,
-  postBundles,
-  putBundles
-} from '../../../api/actions/curriculum-delivery-model';
 import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { ActionResponse } from '../../../api/actions/actionResponse';
 import { Card, Title } from '@tremor/react';
@@ -26,6 +21,11 @@ import { getPayloadArray } from '../use-editing-context-dependency';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { UnsavedBundleEdits } from '../../../selective-context/keys/work-series-schema-bundle-keys';
+import {
+  deleteBundles,
+  postBundles,
+  putBundles
+} from '../../../api/actions/work-series-schema-bundles';
 
 export const StaticDeletedBundleList: number[] = [];
 

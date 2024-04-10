@@ -10,11 +10,11 @@ export function mapToPartyIdBundleIdRecords(
   const bundleAssignments = {} as StringMap<string>;
   const initialPayload = [] as StringMapPayload<string>[];
   bundles.forEach((bundleAssignment) => {
-    const partyIdString = bundleAssignment.partyId.toString();
+    const organizationId = bundleAssignment.organizationId.toString();
     const bundleIdString =
       bundleAssignment.workSeriesSchemaBundle.id.toString();
-    bundleAssignments[partyIdString] = bundleIdString;
-    initialPayload.push({ key: partyIdString, data: bundleIdString });
+    bundleAssignments[organizationId] = bundleIdString;
+    initialPayload.push({ key: organizationId, data: bundleIdString });
   });
 
   return { bundleAssignments, initialPayload };

@@ -18,11 +18,11 @@ import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
-import { putOrganizationGraph } from '../../../api/actions/curriculum-delivery-model';
 import { deDuplicateNames } from '../../editing/functions/increment-clone-suffix';
 import _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
+import { putOrganizationGraph } from '../../../api/actions/organizations';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -70,7 +70,9 @@ export default function CurriculumDeliveryGraph({
   const { dispatch } = useBundleAssignmentsContext();
 
   const bundlesInNodeOrder = nodes.map((node) => {
-    const found = bundles.find((delivery) => delivery.partyId === node.id);
+    const found = bundles.find(
+      (delivery) => delivery.organizationId === node.id
+    );
     if (found) return found;
   });
 
