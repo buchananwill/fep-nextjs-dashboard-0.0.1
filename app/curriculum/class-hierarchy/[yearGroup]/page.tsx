@@ -1,4 +1,3 @@
-import { getSchemasByIdList } from '../../../api/actions/curriculum-delivery-model';
 import { Card } from '@nextui-org/card';
 
 import ForceGraphPage from '../../../graphing/force-graph-page';
@@ -18,6 +17,7 @@ import { getOrganizationGraphByOrganizationType } from '../../../api/actions/org
 import { parseTen } from '../../../api/date-and-time';
 import { isNotUndefined } from '../../../api/main';
 import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
+import { getDtoListByBodyList } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -43,7 +43,7 @@ export default async function Page({
     ? [...new Set(schemaIdList)]
     : ([] as string[]);
 
-  const allSchemasInBundles = await getSchemasByIdList(schemaIdListFromSet);
+  const allSchemasInBundles = await getDtoListByBodyList(schemaIdListFromSet);
 
   const typeId = parseTen(yearGroup);
   const bundleDeliveries = await getBundleAssignmentsByOrgType(typeId);

@@ -38,14 +38,8 @@ export interface BaseEndpointSet<T, ID_TYPE extends string | number> {
   putOne: (dto: T) => ActionResponsePromise<T>;
   postOne: (dto: T) => ActionResponsePromise<T>;
   deleteOne: (id: ID_TYPE) => ActionResponsePromise<ID_TYPE>;
-  getDtoListByParamList: (
-    idList: ID_TYPE[],
-    url: string
-  ) => ActionResponsePromise<T[]>;
-  getDtoListByBodyList: (
-    idList: ID_TYPE[],
-    url: string
-  ) => ActionResponsePromise<T[]>;
+  getDtoListByParamList: (idList: ID_TYPE[]) => ActionResponsePromise<T[]>;
+  getDtoListByBodyList: (idList: ID_TYPE[]) => ActionResponsePromise<T[]>;
 }
 
 async function getDtoList<T>(
@@ -59,13 +53,13 @@ async function getDtoListByParamList<T, ID_TYPE extends string | number>(
   url: string
 ): ActionResponsePromise<T[]> {
   const paramString = idList.map((id) => `id=${id}`).join('&');
-  return getWithoutBody(`${url}/byIdList?${paramString}`);
+  return getWithoutBody(`${url}/listById?${paramString}`);
 }
 async function getDtoListByBodyList<T, ID_TYPE extends string | number>(
   idList: ID_TYPE[],
   url: string
 ): ActionResponsePromise<T[]> {
-  return getDtoListByIds<ID_TYPE, T>(idList, `${url}/byIdList`);
+  return getDtoListByIds<ID_TYPE, T>(idList, `${url}/listById`);
 }
 
 async function putDtoList<T>(
@@ -123,7 +117,7 @@ export function generateBaseEndpointSet<
   ID_TYPE extends string | number
 >(path: string | string[]): BaseEndpointSet<T, ID_TYPE> {
   const generatedUrl = constructUrl(path);
-  console.log('generated url:', generatedUrl);
+
   return {
     getPage: (pageRequest) => getDtoList<T>(pageRequest, generatedUrl),
     putList: (dtoList) => putDtoList(dtoList, generatedUrl),

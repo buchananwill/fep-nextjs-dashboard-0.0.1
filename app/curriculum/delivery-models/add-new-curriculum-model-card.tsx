@@ -15,7 +15,6 @@ import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSche
 import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useRouter } from 'next/navigation';
-import { postModels } from '../../api/actions/curriculum-delivery-model';
 import {
   getStepperInterface,
   StepperContext
@@ -30,6 +29,7 @@ import {
 } from '../../generic/components/modals/confirm-action-modal';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
 import { isNotNull } from '../../api/main';
+import { postList } from '../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 
 export interface NameAccessor<T> extends AccessorFunction<T, string> {
   (object: T): string;
@@ -116,7 +116,7 @@ export function AddNewCurriculumModelCard({
       userToProviderRatio: 30
     };
 
-    postModels([unsavedModel]).then((r) => {
+    postList([unsavedModel]).then((r) => {
       if (r.data !== undefined) {
         const payloadArray = getPayloadArray(r.data, (schema) => schema.id);
         dispatch({ type: 'updateAll', payload: payloadArray });

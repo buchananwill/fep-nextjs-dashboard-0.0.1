@@ -1,4 +1,4 @@
-import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../../api/actions/curriculum-delivery-model';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../../api/actions/work-project-series-schema';
 import { normalizeQueryParamToNumber } from '../../../../api/utils';
 import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';

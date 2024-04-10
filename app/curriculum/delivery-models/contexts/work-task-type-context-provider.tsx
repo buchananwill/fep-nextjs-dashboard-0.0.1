@@ -1,8 +1,7 @@
 'use client';
 import {
   StringMap,
-  StringMapReducer,
-  useStringMapReducer
+  StringMapReducer
 } from '../../../contexts/string-map-context/string-map-reducer';
 import React, { PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
@@ -11,12 +10,12 @@ import {
   WorkTaskTypeContextDispatch
 } from './use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import { putWorkTaskTypes } from '../../../api/actions/work-task-types';
 
 import { getPayloadArray } from '../use-editing-context-dependency';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { useSyncStringMapToProps } from '../../../contexts/string-map-context/use-sync-string-map-to-props';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
+import { putList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 
 export const UnsavedWorkTaskTypeChanges = 'unsaved-workTaskType-changes';
 export const WorkTaskTypeChangesProviderListener =
@@ -61,7 +60,7 @@ export function WorkTaskTypeContextProvider({
     const workTaskTypeDtos = Object.values(
       currentModels as StringMap<WorkTaskTypeDto>
     );
-    putWorkTaskTypes(workTaskTypeDtos).then((r) => {
+    putList(workTaskTypeDtos).then((r) => {
       if (r.data) {
         const schemas = getPayloadArray(r.data, (r) => r.id.toString());
         dispatch({ type: 'updateAll', payload: schemas });

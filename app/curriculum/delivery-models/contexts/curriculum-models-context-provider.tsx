@@ -10,11 +10,6 @@ import {
   CurriculumModelsContext,
   CurriculumModelsContextDispatch
 } from './use-curriculum-model-context';
-
-import {
-  deleteCurriculumDeliveryModels,
-  putModels
-} from '../../../api/actions/curriculum-delivery-model';
 import { useSelectiveContextControllerBoolean } from '../../../selective-context/components/typed/selective-context-manager-boolean';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
@@ -24,6 +19,10 @@ import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
+import {
+  deleteIdList,
+  putList
+} from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 
 export const UnsavedCurriculumModelChanges = 'unsaved-model-changes';
 export const DeletedCurriculumModelIdsKey = 'deleted-curriculum-model-id-list';
@@ -70,7 +69,7 @@ export function CurriculumModelsContextProvider({
     };
 
     if (deletedModelsIdList.length > 0) {
-      deleteCurriculumDeliveryModels(deletedModelsIdList)
+      deleteIdList(deletedModelsIdList)
         .then((r) => {
           if (r.status == 200) {
             dispatchDeletedModelIdList({
@@ -85,7 +84,7 @@ export function CurriculumModelsContextProvider({
         .finally(clearFlag);
     }
     const workProjectSeriesSchemaDtosCurrent = Object.values(currentModels);
-    putModels(workProjectSeriesSchemaDtosCurrent)
+    putList(workProjectSeriesSchemaDtosCurrent)
       .then((r) => {
         if (r.data) {
           const schemas = getPayloadArray(r.data, (schema) => schema.id);

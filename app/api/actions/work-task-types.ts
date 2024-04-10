@@ -51,11 +51,3 @@ export async function getWorkTaskTypesByWorkProjectSeriesSchemaIdList(
     url
   );
 }
-
-export async function putWorkTaskTypes(
-  modelList: WorkTaskTypeDto[]
-): ActionResponsePromise<WorkTaskTypeDto[]> {
-  const url = `${API_BASE_URL}/workTasks/types`;
-
-  return putEntities(modelList, url);
-}

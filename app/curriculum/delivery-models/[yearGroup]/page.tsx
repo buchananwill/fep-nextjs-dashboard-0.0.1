@@ -1,4 +1,4 @@
-import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../api/actions/curriculum-delivery-model';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../api/actions/work-project-series-schema';
 import { Card, Title } from '@tremor/react';
 import { Pagination } from '../../../generic/components/buttons/pagination';
 import {
