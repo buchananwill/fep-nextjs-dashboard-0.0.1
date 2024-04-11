@@ -1,6 +1,6 @@
 'use server';
-import { generateBaseEndpointSet } from '../actions/template-endpoints';
 import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
+import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
   getPage,

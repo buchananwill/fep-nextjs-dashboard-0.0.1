@@ -30,8 +30,6 @@ export default async function Page({
 }) {
   const actionResponseAllBundles = await getPage({ pageSize: 100 });
 
-  console.log('bundle response:', actionResponseAllBundles);
-
   const schemaIdList = actionResponseAllBundles.data?.content
     .map((bundle) => bundle.workProjectSeriesSchemaIds)
     .reduce((prev, curr) => {
@@ -83,7 +81,6 @@ export default async function Page({
     actionResponseAllBundles.data === undefined ||
     allSchemasInBundles.data === undefined
   ) {
-    console.log(allSchemasInBundles);
     return <Card>No bundles found!</Card>;
   }
 

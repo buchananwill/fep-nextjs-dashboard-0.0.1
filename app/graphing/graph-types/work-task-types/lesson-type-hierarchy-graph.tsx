@@ -6,14 +6,14 @@ import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { getGraphUpdaterWithNameDeDuplication } from '../organization/curriculum-delivery-graph';
-import { putWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
 import { CloneFunctionWrapper } from './clone-work-task-type';
 import { NodePayload } from '../../force-graph-page';
 import React from 'react';
 import WorkTaskTypeDtoDetails from './work-task-type-dto-details';
 import NodeDetails from '../../components/node-details';
+import { putGraph } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 
-const graphUpdater = getGraphUpdaterWithNameDeDuplication(putWorkTaskTypeGraph);
+const graphUpdater = getGraphUpdaterWithNameDeDuplication(putGraph);
 
 export function LessonTypeHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<WorkTaskTypeDto>();

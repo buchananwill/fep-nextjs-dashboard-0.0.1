@@ -14,7 +14,7 @@ export async function getBundleAssignmentsByOrgType(
   orgType: number
 ): ActionResponsePromise<WorkSeriesBundleAssignmentDto[]> {
   const url = `${ASSIGNMENTS_ENDPOINT}/byOrganizationType/${orgType}`;
-  console.log(url);
+
   return await getWithoutBody<WorkSeriesBundleAssignmentDto[]>(url);
 }
 

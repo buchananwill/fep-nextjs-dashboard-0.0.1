@@ -1,6 +1,6 @@
 'use server';
-import { generateBaseEndpointSet } from '../actions/template-endpoints';
 import { CarouselOrderDto } from '../dtos/CarouselOrderDtoSchema';
+import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
   getPage,

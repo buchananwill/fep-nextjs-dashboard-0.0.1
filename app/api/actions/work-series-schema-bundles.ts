@@ -9,7 +9,6 @@ export async function getBundlesBySchemaIdList(
   idList: string[]
 ): ActionResponsePromise<WorkSeriesSchemaBundleLeanDto[]> {
   const urlForBundlesContainingSchemasInList = `${BUNDLES_ENDPOINT}/withItemSchemaIdInList`;
-  console.log(urlForBundlesContainingSchemasInList);
 
   return getDtoListByIds(idList, urlForBundlesContainingSchemasInList);
 }

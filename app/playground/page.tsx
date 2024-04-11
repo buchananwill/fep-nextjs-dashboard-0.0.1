@@ -8,7 +8,6 @@ import { getPage } from '../api/READ-ONLY-generated-actions/Carousel';
 
 export default async function PlaygroundPage({}: {}) {
   const actionResponse = await getPage({});
-  console.log(actionResponse);
 
   const { data } = await getCoAppearanceMatrix(12);
   if (!isNotUndefined(data))

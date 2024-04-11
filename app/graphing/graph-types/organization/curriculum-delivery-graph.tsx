@@ -22,7 +22,7 @@ import { deDuplicateNames } from '../../editing/functions/increment-clone-suffix
 import _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
-import { putOrganizationGraph } from '../../../api/actions/organizations';
+import { putGraph } from '../../../api/READ-ONLY-generated-actions/Organization';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -57,8 +57,7 @@ export function getGraphUpdaterWithNameDeDuplication<
   };
 }
 
-const organizationGraphUpdater =
-  getGraphUpdaterWithNameDeDuplication(putOrganizationGraph);
+const organizationGraphUpdater = getGraphUpdaterWithNameDeDuplication(putGraph);
 
 export const CurriculumDeliveryGraphPageKey = 'curriculum-delivery-graph-page';
 

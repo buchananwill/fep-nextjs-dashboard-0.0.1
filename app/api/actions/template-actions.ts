@@ -163,6 +163,8 @@ async function callApi<T>(
       const message = response.statusText;
       return successResponse(responseBody, message);
     } else {
+      console.error(response);
+      console.error('From: %s', url);
       const newVar = await response.json();
       const errorMessage: string = newVar.message;
       const originalRequest: T = newVar.requestBody;

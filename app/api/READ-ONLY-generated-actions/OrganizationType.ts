@@ -1,12 +1,12 @@
 'use server';
-import { OrganizationDto } from '../dtos/OrganizationDtoSchema';
+import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
 import { generateGraphEndpointSet } from '../actions/template-graph-endpoints';
 
 export const { getGraph, getGraphByNodeList, getGraphByRootId, putGraph } =
  generateGraphEndpointSet<
-  OrganizationDto
+  OrganizationTypeDto
 >(
-  '/api/v2/organizations'
+  '/api/v2/organizations/types'
 );
 
 

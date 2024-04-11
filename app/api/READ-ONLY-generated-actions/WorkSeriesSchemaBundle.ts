@@ -1,6 +1,6 @@
 'use server';
-import { generateBaseEndpointSet } from '../actions/template-endpoints';
 import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
   getPage,

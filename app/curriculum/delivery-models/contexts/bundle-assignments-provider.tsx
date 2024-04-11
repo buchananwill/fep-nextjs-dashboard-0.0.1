@@ -53,8 +53,6 @@ export function BundleAssignmentsProvider({
       false
     );
 
-  console.log(bundleAssignments);
-
   const { openModal, isOpen, closeModal } = useModal();
 
   const handleConfirm = () => {

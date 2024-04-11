@@ -16,7 +16,7 @@ import { getOptionBlocks } from '../api/actions/option-blocks';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
 import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';
-import { getOrganizationTypes } from '../api/actions/organizations';
+import { getGraphByRootId } from '../api/READ-ONLY-generated-actions/OrganizationType';
 
 interface DropdownItem {
   name: string;
@@ -81,7 +81,7 @@ export default function Navbar({
   }, [isLoading, organizationTypes]);
   useEffect(() => {
     if (isLoading) {
-      getOrganizationTypes().then((r) => {
+      getGraphByRootId({ rootId: 6, depth: 0, depthOp: '>' }).then((r) => {
         if (r.data) {
           if (electivesDropdown !== undefined) setIsLoading(false);
           const receivedOrganizationTypes = r.data.nodes.map(({ data }) => ({

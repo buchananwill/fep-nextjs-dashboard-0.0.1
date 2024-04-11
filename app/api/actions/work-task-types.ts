@@ -17,16 +17,6 @@ export async function getWorkTaskTypeGraph(
   const url = `${workTaskTypesEndpointUrl}/graph?typeNameLike=${typeNameLike}`;
   return getWithoutBody(url);
 }
-export async function putWorkTaskTypeGraph(
-  graph: GraphDtoPutRequestBody<WorkTaskTypeDto>
-): ActionResponsePromise<GraphDto<WorkTaskTypeDto>> {
-  const url = `${workTaskTypesEndpointUrl}/graph`;
-  return putRequestWithDifferentReturnType<
-    GraphDtoPutRequestBody<WorkTaskTypeDto>,
-    GraphDto<WorkTaskTypeDto>
-  >(graph, url);
-}
-
 export async function getWorkTaskTypes(searchParams: {
   rootName?: string;
   serviceCategoryDto?: string;
