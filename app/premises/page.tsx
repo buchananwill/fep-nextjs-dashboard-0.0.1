@@ -1,6 +1,6 @@
 import { Title, Card } from '@tremor/react';
 
-import { getPremises } from '../api/actions/premises';
+import { getPremises } from '../api/actions/custom/premises';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { ActionResponsePromise } from '../api/actions/actionResponse';

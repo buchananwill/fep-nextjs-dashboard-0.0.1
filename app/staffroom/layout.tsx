@@ -3,11 +3,11 @@ import AvailabilityContextProvider from './contexts/availability/availability-co
 import { TeachersToolCard } from './teachers-tool-card';
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { performApiAction } from '../api/actions/performApiAction';
-import { getTeachers } from '../api/actions/provider-roles';
+import { getTeachers } from '../api/actions/custom/provider-roles';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
-import { getAvailabilities } from '../api/actions/availability';
+import { getAvailabilities } from '../api/actions/custom/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
-import { getCycleModel } from '../api/actions/cycle-model';
+import { getCycleModel } from '../api/actions/custom/cycle-model';
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../generic/components/calendar/range/calendar-range-context-provider';

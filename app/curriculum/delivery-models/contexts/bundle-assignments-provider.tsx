@@ -18,7 +18,7 @@ import {
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
 import { LongLongTuple } from '../../../api/dtos/LongLongTupleSchema';
-import { postBundleDeliveries } from '../../../api/actions/work-series-bundle-assignments';
+import { postBundleDeliveries } from '../../../api/actions/custom/work-series-bundle-assignments';
 
 export function parseStringStringToIntInt(
   entry: [string, string]

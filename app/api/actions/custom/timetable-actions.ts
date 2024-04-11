@@ -1,6 +1,6 @@
 'use server';
 import { NextRequest } from 'next/server';
-import { API_BASE_URL } from '../main';
+import { API_BASE_URL } from '../../main';
 
 export const getLessonEnrollments = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;

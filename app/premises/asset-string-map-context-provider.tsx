@@ -12,7 +12,7 @@ import { PropsWithChildren, useCallback } from 'react';
 import {
   patchAssetRoleWorkTaskSuitabilities,
   patchPremises
-} from '../api/actions/premises';
+} from '../api/actions/custom/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
 import { isNotUndefined } from '../api/main';

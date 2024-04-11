@@ -1,16 +1,16 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { API_BASE_URL } from '../main';
-import { ServiceCategoryDto } from '../dtos/ServiceCategoryDtoSchema';
-import { KnowledgeLevelDto } from '../dtos/KnowledgeLevelDtoSchema';
+import { ActionResponsePromise } from '../actionResponse';
+import { API_BASE_URL } from '../../main';
+import { ServiceCategoryDto } from '../../dtos/ServiceCategoryDtoSchema';
+import { KnowledgeLevelDto } from '../../dtos/KnowledgeLevelDtoSchema';
 import {
   deleteEntities,
   getWithoutBody,
   patchEntity,
   patchEntityList,
   postEntity
-} from './template-actions';
-import { KnowledgeDomainDto } from '../dtos/KnowledgeDomainDtoSchema';
+} from '../template-actions';
+import { KnowledgeDomainDto } from '../../dtos/KnowledgeDomainDtoSchema';
 
 const serviceCategoriesApi = `${API_BASE_URL}/serviceCategories`;
 

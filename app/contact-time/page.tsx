@@ -1,5 +1,5 @@
 import SubjectContactTime from './all-subjects-scatterchart';
-import { fetchAllSubjectsContactTime } from '../api/actions/request-subject-contact-time-metrics';
+import { fetchAllSubjectsContactTime } from '../api/actions/custom/request-subject-contact-time-metrics';
 
 export const dynamic = 'force-dynamic';
 

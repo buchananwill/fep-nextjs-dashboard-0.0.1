@@ -18,7 +18,7 @@ import BigTableCard from '../../generic/components/tables/big-table-card';
 import DynamicDimensionTimetable, {
   HeaderTransformer
 } from '../../generic/components/tables/dynamic-dimension-timetable';
-import { fetchCarouselGroupWithAllStudents } from '../../api/actions/fetch-carousel-group-with-all-students';
+import { fetchCarouselGroupWithAllStudents } from '../../api/actions/custom/fetch-carousel-group-with-all-students';
 import { isNotUndefined } from '../../api/main';
 
 interface Props {

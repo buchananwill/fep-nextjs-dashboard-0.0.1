@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '../main';
-import { EventDto } from '../dtos/EventDtoSchema';
-import { getWithoutBody, patchEntity } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
+import { API_BASE_URL } from '../../main';
+import { EventDto } from '../../dtos/EventDtoSchema';
+import { getWithoutBody, patchEntity } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
 
 export async function getCalendarEvents(partyId: number) {
   const url = `${API_BASE_URL}/events?partyId=${partyId}`;

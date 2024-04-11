@@ -1,4 +1,4 @@
-import { getKnowledgeDomains } from '../../../api/actions/service-categories';
+import { getKnowledgeDomains } from '../../../api/actions/custom/service-categories';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeDomainNameCell } from './knowledge-domain-name-cell';
 import { NewKnowledgeDomainButton } from './new-knowledge-domain-button';

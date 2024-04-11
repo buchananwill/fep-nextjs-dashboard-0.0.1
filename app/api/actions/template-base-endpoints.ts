@@ -12,7 +12,10 @@ import {
 import { BASE_URL, isNotUndefined, Page } from '../main';
 import { HasNumberId, HasUuid } from '../dto-interfaces';
 
-function constructUrl(resourceSegments: string[] | string, action?: string) {
+export function constructUrl(
+  resourceSegments: string[] | string,
+  action?: string
+) {
   const basePath = BASE_URL;
 
   const resourcePath = Array.isArray(resourceSegments)

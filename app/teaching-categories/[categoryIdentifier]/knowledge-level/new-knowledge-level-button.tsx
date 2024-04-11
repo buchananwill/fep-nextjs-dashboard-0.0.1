@@ -12,7 +12,7 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../../selective-context/components/typed/selective-context-manager-boolean';
-import { postKnowledgeLevel } from '../../../api/actions/service-categories';
+import { postKnowledgeLevel } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';

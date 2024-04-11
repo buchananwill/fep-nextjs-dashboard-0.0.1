@@ -1,4 +1,4 @@
-import { getKnowledgeLevels } from '../../../api/actions/service-categories';
+import { getKnowledgeLevels } from '../../../api/actions/custom/service-categories';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelNameCell } from './knowledge-level-name-cell';
 import { NewKnowledgeLevelButton } from './new-knowledge-level-button';

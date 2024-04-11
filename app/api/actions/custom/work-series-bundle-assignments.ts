@@ -1,12 +1,12 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { WorkSeriesBundleAssignmentDto } from '../dtos/WorkSeriesBundleAssignmentDtoSchema';
+import { ActionResponsePromise } from '../actionResponse';
+import { WorkSeriesBundleAssignmentDto } from '../../dtos/WorkSeriesBundleAssignmentDtoSchema';
 import {
   getWithoutBody,
   postEntitiesWithDifferentReturnType
-} from './template-actions';
-import { API_V2_URL } from '../main';
-import { LongLongTuple } from '../dtos/LongLongTupleSchema';
+} from '../template-actions';
+import { API_V2_URL } from '../../main';
+import { LongLongTuple } from '../../dtos/LongLongTupleSchema';
 
 const ASSIGNMENTS_ENDPOINT = `${API_V2_URL}/workProjectSeriesSchemas/bundleAssignments`;
 

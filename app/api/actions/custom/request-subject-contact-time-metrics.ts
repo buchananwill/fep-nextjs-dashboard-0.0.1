@@ -1,7 +1,7 @@
-import { NamedNumberRecord } from '../dto-interfaces';
-import { AllSubjectsContactTimeDTO } from '../dtos/AllSubjectsContactTimeDTOSchema';
-import { getWithoutBody } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
+import { NamedNumberRecord } from '../../dto-interfaces';
+import { AllSubjectsContactTimeDTO } from '../../dtos/AllSubjectsContactTimeDTOSchema';
+import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 

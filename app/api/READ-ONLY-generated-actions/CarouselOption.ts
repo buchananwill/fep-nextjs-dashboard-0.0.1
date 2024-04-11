@@ -1,6 +1,7 @@
 'use server';
 import { CarouselOptionDto } from '../dtos/CarouselOptionDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
+import { generateIntersectionEndpointSet } from '../actions/template-intersection-endpoints';
 
 export const {
   getPage,
@@ -20,4 +21,17 @@ export const {
   '/api/v2/carouselGroups/carousels/options'
 );
 
+
+const {
+  getByRowIdListAndColumnIdList,
+  getColumnIdList,
+  getByRowIdList,
+  getIntersectionTable
+} = generateIntersectionEndpointSet<
+  CarouselOptionDto,
+  string,
+  string
+>(
+  '/api/v2/carouselGroups/carousels/options'
+);
 

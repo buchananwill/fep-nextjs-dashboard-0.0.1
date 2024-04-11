@@ -1,7 +1,7 @@
 'use client';
 import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 
-import { deleteKnowledgeDomain } from '../../../api/actions/service-categories';
+import { deleteKnowledgeDomain } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { TwoStageClick } from '../../../generic/components/buttons/two-stage-click';
 

@@ -4,9 +4,9 @@ import { getServerSession } from 'next-auth/next';
 import {
   getKnowledgeLevels,
   getServiceCategoryByIdentifier
-} from '../api/actions/service-categories';
+} from '../api/actions/custom/service-categories';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
-import { fetchScheduleIds } from '../api/actions/timetables';
+import { fetchScheduleIds } from '../api/actions/custom/timetables';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
 
 export default async function Nav() {

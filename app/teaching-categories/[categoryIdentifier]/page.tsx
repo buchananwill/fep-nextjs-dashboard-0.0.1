@@ -1,5 +1,5 @@
 import { Card, Title } from '@tremor/react';
-import { getServiceCategoryByIdentifier } from '../../api/actions/service-categories';
+import { getServiceCategoryByIdentifier } from '../../api/actions/custom/service-categories';
 import { ServiceCategoryEditor } from './serviceCategoryEditor';
 import KnowledgeDomainTableEditor from './knowledge-domain/knowledge-domain-table-editor';
 import KnowledgeLevelTableEditor from './knowledge-level/knowledge-level-table-editor';

@@ -8,11 +8,11 @@ import { SubjectFilters } from '../subject-filters';
 import { Text, Title } from '@tremor/react';
 import Link from 'next/link';
 import { PeriodDTO } from '../../api/dtos/PeriodDTOSchema';
-import { fetchAllPeriodsInCycle } from '../../api/actions/cycle-model';
+import { fetchAllPeriodsInCycle } from '../../api/actions/custom/cycle-model';
 import {
   fetchAllLessonCycles,
   fetchScheduleIds
-} from '../../api/actions/timetables';
+} from '../../api/actions/custom/timetables';
 import { isNotUndefined } from '../../api/main';
 import DropdownParam from '../../generic/components/dropdown/dropdown-param';
 import BigTableCard from '../../generic/components/tables/big-table-card';

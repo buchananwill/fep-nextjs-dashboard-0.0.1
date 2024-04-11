@@ -1,9 +1,9 @@
-import { TabularDTO } from '../dto-interfaces';
-import { PeriodDTO } from '../dtos/PeriodDTOSchema';
-import { API_ACADEMIC_URL, API_BASE_URL } from '../main';
-import { getWithoutBody } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
-import { CycleDto } from '../dtos/CycleDtoSchema';
+import { TabularDTO } from '../../dto-interfaces';
+import { PeriodDTO } from '../../dtos/PeriodDTOSchema';
+import { API_ACADEMIC_URL, API_BASE_URL } from '../../main';
+import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
+import { CycleDto } from '../../dtos/CycleDtoSchema';
 
 export const fetchAllPeriodsInCycle = async (): ActionResponsePromise<
   TabularDTO<string, PeriodDTO>

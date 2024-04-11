@@ -3,7 +3,7 @@
 import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { patchKnowledgeLevels } from '../../../api/actions/service-categories';
+import { patchKnowledgeLevels } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';

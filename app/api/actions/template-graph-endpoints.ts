@@ -4,21 +4,11 @@ import {
   postEntitiesWithDifferentReturnType,
   putRequestWithDifferentReturnType
 } from './template-actions';
-import { BASE_URL, isNotUndefined } from '../main';
+import { isNotUndefined } from '../main';
 
 import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
 import { HasNumberIdDto } from '../dtos/HasNumberIdDtoSchema';
-
-function constructUrl(resourceSegments: string[] | string, action?: string) {
-  const basePath = BASE_URL;
-
-  const resourcePath = Array.isArray(resourceSegments)
-    ? resourceSegments.join('/')
-    : resourceSegments;
-  return `${basePath}${resourcePath}${
-    isNotUndefined(action) ? `/${action}` : ''
-  }`;
-}
+import { constructUrl } from './template-base-endpoints';
 
 export type DepthOp = '>' | '>=' | '<' | '<=' | '=' | '!=';
 

@@ -5,10 +5,10 @@ import {
   getAssetSuitabilities,
   getPremises,
   getPremisesWithRoot
-} from '../../api/actions/premises';
+} from '../../api/actions/custom/premises';
 import { Card } from '@nextui-org/card';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
-import { getWorkTaskTypes } from '../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../api/actions/custom/work-task-types';
 import { isNotUndefined } from '../../api/main';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../contexts/string-map-context/convert-list-to-string-map';

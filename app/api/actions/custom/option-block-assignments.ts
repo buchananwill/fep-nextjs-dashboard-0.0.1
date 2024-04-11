@@ -1,6 +1,6 @@
 'use server';
-import { ElectivePreferenceDTO } from '../dtos/ElectivePreferenceDTOSchema';
-import { putEntities } from './template-actions';
+import { ElectivePreferenceDTO } from '../../dtos/ElectivePreferenceDTOSchema';
+import { putEntities } from '../template-actions';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 

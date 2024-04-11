@@ -1,5 +1,5 @@
-import { getWithoutBody } from './template-actions';
-import { YearGroupWithElectivesDTO } from '../dtos/YearGroupWithElectivesDTOSchema';
+import { getWithoutBody } from '../template-actions';
+import { YearGroupWithElectivesDTO } from '../../dtos/YearGroupWithElectivesDTOSchema';
 
 const apiBaseUrl = process.env.API_ACADEMIC_URL;
 export const fetchCarouselGroupWithAllStudents = async (

@@ -12,7 +12,7 @@ import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
-import { getOptionBlocks } from '../api/actions/option-blocks';
+import { getOptionBlocks } from '../api/actions/custom/option-blocks';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
 import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';

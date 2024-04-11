@@ -1,11 +1,11 @@
 import React from 'react';
 import { LessonCycleBuildMetricsCard } from './lesson-cycle-build-metrics-card';
 import LessonCycleMetricContextProvider from './lesson-cycle-metric-context-provider';
-import { getFormattedPeriodsInCycle } from '../../../api/actions/cycle-model';
+import { getFormattedPeriodsInCycle } from '../../../api/actions/custom/cycle-model';
 import {
   getLessonCycleBuildMetricSummary,
   getLessonCycleMetricsWithInfinityCosts
-} from '../../../api/actions/build-metrics';
+} from '../../../api/actions/custom/build-metrics';
 
 export default async function LessonCycleBuildMetrics({
   params: { schedule },

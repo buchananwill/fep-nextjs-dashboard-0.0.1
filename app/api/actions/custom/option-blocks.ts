@@ -1,8 +1,8 @@
 'use server';
-import { API_ACADEMIC_URL } from '../main';
-import { ActionResponsePromise } from './actionResponse';
-import { CarouselGroupDto } from '../dtos/CarouselGroupDtoSchema';
-import { getWithoutBody } from './template-actions';
+import { API_ACADEMIC_URL } from '../../main';
+import { ActionResponsePromise } from '../actionResponse';
+import { CarouselGroupDto } from '../../dtos/CarouselGroupDtoSchema';
+import { getWithoutBody } from '../template-actions';
 
 export async function getOptionBlocks(): ActionResponsePromise<
   CarouselGroupDto[]

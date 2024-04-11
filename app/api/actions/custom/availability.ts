@@ -1,8 +1,8 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { ProviderAvailabilityDto } from '../dtos/ProviderAvailabilityDtoSchema';
-import { API_BASE_URL } from '../main';
-import { getWithoutBody, putEntities } from './template-actions';
+import { ActionResponsePromise } from '../actionResponse';
+import { ProviderAvailabilityDto } from '../../dtos/ProviderAvailabilityDtoSchema';
+import { API_BASE_URL } from '../../main';
+import { getWithoutBody, putEntities } from '../template-actions';
 
 const teachersEndpoint = `${API_BASE_URL}/providers/teachers`;
 export async function getAvailabilities(

@@ -1,7 +1,7 @@
-import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { ActionResponsePromise } from './actionResponse';
-import { getDtoListByIds } from './template-actions';
-import { API_V2_URL } from '../main';
+import { WorkSeriesSchemaBundleLeanDto } from '../../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { ActionResponsePromise } from '../actionResponse';
+import { getDtoListByIds } from '../template-actions';
+import { API_V2_URL } from '../../main';
 
 const BUNDLES_ENDPOINT = `${API_V2_URL}/workProjectSeriesSchemas/bundles`;
 

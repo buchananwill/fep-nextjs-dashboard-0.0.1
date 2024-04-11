@@ -6,18 +6,21 @@ import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundl
 
 import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
-import { getWorkTaskTypesByWorkProjectSeriesSchemaIdList } from '../../../api/actions/work-task-types';
+import { getWorkTaskTypesByWorkProjectSeriesSchemaIdList } from '../../../api/actions/custom/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
 } from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
-import { getBundleAssignmentsByOrgType } from '../../../api/actions/work-series-bundle-assignments';
-import { getOrganizationGraphByOrganizationType } from '../../../api/actions/organizations';
+import { getBundleAssignmentsByOrgType } from '../../../api/actions/custom/work-series-bundle-assignments';
 import { parseTen } from '../../../api/date-and-time';
 import { isNotUndefined } from '../../../api/main';
 import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 import { getDtoListByBodyList } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
+import {
+  getByTypeIdList,
+  getGraphByNodeList
+} from '../../../api/READ-ONLY-generated-actions/Organization';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -51,8 +54,9 @@ export default async function Page({
       curr.forEach((id) => previousValue.add(id));
       return previousValue;
     }, new Set<string>());
-  const actionResponseOrganizationGraph =
-    await getOrganizationGraphByOrganizationType(typeId);
+  const actionResponse = await getByTypeIdList([typeId]);
+  const orgIdList = actionResponse.data?.map((org) => org.id) || [];
+  const actionResponseOrganizationGraph = await getGraphByNodeList(orgIdList);
   // await getOrganizationGraph();
   // await getOrganizationGraphByRootId(1446);
 

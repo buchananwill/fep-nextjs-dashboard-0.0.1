@@ -1,13 +1,13 @@
-import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../../api/actions/work-project-series-schema';
+import { getCurriculumDeliveryModelSchemasByKnowledgeLevel } from '../../../../api/actions/custom/work-project-series-schema';
 import { normalizeQueryParamToNumber } from '../../../../api/utils';
 import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
-import { getWorkTaskTypes } from '../../../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../../../api/actions/custom/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
-import { getBundlesBySchemaIdList } from '../../../../api/actions/work-series-schema-bundles';
+import { getBundlesBySchemaIdList } from '../../../../api/actions/custom/work-series-schema-bundles';
 
 const emptyBundles = {} as StringMap<string>;
 

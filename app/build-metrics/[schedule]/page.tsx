@@ -5,8 +5,8 @@ import MetricsContextProvider from './metrics-context-provider';
 
 import React from 'react';
 import Link from 'next/link';
-import { fetchScheduleIds } from '../../api/actions/timetables';
-import { fetchBuildMetricDto } from '../../api/actions/build-metrics';
+import { fetchScheduleIds } from '../../api/actions/custom/timetables';
+import { fetchBuildMetricDto } from '../../api/actions/custom/build-metrics';
 import DropdownParam from '../../generic/components/dropdown/dropdown-param';
 
 export default async function BuildMetricsOverview({

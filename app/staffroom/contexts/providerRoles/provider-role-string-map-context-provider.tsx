@@ -8,7 +8,7 @@ import { ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext } from '../
 import {
   patchWorkTaskSuitabilities,
   updateTeachers
-} from '../../../api/actions/provider-roles';
+} from '../../../api/actions/custom/provider-roles';
 import {
   ProviderChangesProviderListener,
   ProviderRoleStringMapContext,

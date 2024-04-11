@@ -1,6 +1,6 @@
 import { Card } from '@nextui-org/card';
 import SelectiveContextManagerGlobal from '../selective-context/components/global/selective-context-manager-global';
-import { getCoAppearanceMatrix } from '../api/actions/option-blocks';
+import { getCoAppearanceMatrix } from '../api/actions/custom/option-blocks';
 import { isNotUndefined } from '../api/main';
 import { DataNotFoundCard } from '../timetables/students/[schedule]/data-not-found-card';
 import ArcChart from './arcChart';

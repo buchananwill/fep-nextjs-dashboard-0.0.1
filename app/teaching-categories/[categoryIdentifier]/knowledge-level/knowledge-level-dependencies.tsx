@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteKnowledgeLevel } from '../../../api/actions/service-categories';
+import { deleteKnowledgeLevel } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { TwoStageClick } from '../../../generic/components/buttons/two-stage-click';

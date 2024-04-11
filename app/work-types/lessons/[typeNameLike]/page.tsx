@@ -1,12 +1,12 @@
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { GraphDto } from '../../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import { getWorkTaskTypeGraph } from '../../../api/actions/work-task-types';
+import { getWorkTaskTypeGraph } from '../../../api/actions/custom/work-task-types';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
 import {
   getAllKnowledgeDomains,
   getAllKnowledgeLevels
-} from '../../../api/actions/service-categories';
+} from '../../../api/actions/custom/service-categories';
 import ServiceCategoryContextInit from '../service-category-context-init';
 import { EmptyArray } from '../../../api/main';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';

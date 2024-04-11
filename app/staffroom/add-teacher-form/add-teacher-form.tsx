@@ -10,7 +10,7 @@ import {
   NewProviderRoleDto,
   NewProviderRoleDtoSchema
 } from '../../api/dtos/NewProviderRoleDtoSchema-Validation';
-import { createTeacher } from '../../api/actions/provider-roles';
+import { createTeacher } from '../../api/actions/custom/provider-roles';
 import { useServiceCategoryContext } from '../../work-types/lessons/use-service-category-context';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
 import { Card, CardBody, CardFooter } from '@nextui-org/card';

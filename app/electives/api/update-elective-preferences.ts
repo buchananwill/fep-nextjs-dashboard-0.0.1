@@ -1,6 +1,6 @@
 import { ElectiveState } from '../elective-reducers';
 import { ElectivePreferenceDTO } from '../../api/dtos/ElectivePreferenceDTOSchema';
-import { putOptionBlockAssignments } from '../../api/actions/option-block-assignments';
+import { putOptionBlockAssignments } from '../../api/actions/custom/option-block-assignments';
 import { isNotUndefined } from '../../api/main';
 
 export const updateElectiveAssignments = async ({

@@ -1,8 +1,8 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { WorkProjectSeriesSchemaDto } from '../dtos/WorkProjectSeriesSchemaDtoSchema';
-import { API_BASE_URL, Page } from '../main';
-import { getWithoutBody } from './template-actions';
+import { ActionResponsePromise } from '../actionResponse';
+import { WorkProjectSeriesSchemaDto } from '../../dtos/WorkProjectSeriesSchemaDtoSchema';
+import { API_BASE_URL, Page } from '../../main';
+import { getWithoutBody } from '../template-actions';
 
 const SCHEMA_URL = `${API_BASE_URL}/workProjectSeriesSchemas`;
 

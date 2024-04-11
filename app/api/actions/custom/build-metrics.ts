@@ -1,9 +1,9 @@
-import { BuildMetricDto } from '../dtos/BuildMetricDtoSchema';
-import { API_ACADEMIC_URL } from '../main';
-import { getWithoutBody } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
-import { NameIdStringTuple } from '../dtos/NameIdStringTupleSchema';
-import { LessonCycleMetricSummaryDTO } from '../dtos/LessonCycleMetricSummaryDTOSchema';
+import { BuildMetricDto } from '../../dtos/BuildMetricDtoSchema';
+import { API_ACADEMIC_URL } from '../../main';
+import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
+import { NameIdStringTuple } from '../../dtos/NameIdStringTupleSchema';
+import { LessonCycleMetricSummaryDTO } from '../../dtos/LessonCycleMetricSummaryDTOSchema';
 
 export const fetchBuildMetricDto = async (
   scheduleId: number

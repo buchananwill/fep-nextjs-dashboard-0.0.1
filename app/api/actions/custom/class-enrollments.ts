@@ -1,7 +1,7 @@
-import { LessonEnrollmentDTO } from '../dto-interfaces';
-import { API_ACADEMIC_URL } from '../main';
-import { getWithoutBody } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
+import { LessonEnrollmentDTO } from '../../dto-interfaces';
+import { API_ACADEMIC_URL } from '../../main';
+import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
 
 export const fetchLessonEnrollments = async (
   studentId: number,

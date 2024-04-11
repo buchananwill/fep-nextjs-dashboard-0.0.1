@@ -16,7 +16,7 @@ import {
   FillableButton,
   PinIcons
 } from '../generic/components/buttons/fillable-button';
-import { swapPeriods } from '../api/actions/timetables';
+import { swapPeriods } from '../api/actions/custom/timetables';
 import { countConcurrency, getBadgeColor } from './count-concurrency';
 
 export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({

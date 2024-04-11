@@ -5,12 +5,12 @@ import {
   postIntersectionTableRequest,
   putEntities,
   putRequestWithDifferentReturnType
-} from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
-import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
-import { AssetDto } from '../dtos/AssetDtoSchema';
-import { API_BASE_URL } from '../main';
-import { AssetRoleWorkTaskSuitabilityDto } from '../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
+} from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
+import { GraphDto, GraphDtoPutRequestBody } from '../../zod-mods';
+import { AssetDto } from '../../dtos/AssetDtoSchema';
+import { API_BASE_URL } from '../../main';
+import { AssetRoleWorkTaskSuitabilityDto } from '../../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 
 const premisesUrl = `${API_BASE_URL}/assets/premises`;
 

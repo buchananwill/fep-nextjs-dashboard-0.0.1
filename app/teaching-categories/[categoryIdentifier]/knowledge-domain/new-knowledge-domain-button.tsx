@@ -14,7 +14,7 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../../selective-context/components/typed/selective-context-manager-boolean';
-import { postKnowledgeDomain } from '../../../api/actions/service-categories';
+import { postKnowledgeDomain } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';
 import { PendingOverlay } from '../../../generic/components/overlays/pending-overlay';

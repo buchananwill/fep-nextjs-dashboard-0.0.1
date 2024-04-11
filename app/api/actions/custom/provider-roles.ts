@@ -1,16 +1,16 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { API_BASE_URL } from '../main';
+import { ActionResponsePromise } from '../actionResponse';
+import { API_BASE_URL } from '../../main';
 import {
   getWithoutBody,
   patchEntityList,
   postEntitiesWithDifferentReturnType,
   postIntersectionTableRequest
-} from './template-actions';
-import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
-import { NewProviderRoleDto } from '../dtos/NewProviderRoleDtoSchema-Validation';
-import { WorkTaskCompetencyDto } from '../dtos/WorkTaskCompetencyDtoSchema';
-import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
+} from '../template-actions';
+import { ProviderRoleDto } from '../../dtos/ProviderRoleDtoSchema';
+import { NewProviderRoleDto } from '../../dtos/NewProviderRoleDtoSchema-Validation';
+import { WorkTaskCompetencyDto } from '../../dtos/WorkTaskCompetencyDtoSchema';
+import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
 
 const url = `${API_BASE_URL}/providers`;
 

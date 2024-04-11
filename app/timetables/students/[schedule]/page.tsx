@@ -6,14 +6,14 @@ import { Card, Text, Title } from '@tremor/react';
 
 import Link from 'next/link';
 import { LessonCardTransformer } from '../../lesson-card';
-import fetchAllStudents from '../../../api/actions/student-search';
+import fetchAllStudents from '../../../api/actions/custom/student-search';
 import { StudentTimetableSelector } from './student-timetable-selector';
 import { PeriodDTO } from '../../../api/dtos/PeriodDTOSchema';
-import { fetchAllPeriodsInCycle } from '../../../api/actions/cycle-model';
+import { fetchAllPeriodsInCycle } from '../../../api/actions/custom/cycle-model';
 import {
   fetchAllLessonCycles,
   fetchScheduleIds
-} from '../../../api/actions/timetables';
+} from '../../../api/actions/custom/timetables';
 import DropdownParam from '../../../generic/components/dropdown/dropdown-param';
 import DynamicDimensionTimetable, {
   HeaderTransformer

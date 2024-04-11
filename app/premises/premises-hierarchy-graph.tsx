@@ -6,7 +6,7 @@ import { NodeLinkRefWrapper } from '../graphing/graph/node-link-ref-wrapper';
 import { useNodeAndLinkRefs } from '../graphing/graph/use-node-and-link-refs';
 import { useNodeEditing } from '../graphing/editing/functions/use-node-editing';
 import { incrementCloneSuffix } from '../graphing/editing/functions/increment-clone-suffix';
-import { putPremisesGraph } from '../api/actions/premises';
+import { putPremisesGraph } from '../api/actions/custom/premises';
 import { NodePayload } from '../graphing/force-graph-page';
 import PremisesDetails from './premises-details';
 import React from 'react';

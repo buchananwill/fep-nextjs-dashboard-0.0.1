@@ -1,14 +1,14 @@
 'use server';
-import { ActionResponsePromise } from './actionResponse';
-import { GraphDto, GraphDtoPutRequestBody } from '../zod-mods';
-import { API_BASE_URL, joinSearchParams } from '../main';
-import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
+import { ActionResponsePromise } from '../actionResponse';
+import { GraphDto, GraphDtoPutRequestBody } from '../../zod-mods';
+import { API_BASE_URL, joinSearchParams } from '../../main';
+import { WorkTaskTypeDto } from '../../dtos/WorkTaskTypeDtoSchema';
 import {
   getWithoutBody,
   postEntitiesWithDifferentReturnType,
   putEntities,
   putRequestWithDifferentReturnType
-} from './template-actions';
+} from '../template-actions';
 
 const workTaskTypesEndpointUrl = `${API_BASE_URL}/workTasks/types`;
 export async function getWorkTaskTypeGraph(

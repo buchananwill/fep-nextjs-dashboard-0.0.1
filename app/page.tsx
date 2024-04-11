@@ -1,5 +1,5 @@
 import { Card, Title, Text } from '@tremor/react';
-import fetchAllStudents from './api/actions/student-search';
+import fetchAllStudents from './api/actions/custom/student-search';
 import Search from './search';
 import StudentsTable from './tables/student-table';
 import { StudentDTO } from './api/dtos/StudentDTOSchema';

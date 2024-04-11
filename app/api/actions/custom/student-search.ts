@@ -1,7 +1,7 @@
-import { StudentDTO } from '../dtos/StudentDTOSchema';
-import { API_ACADEMIC_URL } from '../main';
-import { getWithoutBody } from './template-actions';
-import { ActionResponsePromise } from './actionResponse';
+import { StudentDTO } from '../../dtos/StudentDTOSchema';
+import { API_ACADEMIC_URL } from '../../main';
+import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise } from '../actionResponse';
 
 interface SearchParams {
   q: string;

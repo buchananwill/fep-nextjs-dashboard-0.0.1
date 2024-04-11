@@ -1,5 +1,5 @@
 import { WorkTaskTypeContextProvider } from '../../../curriculum/delivery-models/contexts/work-task-type-context-provider';
-import { getWorkTaskTypes } from '../../../api/actions/work-task-types';
+import { getWorkTaskTypes } from '../../../api/actions/custom/work-task-types';
 import SkillTableWrapper from './skill-table-wrapper';
 import { convertListToStringMap } from '../../../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
@@ -8,7 +8,7 @@ import ProviderRoleSkillEditContextProvider from '../../contexts/providerRoles/p
 import {
   getTeachers,
   getWorkTaskSuitabilities
-} from '../../../api/actions/provider-roles';
+} from '../../../api/actions/custom/provider-roles';
 import { getWorkTaskTypeIdsAlphabetical } from '../../../premises/classroom-suitability/get-work-task-type-ids-alphabetical';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
 import { parseTen } from '../../../api/date-and-time';

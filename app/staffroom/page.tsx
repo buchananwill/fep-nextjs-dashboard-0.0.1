@@ -19,7 +19,7 @@ import { produce } from 'immer';
 import { ClearUnSyncedEvents } from './contexts/events/event-reducer';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { EventDto } from '../api/dtos/EventDtoSchema';
-import { patchEvents } from '../api/actions/calendars';
+import { patchEvents } from '../api/actions/custom/calendars';
 import { Calendarable } from '../generic/components/calendar/blocks/timespan-block';
 import { WorkshopJobBlock } from '../generic/components/calendar/blocks/workshop-job-block';
 import { ChooseCalendarRange } from '../generic/components/calendar/range/choose-calendar-range';

@@ -4,7 +4,7 @@ import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { patchKnowledgeDomain } from '../../../api/actions/service-categories';
+import { patchKnowledgeDomain } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';

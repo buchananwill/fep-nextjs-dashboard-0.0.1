@@ -1,5 +1,5 @@
 import { PerSubjectDonut } from '../per-subject-donut';
-import { fetchAllSubjectsByYearGroupContactTime } from '../../api/actions/request-subject-contact-time-metrics';
+import { fetchAllSubjectsByYearGroupContactTime } from '../../api/actions/custom/request-subject-contact-time-metrics';
 import { transformRecordToObjectArray } from '../../utils/data-transformations';
 import { NamedNumberRecord } from '../../api/dto-interfaces';
 function sumIntegers(b: NamedNumberRecord) {

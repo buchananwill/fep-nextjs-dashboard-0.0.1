@@ -4,7 +4,7 @@ import KnowledgeLevelContextProvider from './lessons/knowledge-level-context-pro
 import {
   getAllKnowledgeDomains,
   getAllKnowledgeLevels
-} from '../api/actions/service-categories';
+} from '../api/actions/custom/service-categories';
 import { ObjectPlaceholder } from '../selective-context/components/typed/selective-context-manager-function';
 import { convertListToStringMap } from '../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
