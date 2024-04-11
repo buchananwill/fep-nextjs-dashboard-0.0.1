@@ -11,12 +11,11 @@ import ProtectedNavigation from './protected-navigation';
 import { Text } from '@tremor/react';
 import { SvgLogo } from './svg-logo';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-
-import { getOptionBlocks } from '../api/actions/custom/option-blocks';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../api/dtos/ServiceCategoryDtoSchema';
 import ToolTipsToggle from '../generic/components/tooltips/tool-tips-toggle';
 import { getGraphByRootId } from '../api/READ-ONLY-generated-actions/OrganizationType';
+import { getAll } from '../api/READ-ONLY-generated-actions/CarouselGroup';
 
 interface DropdownItem {
   name: string;
@@ -67,7 +66,7 @@ export default function Navbar({
 
   useEffect(() => {
     if (isLoading) {
-      getOptionBlocks().then((r) => {
+      getAll().then((r) => {
         if (r.data) {
           if (organizationTypes !== undefined) setIsLoading(false);
           const receivedDropdownData = r.data.map((carouselGroupDto) => ({

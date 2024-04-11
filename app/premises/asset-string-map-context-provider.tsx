@@ -9,7 +9,6 @@ import {
 } from './asset-string-map-context-creator';
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
-import { patchAssetRoleWorkTaskSuitabilities } from '../api/actions/custom/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
 import { isNotUndefined } from '../api/main';
@@ -30,6 +29,7 @@ export default function AssetStringMapContextProvider({
         .map((assetDto) => selectiveContextReadAll(assetDto.id.toString()))
         .filter(isNotUndefined)
         .reduce((prev, curr) => [...prev, ...curr], []);
+      console.log(updatedSuitabilityLists);
       await putList(updatedSuitabilityLists);
       return await putAssetList(changedAssetDtoList);
     },
