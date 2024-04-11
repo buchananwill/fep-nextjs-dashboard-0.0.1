@@ -1,5 +1,5 @@
 'use server';
-import { ProviderRoleTypeDto } from '../dtos/ProviderRoleTypeDtoSchema';
+import { AssetTypeDto } from '../dtos/AssetTypeDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 import { generateGraphEndpointSet } from '../actions/template-graph-endpoints';
 
@@ -16,19 +16,19 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  ProviderRoleTypeDto,
+  AssetTypeDto,
   number
 >(
-  '/api/v2/providerRoles/types'
+  '/api/v2/assets/types'
 );
 
 
 
 export const { getGraph, getGraphByNodeList, getGraphByRootId, putGraph } =
  generateGraphEndpointSet<
-  ProviderRoleTypeDto
+  AssetTypeDto
 >(
-  '/api/v2/providerRoles/types'
+  '/api/v2/assets/types'
 );
 
 

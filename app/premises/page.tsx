@@ -1,15 +1,11 @@
-import { Title, Card } from '@tremor/react';
-
-import { getPremises } from '../api/actions/custom/premises';
+import { Card, Title } from '@tremor/react';
 import { GraphDto } from '../api/zod-mods';
 import { AssetDto } from '../api/dtos/AssetDtoSchema';
 import { ActionResponsePromise } from '../api/actions/actionResponse';
-import ForceGraphPage, { NodePayload } from '../graphing/force-graph-page';
+import ForceGraphPage from '../graphing/force-graph-page';
 import { PremisesHierarchyGraph } from './premises-hierarchy-graph';
-import { OrganizationDto } from '../api/dtos/OrganizationDtoSchema';
-import CurriculumDeliveryDetails from '../graphing/graph-types/organization/curriculum-delivery-details';
 import React from 'react';
-import PremisesDetails from './premises-details';
+import { getGraph } from '../api/READ-ONLY-generated-actions/Asset';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +13,7 @@ export default async function PremisesPage({}: {
   searchParams: { q: string };
 }) {
   const premisesPromises: ActionResponsePromise<GraphDto<AssetDto>> =
-    getPremises();
+    getGraph();
 
   const actionResponse = await premisesPromises;
 

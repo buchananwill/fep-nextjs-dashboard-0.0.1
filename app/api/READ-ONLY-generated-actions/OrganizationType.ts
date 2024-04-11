@@ -28,7 +28,7 @@ export const {
   OrganizationTypeDto,
   number
 >(
-  '/api/v2/organizations'
+  '/api/v2/organizations/types'
 );
 
 

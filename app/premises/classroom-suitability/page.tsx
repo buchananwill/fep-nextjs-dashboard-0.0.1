@@ -1,15 +1,10 @@
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
-import {
-  getAssetSuitabilities,
-  getPremises,
-  getPremisesWithRoot
-} from '../../api/actions/custom/premises';
 import { Card } from '@nextui-org/card';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
 import { getWorkTaskTypes } from '../../api/actions/custom/work-task-types';
-import { isNotUndefined } from '../../api/main';
+import { CLASSROOM_ROLE_TYPE_ID, isNotUndefined } from '../../api/main';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../contexts/string-map-context/convert-list-to-string-map';
 import AssetStringMapContextProvider from '../asset-string-map-context-provider';
@@ -28,6 +23,11 @@ import { KnowledgeDomainFilterSelector } from './knowledge-domain-filter-selecto
 import { KnowledgeLevelFilterSelector } from './knowledge-level-filter-selector';
 import { AssetRootIdFilterSelector } from './asset-root-id-filter-selector';
 import { getWorkTaskTypeIdsAlphabetical } from './get-work-task-type-ids-alphabetical';
+import {
+  getGraph,
+  getGraphByRootId
+} from '../../api/READ-ONLY-generated-actions/Asset';
+import { getTriIntersectionTable } from '../../api/READ-ONLY-generated-actions/AssetRoleTypeWorkTaskTypeSuitability';
 
 export default async function Page({
   searchParams: { rootId, ...workTaskParams }
@@ -41,9 +41,9 @@ export default async function Page({
 }) {
   let premisesPromises: ActionResponsePromise<GraphDto<AssetDto>>;
   if (isNotUndefined(rootId)) {
-    premisesPromises = getPremisesWithRoot(rootId);
+    premisesPromises = getGraphByRootId({ rootId: parseTen(rootId) });
   } else {
-    premisesPromises = getPremises();
+    premisesPromises = getGraph();
   }
   const actionResponse = await premisesPromises;
 
@@ -72,9 +72,10 @@ export default async function Page({
   const assetIds = Object.keys(assetStringMap).map(parseTen);
   const workTaskTypeIds = getWorkTaskTypeIdsAlphabetical(wttStringMap);
 
-  const { data: assetSuitabilities } = await getAssetSuitabilities(
+  const { data: assetSuitabilities } = await getTriIntersectionTable(
     assetIds,
-    workTaskTypeIds
+    workTaskTypeIds,
+    CLASSROOM_ROLE_TYPE_ID
   );
 
   if (!isNotUndefined(assetSuitabilities)) {

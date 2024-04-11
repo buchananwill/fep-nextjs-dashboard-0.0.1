@@ -9,13 +9,12 @@ import {
 } from './asset-string-map-context-creator';
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
 import { PropsWithChildren, useCallback } from 'react';
-import {
-  patchAssetRoleWorkTaskSuitabilities,
-  patchPremises
-} from '../api/actions/custom/premises';
+import { patchAssetRoleWorkTaskSuitabilities } from '../api/actions/custom/premises';
 import { AssetSuitabilityListSelectiveContext } from '../contexts/selective-context/selective-context-creators';
 import { useSelectiveContextListenerReadAll } from '../selective-context/components/base/generic-selective-context-creator';
 import { isNotUndefined } from '../api/main';
+import { putList as putAssetList } from '../api/READ-ONLY-generated-actions/Asset';
+import { putList } from '../api/READ-ONLY-generated-actions/AssetRoleTypeWorkTaskTypeSuitability';
 
 const Provider = WriteableStringMapContextProvider<AssetDto>;
 export default function AssetStringMapContextProvider({
@@ -31,8 +30,8 @@ export default function AssetStringMapContextProvider({
         .map((assetDto) => selectiveContextReadAll(assetDto.id.toString()))
         .filter(isNotUndefined)
         .reduce((prev, curr) => [...prev, ...curr], []);
-      await patchAssetRoleWorkTaskSuitabilities(updatedSuitabilityLists);
-      return await patchPremises(changedAssetDtoList);
+      await putList(updatedSuitabilityLists);
+      return await putAssetList(changedAssetDtoList);
     },
     [selectiveContextReadAll]
   );

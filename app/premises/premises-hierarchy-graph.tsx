@@ -6,12 +6,12 @@ import { NodeLinkRefWrapper } from '../graphing/graph/node-link-ref-wrapper';
 import { useNodeAndLinkRefs } from '../graphing/graph/use-node-and-link-refs';
 import { useNodeEditing } from '../graphing/editing/functions/use-node-editing';
 import { incrementCloneSuffix } from '../graphing/editing/functions/increment-clone-suffix';
-import { putPremisesGraph } from '../api/actions/custom/premises';
 import { NodePayload } from '../graphing/force-graph-page';
 import PremisesDetails from './premises-details';
 import React from 'react';
 import NodeDetails from '../graphing/components/node-details';
 import { UnsavedChangesModal } from '../generic/components/modals/unsaved-changes-modal';
+import { putGraph } from '../api/READ-ONLY-generated-actions/Asset';
 
 export function PremisesHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<AssetDto>();
@@ -20,7 +20,7 @@ export function PremisesHierarchyGraph() {
     nodesRef,
     linksRef,
     AssetCloneFunctionWrapper,
-    putPremisesGraph
+    putGraph
   );
 
   const classList: string[] = [];

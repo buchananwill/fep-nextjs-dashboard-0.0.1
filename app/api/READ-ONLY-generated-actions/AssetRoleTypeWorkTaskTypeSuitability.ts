@@ -1,5 +1,5 @@
 'use server';
-import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
+import { AssetRoleWorkTaskSuitabilityDto } from '../dtos/AssetRoleWorkTaskSuitabilityDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 import { generateTriIntersectionEndpointSet } from '../actions/template-tri-intersection-endpoints';
 
@@ -16,10 +16,10 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  ProviderRoleTypeWorkTaskTypeSuitabilityDto,
+  AssetRoleWorkTaskSuitabilityDto,
   number
 >(
-  '/api/v2/workTaskType/providerRoleTypeSuitabilities'
+  '/api/v2/workTaskTypes/assetRoleSuitabilities'
 );
 
 
@@ -30,9 +30,9 @@ export const {
   getColumnIdListAndLayerId,
   getTriIntersectionTable
 } = generateTriIntersectionEndpointSet<
-  ProviderRoleTypeWorkTaskTypeSuitabilityDto,
+  AssetRoleWorkTaskSuitabilityDto,
   number,
   number,
   number
->('/api/v2/workTaskType/providerRoleTypeSuitabilities');
+>('/api/v2/workTaskTypes/assetRoleSuitabilities');
 
