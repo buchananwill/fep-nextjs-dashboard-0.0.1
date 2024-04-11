@@ -1,6 +1,6 @@
 'use server';
 import { ActionResponsePromise } from '../actionResponse';
-import { API_BASE_URL } from '../../main';
+import { API_BASE_URL, isNotUndefined } from '../../main';
 import {
   getWithoutBody,
   patchEntityList,
@@ -11,6 +11,8 @@ import { ProviderRoleDto } from '../../dtos/ProviderRoleDtoSchema';
 import { NewProviderRoleDto } from '../../dtos/NewProviderRoleDtoSchema-Validation';
 import { WorkTaskCompetencyDto } from '../../dtos/WorkTaskCompetencyDtoSchema';
 import { ProviderRoleTypeWorkTaskTypeSuitabilityDto } from '../../dtos/ProviderRoleTypeWorkTaskTypeSuitabilityDtoSchema';
+import { getAll } from '../../READ-ONLY-generated-actions/ProviderRoleType';
+import { getByTypeIdList } from '../../READ-ONLY-generated-actions/ProviderRole';
 
 const url = `${API_BASE_URL}/providers`;
 
@@ -23,36 +25,20 @@ export async function createTeacher(
   return postEntitiesWithDifferentReturnType(formData, teachersUrl);
 }
 
-export async function updateTeachers(
-  teacherDtoList: ProviderRoleDto[]
-): ActionResponsePromise<ProviderRoleDto[]> {
-  return patchEntityList(teacherDtoList, teachersUrl);
-}
-
-export async function getTeachers(): ActionResponsePromise<ProviderRoleDto[]> {
-  return getWithoutBody(teachersUrl);
-}
-
-export async function patchWorkTaskSuitabilities(
-  updatedSuitabilities: ProviderRoleTypeWorkTaskTypeSuitabilityDto[]
-) {
-  return patchEntityList(
-    updatedSuitabilities,
-    `${url}/workTaskTypeSuitabilityRatings`
-  );
-}
-
-export async function getWorkTaskSuitabilities(
-  partyIdList: number[],
-  workTaskTypeIdList: number[]
-) {
-  return postIntersectionTableRequest<
-    number,
-    number,
-    ProviderRoleTypeWorkTaskTypeSuitabilityDto
-  >({
-    idsForHasIdTypeT: partyIdList,
-    idsForHasIdTypeU: workTaskTypeIdList,
-    url: `${API_BASE_URL}/providers/workTaskCompetencies/intersectionTable`
-  });
+export async function getTeachersV2() {
+  return getAll()
+    .then((r) => {
+      if (isNotUndefined(r.data)) {
+        const teacherType = r.data.find(
+          (roleType) => roleType.name.toLowerCase() === 'teacher'
+        );
+        if (isNotUndefined(teacherType))
+          return getByTypeIdList([teacherType.id]);
+      }
+    })
+    .then((r) => {
+      if (isNotUndefined(r) && isNotUndefined(r.data)) return r.data;
+      else return [];
+    })
+    .catch((e) => console.error(e));
 }

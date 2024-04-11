@@ -1,6 +1,7 @@
 'use server';
-import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { ProviderRoleDto } from '../dtos/ProviderRoleDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
+import { generateWithTypeEndpointSet } from '../actions/template-type-endpoints';
 
 export const {
   getPage,
@@ -15,10 +16,14 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  WorkSeriesSchemaBundleLeanDto,
+  ProviderRoleDto,
   number
 >(
-  '/api/v2/workProjectSeriesSchemas/bundles'
+  '/api/v2/providerRoles'
 );
 
+
+export const { getByTypeIdList } = generateWithTypeEndpointSet<ProviderRoleDto>(
+  '/api/v2/providerRoles'
+);
 

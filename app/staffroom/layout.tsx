@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 import AvailabilityContextProvider from './contexts/availability/availability-context-provider';
-import { TeachersToolCard } from './teachers-tool-card';
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
-import { performApiAction } from '../api/actions/performApiAction';
-import { getTeachers } from '../api/actions/custom/provider-roles';
+import { getTeachersV2 } from '../api/actions/custom/provider-roles';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
 import { getAvailabilities } from '../api/actions/custom/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
@@ -15,7 +13,6 @@ import ProviderRoleStringMapContextProvider from './contexts/providerRoles/provi
 import { convertListToStringMap } from '../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
 import { ProviderRoleColorCodingContextProvider } from './provider-role-color-coding-context-provider';
-import ToolCardContextProvider from '../generic/components/tool-card/tool-card-context-provider';
 
 export default async function StaffroomLayout({
   children
@@ -23,11 +20,9 @@ export default async function StaffroomLayout({
   children: ReactNode;
 }) {
   const teacherList: ProviderRoleDto[] = [];
-  await performApiAction(() => getTeachers()).then((r) => {
-    if (r.data) {
-      const teacherDtos = r.data;
-
-      for (const teacherDto of teacherDtos) {
+  await getTeachersV2().then((r) => {
+    if (Array.isArray(r)) {
+      for (const teacherDto of r) {
         teacherList.push(teacherDto);
       }
     }

@@ -1,5 +1,5 @@
 'use server';
-import { CarouselOrderDto } from '../dtos/CarouselOrderDtoSchema';
+import { PersonDto } from '../dtos/PersonDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
@@ -15,10 +15,10 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  CarouselOrderDto,
-  string
+  PersonDto,
+  number
 >(
-  '/api/v2/carouselGroups/orders'
+  '/api/v2/persons'
 );
 
 

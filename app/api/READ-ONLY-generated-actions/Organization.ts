@@ -6,6 +6,7 @@ import { generateGraphEndpointSet } from '../actions/template-graph-endpoints';
 
 export const {
   getPage,
+  getAll,
   deleteIdList,
   postList,
   putList,

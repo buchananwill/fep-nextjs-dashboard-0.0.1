@@ -6,10 +6,6 @@ import { StringMap } from '../../../contexts/string-map-context/string-map-reduc
 import { PropsWithChildren, useCallback } from 'react';
 import { ProviderRoleTypeWorkTaskTypeSuitabilityListSelectiveContext } from '../../../contexts/selective-context/selective-context-creators';
 import {
-  patchWorkTaskSuitabilities,
-  updateTeachers
-} from '../../../api/actions/custom/provider-roles';
-import {
   ProviderChangesProviderListener,
   ProviderRoleStringMapContext,
   ProviderRoleStringMapDispatchContext,
@@ -17,6 +13,8 @@ import {
 } from './provider-role-string-map-context-creator';
 import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
 import { isNotUndefined } from '../../../api/main';
+import { putList } from '../../../api/READ-ONLY-generated-actions/ProviderRole';
+import { putList as putSuitabilityList } from '../../../api/READ-ONLY-generated-actions/ProviderRoleTypeWorkTaskTypeSuitability';
 
 const Provider = WriteableStringMapContextProvider<ProviderRoleDto>;
 export default function ProviderRoleStringMapContextProvider({
@@ -35,8 +33,8 @@ export default function ProviderRoleStringMapContextProvider({
         })
         .filter(isNotUndefined)
         .reduce((prev, curr) => [...prev, ...curr], []);
-      patchWorkTaskSuitabilities(updateLists);
-      return updateTeachers(changedProviderRoleDtoList);
+      putSuitabilityList(updateLists);
+      return putList(changedProviderRoleDtoList);
     },
     [selectiveContextReadAll]
   );

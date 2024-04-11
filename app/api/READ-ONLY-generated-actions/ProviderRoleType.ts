@@ -1,5 +1,5 @@
 'use server';
-import { WorkTaskTypeDto } from '../dtos/WorkTaskTypeDtoSchema';
+import { ProviderRoleTypeDto } from '../dtos/ProviderRoleTypeDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 import { generateGraphEndpointSet } from '../actions/template-graph-endpoints';
 
@@ -16,19 +16,19 @@ export const {
   getDtoListByBodyList,
   getDtoListByParamList
 } = generateBaseEndpointSet<
-  WorkTaskTypeDto,
+  ProviderRoleTypeDto,
   number
 >(
-  '/api/v2/workTaskTypes'
+  '/api/v2/providerRoles'
 );
 
 
 
 export const { getGraph, getGraphByNodeList, getGraphByRootId, putGraph } =
  generateGraphEndpointSet<
-  WorkTaskTypeDto
+  ProviderRoleTypeDto
 >(
-  '/api/v2/workTaskTypes'
+  '/api/v2/providerRoles/types'
 );
 
 

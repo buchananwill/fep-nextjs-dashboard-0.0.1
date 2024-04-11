@@ -34,6 +34,7 @@ export interface PageRequest {
 
 export interface BaseEndpointSet<T, ID_TYPE extends string | number> {
   getPage: (pageRequest: PageRequest) => ActionResponsePromise<Page<T>>;
+  getAll: () => ActionResponsePromise<T[]>;
   putList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   postList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   deleteIdList: (idDeletionList: ID_TYPE[]) => ActionResponsePromise<ID_TYPE[]>;
@@ -50,6 +51,10 @@ async function getDtoList<T>(
   url: string
 ): ActionResponsePromise<Page<T>> {
   return getWithoutBody(`${url}?page=${page}&size=${pageSize}`);
+}
+
+async function getAll<T>(url: string) {
+  return getWithoutBody<T[]>(`${url}/listAll`);
 }
 async function getDtoListByParamList<T, ID_TYPE extends string | number>(
   idList: ID_TYPE[],
@@ -123,6 +128,7 @@ export function generateBaseEndpointSet<
 
   return {
     getPage: (pageRequest) => getDtoList<T>(pageRequest, generatedUrl),
+    getAll: () => getAll(generatedUrl),
     putList: (dtoList) => putDtoList(dtoList, generatedUrl),
     postList: (dtoList) => postDtoList(dtoList, generatedUrl),
     deleteIdList: (idDeletionList) =>

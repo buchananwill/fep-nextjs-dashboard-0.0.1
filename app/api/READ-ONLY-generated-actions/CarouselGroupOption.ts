@@ -5,6 +5,7 @@ import { generateIntersectionEndpointSet } from '../actions/template-intersectio
 
 export const {
   getPage,
+  getAll,
   deleteIdList,
   postList,
   putList,

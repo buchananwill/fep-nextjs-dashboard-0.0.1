@@ -4,6 +4,7 @@ import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
   getPage,
+  getAll,
   deleteIdList,
   postList,
   putList,

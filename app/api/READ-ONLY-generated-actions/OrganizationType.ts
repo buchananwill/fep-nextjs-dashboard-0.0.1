@@ -1,10 +1,20 @@
 'use server';
 import { OrganizationTypeDto } from '../dtos/OrganizationTypeDtoSchema';
-import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 import { generateGraphEndpointSet } from '../actions/template-graph-endpoints';
+import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
+
+export const { getGraph, getGraphByNodeList, getGraphByRootId, putGraph } =
+ generateGraphEndpointSet<
+  OrganizationTypeDto
+>(
+  '/api/v2/organizations/types'
+);
+
+
 
 export const {
   getPage,
+  getAll,
   deleteIdList,
   postList,
   putList,
@@ -19,15 +29,6 @@ export const {
   number
 >(
   '/api/v2/organizations'
-);
-
-
-
-export const { getGraph, getGraphByNodeList, getGraphByRootId, putGraph } =
- generateGraphEndpointSet<
-  OrganizationTypeDto
->(
-  '/api/v2/organizations/types'
 );
 
 

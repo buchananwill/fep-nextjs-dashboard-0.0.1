@@ -39,7 +39,7 @@ async function getIntersectionTable<T, U, V>(
 export function generateIntersectionEndpointSet<T, U, V>(
   path: string | string[]
 ): IntersectionEndpoints<T, U, V> {
-  const generatedUrl = constructUrl(path, 'graphs');
+  const generatedUrl = constructUrl(path);
 
   return {
     getIntersectionTable: (idsForHasIdTypeT, idsForHasIdTypeU) =>

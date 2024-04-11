@@ -5,20 +5,17 @@ import { convertListToStringMap } from '../../../contexts/string-map-context/con
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
 import { EmptyArray, isNotUndefined } from '../../../api/main';
 import ProviderRoleSkillEditContextProvider from '../../contexts/providerRoles/provider-role-skill-edit-context-provider';
-import {
-  getTeachers,
-  getWorkTaskSuitabilities
-} from '../../../api/actions/custom/provider-roles';
 import { getWorkTaskTypeIdsAlphabetical } from '../../../premises/classroom-suitability/get-work-task-type-ids-alphabetical';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
 import { parseTen } from '../../../api/date-and-time';
-import WorkTaskCompetencyStringMapContextProvider, {
-  WorkTaskCompetencyListKeyAccessor
-} from './work-task-competency-context-provider';
+import WorkTaskCompetencyStringMapContextProvider from './work-task-competency-context-provider';
 import { TeachersToolCard } from '../../teachers-tool-card';
 import ToolCardContextProvider from '../../../generic/components/tool-card/tool-card-context-provider';
 import React from 'react';
 import ProviderRoleStringMapContextProvider from '../../contexts/providerRoles/provider-role-string-map-context-provider';
+import { getAll } from '../../../api/READ-ONLY-generated-actions/ProviderRoleType';
+import { getByTypeIdList } from '../../../api/READ-ONLY-generated-actions/ProviderRole';
+import { getTriIntersectionTable } from '../../../api/READ-ONLY-generated-actions/ProviderRoleTypeWorkTaskTypeSuitability';
 
 export default async function SkillsPage({
   searchParams
@@ -29,7 +26,20 @@ export default async function SkillsPage({
     knowledgeLevelOrdinal?: string;
   };
 }) {
-  const { data: providerRoles } = await getTeachers();
+  const teacherRoleType = await getAll().then((r) => {
+    if (isNotUndefined(r.data)) {
+      return r.data.find(
+        (roleType) => roleType.name.toLowerCase() === 'teacher'
+      );
+    }
+  });
+
+  if (!isNotUndefined(teacherRoleType)) {
+    return <DataNotFoundCard>Teacher role not found!</DataNotFoundCard>;
+  }
+  const actionResponse = await getByTypeIdList([teacherRoleType.id]);
+
+  const providerRoles = actionResponse.data;
 
   if (!isNotUndefined(providerRoles))
     return <DataNotFoundCard>No Teachers!</DataNotFoundCard>;
@@ -49,11 +59,14 @@ export default async function SkillsPage({
   const workTaskTypeIdsAlphabetical = getWorkTaskTypeIdsAlphabetical(
     workTaskTypeStringMap
   );
-  const providerRoleIds = Object.keys(providerRoleStringMap).map(parseTen);
+  const partyIdList = Object.values(providerRoleStringMap).map(
+    (suitability) => suitability.partyId
+  );
 
-  const { data: workTaskCompetencies } = await getWorkTaskSuitabilities(
-    providerRoleIds,
-    workTaskTypeIdsAlphabetical
+  const { data: workTaskCompetencies } = await getTriIntersectionTable(
+    partyIdList,
+    workTaskTypeIdsAlphabetical,
+    teacherRoleType.id
   );
 
   if (!isNotUndefined(workTaskCompetencies)) {
