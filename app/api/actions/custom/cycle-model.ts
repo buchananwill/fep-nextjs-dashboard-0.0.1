@@ -36,8 +36,3 @@ export async function getFormattedPeriodsInCycle() {
   );
   return allPeriodsInCycle;
 }
-
-export function getCycleModel() {
-  const url = `${API_BASE_URL}/cycleModel/1`;
-  return getWithoutBody<CycleDto>(url);
-}

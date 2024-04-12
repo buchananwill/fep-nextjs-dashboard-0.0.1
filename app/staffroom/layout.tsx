@@ -5,7 +5,6 @@ import { getTeachersV2 } from '../api/actions/custom/provider-roles';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
 import { getAvailabilities } from '../api/actions/custom/availability';
 import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
-import { getCycleModel } from '../api/actions/custom/cycle-model';
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../generic/components/calendar/range/calendar-range-context-provider';
@@ -13,6 +12,9 @@ import ProviderRoleStringMapContextProvider from './contexts/providerRoles/provi
 import { convertListToStringMap } from '../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../premises/classroom-suitability/rating-table-accessor-functions';
 import { ProviderRoleColorCodingContextProvider } from './provider-role-color-coding-context-provider';
+import { getAll } from '../api/READ-ONLY-generated-actions/CycleSubspan';
+import { getOne } from '../api/READ-ONLY-generated-actions/Cycle';
+import { isNotUndefined } from '../api/main';
 
 export default async function StaffroomLayout({
   children
@@ -30,10 +32,13 @@ export default async function StaffroomLayout({
 
   let availabilityUnits: CycleSubspanDto[] = [];
   let cycleModel: CycleDto = CycleModelMock;
-  const { data } = await getCycleModel();
-  if (data !== undefined) {
-    availabilityUnits = data.cycleSubspans;
-    cycleModel = data;
+  const { data } = await getAll();
+  const { data: cycleOptional } = await getOne(1);
+  if (isNotUndefined(data) && isNotUndefined(cycleOptional)) {
+    availabilityUnits = data.filter(
+      (cycleSubspanDto) => cycleSubspanDto.parentCycleId === 1
+    );
+    cycleModel = cycleOptional;
   }
 
   const availabilityMap = new Map<number, ProviderAvailabilityDto[]>();

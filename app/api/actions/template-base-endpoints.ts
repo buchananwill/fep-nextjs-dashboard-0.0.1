@@ -38,7 +38,7 @@ export interface BaseEndpointSet<T, ID_TYPE extends string | number> {
   putList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   postList: (dtoList: T[]) => ActionResponsePromise<T[]>;
   deleteIdList: (idDeletionList: ID_TYPE[]) => ActionResponsePromise<ID_TYPE[]>;
-  getOne: (id: ID_TYPE) => ActionResponsePromise<Page<T>>;
+  getOne: (id: ID_TYPE) => ActionResponsePromise<T>;
   putOne: (dto: T) => ActionResponsePromise<T>;
   postOne: (dto: T) => ActionResponsePromise<T>;
   deleteOne: (id: ID_TYPE) => ActionResponsePromise<ID_TYPE>;

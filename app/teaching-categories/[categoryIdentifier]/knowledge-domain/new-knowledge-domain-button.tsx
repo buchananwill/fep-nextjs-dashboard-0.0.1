@@ -14,16 +14,15 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../../selective-context/components/typed/selective-context-manager-boolean';
-import { postKnowledgeDomain } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { TextInputUniqueNonEmpty } from '../knowledge-level/new-knowledge-level-button';
 import { PendingOverlay } from '../../../generic/components/overlays/pending-overlay';
-import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
 import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
 import { Button, ButtonProps } from '@nextui-org/button';
+import { postOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeDomain';
 
 const NewKnowledgeDomainContextKey = 'new-knowledge-domain-name';
 
@@ -111,7 +110,7 @@ export function NewKnowledgeDomainButton({
         knowledgeDomainDescriptor: serviceCategory.knowledgeDomainDescriptor
       };
       startTransition(() => {
-        postKnowledgeDomain(kdToPost)
+        postOne(kdToPost)
           .then(() => {
             appRouterInstance.refresh();
           })

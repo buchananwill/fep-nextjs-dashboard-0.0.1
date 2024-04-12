@@ -12,7 +12,6 @@ import {
   useSelectiveContextControllerBoolean,
   useSelectiveContextDispatchBoolean
 } from '../../../selective-context/components/typed/selective-context-manager-boolean';
-import { postKnowledgeLevel } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { useTransition } from 'react';
@@ -23,6 +22,7 @@ import {
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
 import { Button } from '@nextui-org/button';
+import { postOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeLevel';
 
 const NewKnowledgeLevelContextKey = 'new-knowledge-Level-name';
 
@@ -135,7 +135,7 @@ export function NewKnowledgeLevelButton({
         knowledgeLevelDescriptor: serviceCategory.knowledgeLevelDescriptor,
         levelOrdinal: NaN
       };
-      postKnowledgeLevel(kdToPost)
+      postOne(kdToPost)
         .then(() => {
           appRouterInstance.refresh();
         })

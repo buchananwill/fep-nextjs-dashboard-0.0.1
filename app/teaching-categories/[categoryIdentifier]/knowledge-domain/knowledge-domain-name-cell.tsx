@@ -4,12 +4,12 @@ import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
 import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { patchKnowledgeDomain } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 import { Button } from '@nextui-org/button';
+import { putOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeDomain';
 
 export function KnowledgeDomainNameCell({
   kd,
@@ -31,7 +31,7 @@ export function KnowledgeDomainNameCell({
 
   const handleRenameKnowledgeDomain = () => {
     const update = { ...kd, name: currentState };
-    patchKnowledgeDomain(update).then((r) => {
+    putOne(update).then((r) => {
       router.refresh();
       closeModal();
     });

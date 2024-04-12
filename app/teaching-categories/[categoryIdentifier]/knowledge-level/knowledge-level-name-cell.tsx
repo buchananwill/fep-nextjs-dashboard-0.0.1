@@ -3,7 +3,6 @@
 import { useSelectiveContextControllerString } from '../../../selective-context/components/typed/selective-context-manager-string';
 
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { patchKnowledgeLevels } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { RenameModal } from '../../../generic/components/modals/rename-modal';
 import { Button } from '@nextui-org/button';
+import { putOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeLevel';
 
 export function useValidationUniqueNonEmpty(
   proposedName: string,
@@ -50,7 +50,7 @@ export function KnowledgeLevelNameCell({
 
   const handleRenameKnowledgeLevel = () => {
     const update = { ...kl, name: currentState };
-    patchKnowledgeLevels(serviceCategory, [update]).then(() => {
+    putOne(update).then(() => {
       router.refresh();
       closeModal();
     });

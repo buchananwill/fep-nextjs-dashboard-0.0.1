@@ -1,9 +1,9 @@
 'use client';
 
-import { deleteKnowledgeLevel } from '../../../api/actions/custom/service-categories';
 import { useRouter } from 'next/navigation';
 import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
 import { TwoStageClick } from '../../../generic/components/buttons/two-stage-click';
+import { deleteOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeLevel';
 
 export function KnowledgeLevelDependencies({ kl }: { kl: KnowledgeLevelDto }) {
   const appRouterInstance = useRouter();
@@ -22,7 +22,7 @@ export function KnowledgeLevelDependencies({ kl }: { kl: KnowledgeLevelDto }) {
   ) : (
     <TwoStageClick
       onClick={() => {
-        deleteKnowledgeLevel(kl).then(() => appRouterInstance.refresh());
+        deleteOne(kl.id).then(() => appRouterInstance.refresh());
       }}
       standardAppearance={'light'}
     >
