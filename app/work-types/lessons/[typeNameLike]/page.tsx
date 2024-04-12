@@ -1,7 +1,6 @@
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { GraphDto } from '../../../api/zod-mods';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import { getWorkTaskTypeGraph } from '../../../api/actions/custom/work-task-types';
 import LessonTypeGraphPage from '../lesson-type-graph-page';
 import {
   getAllKnowledgeDomains,
@@ -10,6 +9,7 @@ import {
 import ServiceCategoryContextInit from '../service-category-context-init';
 import { EmptyArray } from '../../../api/main';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
+import { getGraph } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,11 +19,9 @@ export default async function LessonTypesPage({
   params: { typeNameLike: string };
   searchParams: { typeNameLike: string };
 }) {
-  const paramOrFallBack =
-    typeNameLike === 'All' || undefined ? '' : typeNameLike;
   const lessonTypesResponseGraph: ActionResponsePromise<
     GraphDto<WorkTaskTypeDto>
-  > = getWorkTaskTypeGraph(paramOrFallBack);
+  > = getGraph();
 
   const { data: kLevels } = await getAllKnowledgeLevels();
 

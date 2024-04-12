@@ -23,7 +23,8 @@ export const {
   putOne,
   deleteOne,
   getDtoListByBodyList,
-  getDtoListByParamList
+  getDtoListByParamList,
+  getDtoListByExampleList
 } = generateBaseEndpointSet<
   AssetTypeDto,
   number

@@ -5,6 +5,7 @@ import {
   getDtoListByIds,
   getWithoutBody,
   postEntities,
+  postEntitiesWithDifferentReturnType,
   postEntity,
   putEntities,
   putEntity
@@ -44,6 +45,9 @@ export interface BaseEndpointSet<T, ID_TYPE extends string | number> {
   deleteOne: (id: ID_TYPE) => ActionResponsePromise<ID_TYPE>;
   getDtoListByParamList: (idList: ID_TYPE[]) => ActionResponsePromise<T[]>;
   getDtoListByBodyList: (idList: ID_TYPE[]) => ActionResponsePromise<T[]>;
+  getDtoListByExampleList: (
+    exampleList: Partial<T>[]
+  ) => ActionResponsePromise<T[]>;
 }
 
 async function getDtoList<T>(
@@ -68,6 +72,15 @@ async function getDtoListByBodyList<T, ID_TYPE extends string | number>(
   url: string
 ): ActionResponsePromise<T[]> {
   return getDtoListByIds<ID_TYPE, T>(idList, `${url}/listById`);
+}
+async function getDtoListByExampleList<T>(
+  exampleList: Partial<T>[],
+  url: string
+): ActionResponsePromise<T[]> {
+  return postEntitiesWithDifferentReturnType<Partial<T>[], T[]>(
+    exampleList,
+    `${url}/listByExampleList`
+  );
 }
 
 async function putDtoList<T>(
@@ -140,6 +153,8 @@ export function generateBaseEndpointSet<
     getDtoListByParamList: (idList) =>
       getDtoListByParamList<T, ID_TYPE>(idList, generatedUrl),
     getDtoListByBodyList: (idList) =>
-      getDtoListByBodyList<T, ID_TYPE>(idList, generatedUrl)
+      getDtoListByBodyList<T, ID_TYPE>(idList, generatedUrl),
+    getDtoListByExampleList: (exampleList) =>
+      getDtoListByExampleList(exampleList, generatedUrl)
   };
 }

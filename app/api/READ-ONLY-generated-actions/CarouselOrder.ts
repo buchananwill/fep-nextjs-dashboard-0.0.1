@@ -13,7 +13,8 @@ export const {
   putOne,
   deleteOne,
   getDtoListByBodyList,
-  getDtoListByParamList
+  getDtoListByParamList,
+  getDtoListByExampleList
 } = generateBaseEndpointSet<
   CarouselOrderDto,
   string

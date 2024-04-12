@@ -6,7 +6,6 @@ import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundl
 
 import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
-import { getWorkTaskTypesByWorkProjectSeriesSchemaIdList } from '../../../api/actions/custom/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
@@ -17,6 +16,7 @@ import { parseTen } from '../../../api/date-and-time';
 import { isNotUndefined } from '../../../api/main';
 import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 import { getDtoListByBodyList } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
+import { getDtoListByBodyList as getWorkTaskTypesByIdList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 import {
   getByTypeIdList,
   getGraphByNodeList
@@ -46,6 +46,9 @@ export default async function Page({
 
   const allSchemasInBundles = await getDtoListByBodyList(schemaIdListFromSet);
 
+  const workTaskTypeIdList =
+    allSchemasInBundles.data?.map((schema) => schema.workTaskType.id) || [];
+
   const typeId = parseTen(yearGroup);
   const bundleDeliveries = await getBundleAssignmentsByOrgType(typeId);
   bundleDeliveries.data
@@ -60,8 +63,7 @@ export default async function Page({
   // await getOrganizationGraph();
   // await getOrganizationGraphByRootId(1446);
 
-  const taskTypesResponse =
-    await getWorkTaskTypesByWorkProjectSeriesSchemaIdList(schemaIdListFromSet);
+  const taskTypesResponse = await getWorkTaskTypesByIdList(workTaskTypeIdList);
   const workTaskTypeDtos = taskTypesResponse.data;
 
   const { data: dataGraph } = actionResponseOrganizationGraph;

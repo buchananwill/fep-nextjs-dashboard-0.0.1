@@ -5,9 +5,10 @@ import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
-import { getWorkTaskTypes } from '../../../../api/actions/custom/work-task-types';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
 import { getBundlesBySchemaIdList } from '../../../../api/actions/custom/work-series-schema-bundles';
+import { getDtoListByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkTaskType';
+import { parseTen } from '../../../../api/date-and-time';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -44,9 +45,11 @@ export default async function Page({
 
   const actionResponse = await getBundlesBySchemaIdList(schemaIdList);
 
-  const taskTypesResponse = await getWorkTaskTypes({
-    knowledgeLevelOrdinal: yearGroup
-  });
+  const taskTypesResponse = await getDtoListByExampleList([
+    {
+      knowledgeLevelLevelOrdinal: parseTen(yearGroup)
+    }
+  ]);
 
   const workTaskTypeDtos = taskTypesResponse.data;
   if (actionResponse.data === undefined || workTaskTypeDtos === undefined) {

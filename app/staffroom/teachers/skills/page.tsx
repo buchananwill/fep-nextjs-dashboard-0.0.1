@@ -1,5 +1,4 @@
 import { WorkTaskTypeContextProvider } from '../../../curriculum/delivery-models/contexts/work-task-type-context-provider';
-import { getWorkTaskTypes } from '../../../api/actions/custom/work-task-types';
 import SkillTableWrapper from './skill-table-wrapper';
 import { convertListToStringMap } from '../../../contexts/string-map-context/convert-list-to-string-map';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';
@@ -7,7 +6,6 @@ import { EmptyArray, isNotUndefined } from '../../../api/main';
 import ProviderRoleSkillEditContextProvider from '../../contexts/providerRoles/provider-role-skill-edit-context-provider';
 import { getWorkTaskTypeIdsAlphabetical } from '../../../premises/classroom-suitability/get-work-task-type-ids-alphabetical';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
-import { parseTen } from '../../../api/date-and-time';
 import WorkTaskCompetencyStringMapContextProvider from './work-task-competency-context-provider';
 import { TeachersToolCard } from '../../teachers-tool-card';
 import ToolCardContextProvider from '../../../generic/components/tool-card/tool-card-context-provider';
@@ -16,6 +14,8 @@ import ProviderRoleStringMapContextProvider from '../../contexts/providerRoles/p
 import { getAll } from '../../../api/READ-ONLY-generated-actions/ProviderRoleType';
 import { getByTypeIdList } from '../../../api/READ-ONLY-generated-actions/ProviderRole';
 import { getTriIntersectionTable } from '../../../api/READ-ONLY-generated-actions/ProviderRoleTypeWorkTaskTypeSuitability';
+import { createWorkTaskTypeExample } from '../../../premises/classroom-suitability/createWorkTaskTypeExample';
+import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 
 export default async function SkillsPage({
   searchParams
@@ -34,6 +34,12 @@ export default async function SkillsPage({
     }
   });
 
+  const workTaskTypeExample = createWorkTaskTypeExample(
+    searchParams.serviceCategoryDto,
+    searchParams.knowledgeDomain,
+    searchParams.knowledgeLevelOrdinal
+  );
+
   if (!isNotUndefined(teacherRoleType)) {
     return <DataNotFoundCard>Teacher role not found!</DataNotFoundCard>;
   }
@@ -44,7 +50,9 @@ export default async function SkillsPage({
   if (!isNotUndefined(providerRoles))
     return <DataNotFoundCard>No Teachers!</DataNotFoundCard>;
 
-  const { data: workTaskTypeDtos } = await getWorkTaskTypes(searchParams);
+  const { data: workTaskTypeDtos } = await getDtoListByExampleList([
+    workTaskTypeExample
+  ]);
 
   const workTaskTypeStringMap = convertListToStringMap(
     workTaskTypeDtos || EmptyArray,

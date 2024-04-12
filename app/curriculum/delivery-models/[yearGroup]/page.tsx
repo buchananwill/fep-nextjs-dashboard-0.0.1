@@ -8,10 +8,11 @@ import {
 } from '../../../api/utils';
 import { CurriculumDeliveryModels } from '../curriculum-delivery-models';
 import { UnsavedCurriculumModelChanges } from '../contexts/curriculum-models-context-provider';
-import { getWorkTaskTypes } from '../../../api/actions/custom/work-task-types';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { WorkTaskTypeInit } from './workTaskTypeInit';
+import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
+import { parseTen } from '../../../api/date-and-time';
 
 export default async function Page({
   params: { yearGroup },
@@ -33,9 +34,11 @@ export default async function Page({
       parseInt(yearGroup)
     );
 
-  const taskTypesResponse = await getWorkTaskTypes({
-    knowledgeLevelOrdinal: yearGroup
-  });
+  const taskTypesResponse = await getDtoListByExampleList([
+    {
+      knowledgeLevelLevelOrdinal: parseTen(yearGroup)
+    }
+  ]);
 
   const { status, data, message } = curriculumDeliveryModelSchemas;
   const { data: taskTypeList } = taskTypesResponse;

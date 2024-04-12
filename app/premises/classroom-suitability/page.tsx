@@ -3,7 +3,6 @@ import { GraphDto } from '../../api/zod-mods';
 import { AssetDto } from '../../api/dtos/AssetDtoSchema';
 import { Card } from '@nextui-org/card';
 import { AssetSuitabilityTableWrapper } from './asset-suitability-table-wrapper';
-import { getWorkTaskTypes } from '../../api/actions/custom/work-task-types';
 import { CLASSROOM_ROLE_TYPE_ID, isNotUndefined } from '../../api/main';
 import { WorkTaskTypeContextProvider } from '../../curriculum/delivery-models/contexts/work-task-type-context-provider';
 import { convertListToStringMap } from '../../contexts/string-map-context/convert-list-to-string-map';
@@ -28,9 +27,16 @@ import {
   getGraphByRootId
 } from '../../api/READ-ONLY-generated-actions/Asset';
 import { getTriIntersectionTable } from '../../api/READ-ONLY-generated-actions/AssetRoleTypeWorkTaskTypeSuitability';
+import { getDtoListByExampleList } from '../../api/READ-ONLY-generated-actions/WorkTaskType';
+import { createWorkTaskTypeExample } from './createWorkTaskTypeExample';
 
 export default async function Page({
-  searchParams: { rootId, ...workTaskParams }
+  searchParams: {
+    rootId,
+    serviceCategoryDto,
+    knowledgeDomain,
+    knowledgeLevelOrdinal
+  }
 }: {
   searchParams: {
     rootId?: string;
@@ -46,8 +52,15 @@ export default async function Page({
     premisesPromises = getGraph();
   }
   const actionResponse = await premisesPromises;
+  const workTaskTypeExample = createWorkTaskTypeExample(
+    serviceCategoryDto,
+    knowledgeDomain,
+    knowledgeLevelOrdinal
+  );
 
-  const actionResponseWorkTaskTypes = await getWorkTaskTypes(workTaskParams);
+  const actionResponseWorkTaskTypes = await getDtoListByExampleList([
+    workTaskTypeExample
+  ]);
 
   if (actionResponse.status != 200 || actionResponse.data === undefined) {
     console.log('Not implemented', actionResponse);
