@@ -12,15 +12,14 @@ import { useSelectiveContextControllerBoolean } from '../../../selective-context
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 import { Text } from '@tremor/react';
-import { mapToPartyIdBundleIdRecords } from '../functions/map-to-party-id-bundle-id-records';
 import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
 import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
-import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
 import { useBundleItemsContext } from './use-bundle-Items-context';
 import { putList } from '../../../api/READ-ONLY-generated-actions/WorkSeriesBundleAssignment';
+import { getPayloadArray } from '../use-editing-context-dependency';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -43,7 +42,7 @@ export function BundleAssignmentsProvider({
   bundleAssignments,
   children
 }: {
-  bundleAssignments: StringMap<string>;
+  bundleAssignments: StringMap<WorkSeriesBundleAssignmentDto>;
 } & PropsWithChildren) {
   const [bundleAssignmentState, dispatch] =
     useStringMapReducer(bundleAssignments);
@@ -62,21 +61,12 @@ export function BundleAssignmentsProvider({
     const curriedMapper = (numberTuple: [number, number]) => {
       return applyStringKeysToIntValues(['longOne', 'longTwo'], numberTuple);
     };
-    const mappedAssignments = Object.entries(bundleAssignmentState)
-      .map(parseStringStringToIntInt)
-      .map(
-        ([orgId, bundleId]) =>
-          ({
-            organizationId: orgId,
-            workSeriesSchemaBundle: bundleItemsMap[bundleId.toString()],
-            id: TransientIdOffset + orgId
-          }) as WorkSeriesBundleAssignmentDto
-      );
-    // const apiPayload = mappedBundles as LongLongTuple[];
+    const mappedAssignments = Object.values(bundleAssignmentState);
+
     putList(mappedAssignments).then((r) => {
       if (r.status < 300 && r.data) {
-        const { initialPayload: payloadArray } = mapToPartyIdBundleIdRecords(
-          r.data
+        const payloadArray = getPayloadArray(r.data, (assignmentDto) =>
+          assignmentDto.organizationId.toString()
         );
         dispatch({ type: 'updateAll', payload: payloadArray });
         dispatchUpdate({

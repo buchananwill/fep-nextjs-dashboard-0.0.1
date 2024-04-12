@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { createStringMapContext } from '../../../contexts/string-map-context/context-creator';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
 
 export const {
   dispatchContext: BundleAssignmentsContextDispatch,
   mapContext: BundleAssignmentsContext
-} = createStringMapContext<string>();
+} = createStringMapContext<WorkSeriesBundleAssignmentDto>();
 
 export function useBundleAssignmentsContext() {
   const workSeriesSchemaBundleLeanDtoStringMap = useContext(

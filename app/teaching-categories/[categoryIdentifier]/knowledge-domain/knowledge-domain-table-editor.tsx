@@ -1,4 +1,3 @@
-import { getKnowledgeDomains } from '../../../api/actions/custom/service-categories';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeDomainNameCell } from './knowledge-domain-name-cell';
 import { NewKnowledgeDomainButton } from './new-knowledge-domain-button';
@@ -13,6 +12,7 @@ import {
   KnowledgeCategoryTableRow
 } from '../components/knowledge-category-table';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
+import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/KnowledgeDomain';
 
 export function getNameList<T extends HasNameDto>(namedDtoArray: T[]) {
   return namedDtoArray.map((dto) => dto.name);
@@ -23,9 +23,9 @@ export default async function KnowledgeDomainTableEditor({
 }: {
   category: ServiceCategoryDto;
 }) {
-  const { data: knowledgeDomains } = await getKnowledgeDomains(
-    category.id.toString()
-  );
+  const { data: knowledgeDomains } = await getDtoListByExampleList([
+    { serviceCategoryId: category.id }
+  ]);
 
   if (knowledgeDomains === undefined) {
     return (

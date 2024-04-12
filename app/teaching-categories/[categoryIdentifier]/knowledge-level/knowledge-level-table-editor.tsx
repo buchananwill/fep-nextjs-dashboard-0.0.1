@@ -1,4 +1,3 @@
-import { getKnowledgeLevels } from '../../../api/actions/custom/service-categories';
 import { ServiceCategoryDto } from '../../../api/dtos/ServiceCategoryDtoSchema';
 import { KnowledgeLevelNameCell } from './knowledge-level-name-cell';
 import { NewKnowledgeLevelButton } from './new-knowledge-level-button';
@@ -13,15 +12,16 @@ import {
   KnowledgeCategoryTableRow
 } from '../components/knowledge-category-table';
 import { DataNotFoundCard } from '../../../timetables/students/[schedule]/data-not-found-card';
+import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/KnowledgeLevel';
 
 export default async function KnowledgeLevelTableEditor({
   category
 }: {
   category: ServiceCategoryDto;
 }) {
-  const { data: knowledgeLevels } = await getKnowledgeLevels(
-    category.id.toString()
-  );
+  const { data: knowledgeLevels } = await getDtoListByExampleList([
+    { serviceCategoryId: category.id }
+  ]);
 
   if (knowledgeLevels === undefined) {
     return (

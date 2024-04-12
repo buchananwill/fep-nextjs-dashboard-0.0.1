@@ -1,13 +1,13 @@
 import Navbar from './navbar';
 import { getServerSession } from 'next-auth/next';
-
-import {
-  getKnowledgeLevels,
-  getServiceCategoryByIdentifier
-} from '../api/actions/custom/service-categories';
 import { KnowledgeLevelDto } from '../api/dtos/KnowledgeLevelDtoSchema';
 import { fetchScheduleIds } from '../api/actions/custom/timetables';
 import { SECONDARY_EDUCATION_CATEGORY_ID } from '../api/main';
+import { getDtoListByExampleList } from '../api/READ-ONLY-generated-actions/KnowledgeLevel';
+import {
+  getDtoListByExampleList as getServiceCategoryListByExampleList,
+  getOne
+} from '../api/READ-ONLY-generated-actions/ServiceCategory';
 
 export default async function Nav() {
   const session = await getServerSession();
@@ -18,18 +18,16 @@ export default async function Nav() {
       ? scheduleIds[scheduleIds.length - 1]
       : NaN;
 
-  const serviceCategoryResponse = await getServiceCategoryByIdentifier(
-    SECONDARY_EDUCATION_CATEGORY_ID.toString()
-  );
+  const { data: sCategory } = await getOne(SECONDARY_EDUCATION_CATEGORY_ID);
 
-  const knowledgeLevelResponse = await getKnowledgeLevels(
-    SECONDARY_EDUCATION_CATEGORY_ID.toString()
-  );
+  const knowledgeLevelResponse = await getDtoListByExampleList([
+    {
+      serviceCategoryId: SECONDARY_EDUCATION_CATEGORY_ID
+    }
+  ]);
 
   const knowledgeLevels: KnowledgeLevelDto[] =
     knowledgeLevelResponse.data || [];
-
-  const sCategory = serviceCategoryResponse.data;
 
   return (
     <Navbar

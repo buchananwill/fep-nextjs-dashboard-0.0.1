@@ -23,6 +23,8 @@ import _ from 'lodash';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { putGraph } from '../../../api/READ-ONLY-generated-actions/Organization';
+import { getPayloadArray } from '../../../curriculum/delivery-models/use-editing-context-dependency';
+import { isNotUndefined } from '../../../api/main';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
@@ -75,9 +77,11 @@ export default function CurriculumDeliveryGraph({
     if (found) return found;
   });
 
-  const { initialPayload } = useMemo(() => {
-    return mapToPartyIdBundleIdRecords(bundles);
-  }, [bundles]);
+  const definedBundles = bundlesInNodeOrder.filter(isNotUndefined);
+
+  const initialPayload = getPayloadArray(definedBundles, (assignment) =>
+    assignment.organizationId.toString()
+  );
 
   useEffect(() => {
     dispatch({ type: 'updateAll', payload: initialPayload });
