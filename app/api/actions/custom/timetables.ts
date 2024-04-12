@@ -1,8 +1,8 @@
 'use server';
-import { API_ACADEMIC_URL } from '../../main';
+import { API_ACADEMIC_URL, API_BASE_URL } from '../../main';
 import { LessonCycleDTO } from '../../dto-interfaces';
-import { ActionResponsePromise } from '../actionResponse';
-import { getWithoutBody } from '../template-actions';
+import { ActionResponsePromise, successResponse } from '../actionResponse';
+import { getWithoutBody, putEntities } from '../template-actions';
 
 export const fetchScheduleIds = async (): ActionResponsePromise<number[]> => {
   const fetchURL = `${API_ACADEMIC_URL}/get-list-of-schedule-ids`;
@@ -17,23 +17,14 @@ export const fetchAllLessonCycles = async (
   return getWithoutBody(fetchURL);
 };
 
+// HACKED TO ALLOW REMOVAL OF OLD CODE. NOT FINISHED.
 export async function swapPeriods(
   periodId: number,
   scheduleId: number
-): Promise<LessonCycleDTO[]> {
-  const response = await fetch('api', {
-    method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify([periodId, periodId, scheduleId])
-  }); //PUT(periodId, periodId, scheduleId);
+): ActionResponsePromise<LessonCycleDTO[]> {
+  const fetchURL = `${API_BASE_URL}/swap-periods-in-schedule`;
 
-  return await response.json();
+  putEntities([periodId, periodId, scheduleId], fetchURL);
+
+  return successResponse([]);
 }

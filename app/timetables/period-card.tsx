@@ -86,7 +86,9 @@ export const PeriodCardTransformer: CellDataTransformer<PeriodDTO> = ({
     });
     const updatedDtoList = await swapPeriods(id, scheduleId);
 
-    const lessonCycles = updatedDtoList.map((dto) => convertDtoToState(dto));
+    const lessonCycles = updatedDtoList.data?.map((dto) =>
+      convertDtoToState(dto)
+    );
 
     dispatch({
       type: 'updateLessonCycles',
