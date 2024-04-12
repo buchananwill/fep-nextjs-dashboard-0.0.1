@@ -6,9 +6,11 @@ import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-
 import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
-import { getBundlesBySchemaIdList } from '../../../../api/actions/custom/work-series-schema-bundles';
+
 import { getDtoListByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkTaskType';
+import { getDtoListByExampleList as getBundlesByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 import { parseTen } from '../../../../api/date-and-time';
+import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -43,7 +45,11 @@ export default async function Page({
     {} as { [key: string]: string }
   );
 
-  const actionResponse = await getBundlesBySchemaIdList(schemaIdList);
+  const exampleBundle: Partial<WorkSeriesSchemaBundleLeanDto> = {
+    workProjectSeriesSchemaIds: schemaIdList
+  };
+
+  const actionResponse = await getBundlesByExampleList([exampleBundle]);
 
   const taskTypesResponse = await getDtoListByExampleList([
     {

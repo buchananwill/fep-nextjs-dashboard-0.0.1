@@ -17,8 +17,10 @@ import {
   ConfirmActionModal,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
-import { LongLongTuple } from '../../../api/dtos/LongLongTupleSchema';
-import { postBundleDeliveries } from '../../../api/actions/custom/work-series-bundle-assignments';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
+import { TransientIdOffset } from '../../../graphing/editing/functions/graph-edits';
+import { useBundleItemsContext } from './use-bundle-Items-context';
+import { putList } from '../../../api/READ-ONLY-generated-actions/WorkSeriesBundleAssignment';
 
 export function parseStringStringToIntInt(
   entry: [string, string]
@@ -54,17 +56,24 @@ export function BundleAssignmentsProvider({
     );
 
   const { openModal, isOpen, closeModal } = useModal();
+  const { bundleItemsMap } = useBundleItemsContext();
 
   const handleConfirm = () => {
     const curriedMapper = (numberTuple: [number, number]) => {
       return applyStringKeysToIntValues(['longOne', 'longTwo'], numberTuple);
     };
-    const mappedBundles = Object.entries(bundleAssignmentState)
+    const mappedAssignments = Object.entries(bundleAssignmentState)
       .map(parseStringStringToIntInt)
-      .map(curriedMapper);
-    const apiPayload = mappedBundles as LongLongTuple[];
-
-    postBundleDeliveries(apiPayload).then((r) => {
+      .map(
+        ([orgId, bundleId]) =>
+          ({
+            organizationId: orgId,
+            workSeriesSchemaBundle: bundleItemsMap[bundleId.toString()],
+            id: TransientIdOffset + orgId
+          }) as WorkSeriesBundleAssignmentDto
+      );
+    // const apiPayload = mappedBundles as LongLongTuple[];
+    putList(mappedAssignments).then((r) => {
       if (r.status < 300 && r.data) {
         const { initialPayload: payloadArray } = mapToPartyIdBundleIdRecords(
           r.data

@@ -11,7 +11,6 @@ import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
 } from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
-import { getBundleAssignmentsByOrgType } from '../../../api/actions/custom/work-series-bundle-assignments';
 import { parseTen } from '../../../api/date-and-time';
 import { isNotUndefined } from '../../../api/main';
 import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
@@ -21,6 +20,8 @@ import {
   getByTypeIdList,
   getGraphByNodeList
 } from '../../../api/READ-ONLY-generated-actions/Organization';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
+import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/WorkSeriesBundleAssignment';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -31,6 +32,7 @@ export default async function Page({
     yearGroup: string;
   };
 }) {
+  const typeId = parseTen(yearGroup);
   const actionResponseAllBundles = await getPage({ pageSize: 100 });
 
   const schemaIdList = actionResponseAllBundles.data?.content
@@ -45,20 +47,26 @@ export default async function Page({
     : ([] as string[]);
 
   const allSchemasInBundles = await getDtoListByBodyList(schemaIdListFromSet);
+  const actionResponse = await getByTypeIdList([typeId]);
+  const orgIdList = actionResponse.data?.map((org) => org.id) || [];
 
   const workTaskTypeIdList =
     allSchemasInBundles.data?.map((schema) => schema.workTaskType.id) || [];
 
-  const typeId = parseTen(yearGroup);
-  const bundleDeliveries = await getBundleAssignmentsByOrgType(typeId);
+  const bundleAssignmentExampleList = orgIdList.map(
+    (id) => ({ organizationId: id }) as Partial<WorkSeriesBundleAssignmentDto>
+  );
+
+  const bundleDeliveries = await getDtoListByExampleList(
+    bundleAssignmentExampleList
+  );
   bundleDeliveries.data
     ?.map((data) => data.workSeriesSchemaBundle.workProjectSeriesSchemaIds)
     .reduce((previousValue, curr) => {
       curr.forEach((id) => previousValue.add(id));
       return previousValue;
     }, new Set<string>());
-  const actionResponse = await getByTypeIdList([typeId]);
-  const orgIdList = actionResponse.data?.map((org) => org.id) || [];
+
   const actionResponseOrganizationGraph = await getGraphByNodeList(orgIdList);
   // await getOrganizationGraph();
   // await getOrganizationGraphByRootId(1446);
