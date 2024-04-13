@@ -27,7 +27,7 @@ export default async function BuildMetricsOverview({
   const buildMetricDtoResponse = await fetchBuildMetricDto(scheduleId);
   const buildMetricDto = buildMetricDtoResponse.data;
   if (buildMetricDto === undefined) {
-    console.log(buildMetricDtoResponse.message);
+    console.error(buildMetricDtoResponse.message);
     return (
       <Card>
         <CardBody>No data found!</CardBody>

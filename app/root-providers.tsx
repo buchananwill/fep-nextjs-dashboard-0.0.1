@@ -8,21 +8,24 @@ import SubjectColorCodingProvider from './contexts/color/subject-color-coding-pr
 import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
 import ColorCodingProvider from './generic/components/color/color-coding-provider';
 import NextUiProviderWrapper from './next-ui-provider-wrapper';
+import SelectiveContextManagerGlobal from './selective-context/components/global/selective-context-manager-global';
 
 export default function RootProviders({ children }: { children: ReactNode }) {
   return (
-    <NextUiProviderWrapper>
-      <AnimationSyncContextProvider>
-        <TooltipsContextProvider startDisabled={true}>
-          <SelectiveContextCollection>
-            <SubjectColorCodingProvider>
-              <KeyListenerManager>
-                <ColorCodingProvider>{children}</ColorCodingProvider>
-              </KeyListenerManager>
-            </SubjectColorCodingProvider>
-          </SelectiveContextCollection>
-        </TooltipsContextProvider>
-      </AnimationSyncContextProvider>
-    </NextUiProviderWrapper>
+    <SelectiveContextManagerGlobal>
+      <NextUiProviderWrapper>
+        <AnimationSyncContextProvider>
+          <TooltipsContextProvider startDisabled={true}>
+            <SelectiveContextCollection>
+              <SubjectColorCodingProvider>
+                <KeyListenerManager>
+                  <ColorCodingProvider>{children}</ColorCodingProvider>
+                </KeyListenerManager>
+              </SubjectColorCodingProvider>
+            </SelectiveContextCollection>
+          </TooltipsContextProvider>
+        </AnimationSyncContextProvider>
+      </NextUiProviderWrapper>
+    </SelectiveContextManagerGlobal>
   );
 }

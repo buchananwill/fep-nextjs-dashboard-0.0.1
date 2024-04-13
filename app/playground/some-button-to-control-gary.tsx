@@ -1,9 +1,9 @@
 'use client';
 import { useSelectiveContextAnyDispatch } from '../selective-context/components/global/selective-context-manager-global';
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
-import { ObjectPlaceholder } from '../selective-context/components/typed/selective-context-manager-function';
 import { parseTen } from '../api/date-and-time';
 import { Button } from '@nextui-org/button';
+import { ObjectPlaceholder } from '../api/main';
 
 export default function SomeButtonToControlGary() {
   const { dispatchWithoutControl, currentState } =

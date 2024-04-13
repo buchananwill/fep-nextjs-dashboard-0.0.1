@@ -10,8 +10,7 @@ import { getDtoListByExampleList as getBundlesByExampleList } from '../../../../
 import { getDtoListByExampleList as getSchemasByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { parseTen } from '../../../../api/date-and-time';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { ObjectPlaceholder } from '../../../../selective-context/components/typed/selective-context-manager-function';
-import { EmptyArray } from '../../../../api/main';
+import { EmptyArray, ObjectPlaceholder } from '../../../../api/main';
 import { WorkTaskTypeDto } from '../../../../api/dtos/WorkTaskTypeDtoSchema';
 import { createSchemeExampleListFromWorkTaskTypes } from './createSchemeExampleListFromWorkTaskTypes';
 
@@ -67,7 +66,7 @@ export default async function Page({
 
   const workTaskTypeDtos = taskTypesResponse.data;
   if (actionResponse.data === undefined || workTaskTypeDtos === undefined) {
-    console.log(actionResponse.data, workTaskTypeDtos);
+    console.error(actionResponse.data, workTaskTypeDtos);
     return <Card>No bundles found!</Card>;
   }
 

@@ -1,9 +1,16 @@
 'use client';
 import { MapDispatch, MapDispatchBatch, StringMap } from './string-map-reducer';
-import { Dispatch, MutableRefObject, useEffect, useRef } from 'react';
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef
+} from 'react';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
 import { isNotUndefined } from '../../api/main';
+import { UpdateAction } from '../../selective-context/components/base/selective-context-manager';
 
 export function useSyncStringMapToProps<T>(
   initialEntityMap: StringMap<T>,
@@ -37,4 +44,19 @@ export function useSyncStringMapToProps<T>(
     initialMapRef,
     dispatch
   ]);
+}
+export function useSyncSelectiveStateToProps<T>(
+  propData: T,
+  dispatch: Dispatch<UpdateAction<T>>,
+  stateData: T,
+  contextKey: string
+) {
+  const initialMapRef = useRef(propData);
+
+  useEffect(() => {
+    if (initialMapRef.current !== propData && isNotUndefined(dispatch)) {
+      dispatch({ contextKey, update: propData });
+      initialMapRef.current = propData;
+    }
+  }, [stateData, propData, contextKey, initialMapRef, dispatch]);
 }

@@ -13,6 +13,6 @@ export default function DtoController<T extends HasNumberIdDto | HasUuidDto>({
   entityName
 }: DtoControllerProps<T>) {
   const { currentState } = useDtoStoreController(dto, entityName);
-  console.log(currentState);
+
   return null;
 }

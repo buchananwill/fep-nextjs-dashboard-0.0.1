@@ -19,8 +19,6 @@ export interface GenericFunctionWrapper<T, U> {
   cachedFunction: GenericFunction<T, U>;
 }
 
-export const ObjectPlaceholder = {} as const;
-
 export default function SelectiveContextManagerFunction({
   children
 }: PropsWithChildren) {

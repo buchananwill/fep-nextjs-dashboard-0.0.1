@@ -1,9 +1,9 @@
 import {
   GenericFunctionWrapper,
-  ObjectPlaceholder,
   useSelectiveContextListenerFunction
 } from '../../../../selective-context/components/typed/selective-context-manager-function';
 import { RatingEditModalTriggerProps } from '../../modals/rating-edit-modal';
+import { ObjectPlaceholder } from '../../../../api/main';
 
 export function useRatingEditModalTrigger<E, R>({
   listenerKey

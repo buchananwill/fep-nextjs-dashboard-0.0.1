@@ -1,4 +1,6 @@
 import { StringMap } from '../contexts/string-map-context/string-map-reducer';
+import { HasNumberIdDto } from './dtos/HasNumberIdDtoSchema';
+import { HasUuidDto } from './dtos/HasUuidDtoSchema';
 
 export const BASE_URL = process.env.BASE_URL!;
 export const API_BASE_URL = process.env.API_BASE_URL!;
@@ -66,3 +68,7 @@ export interface IntersectionRequestParams<T, U> {
 }
 
 export interface IdReferencedIntersectionTableDto<W> extends StringMap<W[]> {}
+
+export const ObjectPlaceholder = {} as const;
+
+export type HasId = HasNumberIdDto | HasUuidDto;

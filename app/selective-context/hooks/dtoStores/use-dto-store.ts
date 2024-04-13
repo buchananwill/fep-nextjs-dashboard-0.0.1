@@ -5,7 +5,8 @@ import {
 } from '../../components/global/selective-context-manager-global';
 import { HasUuidDto } from '../../../api/dtos/HasUuidDtoSchema';
 import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { ObjectPlaceholder } from '../../components/typed/selective-context-manager-function';
+
+import { ObjectPlaceholder } from '../../../api/main';
 
 export function useDtoStoreController<T extends HasUuidDto | HasNumberIdDto>(
   dto: T,

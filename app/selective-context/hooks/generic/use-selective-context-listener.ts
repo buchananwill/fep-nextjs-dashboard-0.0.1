@@ -4,6 +4,7 @@ import {
   ListenerRefInterface
 } from '../../components/base/selective-context-manager';
 import { UseSelectiveContextDispatchReturn } from './use-selective-context-dispatch';
+import { isNotUndefined } from '../../../api/main';
 
 export interface UseSelectiveContextListenerReturn<T> {
   currentState: T;
@@ -59,6 +60,7 @@ export function useSelectiveContextListener<T>(
 
   useEffect(() => {
     currentListeners[listenerKey] = setCurrentState;
+
     if (latestRef.current[contextKey] !== undefined) {
       setCurrentState(() => latestRef.current[contextKey]);
     }

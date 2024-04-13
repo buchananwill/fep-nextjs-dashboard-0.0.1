@@ -59,6 +59,7 @@ export function useSelectiveContextController<T>(
   const freshRef = latestRef.current;
 
   const dispatchUpdate = useContext(dispatchUpdateContext);
+  const listenerRef = useContext(UpdateTriggerRefContext);
 
   const dispatch = (action: UpdateAction<T>) => dispatchUpdate(action);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -67,7 +68,7 @@ export function useSelectiveContextController<T>(
     if (freshRef[contextKey] === undefined) {
       freshRef[contextKey] = initialValue;
     }
-  }, [latestRef, freshRef, initialValue, contextKey]);
+  }, [freshRef, initialValue, contextKey]);
 
   useEffect(() => {
     if (!isInitialized) {

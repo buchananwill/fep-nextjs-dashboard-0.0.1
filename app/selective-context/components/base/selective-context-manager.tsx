@@ -4,8 +4,10 @@ import {
   MutableRefObject,
   SetStateAction,
   useCallback,
+  useEffect,
   useRef
 } from 'react';
+import { isNotUndefined } from '../../../api/main';
 
 export interface ListenerRefInterface<T> {
   [key: string]: SelectiveListeners<T>;
@@ -36,8 +38,27 @@ export function useSelectiveContextManager<T>(
   initialContext: LatestValueRef<T>
 ) {
   const triggerUpdateRef = useRef({} as ListenerRefInterface<T>);
-
   const latestValueRef = useRef(initialContext);
+
+  const intervalClearRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    const cachedListenerRef = triggerUpdateRef.current;
+    const cachedValueRef = latestValueRef.current;
+    intervalClearRef.current = setInterval(() => {
+      for (let [contextKey, listeners] of Object.entries(cachedListenerRef)) {
+        if (
+          Object.values(listeners).length === 0 &&
+          isNotUndefined(cachedValueRef[contextKey])
+        ) {
+          delete cachedValueRef[contextKey];
+        }
+      }
+    }, 30_000);
+    return () => {
+      clearInterval(intervalClearRef.current);
+    };
+  }, []);
 
   const dispatch = useCallback((action: UpdateAction<T>) => {
     const { contextKey, update } = action;
