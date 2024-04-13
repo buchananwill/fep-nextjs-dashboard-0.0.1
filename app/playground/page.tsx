@@ -14,11 +14,15 @@ export default async function PlaygroundPage({}: {}) {
   if (!isNotUndefined(assetList))
     return <DataNotFoundCard>No matrix.</DataNotFoundCard>;
 
+  const sortedList = assetList.sort((type1, type2) =>
+    type1.name.localeCompare(type2.name)
+  );
+
   return (
     <>
       {
         <DtoControllerArray
-          dtoArray={assetList}
+          dtoArray={sortedList}
           entityName={'workTaskType'}
           commitServerAction={putList}
         />

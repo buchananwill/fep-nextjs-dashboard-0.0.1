@@ -6,11 +6,11 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 export default function DtoComponentWrapper<T extends HasId>({
   entityName,
   id,
-  children
+  uiComponent: UiComponent
 }: {
   entityName: string;
   id: string | number;
-  children?: (props: DtoComponentUiProps<T>) => ReactNode;
+  uiComponent?: (props: DtoComponentUiProps<T>) => ReactNode;
 }) {
   const { currentState, dispatchWithoutControl } = useDtoStoreDispatch<T>(
     id,
@@ -20,7 +20,12 @@ export default function DtoComponentWrapper<T extends HasId>({
 
   return (
     <>
-      {children && children({ entity: currentState, dispatchWithoutControl })}
+      {UiComponent && (
+        <UiComponent
+          entity={currentState}
+          dispatchWithoutControl={dispatchWithoutControl}
+        />
+      )}
     </>
   );
 }

@@ -34,11 +34,8 @@ export default function DtoController<T extends HasNumberIdDto | HasUuidDto>({
     dispatchWithoutControl((state) => {
       const previouslyChanged = state.includes(dto.id);
       if (previouslyChanged && !entityChanged) {
-        console.log('removing reverted entity');
         return state.filter((id) => id != dto.id);
       } else if (!previouslyChanged && entityChanged) {
-        console.log('adding changed entity');
-
         return [...state, dto.id];
       } else return state;
     });

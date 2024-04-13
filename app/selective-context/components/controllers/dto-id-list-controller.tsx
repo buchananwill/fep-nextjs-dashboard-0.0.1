@@ -1,7 +1,6 @@
 'use client';
 
 import { useSelectiveContextAnyController } from '../global/selective-context-manager-global';
-import { useSyncSelectiveStateToProps } from '../../../contexts/string-map-context/use-sync-string-map-to-props';
 import { EmptyArray, HasId, isNotUndefined } from '../../../api/main';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { useSelectiveContextListenerReadAll } from '../base/generic-selective-context-creator';
@@ -10,6 +9,7 @@ import { getEntityNamespaceContextKey } from '../../hooks/dtoStores/use-dto-stor
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
 import { useMemo } from 'react';
+import { useSyncSelectiveStateToProps } from '../../../contexts/string-map-context/use-sync-selective-state-to-props';
 
 export interface DtoListControllerProps<T extends HasId> {
   dtoList: T[];

@@ -37,6 +37,8 @@ export default async function Page({
     taskTypesResponse.data || EmptyArray
   );
 
+  console.log(schemaExampleList);
+
   const curriculumDeliveryModelSchemas =
     await getSchemaListFromExampleList(schemaExampleList);
   // await getCurriculumDeliveryModelSchemasByKnowledgeLevel(

@@ -31,8 +31,7 @@ export default function DtoComponentArrayGenerator<T extends HasId>({
       entityName={'workTaskType'}
       id={id}
       key={`${entityName}:${id}`}
-    >
-      {WrappedComponent}
-    </DtoComponentWrapper>
+      uiComponent={WrappedComponent}
+    />
   ));
 }
