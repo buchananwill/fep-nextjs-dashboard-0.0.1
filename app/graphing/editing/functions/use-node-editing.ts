@@ -58,7 +58,7 @@ export function useNodeEditing<T extends HasNumberIdDto>(
   const { unsavedGraphContextKey, unsavedGraphChanges, setUnsaved } =
     useUnsavedGraphChangesController();
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
   useShowNodeEditing(true);
   useNodeCloneFunction(cloneFunction);
   const appRouterInstance = useRouter();
@@ -95,14 +95,14 @@ export function useNodeEditing<T extends HasNumberIdDto>(
 
       setUnsaved({ contextKey: unsavedGraphContextKey, update: false });
       appRouterInstance.refresh();
-      closeModal();
+      onClose();
     }
   };
   return {
     unsavedChanges: unsavedGraphChanges,
-    show: isOpen,
-    onClose: closeModal,
-    onCancel: closeModal,
+    show: show,
+    onClose: onClose,
+    onCancel: onClose,
     handleOpen: openModal,
     onConfirm: handleSaveGraph
   };

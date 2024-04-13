@@ -54,7 +54,7 @@ export function BundleAssignmentsProvider({
       false
     );
 
-  const { openModal, isOpen, closeModal } = useModal();
+  const { openModal, show, onClose } = useModal();
   const { bundleItemsMap } = useBundleItemsContext();
 
   const handleConfirm = () => {
@@ -75,11 +75,11 @@ export function BundleAssignmentsProvider({
         });
       }
     });
-    closeModal();
+    onClose();
   };
 
   const handleCancel = () => {
-    closeModal();
+    onClose();
   };
 
   return (
@@ -102,8 +102,8 @@ export function BundleAssignmentsProvider({
           </div>
         )}
         <ConfirmActionModal
-          show={isOpen}
-          onClose={closeModal}
+          show={show}
+          onClose={onClose}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         >

@@ -23,7 +23,7 @@ export default function AvailabilityContextProvider({
 }) {
   const [reducerState, dispatch] = useReducer(availabilityReducer, initialData);
   const { unsavedChanges } = reducerState;
-  const { isOpen, openModal, closeModal } = useModal();
+  const { show, openModal, onClose } = useModal();
 
   const confirmChanges = () => {
     const { providerAvailability } = reducerState;
@@ -36,20 +36,20 @@ export default function AvailabilityContextProvider({
         console.log('(Not implemented) Failure...');
       }
     });
-    closeModal();
+    onClose();
   };
 
   const cancelChanges = () => {
     dispatch({ type: 'setAvailabilityData', data: initialData });
     dispatch({ type: 'clearUnsavedAvailability' });
-    closeModal();
+    onClose();
   };
 
   const contextForModal: ConfirmActionModalProps = {
-    show: isOpen,
+    show: show,
     onConfirm: confirmChanges,
     onCancel: cancelChanges,
-    onClose: closeModal
+    onClose: onClose
   };
 
   const dispatchContext = {

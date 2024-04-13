@@ -75,7 +75,7 @@ export function NewKnowledgeDomainButton({
 }: NewKnowledgeDomainButtonProps) {
   const [pending, startTransition] = useTransition();
   const appRouterInstance = useRouter();
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
     NewKnowledgeDomainContextKey,
@@ -123,7 +123,7 @@ export function NewKnowledgeDomainButton({
               contextKey: NewKnowledgeDomainContextKey,
               update: ''
             });
-            closeModal();
+            onClose();
           })
           .catch((e) => {
             console.log(e);
@@ -154,10 +154,10 @@ export function NewKnowledgeDomainButton({
         New
       </Button>
       <ConfirmActionModal
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleNewKnowledgeDomain}
-        onCancel={closeModal}
+        onCancel={onClose}
         enterToConfirm={true}
       >
         {pending && (

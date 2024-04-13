@@ -8,12 +8,19 @@ import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 
 import { ObjectPlaceholder } from '../../../api/main';
 
+export function getEntityNamespaceContextKey<T>(
+  entityType: string,
+  id: string | number
+) {
+  return `${entityType}:${id}`;
+}
+
 export function useDtoStoreController<T extends HasUuidDto | HasNumberIdDto>(
   dto: T,
   entityType: string
 ) {
   return useSelectiveContextAnyController<T>({
-    contextKey: `${entityType}:${dto.id}`,
+    contextKey: getEntityNamespaceContextKey(entityType, dto.id),
     initialValue: dto,
     listenerKey: 'controller'
   });

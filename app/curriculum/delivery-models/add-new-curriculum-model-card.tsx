@@ -52,7 +52,7 @@ export function AddNewCurriculumModelCard({
   alreadyUnsaved: boolean;
   yearGroup: number;
 }) {
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
   const { workTaskTypeMap } = useWorkTaskTypeContext();
   const { dispatch, curriculumModelsMap } = useCurriculumModelContext();
   const [newModelTaskType, setNewModelTaskType] =
@@ -102,7 +102,7 @@ export function AddNewCurriculumModelCard({
     setNewModelTaskType(
       taskTypeSelectionList.length > 0 ? taskTypeSelectionList[0] : null
     );
-    closeModal();
+    onClose();
   };
 
   const handleAddNewModel = () => {
@@ -124,7 +124,7 @@ export function AddNewCurriculumModelCard({
     });
     dispatchWithoutControl(false);
     setRevertUnsaved(true);
-    closeModal();
+    onClose();
     appRouterInstance.refresh();
   };
 
@@ -141,8 +141,8 @@ export function AddNewCurriculumModelCard({
         </Button>
       </Card>
       <ConfirmActionModal
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleAddNewModel}
         onCancel={handleCancel}
         title={'Add New Curriculum Model'}

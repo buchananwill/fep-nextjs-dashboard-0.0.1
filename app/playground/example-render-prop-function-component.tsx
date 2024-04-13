@@ -15,7 +15,7 @@ import { useCallback } from 'react';
 export function ExampleRenderPropFunctionComponent<
   T extends HasNumberIdDto & HasNameDto
 >({ entity, dispatchWithoutControl }: DtoComponentWrapperRenderProps<T>) {
-  const { closeModal, isOpen, openModal } = useModal();
+  const { onClose, show, openModal } = useModal();
 
   const contextKey = `${RenameModalWrapperContextKey}:example:${entity.id}`;
   const { currentState } = useSelectiveContextControllerString(
@@ -28,7 +28,7 @@ export function ExampleRenderPropFunctionComponent<
     if (isNotUndefined(dispatchWithoutControl)) {
       dispatchWithoutControl((dto) => ({ ...dto, name: currentState }));
     }
-    closeModal();
+    onClose();
   }, [currentState]);
 
   return (
@@ -38,10 +38,10 @@ export function ExampleRenderPropFunctionComponent<
       <Badge>Current id: {entity.id}</Badge>
       <RenameModal
         contextKey={contextKey}
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={onConfirm}
-        onCancel={closeModal}
+        onCancel={onClose}
       />
     </>
   );

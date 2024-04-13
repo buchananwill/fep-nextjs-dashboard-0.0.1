@@ -25,7 +25,7 @@ export function KnowledgeDomainNameCell({
     renameContextKey,
     name
   );
-  const { closeModal, isOpen, openModal } = useModal();
+  const { onClose, show, openModal } = useModal();
   const router = useRouter();
   const error = useValidationUniqueNonEmpty(currentState, name, nameList);
 
@@ -33,13 +33,13 @@ export function KnowledgeDomainNameCell({
     const update = { ...kd, name: currentState };
     putOne(update).then((r) => {
       router.refresh();
-      closeModal();
+      onClose();
     });
   };
 
   const handleCancel = () => {
     dispatchUpdate({ contextKey: renameContextKey, update: name });
-    closeModal();
+    onClose();
   };
 
   return (
@@ -52,8 +52,8 @@ export function KnowledgeDomainNameCell({
         title={`Rename ${name}`}
         contextKey={renameContextKey}
         listenerKey={`${renameContextKey}:modal`}
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleRenameKnowledgeDomain}
         onCancel={handleCancel}
         error={error}

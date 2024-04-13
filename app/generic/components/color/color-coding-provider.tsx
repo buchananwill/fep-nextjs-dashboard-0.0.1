@@ -23,7 +23,7 @@ export default function ColorCodingProvider({
 
   const modalInitialState = { ...useColorState(defaultColorState) };
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const handleColorConfirm = (updatedColorStateValue: ColorState) => {
     setColorCoding(() => {
@@ -45,12 +45,12 @@ export default function ColorCodingProvider({
             stringKey: stringKey,
             openModal: openModal,
             onConfirm: handleColorConfirm,
-            onCancel: () => closeModal(),
-            onClose: closeModal
+            onCancel: () => onClose(),
+            onClose: onClose
           }}
         >
           {children}
-          <ColorSelectModal show={isOpen} initialState={modalInitialState}>
+          <ColorSelectModal show={show} initialState={modalInitialState}>
             {stringKey}
           </ColorSelectModal>
         </ModalColorSelectContext.Provider>

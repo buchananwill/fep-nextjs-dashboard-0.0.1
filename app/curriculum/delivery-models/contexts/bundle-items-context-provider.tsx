@@ -57,7 +57,7 @@ export function BundleItemsContextProvider({
       initialValue: StaticDeletedBundleList
     });
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const handleConfirm = () => {
     startTransition(() => {
@@ -97,7 +97,7 @@ export function BundleItemsContextProvider({
         .then(() => {
           dispatch({ type: 'updateAll', payload: updatedBundles });
           setUnsavedBundles({ contextKey: UnsavedBundleEdits, update: false });
-          closeModal();
+          onClose();
         });
     });
   };
@@ -116,8 +116,8 @@ export function BundleItemsContextProvider({
         <UnsavedChangesModal
           unsavedChanges={unsaved}
           handleOpen={openModal}
-          show={isOpen}
-          onClose={closeModal}
+          show={show}
+          onClose={onClose}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />

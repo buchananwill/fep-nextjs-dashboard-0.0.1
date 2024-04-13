@@ -53,7 +53,7 @@ export function RotateCarouselButton({
     useContext(ElectiveContext);
   const { showTooltips } = useContext(TooltipsContext);
   const dispatch = useContext(ElectiveDispatchContext);
-  const { isOpen, openModal, closeModal } = useModal();
+  const { show, openModal, onClose } = useModal();
   const [rotationNumber, setRotationNumber] = useState(0);
 
   const [showError, setShowError] = useState(false);
@@ -126,14 +126,14 @@ export function RotateCarouselButton({
         </TooltipContent>
       </Tooltip>
       <ConfirmActionModal
-        show={isOpen}
-        onClose={() => closeModal()}
+        show={show}
+        onClose={() => onClose()}
         onConfirm={() => {
           handleRotationConfirm(rotationNumber);
-          closeModal();
+          onClose();
         }}
         onCancel={() => {
-          closeModal();
+          onClose();
         }}
       >
         {filterType == 'all' ? (

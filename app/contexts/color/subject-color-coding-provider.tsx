@@ -26,7 +26,7 @@ export default function SubjectColorCodingProvider({
 
   const modalInitialState = { ...useColorState(defaultColorState) };
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const handleColorConfirm = (updatedColorStateValue: ColorState) => {
     setSubjectColorCoding(() => {
@@ -48,15 +48,15 @@ export default function SubjectColorCodingProvider({
           value={{
             setModalText: setLessonText,
             openModal: openModal,
-            onCancel: closeModal,
-            onClose: closeModal,
+            onCancel: onClose,
+            onClose: onClose,
             onConfirm: handleColorConfirm,
             stringKey: lessonText,
             ...modalInitialState
           }}
         >
           {children}
-          <ColorSelectModal show={isOpen} initialState={modalInitialState}>
+          <ColorSelectModal show={show} initialState={modalInitialState}>
             {lessonText}
           </ColorSelectModal>
         </ModalColorSelectContext.Provider>

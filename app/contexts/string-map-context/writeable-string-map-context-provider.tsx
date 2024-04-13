@@ -63,7 +63,7 @@ export function WriteableStringMapContextProvider<T>({
     mapKeyAccessor
   );
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   async function handleCommit() {
     if (commitServerAction === undefined) return;
@@ -92,14 +92,14 @@ export function WriteableStringMapContextProvider<T>({
         <UnsavedChangesModal
           unsavedChanges={unsavedChanges}
           handleOpen={() => openModal()}
-          show={isOpen}
-          onClose={closeModal}
+          show={show}
+          onClose={onClose}
           onConfirm={() => {
-            closeModal();
+            onClose();
             handleCommit();
           }}
           onCancel={() => {
-            closeModal();
+            onClose();
           }}
         >
           <p>Commit updated models to the database?</p>

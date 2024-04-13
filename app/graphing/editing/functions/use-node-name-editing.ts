@@ -23,7 +23,7 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
   node: DataNode<T>,
   componentListenerKey: string
 ) {
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
   const renameModalContextKey = useSelectiveContextKeyMemo(
     `${RenameModalWrapperContextKey}:${node.data.id}`,
     componentListenerKey
@@ -46,7 +46,7 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
       incrementSimVersion();
     }
 
-    closeModal();
+    onClose();
   };
 
   const handleCancelRename = () => {
@@ -54,15 +54,15 @@ export function useNodeNameEditing<T extends HasNumberIdDto & HasNameDto>(
       contextKey: renameModalContextKey,
       update: node.data.name
     });
-    closeModal();
+    onClose();
   };
 
   const renameModalProps: RenameModalProps & ConfirmActionModalProps = {
     contextKey: renameModalContextKey,
     onConfirm: handleConfirmRename,
     onCancel: handleCancelRename,
-    onClose: closeModal,
-    show: isOpen
+    onClose: onClose,
+    show: show
   };
 
   return {

@@ -97,7 +97,7 @@ export function NewKnowledgeLevelButton({
   knowledgeLevelNameList
 }: NewKnowledgeLevelButtonProps) {
   const appRouterInstance = useRouter();
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
   const [pending, startTransition] = useTransition();
 
   const { currentState, dispatchUpdate } = useSelectiveContextControllerString(
@@ -148,7 +148,7 @@ export function NewKnowledgeLevelButton({
             contextKey: NewKnowledgeLevelContextKey,
             update: ''
           });
-          closeModal();
+          onClose();
         });
     }
   };
@@ -172,10 +172,10 @@ export function NewKnowledgeLevelButton({
         <PlusCircleIcon className={'h-4 w-4'}></PlusCircleIcon>New
       </Button>
       <ConfirmActionModal
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleNewKnowledgeLevel}
-        onCancel={closeModal}
+        onCancel={onClose}
         enterToConfirm={true}
       >
         <NewKnowledgeLevelPanel

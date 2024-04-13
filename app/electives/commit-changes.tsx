@@ -26,7 +26,7 @@ const CommitChanges = ({ children }: Props) => {
   const [commitPending, setCommitPending] = useState(false);
 
   const { showTooltips } = useContext(TooltipsContext);
-  let { isOpen, closeModal, openModal } = useModal();
+  let { show, onClose, openModal } = useModal();
   const electiveState = useContext(ElectiveContext);
   const [enabled, setEnabled] = useState(false);
   const { modifiedPreferences } = electiveState;
@@ -90,14 +90,14 @@ const CommitChanges = ({ children }: Props) => {
         </TooltipContent>
       </Tooltip>
       <ConfirmActionModal
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={() => {
-          closeModal();
+          onClose();
           handleCommitClick();
         }}
         onCancel={() => {
-          closeModal();
+          onClose();
         }}
       >
         <p>Commit changes to the database</p>

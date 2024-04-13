@@ -39,7 +39,7 @@ export function CurriculumModelsContextProvider({
   const CurriculumModelsReducer = StringMapReducer<WorkProjectSeriesSchemaDto>;
   const [currentModels, dispatch] = useReducer(CurriculumModelsReducer, models);
 
-  const { isOpen, openModal, closeModal } = useModal();
+  const { show, openModal, onClose } = useModal();
   const { currentState: unsavedChanges, dispatchUpdate: setUnsaved } =
     useSelectiveContextControllerBoolean(
       UnsavedCurriculumModelChanges,
@@ -96,7 +96,7 @@ export function CurriculumModelsContextProvider({
         }
       })
       .finally(clearFlag);
-    closeModal();
+    onClose();
   }
 
   return (
@@ -121,10 +121,10 @@ export function CurriculumModelsContextProvider({
           </div>
         )}
         <ConfirmActionModal
-          show={isOpen}
-          onClose={closeModal}
+          show={show}
+          onClose={onClose}
           onConfirm={handleCommit}
-          onCancel={closeModal}
+          onCancel={onClose}
         >
           <p>Commit updated models to the database?</p>
         </ConfirmActionModal>

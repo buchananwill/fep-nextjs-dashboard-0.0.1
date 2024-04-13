@@ -31,7 +31,7 @@ export function useRenameCurriculumDeliveryModel(
     false
   );
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
   const renameModalContextKey = useSelectiveContextKeyMemo(
     `${RenameModalWrapperContextKey}:${modelId}`,
     listenerKey
@@ -71,7 +71,7 @@ export function useRenameCurriculumDeliveryModel(
     }
 
     dispatchWithoutControl(true);
-    closeModal();
+    onClose();
   };
 
   const handleCancelRename = () => {
@@ -79,15 +79,15 @@ export function useRenameCurriculumDeliveryModel(
       contextKey: renameModalContextKey,
       update: curriculumModelsMap[modelId]?.name
     });
-    closeModal();
+    onClose();
   };
 
   const renameModalProps: RenameModalProps & ConfirmActionModalProps = {
     contextKey: renameModalContextKey,
     onConfirm: handleConfirmRename,
     onCancel: handleCancelRename,
-    onClose: closeModal,
-    show: isOpen,
+    onClose: onClose,
+    show: show,
     error: error
   };
 

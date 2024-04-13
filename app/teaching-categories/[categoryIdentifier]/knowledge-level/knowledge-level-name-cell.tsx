@@ -44,7 +44,7 @@ export function KnowledgeLevelNameCell({
     renameContextKey,
     name
   );
-  const { closeModal, isOpen, openModal } = useModal();
+  const { onClose, show, openModal } = useModal();
   const router = useRouter();
   const error = useValidationUniqueNonEmpty(currentState, name, nameList);
 
@@ -52,13 +52,13 @@ export function KnowledgeLevelNameCell({
     const update = { ...kl, name: currentState };
     putOne(update).then(() => {
       router.refresh();
-      closeModal();
+      onClose();
     });
   };
 
   const handleCancel = () => {
     dispatchUpdate({ contextKey: renameContextKey, update: name });
-    closeModal();
+    onClose();
   };
 
   return (
@@ -71,8 +71,8 @@ export function KnowledgeLevelNameCell({
         title={`Rename ${name}`}
         contextKey={renameContextKey}
         listenerKey={`${renameContextKey}:modal`}
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleRenameKnowledgeLevel}
         onCancel={handleCancel}
         error={error}

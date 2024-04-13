@@ -19,7 +19,7 @@ export function useRatingEditModal<R, E>({
   const [modalRatingValue, setModalRatingValue] = useState(0);
   const [ratingInModal, setRatingInModal] = useState<R>();
   const [elementInModal, setProviderInModal] = useState<E>();
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const triggerModal = useCallback(
     ({ elementWithRating, rating }: { rating: R; elementWithRating: E }) => {
@@ -40,15 +40,15 @@ export function useRatingEditModal<R, E>({
   }, []);
 
   return {
-    show: isOpen,
+    show: show,
     onConfirm: () => {
       if (isNotUndefined(ratingInModal) && isNotUndefined(elementInModal)) {
         confirmRatingValue(ratingInModal, elementInModal, modalRatingValue);
       }
-      closeModal();
+      onClose();
     },
-    onCancel: () => closeModal(),
-    onClose: () => closeModal(),
+    onCancel: () => onClose(),
+    onClose: () => onClose(),
     elementWithRatingsInModal: elementInModal,
     modalRatingValue,
     ratingInModal,

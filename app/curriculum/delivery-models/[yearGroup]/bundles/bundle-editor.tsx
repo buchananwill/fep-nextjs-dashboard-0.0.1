@@ -111,7 +111,7 @@ export function BundleEditor({
 
   const [activeTab, setActiveTab] = useState(0);
 
-  const { isOpen, closeModal, openModal } = useModal();
+  const { show, onClose, openModal } = useModal();
 
   const activeBundleAndId = useMemo(() => {
     function getActiveBundleAndId() {
@@ -168,7 +168,7 @@ export function BundleEditor({
       payload: { key: id.toString(), data: immerBundle }
     });
     dispatchWithoutControl(true);
-    closeModal();
+    onClose();
   };
   const handleCancel = () => {
     const { stateBundle } = activeBundleAndId;
@@ -176,7 +176,7 @@ export function BundleEditor({
       contextKey: contextKeyMemo,
       update: stateBundle.name
     });
-    closeModal();
+    onClose();
   };
 
   const handleOpen = () => {
@@ -280,8 +280,8 @@ export function BundleEditor({
 
       <RenameModal
         contextKey={contextKeyMemo}
-        show={isOpen}
-        onClose={closeModal}
+        show={show}
+        onClose={onClose}
         onConfirm={handleRenameBundle}
         onCancel={handleCancel}
         enterToConfirm={true}

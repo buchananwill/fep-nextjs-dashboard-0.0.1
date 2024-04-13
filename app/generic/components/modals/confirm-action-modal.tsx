@@ -12,7 +12,7 @@ export function useModal() {
     setIsOpen(true);
   }, []);
 
-  return { isOpen, closeModal, openModal };
+  return { show: isOpen, onClose: closeModal, openModal };
 }
 
 export interface ConfirmActionModalProps {
