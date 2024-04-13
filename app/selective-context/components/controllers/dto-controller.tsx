@@ -42,7 +42,7 @@ export default function DtoController<T extends HasNumberIdDto | HasUuidDto>({
         return [...state, dto.id];
       } else return state;
     });
-  }, [currentState, dispatchWithoutControl]);
+  }, [currentState, dispatchWithoutControl, dto.id]);
 
   return null;
 }

@@ -5,21 +5,20 @@ import {
 } from '../selective-context/components/global/selective-context-manager-global';
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 import { Badge } from '@nextui-org/badge';
-import DtoComponentWrapper from './dto-component-wrapper';
+import DtoComponentWrapper, {
+  DtoComponentUiProps
+} from './dto-component-wrapper';
 import { getIdListContextKey } from '../selective-context/components/controllers/dto-id-list-controller';
 import { EmptyArray, HasId } from '../api/main';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
-import { ExampleRenderPropFunctionComponent } from './example-render-prop-function-component';
+import { RenameEntity } from './rename-entity';
 
 export default function DtoComponentArrayGenerator<T extends HasId>({
   entityName,
-  children: WrappedComponent
+  renderEachAs: WrappedComponent
 }: {
   entityName: string;
-  children?: (
-    entity: T,
-    dispatchWithoutControl?: Dispatch<SetStateAction<T>>
-  ) => ReactNode;
+  renderEachAs?: (props: DtoComponentUiProps<T>) => ReactNode;
 }) {
   const contextKey = getIdListContextKey(entityName);
   const { currentState } = useSelectiveContextGlobalListener<number[]>({
@@ -27,17 +26,13 @@ export default function DtoComponentArrayGenerator<T extends HasId>({
     listenerKey: 'someComponent',
     initialValue: EmptyArray
   });
-  return (
-    <>
-      {currentState.map((id) => (
-        <DtoComponentWrapper<T>
-          entityName={'workTaskType'}
-          id={id}
-          key={`${entityName}:${id}`}
-        >
-          {WrappedComponent}
-        </DtoComponentWrapper>
-      ))}
-    </>
-  );
+  return currentState.map((id) => (
+    <DtoComponentWrapper<T>
+      entityName={'workTaskType'}
+      id={id}
+      key={`${entityName}:${id}`}
+    >
+      {WrappedComponent}
+    </DtoComponentWrapper>
+  ));
 }

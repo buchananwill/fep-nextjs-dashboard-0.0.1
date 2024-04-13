@@ -1,21 +1,18 @@
 'use client';
 
 import { useSelectiveContextAnyController } from '../global/selective-context-manager-global';
-import {
-  useSyncSelectiveStateToProps,
-  useSyncStringMapToProps
-} from '../../../contexts/string-map-context/use-sync-string-map-to-props';
-import { EmptyArray, isNotUndefined } from '../../../api/main';
-import { getPayloadArray } from '../../../curriculum/delivery-models/use-editing-context-dependency';
+import { useSyncSelectiveStateToProps } from '../../../contexts/string-map-context/use-sync-string-map-to-props';
+import { EmptyArray, HasId, isNotUndefined } from '../../../api/main';
 import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { useSelectiveContextListenerReadAll } from '../base/generic-selective-context-creator';
 import { SelectiveContextGlobal } from '../global/selective-context-creator-global';
 import { getEntityNamespaceContextKey } from '../../hooks/dtoStores/use-dto-store';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
+import { useMemo } from 'react';
 
-export interface DtoListControllerProps<T> {
-  idList: (string | number)[];
+export interface DtoListControllerProps<T extends HasId> {
+  dtoList: T[];
   entityName: string;
   commitServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;
 }
@@ -32,13 +29,17 @@ export function getChangesContextKey(entityName: string) {
 
 export default function DtoIdListController({
   entityName,
-  idList,
+  dtoList,
   commitServerAction
 }: DtoListControllerProps<any>) {
+  const idListArray = useMemo(() => {
+    return dtoList.map((dto) => dto.id);
+  }, [dtoList]);
+
   const { currentState, dispatchUpdate } = useSelectiveContextAnyController({
     contextKey: getIdListContextKey(entityName),
     listenerKey: listenerKey,
-    initialValue: idList
+    initialValue: idListArray
   });
 
   const { currentState: changedDtos } = useSelectiveContextAnyController<
@@ -79,7 +80,7 @@ export default function DtoIdListController({
   }
 
   useSyncSelectiveStateToProps(
-    idList,
+    idListArray,
     dispatchUpdate,
     currentState,
     getIdListContextKey(entityName)
