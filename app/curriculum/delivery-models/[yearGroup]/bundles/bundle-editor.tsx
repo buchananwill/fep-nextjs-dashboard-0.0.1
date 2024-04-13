@@ -21,13 +21,10 @@ import {
 } from '../../../../selective-context/components/typed/selective-context-manager-number-list';
 import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
 
-import {
-  DeletedBundlesList,
-  StaticDeletedBundleList
-} from '../../contexts/bundle-items-context-provider';
+import { DeletedBundlesList } from '../../contexts/bundle-items-context-provider';
 
 import { sumAllSchemas } from '../../functions/sum-delivery-allocations';
-import { RenameModal } from '../../../../generic/components/modals/rename-modal';
+import RenameModal from '../../../../generic/components/modals/rename-modal';
 import { useModal } from '../../../../generic/components/modals/confirm-action-modal';
 import { RenameButton } from '../../../../generic/components/buttons/rename-button';
 import { TwoStageClick } from '../../../../generic/components/buttons/two-stage-click';

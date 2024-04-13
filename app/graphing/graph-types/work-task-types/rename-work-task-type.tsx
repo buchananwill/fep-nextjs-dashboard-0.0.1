@@ -5,7 +5,7 @@ import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { Button } from '@nextui-org/button';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { RenameModal } from '../../../generic/components/modals/rename-modal';
+import RenameModal from '../../../generic/components/modals/rename-modal';
 
 export const WorkTaskTypeDtoDetailsListenerKey = 'work-task-type-details';
 

@@ -17,7 +17,7 @@ export interface RenameModalProps {
   error?: boolean;
 }
 
-export function RenameModal({
+export default function RenameModal({
   contextKey,
   listenerKey,
   children,

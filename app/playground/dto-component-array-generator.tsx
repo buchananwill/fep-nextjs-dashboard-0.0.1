@@ -6,7 +6,7 @@ import {
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 import { Badge } from '@nextui-org/badge';
 import DtoComponentWrapper from './dto-component-wrapper';
-import { composeIdListContextKey } from '../selective-context/components/controllers/dto-id-list-controller';
+import { getIdListContextKey } from '../selective-context/components/controllers/dto-id-list-controller';
 import { EmptyArray, HasId } from '../api/main';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { ExampleRenderPropFunctionComponent } from './example-render-prop-function-component';
@@ -21,7 +21,7 @@ export default function DtoComponentArrayGenerator<T extends HasId>({
     dispatchWithoutControl?: Dispatch<SetStateAction<T>>
   ) => ReactNode;
 }) {
-  const contextKey = composeIdListContextKey(entityName);
+  const contextKey = getIdListContextKey(entityName);
   const { currentState } = useSelectiveContextGlobalListener<number[]>({
     contextKey,
     listenerKey: 'someComponent',

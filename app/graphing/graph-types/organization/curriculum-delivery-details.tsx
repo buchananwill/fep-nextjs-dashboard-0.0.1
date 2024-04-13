@@ -9,8 +9,7 @@ import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functions/use-sum-all-schemas-memo';
 import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
-import { RenameModal } from '../../../generic/components/modals/rename-modal';
-import { GenericButtonProps } from '../../../generic/components/buttons/rename-button';
+import RenameModal from '../../../generic/components/modals/rename-modal';
 import { Button, ButtonProps } from '@nextui-org/button';
 
 export const LeftCol =

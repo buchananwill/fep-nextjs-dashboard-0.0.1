@@ -6,7 +6,7 @@ import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 import { LeftCol } from '../graphing/graph-types/organization/curriculum-delivery-details';
 import { useNodeNameEditing } from '../graphing/editing/functions/use-node-name-editing';
-import { RenameModal } from '../generic/components/modals/rename-modal';
+import RenameModal from '../generic/components/modals/rename-modal';
 
 export default function PremisesDetails({
   node

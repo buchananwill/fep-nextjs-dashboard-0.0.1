@@ -7,7 +7,7 @@ import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
 import { useValidationUniqueNonEmpty } from '../knowledge-level/knowledge-level-name-cell';
 import { useModal } from '../../../generic/components/modals/confirm-action-modal';
-import { RenameModal } from '../../../generic/components/modals/rename-modal';
+import RenameModal from '../../../generic/components/modals/rename-modal';
 import { Button } from '@nextui-org/button';
 import { putOne } from '../../../api/READ-ONLY-generated-actions/KnowledgeDomain';
 
