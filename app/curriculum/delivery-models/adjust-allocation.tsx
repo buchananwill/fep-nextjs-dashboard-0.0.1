@@ -9,21 +9,31 @@ import { StepperContext } from '../../contexts/stepper/stepper-context-creator';
 import { AllocationUnitGroup } from './allocation-unit-group';
 import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
 import { DeliveryAllocation } from './delivery-allocation';
+import { DtoComponentUiProps } from '../../playground/dto-component-wrapper';
+import { isNotUndefined } from '../../api/main';
+import { DeliveryAllocationDto } from '../../api/dtos/DeliveryAllocationDtoSchema';
+import { TransientIdOffset } from '../../graphing/editing/functions/graph-edits';
 
 export const allocationSizes = [1, 2];
 
-export function AdjustAllocation({ modelId }: { modelId: string }) {
-  const { curriculumModelsMap, dispatch } = useCurriculumModelContext();
-  const unsavedChangesListenerId = useMemo(() => {
-    return `${UnsavedCurriculumModelChanges}:${modelId}`;
-  }, [modelId]);
-  const workProjectSeriesSchemaDto = curriculumModelsMap[modelId];
+export function AdjustAllocation({
+  entity: workProjectSeriesSchemaDto,
+  dispatchWithoutControl
+}: DtoComponentUiProps<WorkProjectSeriesSchemaDto>) {
   const currentAllocations = useMemo(() => {
     return allocationSizes.map((size: number) => {
       const found = workProjectSeriesSchemaDto?.deliveryAllocations.find(
         (da) => da.deliveryAllocationSize === size
       );
-      return found || { id: NaN, count: 0, deliveryAllocationSize: size };
+      const nullAllocation: DeliveryAllocationDto = {
+        id: TransientIdOffset + size, // TODO improve this transient ID allocation
+        count: 0,
+        deliveryAllocationSize: size,
+        priority: 1,
+        workProjectSeriesSchemaId: workProjectSeriesSchemaDto.id,
+        workTaskTypeId: workProjectSeriesSchemaDto.workTaskTypeId
+      };
+      return found || nullAllocation;
     });
   }, [workProjectSeriesSchemaDto]);
 
@@ -32,14 +42,8 @@ export function AdjustAllocation({ modelId }: { modelId: string }) {
     [workProjectSeriesSchemaDto]
   );
 
-  const { dispatchWithoutControl: setUnsaved } =
-    useSelectiveContextDispatchBoolean(
-      UnsavedCurriculumModelChanges,
-      unsavedChangesListenerId,
-      false
-    );
-
   const handleModifyAllocation = (size: number, up: boolean) => {
+    if (!isNotUndefined(dispatchWithoutControl)) return;
     const updatedDevAlloc = currentAllocations.map((allocation) => {
       if (allocation.deliveryAllocationSize === size) {
         const newCount = up
@@ -52,12 +56,7 @@ export function AdjustAllocation({ modelId }: { modelId: string }) {
       ...workProjectSeriesSchemaDto,
       deliveryAllocations: updatedDevAlloc
     };
-    dispatch({
-      type: 'update',
-      payload: { key: modelId, data: updatedSchema }
-    });
-
-    setUnsaved(true);
+    dispatchWithoutControl(updatedSchema);
   };
 
   return (

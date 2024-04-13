@@ -7,7 +7,10 @@ import { StringMap } from '../../../contexts/string-map-context/string-map-reduc
 import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { WorkTaskTypeInit } from './workTaskTypeInit';
 import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
-import { getDtoListByExampleList as getSchemaListFromExampleList } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
+import {
+  getDtoListByExampleList as getSchemaListFromExampleList,
+  putList
+} from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { parseTen } from '../../../api/date-and-time';
 import { createSchemeExampleListFromWorkTaskTypes } from './bundles/createSchemeExampleListFromWorkTaskTypes';
 import { EmptyArray } from '../../../api/main';
@@ -18,19 +21,12 @@ import DtoControllerArray from '../../../selective-context/components/controller
 import SchemaArrayWrapper from './schema-array-wrapper';
 
 export default async function Page({
-  params: { yearGroup },
-  searchParams
+  params: { yearGroup }
 }: {
   params: {
     yearGroup: string;
   };
-  searchParams: StringMap<string | string[] | undefined>;
 }) {
-  const { page, size } = searchParams;
-  const queryParamToNumber = normalizeQueryParamToNumber(page, 1);
-  const indexToZeroIndex = oneIndexToZeroIndex(queryParamToNumber);
-  const sizeToNumber = normalizeQueryParamToNumber(size, 8);
-
   const taskTypesResponse = await getDtoListByExampleList([
     {
       knowledgeLevelLevelOrdinal: parseTen(yearGroup)
@@ -45,20 +41,12 @@ export default async function Page({
 
   const curriculumDeliveryModelSchemas =
     await getSchemaListFromExampleList(schemaExampleList);
-  // await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
-  //   indexToZeroIndex,
-  //   sizeToNumber,
-  //   parseInt(yearGroup)
-  // );
 
   const { data, status, message } = curriculumDeliveryModelSchemas;
   const { data: taskTypeList } = taskTypesResponse;
   if (data === undefined || taskTypeList === undefined) {
     return <Card>No schemas found!</Card>;
   }
-
-  // const { content, last, first, number, totalPages } = data;
-  // const pageNumber = zeroIndexToOneIndex(number);
 
   const stringMap: StringMap<WorkProjectSeriesSchemaDto> = {};
   data.forEach((schema) => {
@@ -86,6 +74,7 @@ export default async function Page({
             <DtoControllerArray
               dtoArray={data}
               entityName={'workProjectSeriesSchema'}
+              commitServerAction={putList}
             />
             <SchemaArrayWrapper />
           </Grid>

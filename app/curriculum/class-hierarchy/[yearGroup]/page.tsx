@@ -51,7 +51,7 @@ export default async function Page({
   const orgIdList = actionResponse.data?.map((org) => org.id) || [];
 
   const workTaskTypeIdList =
-    allSchemasInBundles.data?.map((schema) => schema.workTaskType.id) || [];
+    allSchemasInBundles.data?.map((schema) => schema.workTaskTypeId) || [];
 
   const bundleAssignmentExampleList = orgIdList.map(
     (id) => ({ organizationId: id }) as Partial<WorkSeriesBundleAssignmentDto>

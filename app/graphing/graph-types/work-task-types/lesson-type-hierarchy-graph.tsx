@@ -32,8 +32,7 @@ export function LessonTypeHierarchyGraph() {
   });
 
   const titleList = nodesRef.current.map(
-    (n: DataNode<WorkTaskTypeDto>) =>
-      n.data?.serviceCategoryKnowledgeDomainDescriptor || ''
+    (n: DataNode<WorkTaskTypeDto>) => 'Subject'
   );
 
   const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] =

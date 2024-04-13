@@ -91,6 +91,7 @@ export default function DtoIdListController({
       )
       .filter(isNotUndefined);
     // const entityList = Object.values(currentModels as StringMap<T>);
+    console.log(updatedEntities);
     commitServerAction(updatedEntities);
     modalProps.onClose();
   }

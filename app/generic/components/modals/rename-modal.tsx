@@ -6,9 +6,9 @@ import {
 } from './confirm-action-modal';
 import { useSelectiveContextKeyMemo } from '../../../selective-context/hooks/generic/use-selective-context-listener';
 import { useSelectiveContextDispatchString } from '../../../selective-context/components/typed/selective-context-manager-string';
-import { RenameModalWrapperContextKey } from '../../../selective-context/keys/modal-keys';
+import { RenameContextKey } from '../../../selective-context/keys/modal-keys';
 
-export const RenameModalWrapperListener = `${RenameModalWrapperContextKey}:listener`;
+export const RenameModalWrapperListener = `${RenameContextKey}:listener`;
 
 export interface RenameModalProps {
   contextKey: string;

@@ -1,1 +1,1 @@
-export const RenameModalWrapperContextKey = 'rename-modal-wrapper';
+export const RenameContextKey = 'rename';

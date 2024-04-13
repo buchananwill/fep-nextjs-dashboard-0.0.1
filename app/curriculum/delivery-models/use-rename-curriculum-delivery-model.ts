@@ -17,7 +17,7 @@ import {
   useModal
 } from '../../generic/components/modals/confirm-action-modal';
 import { RenameModalProps } from '../../generic/components/modals/rename-modal';
-import { RenameModalWrapperContextKey } from '../../selective-context/keys/modal-keys';
+import { RenameContextKey } from '../../selective-context/keys/modal-keys';
 
 export function useRenameCurriculumDeliveryModel(
   modelId: string,
@@ -33,7 +33,7 @@ export function useRenameCurriculumDeliveryModel(
 
   const { show, onClose, openModal } = useModal();
   const renameModalContextKey = useSelectiveContextKeyMemo(
-    `${RenameModalWrapperContextKey}:${modelId}`,
+    `${RenameContextKey}:${modelId}`,
     listenerKey
   );
   const { currentState: proposedName, dispatchUpdate } =

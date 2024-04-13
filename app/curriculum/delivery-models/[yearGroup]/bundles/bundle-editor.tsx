@@ -35,7 +35,7 @@ import {
   BundleEditorKey,
   UnsavedBundleEdits
 } from '../../../../selective-context/keys/work-series-schema-bundle-keys';
-import { RenameModalWrapperContextKey } from '../../../../selective-context/keys/modal-keys';
+import { RenameContextKey } from '../../../../selective-context/keys/modal-keys';
 import { Button } from '@nextui-org/button';
 
 function bundleSort(
@@ -80,7 +80,7 @@ export function BundleEditor({
       : '';
 
   const contextKeyMemo = useSelectiveContextKeyMemo(
-    RenameModalWrapperContextKey,
+    RenameContextKey,
     BundleEditorKey
   );
 

@@ -7,6 +7,6 @@ export const CarouselDtoSchema = z.object({
   workProjectSeriesSchemaName: z.string(),
   carouselOrdinal: z.number(),
   carouselGroupId: z.string().uuid(),
-  carouselOptions: z.array(CarouselOptionDtoSchema),
+  carouselOptionDtos: z.array(CarouselOptionDtoSchema),
 });
 export type CarouselDto = z.infer<typeof CarouselDtoSchema>;

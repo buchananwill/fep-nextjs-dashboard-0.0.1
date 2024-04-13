@@ -4,23 +4,36 @@ import { Card, CardBody } from '@nextui-org/card';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import React from 'react';
 import { Tab } from '@headlessui/react';
-import { TrashIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { DeletedOverlay } from '../../generic/components/overlays/deleted-overlay';
 import { TwoStageClick } from '../../generic/components/buttons/two-stage-click';
 import { TabStyled } from '../../generic/components/tab-layouts/tab-styled';
 import { TabPanelStyled } from '../../generic/components/tab-layouts/tab-panel-styled';
 import { DtoComponentUiProps } from '../../playground/dto-component-wrapper';
-import { RenameEntity } from '../../playground/rename-entity';
+import { useRenameEntity } from '../../playground/rename-entity';
 import { isNotUndefined } from '../../api/main';
 import { AdjustAllocation } from './adjust-allocation';
+import { Button } from '@nextui-org/button';
+import RenameModal from '../../generic/components/modals/rename-modal';
 
-export function CurriculumDeliveryModel({
-  entity: model,
-  deleted,
-  dispatchWithoutControl,
-  dispatchDeletion,
-  entityClass
-}: DtoComponentUiProps<WorkProjectSeriesSchemaDto>) {
+export function CurriculumDeliveryModel(
+  props: DtoComponentUiProps<WorkProjectSeriesSchemaDto>
+) {
+  const {
+    entity: model,
+    deleted,
+    dispatchWithoutControl,
+    dispatchDeletion,
+    entityClass
+  } = props;
+
+  const { openModal, ...renameModalProps } = useRenameEntity(
+    entityClass,
+    model,
+    'curriculumDeliveryModel',
+    dispatchWithoutControl
+  );
+
   return (
     <Card className={'overflow-x-auto p-0'}>
       <CardBody>
@@ -48,12 +61,15 @@ export function CurriculumDeliveryModel({
                 </TwoStageClick>
               )}
 
-              <RenameEntity
-                entity={model}
-                entityClass={entityClass}
-                deleted={deleted}
-                dispatchWithoutControl={dispatchWithoutControl}
-              />
+              <Button
+                onPress={openModal}
+                size={'sm'}
+                className={'px-unit-2'}
+                // endContent={}
+              >
+                <span className={'text-left truncate ...'}>{model.name}</span>
+                <PencilSquareIcon className={'h-full'} />
+              </Button>
             </div>
             <Tab.List className={'grid col-span-2 grow grid-cols-2'}>
               <TabStyled>Periods</TabStyled>
@@ -62,16 +78,17 @@ export function CurriculumDeliveryModel({
           </div>
 
           <TabPanelStyled>
-            <AdjustAllocation modelId={model.id}></AdjustAllocation>
+            <AdjustAllocation {...props}></AdjustAllocation>
           </TabPanelStyled>
           <TabPanelStyled>
-            <Text>{model.workTaskType.knowledgeDomainName}</Text>
+            <Text>{model.workTaskTypeId}</Text>
             <Text className="text-right">
-              {model.workTaskType.serviceCategoryKnowledgeDomainDescriptor}
+              LessonTypeId{/*Todo: replace this with context-supplied value.*/}
             </Text>
           </TabPanelStyled>
         </Tab.Group>
       </CardBody>
+      <RenameModal {...renameModalProps} />
     </Card>
   );
 }
