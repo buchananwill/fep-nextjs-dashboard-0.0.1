@@ -6,7 +6,8 @@ import {
 import { NameIdStringTuple } from '../api/dtos/NameIdStringTupleSchema';
 import { Badge } from '@nextui-org/badge';
 import DtoComponentWrapper, {
-  DtoComponentUiProps
+  DtoComponentUiProps,
+  DtoUiComponent
 } from './dto-component-wrapper';
 import { getIdListContextKey } from '../selective-context/components/controllers/dto-id-list-controller';
 import { EmptyArray, HasId } from '../api/main';
@@ -18,17 +19,20 @@ export default function DtoComponentArrayGenerator<T extends HasId>({
   renderEachAs: WrappedComponent
 }: {
   entityName: string;
-  renderEachAs?: (props: DtoComponentUiProps<T>) => ReactNode;
+  renderEachAs?: DtoUiComponent<T>;
 }) {
   const contextKey = getIdListContextKey(entityName);
   const { currentState } = useSelectiveContextGlobalListener<number[]>({
     contextKey,
-    listenerKey: 'someComponent',
+    listenerKey: 'dtoComponentArrayGenerator',
     initialValue: EmptyArray
   });
+
+  console.log(currentState);
+
   return currentState.map((id) => (
     <DtoComponentWrapper<T>
-      entityName={'workTaskType'}
+      entityClass={entityName}
       id={id}
       key={`${entityName}:${id}`}
       uiComponent={WrappedComponent}

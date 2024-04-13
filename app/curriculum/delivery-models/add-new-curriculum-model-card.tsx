@@ -9,7 +9,6 @@ import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
 import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
-import { AdjustAllocation } from './curriculum-delivery-model';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
@@ -30,6 +29,7 @@ import {
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
 import { isNotNull } from '../../api/main';
 import { postList } from '../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
+import { AdjustAllocation } from './adjust-allocation';
 
 export interface NameAccessor<T> extends AccessorFunction<T, string> {
   (object: T): string;

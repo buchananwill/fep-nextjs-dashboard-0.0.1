@@ -17,14 +17,22 @@ export interface DtoListControllerProps<T extends HasId> {
   commitServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;
 }
 
+function getNameSpacedKey(entityName: string, keyType: string) {
+  return `${entityName}:${keyType}`;
+}
+
 export function getIdListContextKey(entityName: string) {
-  return `${entityName}:idList`;
+  return getNameSpacedKey(entityName, 'idList');
 }
 
 const listenerKey = 'listController';
 
 export function getChangesContextKey(entityName: string) {
-  return `${entityName}:changes`;
+  return getNameSpacedKey(entityName, 'changes');
+}
+
+export function getDeletedContextKey(entityName: string) {
+  return getNameSpacedKey(entityName, 'deleted');
 }
 
 export default function DtoIdListController({
@@ -46,6 +54,14 @@ export default function DtoIdListController({
     (string | number)[]
   >({
     contextKey: getChangesContextKey(entityName),
+    listenerKey: `${entityName}:listenerKey`,
+    initialValue: EmptyArray
+  });
+
+  const { currentState: deletedDtos } = useSelectiveContextAnyController<
+    (string | number)[]
+  >({
+    contextKey: getDeletedContextKey(entityName),
     listenerKey: `${entityName}:listenerKey`,
     initialValue: EmptyArray
   });

@@ -30,8 +30,10 @@ export function useDtoStoreDispatch<T extends HasUuidDto | HasNumberIdDto>(
   entityType: string,
   listenerKey: string
 ) {
+  console.log('DtoStoreDispatch Listener Key:', listenerKey);
+
   return useSelectiveContextAnyDispatch<T>({
-    contextKey: `${entityType}:${id}`,
+    contextKey: getEntityNamespaceContextKey(entityType, id),
     initialValue: ObjectPlaceholder as T,
     listenerKey: listenerKey
   });
@@ -42,7 +44,7 @@ export function useDtoStoreListener<T extends HasUuidDto | HasNumberIdDto>(
   listenerKey: string
 ) {
   return useSelectiveContextGlobalListener<T>({
-    contextKey: `${entityType}:${id}`,
+    contextKey: getEntityNamespaceContextKey(entityType, id),
     initialValue: ObjectPlaceholder as T,
     listenerKey: listenerKey
   });
