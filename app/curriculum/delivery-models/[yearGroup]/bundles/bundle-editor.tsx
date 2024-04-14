@@ -5,23 +5,15 @@ import { Tab } from '@headlessui/react';
 
 import React, { Fragment, useMemo, useState } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { useCurriculumModelContext } from '../../contexts/use-curriculum-model-context';
 import { usePathname } from 'next/navigation';
 import { BundlePanel } from './bundle-panel';
-
-import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
 import { useSelectiveContextControllerString } from '../../../../selective-context/components/typed/selective-context-manager-string';
 import { useSelectiveContextKeyMemo } from '../../../../selective-context/hooks/generic/use-selective-context-listener';
 import { produce } from 'immer';
 import { TrashIcon } from '@heroicons/react/20/solid';
 import { useSelectiveContextDispatchBoolean } from '../../../../selective-context/components/typed/selective-context-manager-boolean';
-import {
-  useSelectiveContextControllerNumberList,
-  useSelectiveContextDispatchNumberList
-} from '../../../../selective-context/components/typed/selective-context-manager-number-list';
+import { useSelectiveContextControllerNumberList } from '../../../../selective-context/components/typed/selective-context-manager-number-list';
 import { TransientIdOffset } from '../../../../graphing/editing/functions/graph-edits';
-
-import { DeletedBundlesList } from '../../contexts/bundle-items-context-provider';
 
 import { sumAllSchemas } from '../../functions/sum-delivery-allocations';
 import RenameModal from '../../../../generic/components/modals/rename-modal';
@@ -37,6 +29,8 @@ import {
 } from '../../../../selective-context/keys/work-series-schema-bundle-keys';
 import { RenameContextKey } from '../../../../selective-context/keys/modal-keys';
 import { Button } from '@nextui-org/button';
+import { useStringMapContextController } from '../../../../graphing/graph-types/work-task-types/use-string-map-context-controller';
+import { WorkProjectSeriesSchemaDto } from '../../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
 function bundleSort(
   bun1: WorkSeriesSchemaBundleLeanDto,
@@ -60,18 +54,24 @@ export function BundleEditor({
 }: {
   schemaOptions: StringMap<string>;
 }) {
-  const { bundleItemsMap, dispatch: updateBundles } = useBundleItemsContext();
-
+  const { currentState: schemaMap } = useStringMapContextController<
+    WorkProjectSeriesSchemaDto,
+    string
+  >('workProjectSeriesSchema', BundleEditorKey);
+  const { currentState: bundleMap } = useStringMapContextController<
+    WorkSeriesSchemaBundleLeanDto,
+    number
+  >('workSeriesSchemaBundle', BundleEditorKey);
   const sortedBundleList = useMemo(() => {
-    return Object.entries(bundleItemsMap)
+    return Object.entries(bundleMap)
       .sort((entry1, entry2) => bundleSort(entry1[1], entry2[1]))
       .map((entry) => entry[1]);
-  }, [bundleItemsMap]);
+  }, [bundleMap]);
 
   const schemaBundles = useMemo(() => {
     return sortedBundleList.map((dto) => dto.workProjectSeriesSchemaIds);
   }, [sortedBundleList]);
-  const { curriculumModelsMap } = useCurriculumModelContext();
+
   const pathname = usePathname();
   const lastIndexOf = pathname?.lastIndexOf('/');
   const yearGroup =
@@ -100,15 +100,6 @@ export function BundleEditor({
       initialValue: EmptyArray
     });
 
-  const {
-    currentState: deleteBundles,
-    dispatchWithoutControl: setDeleteBundles
-  } = useSelectiveContextDispatchNumberList({
-    contextKey: DeletedBundlesList,
-    listenerKey: BundleEditorKey,
-    initialValue: EmptyArray
-  });
-
   const [activeTab, setActiveTab] = useState(0);
 
   const { show, onClose, openModal } = useModal();
@@ -117,22 +108,20 @@ export function BundleEditor({
     function getActiveBundleAndId() {
       const activeLeanDto = sortedBundleList[activeTab];
       const { id } = activeLeanDto;
-      const stateBundle = bundleItemsMap[activeLeanDto.id.toString()];
+      const stateBundle = bundleMap[activeLeanDto.id.toString()];
       return { id, stateBundle };
     }
     return getActiveBundleAndId();
-  }, [activeTab, bundleItemsMap, sortedBundleList]);
+  }, [activeTab, bundleMap, sortedBundleList]);
 
   const sumOfAllBundles = useMemo(() => {
     const flatList = sortedBundleList
       .map((bundle) =>
-        bundle.workProjectSeriesSchemaIds.map(
-          (schemaId) => curriculumModelsMap[schemaId]
-        )
+        bundle.workProjectSeriesSchemaIds.map((schemaId) => schemaMap[schemaId])
       )
       .reduce((prev, curr) => [...prev, ...curr], []);
     return sumAllSchemas(flatList);
-  }, [sortedBundleList, curriculumModelsMap]);
+  }, [sortedBundleList, schemaMap]);
 
   const badgeColor =
     sumOfAllBundles > 60
@@ -143,11 +132,11 @@ export function BundleEditor({
 
   const deleteBundle = (id: number) => {
     setActiveTab((prev) => Math.max(0, prev - 1));
-    setDeleteBundles([...deleteBundles, id]);
-    updateBundles({
-      type: 'delete',
-      payload: { key: id.toString(), data: bundleItemsMap[id.toString()] }
-    });
+    // setDeleteBundles([...deleteBundles, id]);
+    // updateBundles({
+    //   type: 'delete',
+    //   payload: { key: id.toString(), data: bundleItemsMap[id.toString()] }
+    // });
     dispatchWithoutControl(true);
   };
 
@@ -163,10 +152,10 @@ export function BundleEditor({
     const immerBundle = produce(stateBundle, (draft) => {
       draft.name = currentState;
     });
-    updateBundles({
-      type: 'update',
-      payload: { key: id.toString(), data: immerBundle }
-    });
+    // updateBundles({
+    //   type: 'update',
+    //   payload: { key: id.toString(), data: immerBundle }
+    // });
     dispatchWithoutControl(true);
     onClose();
   };
@@ -199,10 +188,10 @@ export function BundleEditor({
       name: `Unnamed Bundle ${nextId}`,
       workProjectSeriesSchemaIds: []
     };
-    updateBundles({
-      type: 'update',
-      payload: { key: nextId.toString(), data: newBundle }
-    });
+    // updateBundles({
+    //   type: 'update',
+    //   payload: { key: nextId.toString(), data: newBundle }
+    // });
     setActiveTab(sortedBundleList.length);
     dispatchWithoutControl(true);
   };
@@ -241,7 +230,7 @@ export function BundleEditor({
                 const { name, workProjectSeriesSchemaIds } = bundleFromList;
                 const workProjectSeriesSchemaDtos =
                   workProjectSeriesSchemaIds.map(
-                    (schemaId) => curriculumModelsMap[schemaId]
+                    (schemaId) => schemaMap[schemaId]
                   );
                 const totalPeriods = sumAllSchemas(workProjectSeriesSchemaDtos);
 

@@ -11,7 +11,7 @@ import {
 } from './use-work-task-type-context';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
 
-import { getPayloadArray } from '../use-editing-context-dependency';
+import { getPayloadArray } from '../get-payload-array';
 import { UnsavedChangesModal } from '../../../generic/components/modals/unsaved-changes-modal';
 import { useSyncStringMapToProps } from '../../../contexts/string-map-context/use-sync-string-map-to-props';
 import { IdStringFromNumberAccessor } from '../../../premises/classroom-suitability/rating-table-accessor-functions';

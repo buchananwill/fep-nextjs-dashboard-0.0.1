@@ -6,7 +6,7 @@ import {
   putList
 } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { parseTen } from '../../../api/date-and-time';
-import { createSchemeExampleListFromWorkTaskTypes } from './bundles/createSchemeExampleListFromWorkTaskTypes';
+import { createSchemaExampleListFromWorkTaskTypes } from './bundles/createSchemaExampleListFromWorkTaskTypes';
 import { CurriculumModelNameListValidator } from './curriculum-model-name-list-validator';
 import React from 'react';
 import { AddNewCurriculumModelCard } from '../add-new-curriculum-model-card';
@@ -32,7 +32,7 @@ export default async function Page({
     return <DataNotFoundCard>Lesson Types Empty!</DataNotFoundCard>;
   }
 
-  const schemaExampleList = createSchemeExampleListFromWorkTaskTypes(
+  const schemaExampleList = createSchemaExampleListFromWorkTaskTypes(
     taskTypesResponse.data
   );
 

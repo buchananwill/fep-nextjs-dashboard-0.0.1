@@ -1,8 +1,6 @@
 import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';
-import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
-import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
 
 import { getDtoListByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkTaskType';
 import { getDtoListByExampleList as getBundlesByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
@@ -11,7 +9,8 @@ import { parseTen } from '../../../../api/date-and-time';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 import { EmptyArray } from '../../../../api/main';
 import { WorkTaskTypeDto } from '../../../../api/dtos/WorkTaskTypeDtoSchema';
-import { createSchemeExampleListFromWorkTaskTypes } from './createSchemeExampleListFromWorkTaskTypes';
+import { createSchemaExampleListFromWorkTaskTypes } from './createSchemaExampleListFromWorkTaskTypes';
+import DtoControllerArray from '../../../../selective-context/components/controllers/dto-controller-array';
 
 export default async function Page({
   params: { yearGroup },
@@ -33,15 +32,10 @@ export default async function Page({
   const workTaskTypes: WorkTaskTypeDto[] = taskTypesResponse.data || EmptyArray;
 
   const schemaExampleList =
-    createSchemeExampleListFromWorkTaskTypes(workTaskTypes);
+    createSchemaExampleListFromWorkTaskTypes(workTaskTypes);
 
   const curriculumDeliveryModelSchemas =
     await getSchemasByExampleList(schemaExampleList);
-  // await getCurriculumDeliveryModelSchemasByKnowledgeLevel(
-  //   normalizeQueryParamToNumber(page, 0),
-  //   normalizeQueryParamToNumber(size, 40),
-  //   yearGroupOrdinalInt
-  // );
 
   const { status, data, message } = curriculumDeliveryModelSchemas;
   if (data === undefined) {
@@ -75,14 +69,20 @@ export default async function Page({
     return <Card>{message}</Card>;
   }
   return (
-    <BundleItemsContextProvider bundleItems={bundleLeanDtos}>
-      <CurriculumDeliveryModelsInit
-        workProjectSeriesSchemaDtos={
-          curriculumDeliveryModelSchemas.data || EmptyArray
-        }
-        taskTypeList={workTaskTypeDtos}
+    <>
+      <DtoControllerArray
+        dtoList={bundleLeanDtos}
+        entityName={'workSeriesSchemaBundle'}
+      />
+      <DtoControllerArray
+        dtoList={data}
+        entityName={'workProjectSeriesSchema'}
+      />
+      <DtoControllerArray
+        dtoList={workTaskTypeDtos}
+        entityName={'workTaskTypes'}
       />
       <BundleEditor schemaOptions={schemasIdsAndNames} />
-    </BundleItemsContextProvider>
+    </>
   );
 }

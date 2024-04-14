@@ -12,7 +12,7 @@ import NodeDetails from '../../components/node-details';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
 import { putGraph } from '../../../api/READ-ONLY-generated-actions/Organization';
-import { getPayloadArray } from '../../../curriculum/delivery-models/use-editing-context-dependency';
+import { getPayloadArray } from '../../../curriculum/delivery-models/get-payload-array';
 import { isNotUndefined } from '../../../api/main';
 import { getGraphUpdaterWithNameDeDuplication } from './get-graph-updater-with-name-de-duplication';
 import { useStringMapContextController } from '../work-task-types/use-string-map-context-controller';

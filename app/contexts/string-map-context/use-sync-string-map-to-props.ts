@@ -2,7 +2,7 @@
 import { MapDispatch, MapDispatchBatch, StringMap } from './string-map-reducer';
 import { Dispatch, useEffect, useRef } from 'react';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
-import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
+import { getPayloadArray } from '../../curriculum/delivery-models/get-payload-array';
 import { isNotUndefined } from '../../api/main';
 
 export function useSyncStringMapToProps<T>(

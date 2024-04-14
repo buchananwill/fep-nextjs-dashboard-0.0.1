@@ -7,7 +7,7 @@ import {
 import React, { Context, PropsWithChildren, useReducer } from 'react';
 import { useSelectiveContextControllerBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
 
-import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-context-dependency';
+import { getPayloadArray } from '../../curriculum/delivery-models/get-payload-array';
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { useSelectiveContextControllerStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';

@@ -1,5 +1,10 @@
 import React, { ReactNode } from 'react';
 import { useBundleItemsContext } from '../../contexts/use-bundle-Items-context';
+import { useSelectiveContextGlobalListener } from '../../../../selective-context/components/global/selective-context-manager-global';
+import { getNameSpacedKey } from '../../../../selective-context/components/controllers/dto-id-list-controller';
+import { getEntityNamespaceContextKey } from '../../../../selective-context/hooks/dtoStores/use-dto-store';
+import { ObjectPlaceholder } from '../../../../api/main';
+import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
 
 export function OptionChooserItem({
   children,
@@ -15,10 +20,17 @@ export function OptionChooserItem({
   optionKey: string;
   listenerKey: string;
 } & React.HTMLAttributes<HTMLInputElement>) {
-  const { bundleItemsMap } = useBundleItemsContext();
+  const { currentState: bundle } =
+    useSelectiveContextGlobalListener<WorkSeriesSchemaBundleLeanDto>({
+      contextKey: getEntityNamespaceContextKey(
+        'workSeriesSchemaBundle',
+        bundleKey
+      ),
+      listenerKey: `${bundleKey}:${optionKey}`,
+      initialValue: ObjectPlaceholder as WorkSeriesSchemaBundleLeanDto
+    });
 
-  const checked =
-    bundleItemsMap[bundleKey].workProjectSeriesSchemaIds.includes(optionKey);
+  const checked = bundle.workProjectSeriesSchemaIds.includes(optionKey);
 
   return (
     <label

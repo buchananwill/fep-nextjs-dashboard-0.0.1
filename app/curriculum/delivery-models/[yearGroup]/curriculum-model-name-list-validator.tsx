@@ -1,9 +1,12 @@
 'use client';
 import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
 import { ReactNode, useEffect, useMemo } from 'react';
-import { useCurriculumModelContext } from '../contexts/use-curriculum-model-context';
 import { useSelectiveContextControllerStringList } from '../../../selective-context/components/typed/selective-context-manager-string-list';
-import { EmptyIdArray } from '../contexts/curriculum-models-context-provider';
+import { EmptyArray, ObjectPlaceholder } from '../../../api/main';
+import { useSelectiveContextGlobalListener } from '../../../selective-context/components/global/selective-context-manager-global';
+import { getNameSpacedKey } from '../../../selective-context/components/controllers/dto-id-list-controller';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
+import { WorkProjectSeriesSchemaDto } from '../../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
 
 export const ValidatorContextKey = 'curriculum-model-name-list-validator';
 
@@ -16,7 +19,12 @@ export function CurriculumModelNameListValidator({
 }: {
   children: ReactNode;
 }) {
-  const { curriculumModelsMap } = useCurriculumModelContext();
+  const { currentState: curriculumModelsMap } =
+    useSelectiveContextGlobalListener<StringMap<WorkProjectSeriesSchemaDto>>({
+      contextKey: getNameSpacedKey('workProjectSeriesSchema', 'stringMap'),
+      listenerKey: ValidatorContextKey,
+      initialValue: ObjectPlaceholder
+    });
   const nameList = useMemo(() => {
     return Object.values(curriculumModelsMap).map(nameAccessor);
   }, [curriculumModelsMap]);

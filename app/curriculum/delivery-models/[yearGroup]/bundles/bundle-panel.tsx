@@ -8,6 +8,11 @@ import {
   SchemaBundleKeyPrefix,
   UnsavedBundleEdits
 } from '../../../../selective-context/keys/work-series-schema-bundle-keys';
+import { useSelectiveContextAnyDispatch } from '../../../../selective-context/components/global/selective-context-manager-global';
+import { getEntityNamespaceContextKey } from '../../../../selective-context/hooks/dtoStores/use-dto-store';
+import { ObjectPlaceholder } from '../../../../api/main';
+import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { WorkSeriesSchemaBundleDto } from '../../../../api/dtos/WorkSeriesSchemaBundleDtoSchema';
 
 interface BundlePanelProps {
   bundleId: string;
@@ -22,35 +27,34 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     return { schemaBundleKey, panelKey };
   }, [bundleId]);
 
-  const { bundleItemsMap, dispatch } = useBundleItemsContext();
-  const bundleItemsMapElement = bundleItemsMap[bundleId];
+  const { currentState: bundle, dispatchWithoutControl: updateBundle } =
+    useSelectiveContextAnyDispatch<WorkSeriesSchemaBundleDto>({
+      contextKey: getEntityNamespaceContextKey(
+        'workSeriesSchemaBundle',
+        bundleId
+      ),
+      listenerKey: panelKey,
+      initialValue: ObjectPlaceholder as WorkSeriesSchemaBundleDto
+    });
+
+  console.log(bundle);
 
   const removeItem = (schemaId: string) => {
-    const remainingItems =
-      bundleItemsMapElement.workProjectSeriesSchemaIds.filter(
-        (id) => id !== schemaId
-      );
+    const remainingItems = bundle.workProjectSeriesSchemaIds.filter(
+      (id) => id !== schemaId
+    );
     itemDispatch(remainingItems);
   };
 
   const addItem = (schemaId: string) => {
-    itemDispatch([
-      ...bundleItemsMapElement.workProjectSeriesSchemaIds,
-      schemaId
-    ]);
+    itemDispatch([...bundle.workProjectSeriesSchemaIds, schemaId]);
   };
 
   const itemDispatch = (updatedItems: string[]) => {
-    dispatch({
-      type: 'update',
-      payload: {
-        key: bundleId,
-        data: {
-          ...bundleItemsMapElement,
-          workProjectSeriesSchemaIds: updatedItems
-        }
-      }
-    });
+    updateBundle((bundle) => ({
+      ...bundle,
+      workProjectSeriesSchemaIds: updatedItems
+    }));
   };
 
   const { dispatchWithoutControl } = useSelectiveContextDispatchBoolean(
@@ -59,7 +63,7 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     false
   );
 
-  if (bundleItemsMapElement === undefined) {
+  if (bundle === undefined) {
     return <div>No state to render!</div>;
   }
 
@@ -67,7 +71,7 @@ export function BundlePanel({ bundleId, schemaOptions }: BundlePanelProps) {
     <TabPanelStyled>
       <div className={'grid-cols-2 w-full flex p-1 gap-1'}>
         <div className={'w-full'}>
-          {bundleItemsMapElement.workProjectSeriesSchemaIds.map((schemaId) => {
+          {bundle.workProjectSeriesSchemaIds.map((schemaId) => {
             return (
               <OptionChooserItem
                 key={`${bundleId}:${schemaId}`}
