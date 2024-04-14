@@ -12,7 +12,7 @@ import { ShowNodeEditing } from './show-node-editing';
 
 export interface NodePayload<T extends HasNumberIdDto> {
   node: DataNode<T>;
-  payload: React.JSX.Element;
+  payload?: React.JSX.Element;
 }
 export default function ForceGraphPage<T extends HasNumberIdDto>({
   dataGraph: graphDto,

@@ -27,6 +27,8 @@ export default function DtoIdListController({
     initialValue: idListArray
   });
 
+  console.log(entityName, currentState);
+
   const { currentState: changedDtos } = useSelectiveContextAnyController<
     (string | number)[]
   >({
@@ -98,7 +100,7 @@ export interface DtoListControllerProps<T extends HasId> {
   deleteServerAction?: (idList: any[]) => ActionResponsePromise<any[]>;
 }
 
-function getNameSpacedKey(entityName: string, keyType: string) {
+export function getNameSpacedKey(entityName: string, keyType: string) {
   return `${entityName}:${keyType}`;
 }
 

@@ -8,6 +8,7 @@ import {
 } from '../../hooks/generic/use-selective-context-controller';
 import { useSelectiveContextListener } from '../../hooks/generic/use-selective-context-listener';
 import { useSelectiveContextDispatch } from '../../hooks/generic/use-selective-context-dispatch';
+import { ObjectPlaceholder } from '../../../api/main';
 
 export default function SelectiveContextManagerGlobal({
   children
@@ -21,8 +22,8 @@ export default function SelectiveContextManagerGlobal({
 
 export function useSelectiveContextAnyController<T>({
   contextKey,
-  initialValue,
-  listenerKey
+  listenerKey,
+  initialValue
 }: UseSelectiveContextParams<T>) {
   return useSelectiveContextController<T>(
     contextKey,
@@ -36,7 +37,7 @@ export function useSelectiveContextAnyController<T>({
 export function useSelectiveContextAnyDispatch<T>({
   contextKey,
   listenerKey,
-  initialValue
+  initialValue = ObjectPlaceholder as T
 }: UseSelectiveContextParams<T>) {
   return useSelectiveContextDispatch<T>(
     contextKey,
@@ -51,8 +52,10 @@ export function useSelectiveContextAnyDispatch<T>({
 export function useSelectiveContextGlobalListener<T>({
   contextKey,
   listenerKey,
-  initialValue
+  initialValue = ObjectPlaceholder as T
 }: UseSelectiveContextParams<T>) {
+  console.log(contextKey, listenerKey);
+
   return useSelectiveContextListener<T>(
     contextKey,
     listenerKey,

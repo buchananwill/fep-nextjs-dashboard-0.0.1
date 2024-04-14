@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, PropsWithChildren } from 'react';
+import React, { FC, Fragment, PropsWithChildren } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DataNode } from '../../api/zod-mods';
@@ -12,12 +12,18 @@ import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { HasNumberIdDto } from '../../api/dtos/HasNumberIdDtoSchema';
 import { Button } from '@nextui-org/button';
+import { NodeDetailsUiComponentProps } from '../graph-types/work-task-types/work-task-type-dto-details';
 
 export function NodeDetailWrapper<T extends HasNumberIdDto>({
   label,
   children,
-  node
-}: { label: string; node: DataNode<T> } & PropsWithChildren) {
+  node,
+  detailsUiComponent: Details
+}: {
+  label: string;
+  node: DataNode<T>;
+  detailsUiComponent?: FC<NodeDetailsUiComponentProps<T>>;
+} & PropsWithChildren) {
   const { dispatch } = useNodeInteractionContext();
   const isSelected = useNodeSelectedListener(node.id);
 
@@ -50,7 +56,9 @@ export function NodeDetailWrapper<T extends HasNumberIdDto>({
             </SelectionOutline>
           </div>
 
-          <Disclosure.Panel>{children}</Disclosure.Panel>
+          <Disclosure.Panel>
+            {Details && <Details node={node} />}
+          </Disclosure.Panel>
         </>
       )}
     </Disclosure>

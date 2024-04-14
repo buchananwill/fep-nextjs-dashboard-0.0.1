@@ -1,39 +1,57 @@
 'use client';
 import { DataNode } from '../../../api/zod-mods';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { WorkTaskTypeDto } from '../../../api/dtos/WorkTaskTypeDtoSchema';
-import {
-  NodeDetailsListBoxButton,
-  NodeDetailsListBoxOption,
-  NodeDetailsListBoxOptions
-} from '../organization/curriculum-delivery-details';
-import { useServiceCategoryContext } from '../../../work-types/lessons/use-service-category-context';
-import { Listbox } from '@headlessui/react';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
 import { useDirectSimRefEditsDispatch } from '../../editing/functions/use-graph-edit-button-hooks';
 import {
-  ColumnOne,
-  ColumnsTwoToFour,
   RenameWorkTaskType,
   WorkTaskTypeDtoDetailsListenerKey
 } from './rename-work-task-type';
+import { useSelectiveContextGlobalListener } from '../../../selective-context/components/global/selective-context-manager-global';
+import { getNameSpacedKey } from '../../../selective-context/components/controllers/dto-id-list-controller';
+import { KnowledgeDomainDto } from '../../../api/dtos/KnowledgeDomainDtoSchema';
+import { KnowledgeLevelDto } from '../../../api/dtos/KnowledgeLevelDtoSchema';
+import { AssignItemFromObjectEntries } from './assign-item-from-object-entries';
+import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
+import { ObjectPlaceholder } from '../../../api/main';
+
+export interface NodeDetailsUiComponentProps<T extends HasNumberIdDto> {
+  node: DataNode<T>;
+}
 
 export default function WorkTaskTypeDtoDetails({
   node
-}: {
-  node: DataNode<WorkTaskTypeDto>;
-}) {
+}: NodeDetailsUiComponentProps<WorkTaskTypeDto>) {
   const { id, data } = node;
   const { knowledgeDomainId, knowledgeLevelId } = data;
 
-  const { domainMap, levelMap } = useServiceCategoryContext();
+  const { currentState: kDomainMap } = useSelectiveContextGlobalListener<
+    StringMap<KnowledgeDomainDto>
+  >({
+    contextKey: getNameSpacedKey('knowledgeDomain', 'stringMap'),
+    listenerKey: `workTaskType:${node.id}:details`,
+    initialValue: ObjectPlaceholder
+  });
+  const { currentState: kLevelMap } = useSelectiveContextGlobalListener<
+    StringMap<KnowledgeLevelDto>
+  >({
+    contextKey: getNameSpacedKey('knowledgeLevel', 'stringMap'),
+    listenerKey: `workTaskType:${node.id}:details`,
+    initialValue: ObjectPlaceholder
+  });
+
+  console.log(kLevelMap, kDomainMap, node);
+
+  console.log(knowledgeDomainId, knowledgeLevelId);
+
   const editListenerKey = `${WorkTaskTypeDtoDetailsListenerKey}-${id}`;
 
   const { incrementSimVersion, nodeListRef } =
     useDirectSimRefEditsDispatch<WorkTaskTypeDto>(editListenerKey);
 
   const handleKnowledgeDomainChange = (domainId: string) => {
-    const updatedDomain = domainMap[domainId];
+    const updatedDomain: KnowledgeDomainDto = kDomainMap[domainId];
     if (nodeListRef === null) return;
     const find = nodeListRef.current.find((n) => n.id === id);
     if (find === undefined) return;
@@ -51,65 +69,21 @@ export default function WorkTaskTypeDtoDetails({
         <RenameWorkTaskType node={node} />
         <AssignItemFromObjectEntries
           itemDescriptor={'Subject'}
-          currentAssignment={knowledgeDomainId.toString()}
+          currentAssignment={`${knowledgeDomainId}`}
           onChange={handleKnowledgeDomainChange}
-          optionsMap={domainMap}
+          optionsMap={kDomainMap}
           labelAccessor={(kd) => kd.name}
           idAccessor={(kd) => kd.id.toString()}
         />
         <AssignItemFromObjectEntries
           itemDescriptor={'Year'}
-          currentAssignment={knowledgeLevelId.toString()}
+          currentAssignment={`${knowledgeLevelId}`}
           onChange={handleKnowledgeLevelChange}
-          optionsMap={levelMap}
+          optionsMap={kLevelMap}
           labelAccessor={(kl) => kl.name}
           idAccessor={(kl) => kl.id.toString()}
         />
       </div>
     </div>
-  );
-}
-
-function AssignItemFromObjectEntries<T>({
-  itemDescriptor,
-  currentAssignment,
-  onChange,
-  optionsMap,
-  labelAccessor,
-  idAccessor
-}: {
-  itemDescriptor: string;
-  currentAssignment: string;
-  onChange: (value: string) => void;
-  optionsMap: StringMap<T>;
-  labelAccessor: (item: T) => string;
-  idAccessor: (item: T) => string;
-}) {
-  return (
-    <>
-      <ColumnOne>{itemDescriptor}</ColumnOne>
-      <ColumnsTwoToFour>
-        <Listbox value={currentAssignment} onChange={onChange}>
-          <Listbox.Button as={NodeDetailsListBoxButton}>
-            {labelAccessor(optionsMap[currentAssignment])}
-          </Listbox.Button>
-          <Listbox.Options as={NodeDetailsListBoxOptions} optionsWidth={'w-60'}>
-            {Object.values(optionsMap).map((option) => (
-              <Listbox.Option
-                value={idAccessor(option)}
-                key={`${itemDescriptor}-${idAccessor(option)}`}
-                as={Fragment}
-              >
-                {({ selected, active }) => (
-                  <NodeDetailsListBoxOption selected={selected} active={active}>
-                    {labelAccessor(option)}
-                  </NodeDetailsListBoxOption>
-                )}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </Listbox>
-      </ColumnsTwoToFour>
-    </>
   );
 }

@@ -12,8 +12,11 @@ import React from 'react';
 import WorkTaskTypeDtoDetails from './work-task-type-dto-details';
 import NodeDetails from '../../components/node-details';
 import { putGraph } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
+import { useStringMapContextController } from './use-string-map-context-controller';
 
 const graphUpdater = getGraphUpdaterWithNameDeDuplication(putGraph);
+
+const ListenerKey = `lessonTypeHierarchyGraph`;
 
 export function LessonTypeHierarchyGraph() {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<WorkTaskTypeDto>();
@@ -26,6 +29,16 @@ export function LessonTypeHierarchyGraph() {
     CloneFunctionWrapper,
     graphUpdater
   );
+  const { currentState: stringMapKd } = useStringMapContextController(
+    'knowledgeDomain',
+    ListenerKey
+  );
+  const { currentState: stringMapKl } = useStringMapContextController(
+    'knowledgeLevel',
+    ListenerKey
+  );
+
+  console.log(stringMapKd);
 
   nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     lessonTypeList.push(n.data.name);
@@ -38,13 +51,7 @@ export function LessonTypeHierarchyGraph() {
   const nodeDetailElements: NodePayload<WorkTaskTypeDto>[] =
     nodesRef.current.map((node) => {
       return {
-        node: node,
-        payload: (
-          <WorkTaskTypeDtoDetails
-            key={`delivery-details-${node.data.id}`}
-            node={node}
-          ></WorkTaskTypeDtoDetails>
-        )
+        node: node
       };
     });
 
@@ -59,6 +66,7 @@ export function LessonTypeHierarchyGraph() {
       <NodeDetails
         nodeDetailElements={nodeDetailElements}
         labels={lessonTypeList}
+        detailsUiComponent={WorkTaskTypeDtoDetails}
       />
     </NodeLinkRefWrapper>
   );

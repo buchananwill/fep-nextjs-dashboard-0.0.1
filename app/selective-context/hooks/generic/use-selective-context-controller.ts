@@ -64,11 +64,11 @@ export function useSelectiveContextController<T>(
   const dispatch = (action: UpdateAction<T>) => dispatchUpdate(action);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
-    if (freshRef[contextKey] === undefined) {
-      freshRef[contextKey] = initialValue;
-    }
-  }, [freshRef, initialValue, contextKey]);
+  // useEffect(() => {
+  if (freshRef[contextKey] === undefined) {
+    freshRef[contextKey] = initialValue;
+  }
+  // }, [freshRef, initialValue, contextKey]);
 
   useEffect(() => {
     if (!isInitialized) {
