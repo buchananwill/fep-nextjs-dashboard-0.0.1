@@ -1,37 +1,28 @@
-import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
-import { HasUuidDto } from '../../../api/dtos/HasUuidDtoSchema';
 import DtoController from './dto-controller';
-import { useMemo } from 'react';
-import DtoListController from './dto-id-list-controller';
-import { EmptyArray, HasId } from '../../../api/main';
-import { useSelectiveContextAnyController } from '../global/selective-context-manager-global';
-import { ActionResponsePromise } from '../../../api/actions/actionResponse';
-
-export interface DtoControllerArrayProps<
-  T extends HasNumberIdDto | HasUuidDto
-> {
-  dtoArray: T[];
-  entityName: string;
-  commitServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;
-}
+import DtoListController, {
+  DtoListControllerProps
+} from './dto-id-list-controller';
+import { HasId } from '../../../api/main';
 
 function getEntityNamespaceKey<T extends HasId>(entityName: string, dto: T) {
   return `${entityName}:${dto.id}`;
 }
 
 export default function DtoControllerArray<T extends HasId>({
-  dtoArray,
+  dtoList,
   entityName,
-  commitServerAction
-}: DtoControllerArrayProps<T>) {
+  updateServerAction,
+  deleteServerAction
+}: DtoListControllerProps<T>) {
   return (
     <>
       <DtoListController
-        dtoList={dtoArray}
+        dtoList={dtoList}
         entityName={entityName}
-        commitServerAction={commitServerAction}
+        updateServerAction={updateServerAction}
+        deleteServerAction={deleteServerAction}
       />
-      {dtoArray.map((dto) => (
+      {dtoList.map((dto) => (
         <DtoController
           key={getEntityNamespaceKey(entityName, dto)}
           dto={dto}

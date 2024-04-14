@@ -22,9 +22,9 @@ export default async function PlaygroundPage({}: {}) {
     <>
       {
         <DtoControllerArray
-          dtoArray={sortedList}
+          dtoList={sortedList}
           entityName={'workTaskType'}
-          commitServerAction={putList}
+          updateServerAction={putList}
         />
       }
       <Card className={'grid grid-cols-2 gap-2 py-2'}>

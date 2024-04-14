@@ -5,10 +5,8 @@ import Loading from '../loading';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <WorkTaskTypeContextProvider entityMap={{}}>
-      <CurriculumModelsContextProvider models={{}}>
-        <Suspense fallback={<Loading />}>{children}</Suspense>
-      </CurriculumModelsContextProvider>
-    </WorkTaskTypeContextProvider>
+    <CurriculumModelsContextProvider models={{}}>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </CurriculumModelsContextProvider>
   );
 }

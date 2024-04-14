@@ -5,6 +5,6 @@ export function createSchemeExampleListFromWorkTaskTypes(
   workTaskTypes: WorkTaskTypeDto[]
 ) {
   return workTaskTypes.map(
-    (dto) => ({ workTaskType: dto }) as Partial<WorkProjectSeriesSchemaDto>
+    (dto) => ({ workTaskTypeId: dto.id }) as Partial<WorkProjectSeriesSchemaDto>
   );
 }

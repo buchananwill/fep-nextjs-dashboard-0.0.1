@@ -4,32 +4,31 @@ import { Card } from '@nextui-org/card';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import React, { useMemo, useState } from 'react';
 
-import { useWorkTaskTypeContext } from './contexts/use-work-task-type-context';
-
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
 import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
-import { useCurriculumModelContext } from './contexts/use-curriculum-model-context';
 import { WorkTaskTypeDto } from '../../api/dtos/WorkTaskTypeDtoSchema';
 import { WorkProjectSeriesSchemaDto } from '../../api/dtos/WorkProjectSeriesSchemaDtoSchema';
-import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
-import { UnsavedCurriculumModelChanges } from './contexts/curriculum-models-context-provider';
 import { useRouter } from 'next/navigation';
 import {
   getStepperInterface,
   StepperContext
 } from '../../contexts/stepper/stepper-context-creator';
 import LandscapeStepper from '../../generic/components/buttons/landscape-stepper';
-
-import { getPayloadArray } from './use-editing-context-dependency';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import {
   ConfirmActionModal,
   useModal
 } from '../../generic/components/modals/confirm-action-modal';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
-import { isNotNull } from '../../api/main';
-import { postList } from '../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
+import { EmptyArray, isNotNull, isNotUndefined } from '../../api/main';
+import { postOne } from '../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { AdjustAllocation } from './adjust-allocation';
+import { useSelectiveContextListenerReadAll } from '../../selective-context/components/base/generic-selective-context-creator';
+import { SelectiveContextGlobal } from '../../selective-context/components/global/selective-context-creator-global';
+import { useSelectiveContextGlobalListener } from '../../selective-context/components/global/selective-context-manager-global';
+import { getIdListContextKey } from '../../selective-context/components/controllers/dto-id-list-controller';
+import { getEntityNamespaceContextKey } from '../../selective-context/hooks/dtoStores/use-dto-store';
+import { parseTen } from '../../api/date-and-time';
 
 export interface NameAccessor<T> extends AccessorFunction<T, string> {
   (object: T): string;
@@ -45,87 +44,75 @@ export function stringMapToIdNameTuple<T>(
   }));
 }
 
+const UnsavedModel: WorkProjectSeriesSchemaDto = {
+  id: '',
+  workTaskTypeId: NaN,
+  workProjectBandwidth: 1,
+  name: 'New model',
+  userToProviderRatio: 30,
+  deliveryAllocations: [],
+  shortCode: ''
+};
+
 export function AddNewCurriculumModelCard({
-  alreadyUnsaved,
   yearGroup
 }: {
   alreadyUnsaved: boolean;
   yearGroup: number;
 }) {
   const { show, onClose, openModal } = useModal();
-  const { workTaskTypeMap } = useWorkTaskTypeContext();
-  const { dispatch, curriculumModelsMap } = useCurriculumModelContext();
+  const selectiveContextReadAll =
+    useSelectiveContextListenerReadAll<WorkTaskTypeDto>(SelectiveContextGlobal);
+  const { currentState: workTaskTypeIdList } =
+    useSelectiveContextGlobalListener({
+      contextKey: getIdListContextKey('workTaskType'),
+      listenerKey: 'addCurriculumModel',
+      initialValue: EmptyArray
+    });
+
   const [newModelTaskType, setNewModelTaskType] =
     useState<NameIdStringTuple | null>(null);
-  const [nextModelId, setNextModelId] = useState(crypto.randomUUID());
-  const [revertUnsaved, setRevertUnsaved] = useState(true);
+
   const appRouterInstance = useRouter();
   const [teacherBandwidth, setTeacherBandwidth] = useState(1);
-
   const [studentToTeacherRatio, setStudentToTeacherRatio] = useState(30);
-
-  const { currentState, dispatchWithoutControl } =
-    useSelectiveContextDispatchBoolean(
-      UnsavedCurriculumModelChanges,
-      ':add-new-model',
-      alreadyUnsaved
-    );
+  const [unSavedModel, setUnsavedModel] = useState(UnsavedModel);
 
   const taskTypeSelectionList = useMemo(() => {
-    const filteredTaskTypes: StringMap<WorkTaskTypeDto> = {};
-    Object.entries(workTaskTypeMap)
-      .filter((entry) => entry[1].knowledgeLevelLevelOrdinal === yearGroup)
-      .forEach((entry) => (filteredTaskTypes[entry[0]] = entry[1]));
-    const tupleList = stringMapToIdNameTuple(
-      (type) => type.name,
-      filteredTaskTypes
-    );
+    const tupleList = workTaskTypeIdList
+      .map((id) =>
+        selectiveContextReadAll(
+          getEntityNamespaceContextKey('workTaskType', id)
+        )
+      )
+      .filter(isNotUndefined)
+      .filter(
+        (workTaskType) => workTaskType?.knowledgeLevelLevelOrdinal === yearGroup
+      )
+      .map((wtt) => ({ id: `${wtt.id}`, name: wtt.name }));
     tupleList.sort((t1, t2) => t1.name.localeCompare(t2.name));
     return tupleList;
-  }, [workTaskTypeMap, yearGroup]);
+  }, [selectiveContextReadAll, workTaskTypeIdList, yearGroup]);
 
   const handleOpen = () => {
-    if (currentState) setRevertUnsaved(false);
+    setUnsavedModel((model) => ({ ...model, id: crypto.randomUUID() }));
 
     openModal();
   };
 
   const handleCancel = () => {
-    dispatch({
-      type: 'delete',
-      payload: { key: nextModelId, data: {} as WorkProjectSeriesSchemaDto }
-    });
-    if (revertUnsaved) {
-      dispatchWithoutControl(false);
-    }
-    setNextModelId(crypto.randomUUID());
-    setNewModelTaskType(
-      taskTypeSelectionList.length > 0 ? taskTypeSelectionList[0] : null
-    );
     onClose();
   };
 
   const handleAddNewModel = () => {
     if (!isNotNull(newModelTaskType)) return;
-    const unsavedModel: WorkProjectSeriesSchemaDto = {
-      ...curriculumModelsMap[nextModelId],
-      id: nextModelId,
-      workTaskType: workTaskTypeMap[newModelTaskType.id],
-      workProjectBandwidth: 1,
-      name: 'New model',
-      userToProviderRatio: 30
+    const modelToPost: WorkProjectSeriesSchemaDto = {
+      ...unSavedModel,
+      workTaskTypeId: parseTen(newModelTaskType.id)
     };
+    postOne(modelToPost).then((r) => appRouterInstance.refresh());
 
-    postList([unsavedModel]).then((r) => {
-      if (r.data !== undefined) {
-        const payloadArray = getPayloadArray(r.data, (schema) => schema.id);
-        dispatch({ type: 'updateAll', payload: payloadArray });
-      }
-    });
-    dispatchWithoutControl(false);
-    setRevertUnsaved(true);
     onClose();
-    appRouterInstance.refresh();
   };
 
   return (
@@ -154,7 +141,12 @@ export function AddNewCurriculumModelCard({
             updateSelectedState={setNewModelTaskType}
             selectionDescriptor={'Select Type'}
           ></TupleSelector>
-          <AdjustAllocation modelId={nextModelId}></AdjustAllocation>
+          <AdjustAllocation
+            entity={unSavedModel}
+            entityClass={'workProjectSeriesSchema'}
+            deleted={false}
+            dispatchWithoutControl={setUnsavedModel}
+          ></AdjustAllocation>
           <div className={'w-full pt-2 items-center gap-1 grid-cols-2 grid'}>
             Teacher bandwidth:{' '}
             <StepperContext.Provider

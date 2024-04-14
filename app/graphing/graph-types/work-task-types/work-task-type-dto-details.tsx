@@ -24,12 +24,7 @@ export default function WorkTaskTypeDtoDetails({
   node: DataNode<WorkTaskTypeDto>;
 }) {
   const { id, data } = node;
-  const {
-    serviceCategoryKnowledgeDomainDescriptor,
-    serviceCategoryKnowledgeLevelDescriptor,
-    knowledgeDomainId,
-    knowledgeLevelId
-  } = data;
+  const { knowledgeDomainId, knowledgeLevelId } = data;
 
   const { domainMap, levelMap } = useServiceCategoryContext();
   const editListenerKey = `${WorkTaskTypeDtoDetailsListenerKey}-${id}`;
@@ -55,7 +50,7 @@ export default function WorkTaskTypeDtoDetails({
       <div className={'grid grid-cols-3 gap-1 mb-1'}>
         <RenameWorkTaskType node={node} />
         <AssignItemFromObjectEntries
-          itemDescriptor={serviceCategoryKnowledgeDomainDescriptor}
+          itemDescriptor={'Subject'}
           currentAssignment={knowledgeDomainId.toString()}
           onChange={handleKnowledgeDomainChange}
           optionsMap={domainMap}
@@ -63,7 +58,7 @@ export default function WorkTaskTypeDtoDetails({
           idAccessor={(kd) => kd.id.toString()}
         />
         <AssignItemFromObjectEntries
-          itemDescriptor={serviceCategoryKnowledgeLevelDescriptor}
+          itemDescriptor={'Year'}
           currentAssignment={knowledgeLevelId.toString()}
           onChange={handleKnowledgeLevelChange}
           optionsMap={levelMap}

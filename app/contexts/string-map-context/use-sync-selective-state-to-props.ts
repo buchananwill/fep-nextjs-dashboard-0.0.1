@@ -11,6 +11,7 @@ export function useSyncSelectiveStateToProps<T>(
   const initialMapRef = useRef(propData);
 
   useEffect(() => {
+    console.log('syncing to prop...');
     if (initialMapRef.current !== propData && isNotUndefined(dispatch)) {
       dispatch({ contextKey, update: propData });
       initialMapRef.current = propData;

@@ -11,34 +11,11 @@ import { useModal } from '../../../generic/components/modals/confirm-action-moda
 import { useMemo } from 'react';
 import { useSyncSelectiveStateToProps } from '../../../contexts/string-map-context/use-sync-selective-state-to-props';
 
-export interface DtoListControllerProps<T extends HasId> {
-  dtoList: T[];
-  entityName: string;
-  commitServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;
-}
-
-function getNameSpacedKey(entityName: string, keyType: string) {
-  return `${entityName}:${keyType}`;
-}
-
-export function getIdListContextKey(entityName: string) {
-  return getNameSpacedKey(entityName, 'idList');
-}
-
-const listenerKey = 'listController';
-
-export function getChangesContextKey(entityName: string) {
-  return getNameSpacedKey(entityName, 'changes');
-}
-
-export function getDeletedContextKey(entityName: string) {
-  return getNameSpacedKey(entityName, 'deleted');
-}
-
 export default function DtoIdListController({
   entityName,
   dtoList,
-  commitServerAction
+  updateServerAction,
+  deleteServerAction
 }: DtoListControllerProps<any>) {
   const idListArray = useMemo(() => {
     return dtoList.map((dto) => dto.id);
@@ -75,7 +52,7 @@ export default function DtoIdListController({
   console.log(changedDtos);
 
   async function handleCommit() {
-    if (!isNotUndefined(commitServerAction)) {
+    if (!isNotUndefined(updateServerAction)) {
       console.error('No server action defined');
       modalProps.onClose();
       return;
@@ -92,7 +69,8 @@ export default function DtoIdListController({
       .filter(isNotUndefined);
     // const entityList = Object.values(currentModels as StringMap<T>);
     console.log(updatedEntities);
-    commitServerAction(updatedEntities);
+    updateServerAction(updatedEntities);
+    if (isNotUndefined(deleteServerAction)) deleteServerAction(deletedDtos);
     modalProps.onClose();
   }
 
@@ -104,11 +82,36 @@ export default function DtoIdListController({
   );
   return (
     <UnsavedChangesModal
-      unsavedChanges={changedDtos.length > 0}
+      unsavedChanges={changedDtos.length > 0 || deletedDtos.length > 0}
       handleOpen={handleOpen}
       {...modalProps}
       onConfirm={handleCommit}
       onCancel={modalProps.onClose}
     />
   );
+}
+
+export interface DtoListControllerProps<T extends HasId> {
+  dtoList: T[];
+  entityName: string;
+  updateServerAction?: (entityList: T[]) => ActionResponsePromise<T[]>;
+  deleteServerAction?: (idList: any[]) => ActionResponsePromise<any[]>;
+}
+
+function getNameSpacedKey(entityName: string, keyType: string) {
+  return `${entityName}:${keyType}`;
+}
+
+export function getIdListContextKey(entityName: string) {
+  return getNameSpacedKey(entityName, 'idList');
+}
+
+const listenerKey = 'listController';
+
+export function getChangesContextKey(entityName: string) {
+  return getNameSpacedKey(entityName, 'changes');
+}
+
+export function getDeletedContextKey(entityName: string) {
+  return getNameSpacedKey(entityName, 'deleted');
 }
