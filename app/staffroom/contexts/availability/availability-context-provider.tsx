@@ -7,12 +7,13 @@ import {
 } from './availability-context';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import availabilityReducer from './availability-reducer';
-import { updateAvailabilities } from '../../../api/actions/custom/availability';
 import {
   ConfirmActionModal,
   ConfirmActionModalProps,
   useModal
 } from '../../../generic/components/modals/confirm-action-modal';
+import { putList } from '../../../api/READ-ONLY-generated-actions/ProviderRoleAvailability';
+import { ProviderRoleAvailabilityDto } from '../../../api/dtos/ProviderRoleAvailabilityDtoSchema';
 
 export default function AvailabilityContextProvider({
   children,
@@ -28,7 +29,11 @@ export default function AvailabilityContextProvider({
   const confirmChanges = () => {
     const { providerAvailability } = reducerState;
 
-    updateAvailabilities(providerAvailability).then((r) => {
+    const flatList: ProviderRoleAvailabilityDto[] = Object.values(
+      providerAvailability
+    ).reduce((prev, curr) => [...prev, ...curr], []);
+
+    putList(flatList).then((r) => {
       if (r.status >= 200 && r.status <= 300) {
         console.log('(Success!');
         dispatch({ type: 'clearUnsavedAvailability' });

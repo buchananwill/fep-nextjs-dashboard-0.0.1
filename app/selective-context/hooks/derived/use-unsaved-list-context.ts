@@ -17,7 +17,7 @@ export function useUnsavedListContext(
     useSelectiveContextDispatchStringList({
       contextKey: unsavedChangesContextKey,
       listenerKey: unsavedChangesListenerKey,
-      initialValue: EmptyIdArray
+      initialValue: EmptyArray
     });
   return useCallback(
     (idForMap: string) => {

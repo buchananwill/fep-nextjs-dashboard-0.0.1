@@ -5,7 +5,6 @@ import { DataNode } from '../../../api/zod-mods';
 import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
-import { getGraphUpdaterWithNameDeDuplication } from '../organization/curriculum-delivery-graph';
 import { CloneFunctionWrapper } from './clone-work-task-type';
 import { NodePayload } from '../../force-graph-page';
 import React from 'react';
@@ -13,6 +12,7 @@ import WorkTaskTypeDtoDetails from './work-task-type-dto-details';
 import NodeDetails from '../../components/node-details';
 import { putGraph } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
 import { useStringMapContextController } from './use-string-map-context-controller';
+import { getGraphUpdaterWithNameDeDuplication } from '../organization/get-graph-updater-with-name-de-duplication';
 
 const graphUpdater = getGraphUpdaterWithNameDeDuplication(putGraph);
 
@@ -37,8 +37,6 @@ export function LessonTypeHierarchyGraph() {
     'knowledgeLevel',
     ListenerKey
   );
-
-  console.log(stringMapKd);
 
   nodes.forEach((n: DataNode<WorkTaskTypeDto>) => {
     lessonTypeList.push(n.data.name);

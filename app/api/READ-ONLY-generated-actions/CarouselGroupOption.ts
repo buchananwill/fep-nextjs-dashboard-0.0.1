@@ -24,7 +24,7 @@ export const {
 );
 
 
-const {
+export const {
   getByRowIdListAndColumnIdList,
   getColumnIdList,
   getByRowIdList,

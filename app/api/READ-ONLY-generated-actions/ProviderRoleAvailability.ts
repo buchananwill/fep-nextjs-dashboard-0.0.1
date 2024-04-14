@@ -1,5 +1,5 @@
 'use server';
-import { WorkSeriesBundleAssignmentDto } from '../dtos/WorkSeriesBundleAssignmentDtoSchema';
+import { ProviderRoleAvailabilityDto } from '../dtos/ProviderRoleAvailabilityDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 import { generateIntersectionEndpointSet } from '../actions/template-intersection-endpoints';
 
@@ -17,10 +17,10 @@ export const {
   getDtoListByParamList,
   getDtoListByExampleList
 } = generateBaseEndpointSet<
-  WorkSeriesBundleAssignmentDto,
+  ProviderRoleAvailabilityDto,
   number
 >(
-  '/api/v2/workProjectSeriesSchemas/bundleAssignments'
+  '/api/v2/providerRoles/availabilities'
 );
 
 
@@ -30,10 +30,10 @@ export const {
   getByRowIdList,
   getIntersectionTable
 } = generateIntersectionEndpointSet<
-  WorkSeriesBundleAssignmentDto,
+  ProviderRoleAvailabilityDto,
   number,
   number
 >(
-  '/api/v2/workProjectSeriesSchemas/bundleAssignments'
+  '/api/v2/providerRoles/availabilities'
 );
 

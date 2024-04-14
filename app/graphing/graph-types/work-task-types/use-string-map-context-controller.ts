@@ -42,7 +42,7 @@ export function useStringMapContextController<T, U extends string | number>(
   }, [idList, selectiveContextReadAll, entityName]);
 
   const nameSpacedKey = getNameSpacedKey(entityName, 'stringMap');
-  console.log(nameSpacedKey, stringMap);
+
   return useSelectiveContextAnyController<StringMap<T>>({
     contextKey: nameSpacedKey,
     listenerKey: listenerKey,

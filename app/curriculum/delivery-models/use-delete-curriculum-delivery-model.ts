@@ -1,7 +1,7 @@
 import { useSelectiveContextDispatchStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';
 import {
   DeletedCurriculumModelIdsKey,
-  EmptyIdArray,
+  EmptyArray,
   UnsavedCurriculumModelChanges
 } from './contexts/curriculum-models-context-provider';
 import { useSelectiveContextDispatchBoolean } from '../../selective-context/components/typed/selective-context-manager-boolean';
@@ -15,7 +15,7 @@ export function useDeleteCurriculumDeliveryModel(
     useSelectiveContextDispatchStringList({
       contextKey: DeletedCurriculumModelIdsKey,
       listenerKey,
-      initialValue: EmptyIdArray
+      initialValue: EmptyArray
     });
   const { dispatchWithoutControl: setUnsavedChanges } =
     useSelectiveContextDispatchBoolean(

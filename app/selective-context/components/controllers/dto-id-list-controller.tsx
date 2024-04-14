@@ -27,8 +27,6 @@ export default function DtoIdListController({
     initialValue: idListArray
   });
 
-  console.log(entityName, currentState);
-
   const { currentState: changedDtos } = useSelectiveContextAnyController<
     (string | number)[]
   >({
@@ -50,8 +48,6 @@ export default function DtoIdListController({
   );
 
   const { openModal: handleOpen, ...modalProps } = useModal();
-
-  console.log(changedDtos);
 
   async function handleCommit() {
     if (!isNotUndefined(updateServerAction)) {

@@ -5,6 +5,7 @@ import { areIntervalsOverlapping } from 'date-fns/fp';
 import { WritableDraft } from 'immer/src/types/types-external';
 import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
 import { getStartAndEndDatesAsEpochal } from './get-start-and-end-dates-as-epochal';
+import { ProviderRoleAvailabilityDto } from '../../../api/dtos/ProviderRoleAvailabilityDtoSchema';
 
 export interface ToggleAvailability {
   type: 'toggleAvailability';
@@ -25,13 +26,13 @@ export interface ClearUnsavedAvailability {
 
 export interface UpdateProviderAvailabilities {
   type: 'updateProviderAvailabilities';
-  data: ProviderAvailabilityDto[];
+  data: ProviderRoleAvailabilityDto[];
 }
 
 export interface SetDndKey {
   type: 'setDndKey';
   key: string;
-  data: ProviderAvailabilityDto;
+  data: ProviderRoleAvailabilityDto;
 }
 
 export type AvailabilityAction =
@@ -56,7 +57,7 @@ export default function availabilityReducer(
           const dateNormalizedInterval = interval(start, end);
           const overlapCheck = areIntervalsOverlapping(dateNormalizedInterval);
           const availabilityOverlapCheck = (
-            nextAvail: WritableDraft<ProviderAvailabilityDto>
+            nextAvail: WritableDraft<ProviderRoleAvailabilityDto>
           ): boolean => {
             const { startDate, endDate } =
               getStartAndEndDatesAsEpochal(nextAvail);

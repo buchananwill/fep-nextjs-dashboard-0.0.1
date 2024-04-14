@@ -1,8 +1,9 @@
 import { ProviderAvailabilityDto } from '../../../api/dtos/ProviderAvailabilityDtoSchema';
 import { timeToZeroIndexedEpochalDateTime } from '../../../api/date-and-time';
+import { ProviderRoleAvailabilityDto } from '../../../api/dtos/ProviderRoleAvailabilityDtoSchema';
 
 export function getStartAndEndDatesAsEpochal(
-  providerAvailability: ProviderAvailabilityDto
+  providerAvailability: ProviderRoleAvailabilityDto
 ) {
   const {
     cycleSubspanDto: { start, end, zeroIndexedCycleDay }

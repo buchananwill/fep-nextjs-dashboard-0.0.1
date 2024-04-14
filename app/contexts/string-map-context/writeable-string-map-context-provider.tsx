@@ -11,9 +11,8 @@ import { getPayloadArray } from '../../curriculum/delivery-models/use-editing-co
 import { ActionResponsePromise } from '../../api/actions/actionResponse';
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import { useSelectiveContextControllerStringList } from '../../selective-context/components/typed/selective-context-manager-string-list';
-import { EmptyIdArray } from '../../curriculum/delivery-models/contexts/curriculum-models-context-provider';
 
-import { isNotUndefined } from '../../api/main';
+import { EmptyArray, isNotUndefined } from '../../api/main';
 import { useModal } from '../../generic/components/modals/confirm-action-modal';
 import { UnsavedChangesModal } from '../../generic/components/modals/unsaved-changes-modal';
 import { useSyncStringMapToProps } from './use-sync-string-map-to-props';
@@ -53,7 +52,7 @@ export function WriteableStringMapContextProvider<T>({
   const { currentState } = useSelectiveContextControllerStringList(
     unsavedChangesEntityKey,
     providerListenerKey,
-    EmptyIdArray
+    EmptyArray
   );
 
   useSyncStringMapToProps(

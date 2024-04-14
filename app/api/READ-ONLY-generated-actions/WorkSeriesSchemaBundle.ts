@@ -1,5 +1,5 @@
 'use server';
-import { WorkSeriesSchemaBundleLeanDto } from '../dtos/WorkSeriesSchemaBundleLeanDtoSchema';
+import { WorkSeriesSchemaBundleDto } from '../dtos/WorkSeriesSchemaBundleDtoSchema';
 import { generateBaseEndpointSet } from '../actions/template-base-endpoints';
 
 export const {
@@ -16,7 +16,7 @@ export const {
   getDtoListByParamList,
   getDtoListByExampleList
 } = generateBaseEndpointSet<
-  WorkSeriesSchemaBundleLeanDto,
+  WorkSeriesSchemaBundleDto,
   number
 >(
   '/api/v2/workProjectSeriesSchemas/bundles'

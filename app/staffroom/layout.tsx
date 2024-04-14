@@ -3,8 +3,6 @@ import AvailabilityContextProvider from './contexts/availability/availability-co
 import { ProviderRoleDto } from '../api/dtos/ProviderRoleDtoSchema';
 import { getTeachersV2 } from '../api/actions/custom/provider-roles';
 import { CycleSubspanDto } from '../api/dtos/CycleSubspanDtoSchema';
-import { getAvailabilities } from '../api/actions/custom/availability';
-import { ProviderAvailabilityDto } from '../api/dtos/ProviderAvailabilityDtoSchema';
 import { CycleDto } from '../api/dtos/CycleDtoSchema';
 import { CycleModelMock } from './contexts/availability/availability-context';
 import CalendarRangeContextProvider from '../generic/components/calendar/range/calendar-range-context-provider';
@@ -15,6 +13,8 @@ import { ProviderRoleColorCodingContextProvider } from './provider-role-color-co
 import { getAll } from '../api/READ-ONLY-generated-actions/CycleSubspan';
 import { getOne } from '../api/READ-ONLY-generated-actions/Cycle';
 import { isNotUndefined } from '../api/main';
+import { getDtoListByExampleList } from '../api/READ-ONLY-generated-actions/ProviderRoleAvailability';
+import { ProviderRoleAvailabilityDto } from '../api/dtos/ProviderRoleAvailabilityDtoSchema';
 
 export default async function StaffroomLayout({
   children
@@ -41,9 +41,11 @@ export default async function StaffroomLayout({
     cycleModel = cycleOptional;
   }
 
-  const availabilityMap = new Map<number, ProviderAvailabilityDto[]>();
+  const availabilityMap = new Map<number, ProviderRoleAvailabilityDto[]>();
   for (let providerRoleDto of teacherList) {
-    const { data } = await getAvailabilities(providerRoleDto.id);
+    const { data } = await getDtoListByExampleList([
+      { providerRoleId: providerRoleDto.id }
+    ]);
     if (data) availabilityMap.set(providerRoleDto.id, data);
   }
 

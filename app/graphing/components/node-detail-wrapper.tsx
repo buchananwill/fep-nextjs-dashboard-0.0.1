@@ -16,7 +16,6 @@ import { NodeDetailsUiComponentProps } from '../graph-types/work-task-types/work
 
 export function NodeDetailWrapper<T extends HasNumberIdDto>({
   label,
-  children,
   node,
   detailsUiComponent: Details
 }: {

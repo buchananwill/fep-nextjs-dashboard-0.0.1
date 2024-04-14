@@ -1,63 +1,25 @@
 'use client';
-import {
-  DataNode,
-  GraphDto,
-  GraphDtoPutRequestBody
-} from '../../../api/zod-mods';
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import { DataNode } from '../../../api/zod-mods';
+import React, { PropsWithChildren } from 'react';
 import { Card } from '@nextui-org/card';
 import CurriculumDeliveryDetails from './curriculum-delivery-details';
 import { NodePayload } from '../../force-graph-page';
 import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
-import { useBundleAssignmentsContext } from '../../../curriculum/delivery-models/contexts/use-bundle-assignments-context';
 import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
-import { HasNumberIdDto } from '../../../api/dtos/HasNumberIdDtoSchema';
 import { cloneOrganizationNode } from './clone-organization-node';
-import { mapToPartyIdBundleIdRecords } from '../../../curriculum/delivery-models/functions/map-to-party-id-bundle-id-records';
 import { NodeLinkRefWrapper } from '../../graph/node-link-ref-wrapper';
 import NodeDetails from '../../components/node-details';
 import { useNodeEditing } from '../../editing/functions/use-node-editing';
 import { useNodeAndLinkRefs } from '../../graph/use-node-and-link-refs';
-import { deDuplicateNames } from '../../editing/functions/increment-clone-suffix';
-import _ from 'lodash';
-import { HasNameDto } from '../../../api/dtos/HasNameDtoSchema';
-import { ActionResponsePromise } from '../../../api/actions/actionResponse';
 import { putGraph } from '../../../api/READ-ONLY-generated-actions/Organization';
 import { getPayloadArray } from '../../../curriculum/delivery-models/use-editing-context-dependency';
 import { isNotUndefined } from '../../../api/main';
+import { getGraphUpdaterWithNameDeDuplication } from './get-graph-updater-with-name-de-duplication';
+import { useStringMapContextController } from '../work-task-types/use-string-map-context-controller';
 
 export const UnsavedNodeDataContextKey = 'unsaved-node-data';
 export const NodePositionsKey = 'node-positions-key';
 const cloneFunctionWrapper = { cachedFunction: cloneOrganizationNode };
-
-export function getGraphUpdaterWithNameDeDuplication<
-  T extends HasNumberIdDto & HasNameDto
->(
-  putUpdatedGraph: (
-    request: GraphDtoPutRequestBody<T>
-  ) => ActionResponsePromise<GraphDto<T>>
-) {
-  return (request: GraphDtoPutRequestBody<T>) => {
-    const { graphDto } = request;
-    const { nodes } = graphDto;
-    const organizationDtos = nodes.map((dn) => dn.data);
-    const dtosWithNamesDeDuplicated = deDuplicateNames(organizationDtos);
-    const nodesWithDataNamesDeDuplicated = nodes.map((dn, index) => {
-      const replacementData = dtosWithNamesDeDuplicated[index];
-      if (replacementData.id !== dn.id)
-        throw Error('Arrays not aligned. Could not clone nodes.');
-      const cloneDeep = _.cloneDeep(dn);
-      cloneDeep.data = replacementData;
-      return cloneDeep;
-    });
-    const safeGraph: GraphDto<T> = {
-      ...graphDto,
-      nodes: nodesWithDataNamesDeDuplicated
-    };
-    const safeRequest = { ...request, graphDto: safeGraph };
-    return putUpdatedGraph(safeRequest);
-  };
-}
 
 const organizationGraphUpdater = getGraphUpdaterWithNameDeDuplication(putGraph);
 
@@ -68,7 +30,12 @@ export default function CurriculumDeliveryGraph({
 }: PropsWithChildren & { bundles: WorkSeriesBundleAssignmentDto[] }) {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();
 
-  const { dispatch } = useBundleAssignmentsContext();
+  console.log(bundles);
+
+  useStringMapContextController(
+    'workSeriesSchemaBundle',
+    CurriculumDeliveryGraphPageKey
+  );
 
   const bundlesInNodeOrder = nodes.map((node) => {
     const found = bundles.find(
@@ -82,10 +49,6 @@ export default function CurriculumDeliveryGraph({
   const initialPayload = getPayloadArray(definedBundles, (assignment) =>
     assignment.organizationId.toString()
   );
-
-  useEffect(() => {
-    dispatch({ type: 'updateAll', payload: initialPayload });
-  }, [initialPayload, dispatch]);
 
   const unsavedGraphChanges = useNodeEditing(
     nodesRef,
@@ -113,13 +76,7 @@ export default function CurriculumDeliveryGraph({
   const nodeDetailElements: NodePayload<OrganizationDto>[] = nodes.map(
     (node) => {
       return {
-        node: node,
-        payload: (
-          <CurriculumDeliveryDetails
-            key={`delivery-details-${node.data.id}`}
-            node={node}
-          ></CurriculumDeliveryDetails>
-        )
+        node: node
       };
     }
   );
@@ -133,7 +90,11 @@ export default function CurriculumDeliveryGraph({
       unsavedNodeChangesProps={unsavedGraphChanges}
     >
       {' '}
-      <NodeDetails nodeDetailElements={nodeDetailElements} labels={classList} />
+      <NodeDetails
+        nodeDetailElements={nodeDetailElements}
+        labels={classList}
+        detailsUiComponent={CurriculumDeliveryDetails}
+      />
     </NodeLinkRefWrapper>
   );
 }

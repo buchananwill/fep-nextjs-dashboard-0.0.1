@@ -36,8 +36,6 @@ export default async function Page({
     taskTypesResponse.data
   );
 
-  console.log(schemaExampleList);
-
   const curriculumDeliveryModelSchemas =
     await getSchemaListFromExampleList(schemaExampleList);
 
@@ -50,9 +48,6 @@ export default async function Page({
   if (workProjectSeriesSchemaList === undefined) {
     return <Card>No schemas found!</Card>;
   }
-
-  console.log(taskTypesResponse.data.length);
-  console.log(workProjectSeriesSchemaList.length);
 
   if (status >= 400) {
     return <Card>{message}</Card>;

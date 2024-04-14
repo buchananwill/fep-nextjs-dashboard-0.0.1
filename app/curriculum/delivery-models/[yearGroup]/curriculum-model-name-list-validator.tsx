@@ -23,7 +23,7 @@ export function CurriculumModelNameListValidator({
   const { dispatchUpdate } = useSelectiveContextControllerStringList(
     ValidatorContextKey,
     ValidatorContextKey,
-    EmptyIdArray
+    EmptyArray
   );
   useEffect(() => {
     dispatchUpdate({ contextKey: ValidatorContextKey, update: nameList });

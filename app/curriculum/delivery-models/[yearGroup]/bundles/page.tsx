@@ -1,7 +1,6 @@
 import { Card } from '@nextui-org/card';
 import { BundleEditor } from './bundle-editor';
 import { BundleItemsContextProvider } from '../../contexts/bundle-items-context-provider';
-import { BundleAssignmentsProvider } from '../../contexts/bundle-assignments-provider';
 import { StringMap } from '../../../../contexts/string-map-context/string-map-reducer';
 import { CurriculumDeliveryModelsInit } from '../../curriculum-delivery-models-init';
 
@@ -10,7 +9,7 @@ import { getDtoListByExampleList as getBundlesByExampleList } from '../../../../
 import { getDtoListByExampleList as getSchemasByExampleList } from '../../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { parseTen } from '../../../../api/date-and-time';
 import { WorkSeriesSchemaBundleLeanDto } from '../../../../api/dtos/WorkSeriesSchemaBundleLeanDtoSchema';
-import { EmptyArray, ObjectPlaceholder } from '../../../../api/main';
+import { EmptyArray } from '../../../../api/main';
 import { WorkTaskTypeDto } from '../../../../api/dtos/WorkTaskTypeDtoSchema';
 import { createSchemeExampleListFromWorkTaskTypes } from './createSchemeExampleListFromWorkTaskTypes';
 
@@ -77,15 +76,13 @@ export default async function Page({
   }
   return (
     <BundleItemsContextProvider bundleItems={bundleLeanDtos}>
-      <BundleAssignmentsProvider bundleAssignments={ObjectPlaceholder}>
-        <CurriculumDeliveryModelsInit
-          workProjectSeriesSchemaDtos={
-            curriculumDeliveryModelSchemas.data || EmptyArray
-          }
-          taskTypeList={workTaskTypeDtos}
-        />
-        <BundleEditor schemaOptions={schemasIdsAndNames} />
-      </BundleAssignmentsProvider>
+      <CurriculumDeliveryModelsInit
+        workProjectSeriesSchemaDtos={
+          curriculumDeliveryModelSchemas.data || EmptyArray
+        }
+        taskTypeList={workTaskTypeDtos}
+      />
+      <BundleEditor schemaOptions={schemasIdsAndNames} />
     </BundleItemsContextProvider>
   );
 }

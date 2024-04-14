@@ -1,18 +1,13 @@
 import { Card } from '@nextui-org/card';
 
 import ForceGraphPage from '../../../graphing/force-graph-page';
-
-import { BundleItemsContextProvider } from '../../delivery-models/contexts/bundle-items-context-provider';
-
-import { BundleAssignmentsProvider } from '../../delivery-models/contexts/bundle-assignments-provider';
 import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
-import { CurriculumDeliveryModelsInit } from '../../delivery-models/curriculum-delivery-models-init';
 import CurriculumDeliveryGraph, {
   CurriculumDeliveryGraphPageKey
 } from '../../../graphing/graph-types/organization/curriculum-delivery-graph';
 import React from 'react';
 import { parseTen } from '../../../api/date-and-time';
-import { isNotUndefined } from '../../../api/main';
+import { isNotNull, isNotUndefined } from '../../../api/main';
 import { getPage } from '../../../api/READ-ONLY-generated-actions/WorkSeriesSchemaBundle';
 import { getDtoListByBodyList } from '../../../api/READ-ONLY-generated-actions/WorkProjectSeriesSchema';
 import { getDtoListByBodyList as getWorkTaskTypesByIdList } from '../../../api/READ-ONLY-generated-actions/WorkTaskType';
@@ -20,8 +15,11 @@ import {
   getByTypeIdList,
   getGraphByNodeList
 } from '../../../api/READ-ONLY-generated-actions/Organization';
-import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
-import { getDtoListByExampleList } from '../../../api/READ-ONLY-generated-actions/WorkSeriesBundleAssignment';
+import {
+  getByRowIdList,
+  putList
+} from '../../../api/READ-ONLY-generated-actions/WorkSeriesBundleAssignment';
+import DtoControllerArray from '../../../selective-context/components/controllers/dto-controller-array';
 
 const emptyBundles = {} as StringMap<string>;
 
@@ -53,23 +51,9 @@ export default async function Page({
   const workTaskTypeIdList =
     allSchemasInBundles.data?.map((schema) => schema.workTaskTypeId) || [];
 
-  const bundleAssignmentExampleList = orgIdList.map(
-    (id) => ({ organizationId: id }) as Partial<WorkSeriesBundleAssignmentDto>
-  );
-
-  const bundleDeliveries = await getDtoListByExampleList(
-    bundleAssignmentExampleList
-  );
-  bundleDeliveries.data
-    ?.map((data) => data.workSeriesSchemaBundle.workProjectSeriesSchemaIds)
-    .reduce((previousValue, curr) => {
-      curr.forEach((id) => previousValue.add(id));
-      return previousValue;
-    }, new Set<string>());
+  const bundleDeliveries = await getByRowIdList(orgIdList);
 
   const actionResponseOrganizationGraph = await getGraphByNodeList(orgIdList);
-  // await getOrganizationGraph();
-  // await getOrganizationGraphByRootId(1446);
 
   const taskTypesResponse = await getWorkTaskTypesByIdList(workTaskTypeIdList);
   const workTaskTypeDtos = taskTypesResponse.data;
@@ -105,23 +89,39 @@ export default async function Page({
     return <Card>{message}</Card>;
   }
 
-  return (
-    <BundleItemsContextProvider bundleItems={bundleLeanDtos.content}>
-      <BundleAssignmentsProvider bundleAssignments={emptyBundles}>
-        <CurriculumDeliveryModelsInit
-          workProjectSeriesSchemaDtos={schemas}
-          taskTypeList={workTaskTypeDtos}
-        />
+  const assignmentList = Object.values(assignedBundleDeliveryData)
+    .map((list) => (list.length > 0 ? list[0] : null))
+    .filter(isNotNull);
 
-        <ForceGraphPage
-          dataGraph={dataGraph}
-          graphName={CurriculumDeliveryGraphPageKey}
-        >
-          <CurriculumDeliveryGraph
-            bundles={assignedBundleDeliveryData}
-          ></CurriculumDeliveryGraph>
-        </ForceGraphPage>
-      </BundleAssignmentsProvider>
-    </BundleItemsContextProvider>
+  return (
+    <>
+      <DtoControllerArray
+        dtoList={bundleLeanDtos.content}
+        entityName={'workSeriesSchemaBundle'}
+      />
+
+      <DtoControllerArray
+        dtoList={workTaskTypeDtos}
+        entityName={'workTaskType'}
+      />
+      <DtoControllerArray
+        dtoList={schemas}
+        entityName={'workProjectSeriesSchema'}
+      />
+      <DtoControllerArray
+        dtoList={assignmentList}
+        entityName={'workSeriesBundleAssignment'}
+        updateServerAction={putList}
+      />
+
+      <ForceGraphPage
+        dataGraph={dataGraph}
+        graphName={CurriculumDeliveryGraphPageKey}
+      >
+        <CurriculumDeliveryGraph
+          bundles={assignmentList}
+        ></CurriculumDeliveryGraph>
+      </ForceGraphPage>
+    </>
   );
 }

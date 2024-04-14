@@ -8,9 +8,20 @@ import { OrganizationDto } from '../../../api/dtos/OrganizationDtoSchema';
 
 import { useNodeNameEditing } from '../../editing/functions/use-node-name-editing';
 import { useSumAllSchemasMemo } from '../../../curriculum/delivery-models/functions/use-sum-all-schemas-memo';
-import { useSchemaBundleAssignmentContext } from '../../../curriculum/delivery-models/functions/use-schema-bundle-assignment-context';
 import RenameModal from '../../../generic/components/modals/rename-modal';
 import { Button, ButtonProps } from '@nextui-org/button';
+import {
+  useSelectiveContextAnyDispatch,
+  useSelectiveContextGlobalListener
+} from '../../../selective-context/components/global/selective-context-manager-global';
+import { WorkSeriesBundleAssignmentDto } from '../../../api/dtos/WorkSeriesBundleAssignmentDtoSchema';
+import { getEntityNamespaceContextKey } from '../../../selective-context/hooks/dtoStores/use-dto-store';
+import { isNotUndefined, ObjectPlaceholder } from '../../../api/main';
+import { useSelectiveContextListenerReadAll } from '../../../selective-context/components/base/generic-selective-context-creator';
+import { SelectiveContextGlobal } from '../../../selective-context/components/global/selective-context-creator-global';
+import { getNameSpacedKey } from '../../../selective-context/components/controllers/dto-id-list-controller';
+import { StringMap } from '../../../contexts/string-map-context/string-map-reducer';
+import { WorkSeriesSchemaBundleDto } from '../../../api/dtos/WorkSeriesSchemaBundleDtoSchema';
 
 export const LeftCol =
   'text-xs w-full text-center h-full flex items-center justify-center';
@@ -22,25 +33,48 @@ export default function CurriculumDeliveryDetails({
   node: DataNode<OrganizationDto>;
 }) {
   const { id } = node;
-  const {
-    assignmentOptional,
-    setAssignment,
-    bundleItemsMap,
-    dispatchWithoutControl,
-    schemas
-  } = useSchemaBundleAssignmentContext(id);
-
   const componentListenerKey = `${CurriculumDetailsListenerKey}:${id}`;
+
+  const { currentState, dispatchWithoutControl: updateAssignment } =
+    useSelectiveContextAnyDispatch<WorkSeriesBundleAssignmentDto>({
+      contextKey: getEntityNamespaceContextKey(
+        'workSeriesBundleAssignment',
+        node.data.workSeriesBundleAssignmentId
+      ),
+      listenerKey: componentListenerKey,
+      initialValue: ObjectPlaceholder as WorkSeriesBundleAssignmentDto
+    });
+
+  const schemaIdList: string[] =
+    currentState.workSeriesSchemaBundle.workProjectSeriesSchemaIds;
+
+  const selectiveContextReadAll =
+    useSelectiveContextListenerReadAll<WorkProjectSeriesSchemaDto>(
+      SelectiveContextGlobal
+    );
+
+  const { currentState: bundleMap } = useSelectiveContextGlobalListener<
+    StringMap<WorkSeriesSchemaBundleDto>
+  >({
+    contextKey: getNameSpacedKey('workSeriesSchemaBundle', 'stringMap'),
+    listenerKey: componentListenerKey,
+    initialValue: ObjectPlaceholder
+  });
+
+  const schemaList = schemaIdList
+    .map((id) => getEntityNamespaceContextKey('workProjectSeriesSchema', id))
+    .map(selectiveContextReadAll)
+    .filter(isNotUndefined);
 
   const { openModal, renameModalProps } = useNodeNameEditing(
     node,
     componentListenerKey
   );
-  const bundleRowSpan = `span ${Math.max(schemas.length, 1) + 1}`;
+  const bundleRowSpan = `span ${Math.max(schemaList.length, 1) + 1}`;
 
-  const totalAllocation = useSumAllSchemasMemo(schemas);
+  const totalAllocation = useSumAllSchemasMemo(schemaList);
 
-  const elements = schemas.map((workProjectSeriesSchema) => {
+  const elements = schemaList.map((workProjectSeriesSchema) => {
     return (
       <CourseSummary
         key={`${node.data.id}-${workProjectSeriesSchema.id}`}
@@ -49,9 +83,11 @@ export default function CurriculumDeliveryDetails({
     );
   });
 
-  const handleAssignmentChange = (assignmentId: string) => {
-    setAssignment(assignmentId);
-    dispatchWithoutControl(true);
+  const handleAssignmentChange = (bundleID: number) => {
+    updateAssignment((assignment) => ({
+      ...assignment,
+      workSeriesSchemaBundle: bundleMap[bundleID]
+    }));
   };
 
   return (
@@ -89,20 +125,25 @@ export default function CurriculumDeliveryDetails({
             gridRow: bundleRowSpan
           }}
         >
-          <Listbox value={assignmentOptional} onChange={handleAssignmentChange}>
+          <Listbox
+            value={currentState?.workSeriesSchemaBundle?.id}
+            onChange={handleAssignmentChange}
+          >
             <Listbox.Button as={NodeDetailsListBoxButton}>
-              <table className={'text-left w-full'}>
-                <thead className={'text-sm border-b-2'}>
-                  <tr>
-                    <th>Periods</th>
-                    <th>Item</th>
-                  </tr>
-                </thead>
-                <tbody>{...elements}</tbody>
-              </table>
+              <div className={' w-full '}>
+                <table className={'text-left table-fixed max-w-full'}>
+                  <thead className={'text-sm border-b-2 text-center'}>
+                    <tr className={'text-xs'}>
+                      <th>Periods</th>
+                      <th>Item</th>
+                    </tr>
+                  </thead>
+                  <tbody>{...elements}</tbody>
+                </table>
+              </div>
             </Listbox.Button>
             <Listbox.Options as={NodeDetailsListBoxOptions}>
-              {Object.entries(bundleItemsMap).map((bundle) => (
+              {Object.entries(bundleMap).map((bundle) => (
                 <Listbox.Option
                   value={bundle[0]}
                   key={`bundle-${bundle[0]}`}
@@ -133,13 +174,17 @@ function CourseSummary({
   course: WorkProjectSeriesSchemaDto;
 }): React.JSX.Element {
   return (
-    <tr className={'text-xs border-b last:border-0'}>
+    <tr className={'text-xs border-b last:border-0 text-left'}>
       <td>
         {course.deliveryAllocations
           .map((da) => da.count * da.deliveryAllocationSize)
           .reduce((prev, curr) => prev + curr, 0)}
       </td>
-      <td>{course.workTaskType.name.substring(9)}</td>
+      <td>
+        <span className={'truncate w-[240px] max-w-[240px] inline-block'}>
+          {course.name}
+        </span>
+      </td>
     </tr>
   );
 }
@@ -151,7 +196,9 @@ export const NodeDetailsListBoxButton = forwardRef(
   ) {
     return (
       <Button
-        className={'w-full h-full relative px-1'}
+        className={
+          'w-full h-full relative px-1 text-xs text-left overflow-ellipsis'
+        }
         radius={'sm'}
         {...props}
         ref={ref}
