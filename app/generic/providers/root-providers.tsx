@@ -1,14 +1,14 @@
 'use client';
 import { ReactNode } from 'react';
 
-import AnimationSyncContextProvider from './contexts/animation-sync-context/animation-sync-context-provider';
-import TooltipsContextProvider from './generic/components/tooltips/tooltips-context-provider';
-import SelectiveContextCollection from './selective-context/components/selective-context-collection';
-import SubjectColorCodingProvider from './contexts/color/subject-color-coding-provider';
-import KeyListenerManager from './generic/components/key-listener-context/key-listener-manager';
-import ColorCodingProvider from './generic/components/color/color-coding-provider';
+import AnimationSyncContextProvider from '../../contexts/animation-sync-context/animation-sync-context-provider';
+import TooltipsContextProvider from '../components/tooltips/tooltips-context-provider';
+import SelectiveContextCollection from '../../selective-context/components/selective-context-collection';
+import SubjectColorCodingProvider from '../../contexts/color/subject-color-coding-provider';
+import KeyListenerManager from '../components/key-listener-context/key-listener-manager';
+import ColorCodingProvider from '../components/color/color-coding-provider';
 import NextUiProviderWrapper from './next-ui-provider-wrapper';
-import SelectiveContextManagerGlobal from './selective-context/components/global/selective-context-manager-global';
+import SelectiveContextManagerGlobal from '../../selective-context/components/global/selective-context-manager-global';
 
 export default function RootProviders({ children }: { children: ReactNode }) {
   return (

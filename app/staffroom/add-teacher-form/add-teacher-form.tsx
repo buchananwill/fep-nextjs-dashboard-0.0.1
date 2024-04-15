@@ -11,11 +11,16 @@ import {
   NewProviderRoleDtoSchema
 } from '../../api/dtos/NewProviderRoleDtoSchema-Validation';
 import { createTeacher } from '../../api/actions/custom/provider-roles';
-import { useServiceCategoryContext } from '../../work-types/lessons/use-service-category-context';
 import { useProviderRoleStringMapContext } from '../contexts/providerRoles/provider-role-string-map-context-creator';
 import { Card, CardBody, CardFooter } from '@nextui-org/card';
 import { Button } from '@nextui-org/button';
 import { TransientIdOffset } from '../../graphing/editing/functions/graph-edits';
+import { useSelectiveContextGlobalListener } from '../../selective-context/components/global/selective-context-manager-global';
+import { getNameSpacedKey } from '../../selective-context/components/controllers/dto-id-list-controller';
+import { EntityNamesMap } from '../../api/entity-names-map';
+import { ObjectPlaceholder } from '../../api/main';
+import { StringMap } from '../../contexts/string-map-context/string-map-reducer';
+import { KnowledgeDomainDto } from '../../api/dtos/KnowledgeDomainDtoSchema';
 
 function ErrorMessage({ children }: PropsWithChildren) {
   if (!children) return null;
@@ -23,7 +28,13 @@ function ErrorMessage({ children }: PropsWithChildren) {
 }
 
 export default function AddTeacherForm() {
-  const { domainMap } = useServiceCategoryContext();
+  const { currentState: domainMap } = useSelectiveContextGlobalListener<
+    StringMap<KnowledgeDomainDto>
+  >({
+    contextKey: getNameSpacedKey(EntityNamesMap.knowledgeDomain, 'stringMap'),
+    listenerKey: 'addTeacherPage',
+    initialValue: ObjectPlaceholder
+  });
   const { domainArray } = useMemo(() => {
     const domainArray = Object.values(domainMap);
 

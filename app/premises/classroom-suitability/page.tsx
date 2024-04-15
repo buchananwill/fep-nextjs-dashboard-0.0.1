@@ -29,6 +29,9 @@ import {
 import { getTriIntersectionTable } from '../../api/READ-ONLY-generated-actions/AssetRoleTypeWorkTaskTypeSuitability';
 import { getDtoListByExampleList } from '../../api/READ-ONLY-generated-actions/WorkTaskType';
 import { createWorkTaskTypeExample } from './createWorkTaskTypeExample';
+import DtoControllerArray from '../../selective-context/components/controllers/dto-controller-array';
+import { EntityNamesMap } from '../../api/entity-names-map';
+import StringMapController from '../../generic/providers/string-map-controller';
 
 export default async function Page({
   searchParams: {
@@ -100,32 +103,37 @@ export default async function Page({
   console.log('rendering root page');
 
   return (
-    <WorkTaskTypeContextProvider entityMap={wttStringMap}>
-      <AssetStringMapContextProvider assetStringMap={assetStringMap}>
-        <AssetRoleSuitabilityStringMapContextProvider suitabilityLists={table}>
-          <AssetSuitabilityEditContextProvider>
-            <div className={'w-full flex gap-2'}>
-              <ToolCardContextProvider>
-                <ToolCard>
-                  <ToolCard.UpperSixth>
-                    Classroom Suitability
-                  </ToolCard.UpperSixth>
-                  <ToolCard.LowerFiveSixths>
-                    <AssetDisclosureListPanel />
-                  </ToolCard.LowerFiveSixths>
-                </ToolCard>
-              </ToolCardContextProvider>
+    <>
+      <DtoControllerArray
+        dtoList={workTaskTypeDtos}
+        entityName={EntityNamesMap.workTaskType}
+      />
+      <StringMapController entityName={EntityNamesMap.workTaskType} />
+      <DtoControllerArray
+        dtoList={assetDtoList}
+        entityName={EntityNamesMap.asset}
+      />
+      <AssetRoleSuitabilityStringMapContextProvider suitabilityLists={table}>
+        <AssetSuitabilityEditContextProvider>
+          <div className={'w-full flex gap-2'}>
+            <ToolCardContextProvider>
+              <ToolCard>
+                <ToolCard.UpperSixth>Classroom Suitability</ToolCard.UpperSixth>
+                <ToolCard.LowerFiveSixths>
+                  <AssetDisclosureListPanel />
+                </ToolCard.LowerFiveSixths>
+              </ToolCard>
+            </ToolCardContextProvider>
 
-              <AssetSuitabilityTableWrapper />
-              <SearchParamsFilterGroup unsavedContextKey={UnsavedAssetChanges}>
-                <KnowledgeDomainFilterSelector />
-                <KnowledgeLevelFilterSelector />
-                <AssetRootIdFilterSelector />
-              </SearchParamsFilterGroup>
-            </div>
-          </AssetSuitabilityEditContextProvider>
-        </AssetRoleSuitabilityStringMapContextProvider>
-      </AssetStringMapContextProvider>
-    </WorkTaskTypeContextProvider>
+            <AssetSuitabilityTableWrapper />
+            <SearchParamsFilterGroup unsavedContextKey={UnsavedAssetChanges}>
+              <KnowledgeDomainFilterSelector />
+              <KnowledgeLevelFilterSelector />
+              <AssetRootIdFilterSelector />
+            </SearchParamsFilterGroup>
+          </div>
+        </AssetSuitabilityEditContextProvider>
+      </AssetRoleSuitabilityStringMapContextProvider>
+    </>
   );
 }

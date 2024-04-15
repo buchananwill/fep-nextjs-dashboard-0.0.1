@@ -10,17 +10,19 @@ import { StringMap } from '../../contexts/string-map-context/string-map-reducer'
 import { AccessorFunction } from '../../generic/components/tables/rating/rating-table';
 import StringNameStringIdSearchParamsSelector from '../../generic/components/dropdown/string-name-string-id-search-params-selector';
 import { NameIdStringTuple } from '../../api/dtos/NameIdStringTupleSchema';
-import { isNotNull, isNotUndefined } from '../../api/main';
+import { isNotNull, isNotUndefined, ObjectPlaceholder } from '../../api/main';
 import TupleSelector from '../../generic/components/dropdown/tuple-selector';
 import { useSelectiveContextControllerString } from '../../selective-context/components/typed/selective-context-manager-string';
 import { useSearchParamsContext } from '../../contexts/string-map-context/search-params-context-creator';
+import { useSelectiveContextGlobalListener } from '../../selective-context/components/global/selective-context-manager-global';
+import { getNameSpacedKey } from '../../selective-context/components/controllers/dto-id-list-controller';
 
 export interface Comparator<T> {
   (element1: T, element2: T): number;
 }
 
 interface StringMapContextFilterProps<T> extends PropsWithChildren {
-  context: Context<StringMap<T>>;
+  entityName: string;
   idAccessor: AccessorFunction<T, string>;
   idSearchParamKey?: string;
   labelAccessor: AccessorFunction<T, string>;
@@ -29,14 +31,20 @@ interface StringMapContextFilterProps<T> extends PropsWithChildren {
 }
 
 export function StringMapContextFilterSelector<T>({
-  context,
+  entityName,
   idAccessor,
   idSearchParamKey = 'id',
   labelAccessor,
   labelDescriptor,
   sortFunction
 }: StringMapContextFilterProps<T>) {
-  const stringMapTypeT = useContext(context);
+  const { currentState: stringMapTypeT } = useSelectiveContextGlobalListener<
+    StringMap<T>
+  >({
+    contextKey: getNameSpacedKey(entityName, 'stringMap'),
+    listenerKey: 'filterSelector',
+    initialValue: ObjectPlaceholder
+  });
   const selectionList: NameIdStringTuple[] = useMemo(() => {
     let values = Object.values(stringMapTypeT);
     if (isNotUndefined(sortFunction)) {

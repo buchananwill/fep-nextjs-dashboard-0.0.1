@@ -30,8 +30,6 @@ export default function CurriculumDeliveryGraph({
 }: PropsWithChildren & { bundles: WorkSeriesBundleAssignmentDto[] }) {
   const { nodes, nodesRef, linksRef } = useNodeAndLinkRefs<OrganizationDto>();
 
-  console.log(bundles);
-
   useStringMapContextController(
     'workSeriesSchemaBundle',
     CurriculumDeliveryGraphPageKey

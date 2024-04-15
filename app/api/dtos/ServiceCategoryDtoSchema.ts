@@ -1,11 +1,10 @@
-import { CollectionSchema } from './CollectionSchema';
 import { z } from 'zod';
 export const ServiceCategoryDtoSchema = z.object({
   name: z.string(),
   id: z.number(),
   knowledgeDomainDescriptor: z.string(),
   knowledgeLevelDescriptor: z.string(),
-  knowledgeDomainIds: CollectionSchema,
-  knowledgeLevelIds: CollectionSchema,
+  knowledgeDomainIds: z.array(z.number()),
+  knowledgeLevelIds: z.array(z.number()),
 });
 export type ServiceCategoryDto = z.infer<typeof ServiceCategoryDtoSchema>;

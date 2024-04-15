@@ -7,7 +7,7 @@ import { NameLabelAccessor } from './search-params-filter-group';
 export function AssetRootIdFilterSelector() {
   return (
     <StringMapContextFilterSelector
-      context={AssetStringMapContext}
+      entityName={AssetStringMapContext}
       idAccessor={IdStringFromNumberAccessor}
       labelAccessor={NameLabelAccessor}
       labelDescriptor={'Premises Root'}

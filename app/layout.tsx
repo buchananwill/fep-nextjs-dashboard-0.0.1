@@ -3,8 +3,8 @@ import { enableMapSet } from 'immer';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './navbar/nav';
 import React, { Suspense } from 'react';
-import Loading from './loading';
-import RootProviders from './root-providers';
+import Loading from './generic/components/loading';
+import RootProviders from './generic/providers/root-providers';
 
 enableMapSet();
 
